@@ -1,0 +1,366 @@
+:root {
+  --ink: #1d2926;
+  --muted: #75807c;
+  --paper: #f4f2ea;
+  --panel: #fffdf7;
+  --line: #d8ddd4;
+  --green: #173f38;
+  --mint: #8ed0b2;
+  --yellow: #e8c66d;
+  --coral: #e98468;
+  --shadow: 0 18px 45px rgba(32, 54, 45, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: Manrope, sans-serif;
+}
+.shell {
+  max-width: 1440px;
+  margin: auto;
+  padding: 42px 5vw 28px;
+}
+.masthead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 38px;
+}
+.eyebrow,
+.panel-kicker,
+.section-index,
+.mono,
+footer {
+  font-family: "DM Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.eyebrow {
+  color: var(--coral);
+  font-size: 11px;
+  margin: 0 0 18px;
+}
+h1 {
+  font-size: clamp(2.8rem, 6vw, 6.5rem);
+  line-height: 0.92;
+  letter-spacing: -0.07em;
+  margin: 0;
+  font-weight: 800;
+}
+h1 em {
+  color: var(--green);
+  font-style: normal;
+}
+.status {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--muted);
+  font:
+    11px "DM Mono",
+    monospace;
+  text-transform: uppercase;
+}
+.status-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--yellow);
+}
+.intro {
+  max-width: 650px;
+  margin: 33px 0 42px;
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: #52605a;
+}
+.dashboard {
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(310px, 0.8fr);
+  gap: 22px;
+  align-items: stretch;
+}
+.map-column,
+.timeline-section,
+.detail-panel {
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+.map-column {
+  padding: 24px;
+  min-width: 0;
+}
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 17px;
+}
+.section-head > div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.section-index {
+  color: var(--coral);
+  font-size: 11px;
+}
+h2,
+h3 {
+  margin: 0;
+  letter-spacing: -0.04em;
+}
+h2 {
+  font-size: 1.2rem;
+}
+h3 {
+  font-size: 1rem;
+}
+.legend {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.legend-label {
+  color: var(--muted);
+  font-size: 10px;
+  margin-right: 7px;
+  text-transform: uppercase;
+}
+.legend i {
+  display: block;
+  width: 18px;
+  height: 8px;
+  background: #d9efe1;
+}
+.legend i:nth-last-child(4) {
+  background: #aadabd;
+}
+.legend i:nth-last-child(3) {
+  background: #74b99c;
+}
+.legend i:nth-last-child(2) {
+  background: #3e806b;
+}
+.legend i:last-child {
+  background: #17463e;
+}
+#map {
+  min-height: 590px;
+  background: #e5eee7;
+}
+.leaflet-container {
+  font-family: Manrope, sans-serif;
+}
+.map-note {
+  color: var(--muted);
+  font-size: 11px;
+  margin: 13px 0 0;
+}
+.detail-panel {
+  padding: 29px 26px;
+}
+.panel-kicker {
+  color: var(--coral);
+  font-size: 10px;
+  margin-bottom: 13px;
+}
+#region-name {
+  font-size: 1.85rem;
+  line-height: 1.03;
+  max-width: 300px;
+}
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 11px;
+  margin: 28px 0;
+  border-block: 1px solid var(--line);
+  padding: 17px 0;
+}
+.stat-grid strong {
+  display: block;
+  font-size: 1.28rem;
+}
+.stat-grid span {
+  color: var(--muted);
+  font-size: 9px;
+  text-transform: uppercase;
+  line-height: 1.2;
+  display: block;
+  margin-top: 4px;
+}
+.media-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 34px;
+}
+.media-placeholder {
+  min-height: 86px;
+  border: 1px dashed #b7c6bc;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--muted);
+  font-size: 11px;
+}
+.media-icon {
+  display: grid;
+  place-items: center;
+  background: #e7f1e9;
+  width: 36px;
+  height: 86px;
+  color: var(--green);
+  font-size: 23px;
+}
+.media-placeholder small {
+  font-size: 9px;
+}
+.species-head {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 11px;
+}
+.species-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  counter-reset: species;
+}
+.species-list li {
+  counter-increment: species;
+  display: grid;
+  grid-template-columns: 25px 1fr auto;
+  gap: 9px;
+  align-items: center;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 12px;
+}
+.species-list li::before {
+  content: "0" counter(species);
+  color: var(--coral);
+  font:
+    10px "DM Mono",
+    monospace;
+}
+.species-list .bird-name {
+  font-weight: 700;
+}
+.species-list .scientific {
+  display: block;
+  color: var(--muted);
+  font:
+    10px Georgia,
+    serif;
+  font-style: italic;
+  margin-top: 2px;
+}
+.species-count {
+  font:
+    11px "DM Mono",
+    monospace;
+  color: var(--green);
+}
+.empty {
+  color: var(--muted);
+  padding: 20px 0;
+}
+.timeline-section {
+  margin-top: 22px;
+  padding: 24px;
+}
+.timeline {
+  height: 175px;
+  display: flex;
+  align-items: end;
+  gap: 5px;
+  padding: 15px 0 0;
+  border-bottom: 1px solid var(--line);
+  overflow-x: auto;
+}
+.bar-wrap {
+  height: 100%;
+  min-width: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  align-items: center;
+  gap: 8px;
+}
+.bar {
+  width: 100%;
+  min-height: 2px;
+  background: var(--mint);
+  transition:
+    height 0.3s,
+    background 0.3s;
+}
+.bar-wrap:hover .bar {
+  background: var(--coral);
+}
+.bar-label {
+  color: var(--muted);
+  font:
+    9px "DM Mono",
+    monospace;
+  transform: rotate(-45deg);
+  transform-origin: center;
+  margin-bottom: -8px;
+}
+footer {
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted);
+  font-size: 9px;
+  padding-top: 28px;
+}
+@media (max-width: 900px) {
+  .dashboard {
+    grid-template-columns: 1fr;
+  }
+  #map {
+    min-height: 480px;
+  }
+  .detail-panel {
+    order: -1;
+  }
+}
+@media (max-width: 560px) {
+  .shell {
+    padding: 26px 16px;
+  }
+  .masthead {
+    display: block;
+  }
+  .status {
+    margin-top: 24px;
+  }
+  .map-column,
+  .detail-panel,
+  .timeline-section {
+    padding: 18px;
+  }
+  .section-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .legend {
+    align-self: flex-end;
+  }
+  footer {
+    display: block;
+    line-height: 2;
+  }
+}

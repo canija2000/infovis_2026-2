@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Atlas de aves de Chile</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <main class="shell">
+        <header class="masthead">
+            <div>
+                <p class="eyebrow">eBird / Chile / observaciones</p>
+                <h1>El pulso de las aves<br><em>por región</em></h1>
+            </div>
+            <div class="status"><span class="status-dot"></span><span id="coverage">Cargando datos...</span></div>
+        </header>
+
+        <section class="intro">
+            <p>Explora dónde se concentra el registro de aves y cómo cambia a través del tiempo. Selecciona una región
+                para abrir su historia, sus especies más reportadas y sus próximas capas multimedia.</p>
+        </section>
+
+        <section class="dashboard">
+            <div class="map-column">
+                <div class="section-head">
+                    <div><span class="section-index">01</span>
+                        <h2>Mapa de observaciones</h2>
+                    </div>
+                    <div class="legend"><span class="legend-label">participación
+                            relativa</span><i></i><i></i><i></i><i></i><i></i></div>
+                </div>
+                <div id="map" aria-label="Mapa interactivo de las regiones de Chile"></div>
+                <p class="map-note">La intensidad representa el porcentaje de observaciones del dataset asignado a cada
+                    región.</p>
+            </div>
+
+            <aside class="detail-panel" aria-live="polite">
+                <div class="panel-kicker">REGIÓN SELECCIONADA</div>
+                <h2 id="region-name">Selecciona una región</h2>
+                <div class="stat-grid">
+                    <div><strong id="region-observations">—</strong><span>observaciones</span></div>
+                    <div><strong id="region-species">—</strong><span>especies</span></div>
+                    <div><strong id="region-individuals">—</strong><span>individuos</span></div>
+                </div>
+                <div class="media-row">
+                    <div class="media-placeholder"><span
+                            class="media-icon">◌</span><span>Imagen<br><small>próximamente</small></span></div>
+                    <div class="media-placeholder"><span
+                            class="media-icon">◖</span><span>Canto<br><small>próximamente</small></span></div>
+                </div>
+                <div class="species-head"><span class="section-index">02</span>
+                    <h3>Especies más reportadas</h3>
+                </div>
+                <ol id="species-list" class="species-list">
+                    <li class="empty">Haz clic en una región del mapa.</li>
+                </ol>
+            </aside>
+        </section>
+
+        <section class="timeline-section">
+            <div class="section-head">
+                <div><span class="section-index">03</span>
+                    <h2>Ritmo mensual</h2>
+                </div><span id="timeline-label" class="mono">—</span>
+            </div>
+            <div id="timeline" class="timeline"></div>
+        </section>
+
+        <footer><span>Fuente: eBird API 2.0</span><span>Pipeline en Jupyter · visualización estática para GitHub
+                Pages</span></footer>
+    </main>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
