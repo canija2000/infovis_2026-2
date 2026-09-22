@@ -92,7 +92,7 @@ La página permite:
 
 La carpeta `web/` puede publicarse como sitio estático en GitHub Pages. Railway también puede servirla, aunque no es necesario un backend para esta versión: los diez años ya están procesados en archivos estáticos.
 
-Si el tamaño de `web/data/` aumenta, se puede dividir `observations.json` por región para cargar solo los datos solicitados por cada interacción.
+Las observaciones se publican en dos archivos JSON para respetar el límite de 25 MiB por asset de Cloudflare Workers.
 
 ## Fuentes y atribución
 

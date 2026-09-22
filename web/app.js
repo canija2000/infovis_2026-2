@@ -20,14 +20,23 @@ const escapeHtml = (value) =>
   );
 
 async function loadData() {
-  const [regionResponse, observationsResponse, metadataResponse] =
-    await Promise.all([
-      fetch(`${DATA_PATH}regions.geojson`),
-      fetch(`${DATA_PATH}observations.json`),
-      fetch(`${DATA_PATH}metadata.json`).catch(() => null),
-    ]);
+  const [
+    regionResponse,
+    observationsPartOneResponse,
+    observationsPartTwoResponse,
+    metadataResponse,
+  ] = await Promise.all([
+    fetch(`${DATA_PATH}regions.geojson`),
+    fetch(`${DATA_PATH}observations-01.json`),
+    fetch(`${DATA_PATH}observations-02.json`),
+    fetch(`${DATA_PATH}metadata.json`).catch(() => null),
+  ]);
   const geojson = await regionResponse.json();
-  observations = await observationsResponse.json();
+  const [observationsPartOne, observationsPartTwo] = await Promise.all([
+    observationsPartOneResponse.json(),
+    observationsPartTwoResponse.json(),
+  ]);
+  observations = observationsPartOne.concat(observationsPartTwo);
   regions = geojson.features;
   const metadata = metadataResponse ? await metadataResponse.json() : {};
   document.querySelector("#coverage").textContent =

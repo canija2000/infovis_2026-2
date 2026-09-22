@@ -32,7 +32,7 @@ Luego visitar <http://localhost:8000>.
 La celda del notebook genera:
 
 - `data/regions.geojson`: regiones y métricas agregadas.
-- `data/observations.json`: observaciones normalizadas.
+- `data/observations-01.json` y `data/observations-02.json`: observaciones normalizadas particionadas para respetar el límite de tamaño de assets de Cloudflare Workers.
 - `data/metadata.json`: cobertura y fecha de actualización.
 
 Para GitHub Pages, publicar la carpeta `web/` como raíz del sitio. Las fotografías y audios todavía son placeholders; se pueden completar en `app.js` cuando exista la tabla de correspondencias por nombre científico.
