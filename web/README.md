@@ -6,11 +6,8 @@ OpenStreetMap ni otro proveedor externo de mapas.
 
 ## Flujo
 
-1. Ejecutar el notebook `testeo.ipynb` hasta cargar o generar `prototype_df`.
-2. Ejecutar la celda `Exportar datos para la webpage`.
-3. Abrir `web/index.html` mediante un servidor HTTP local.
-
-Para generar el período de diez años desde la API:
+1. Generar `web/data/` con `10anios.py` (usa la caché local si existe).
+2. Abrir `web/index.html` mediante un servidor HTTP local.
 
 ```bash
 python 10anios.py --dry-run
@@ -29,7 +26,7 @@ python3 -m http.server 8000
 
 Luego visitar <http://localhost:8000>.
 
-La celda del notebook genera:
+El script genera:
 
 - `data/regions.geojson`: regiones y métricas agregadas.
 - `data/observations-01.json` y `data/observations-02.json`: observaciones normalizadas particionadas para respetar el límite de tamaño de assets de Cloudflare Workers.

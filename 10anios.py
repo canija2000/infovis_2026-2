@@ -229,7 +229,7 @@ def main() -> None:
     midpoint = (len(records) + 1) // 2
     for suffix, chunk in (("01", records[:midpoint]), ("02", records[midpoint:])):
         (WEB_DATA_DIR / f"observations-{suffix}.json").write_text(
-            json.dumps(chunk, ensure_ascii=False, indent=2),
+            json.dumps(chunk, ensure_ascii=False, separators=(",", ":")),
             encoding="utf-8",
         )
     old_observations = WEB_DATA_DIR / "observations.json"

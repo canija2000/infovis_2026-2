@@ -11,7 +11,7 @@ eBird API -> 10anios.py -> datos procesados -> web/
 ```
 
 - `10anios.py`: descarga histórica, usa caché local, asigna observaciones a regiones y genera los archivos que consume la web.
-- `testeo.ipynb`: exploración de la API, pruebas del pipeline y exportación desde Jupyter.
+- `testeo.ipynb`: exploración inicial de la API (histórico; ya no forma parte del pipeline).
 - `Regiones/`: shapefile regional de Chile usado para el mapa y la asignación espacial.
 - `web/`: frontend estático con Leaflet, HTML, CSS y JavaScript.
 - `web/data/`: datos procesados publicados por el frontend.

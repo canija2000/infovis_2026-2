@@ -191,7 +191,7 @@ loadData()
     console.error(error);
     document.querySelector("#coverage").textContent = "faltan datos exportados";
     document.querySelector("#region-name").textContent =
-      "Exporta el pipeline desde Jupyter";
+      "No se pudieron cargar los datos";
     document.querySelector("#species-list").innerHTML =
-      `<li class="empty">Ejecuta la celda “Exportar datos para la webpage” y vuelve a cargar esta página.</li>`;
+      `<li class="empty">Ejecuta <code>python3 10anios.py</code> para regenerar <code>web/data/</code> y vuelve a cargar esta página.</li>`;
   });
