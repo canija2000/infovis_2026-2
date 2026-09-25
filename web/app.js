@@ -77,40 +77,36 @@ function showRegion(feature) {
     const entry = speciesMap.get(key) || {
       name: item.comName,
       scientific: item.sciName,
-      count: 0,
-      individuals: 0,
+      days: 0,
     };
-    entry.count += Number(item.obsCount || 1);
-    entry.individuals += Number(item.howMany) || 0;
+    entry.days += Number(item.reportDays) || 0;
     speciesMap.set(key, entry);
   });
   const topSpecies = [...speciesMap.values()]
-    .sort((a, b) => b.count - a.count || b.individuals - a.individuals)
+    .sort((a, b) => b.days - a.days || a.name.localeCompare(b.name, "es"))
     .slice(0, 5);
 
   document.querySelector("#region-name").textContent = props.Region || code;
   document.querySelector("#region-observations").textContent = number(
-    props.observaciones,
+    props.dias_especie,
   );
   document.querySelector("#region-species").textContent = number(
     props.especies,
   );
-  document.querySelector("#region-individuals").textContent = number(
-    props.individuos_reportados,
-  );
+  document.querySelector("#region-months").textContent = number(props.meses);
   document.querySelector("#timeline-label").textContent =
-    `${selected.length ? selected.length : 0} registros`;
+    `${number(props.dias_especie)} días-especie`;
 
   const list = document.querySelector("#species-list");
   list.innerHTML = topSpecies.length
     ? topSpecies
         .map(
           (item) => `
-    <li><div class="bird-name">${escapeHtml(item.name)}<span class="scientific">${escapeHtml(item.scientific)}</span></div><span class="species-count">${number(item.count)} obs.</span></li>
+    <li><div class="bird-name">${escapeHtml(item.name)}<span class="scientific">${escapeHtml(item.scientific)}</span></div><span class="species-count">${number(item.days)} días</span></li>
   `,
         )
         .join("")
-    : `<li class="empty">No hay observaciones para esta región.</li>`;
+    : `<li class="empty">No hay registros para esta región.</li>`;
   renderTimeline(selected);
 }
 
@@ -119,7 +115,7 @@ function renderTimeline(selected) {
   selected.forEach((item) =>
     counts.set(
       item.year_month,
-      (counts.get(item.year_month) || 0) + Number(item.obsCount || 1),
+      (counts.get(item.year_month) || 0) + (Number(item.reportDays) || 0),
     ),
   );
   const months = [...counts.keys()].sort();
@@ -128,7 +124,7 @@ function renderTimeline(selected) {
     ? months
         .map(
           (month) => `
-    <div class="bar-wrap" title="${month}: ${counts.get(month)} observaciones"><div class="bar" style="height:${Math.max(3, (counts.get(month) / max) * 125)}px"></div><span class="bar-label">${month}</span></div>
+    <div class="bar-wrap" title="${month}: ${number(counts.get(month))} días-especie"><div class="bar" style="height:${Math.max(3, (counts.get(month) / max) * 125)}px"></div><span class="bar-label">${month}</span></div>
   `,
         )
         .join("")
@@ -180,7 +176,7 @@ function initMap(geojson) {
   }).addTo(map);
   const first =
     geojson.features.find(
-      (feature) => (feature.properties.observaciones || 0) > 0,
+      (feature) => (feature.properties.dias_especie || 0) > 0,
     ) || geojson.features[0];
   showRegion(first);
 }

@@ -1,8 +1,11 @@
 {
-  "updatedAt": "2026-09-18T15:50:39.682048+00:00",
+  "updatedAt": "2026-09-25T20:36:10.096000+00:00",
   "startDate": "2016-09-17",
   "endDate": "2026-09-18",
-  "observationCount": 604225,
+  "speciesDayCount": 604225,
   "regionCount": 16,
-  "aggregation": "region-month-species"
+  "aggregation": "region-month-species",
+  "metric": "reportDays",
+  "metricDescription": "Días del mes en que la especie se reportó en Chile y cuyo avistamiento más reciente del día cayó en la región. No es un conteo de observaciones ni de individuos.",
+  "source": "ebird-historic-national (una consulta diaria a CL, rank=mrec)"
 }

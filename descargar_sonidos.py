@@ -51,8 +51,7 @@ def load_species() -> list[dict]:
     totals = defaultdict(
         lambda: {
             "comName": "",
-            "obsCount": 0,
-            "howMany": 0,
+            "reportDays": 0,
             "regions": set(),
         }
     )
@@ -65,8 +64,7 @@ def load_species() -> list[dict]:
                 continue
             item = totals[scientific_name]
             item["comName"] = str(row.get("comName") or "").strip()
-            item["obsCount"] += int(row.get("obsCount") or 0)
-            item["howMany"] += float(row.get("howMany") or 0)
+            item["reportDays"] += int(row.get("reportDays") or row.get("obsCount") or 0)
             if row.get("region_code"):
                 item["regions"].add(row["region_code"])
 
@@ -76,12 +74,11 @@ def load_species() -> list[dict]:
             {
                 "scientificName": scientific_name,
                 "commonName": item["comName"],
-                "obsCount": item["obsCount"],
-                "howMany": item["howMany"],
+                "reportDays": item["reportDays"],
                 "regionCount": len(item["regions"]),
             }
         )
-    return sorted(species, key=lambda item: (-item["obsCount"], item["scientificName"]))
+    return sorted(species, key=lambda item: (-item["reportDays"], item["scientificName"]))
 
 
 def safe_filename(value: str) -> str:
@@ -141,7 +138,7 @@ def main() -> None:
     selected = all_species[: args.top]
     print(f"Especies disponibles: {len(all_species):,}; seleccionadas: {len(selected):,}")
     for index, item in enumerate(selected, start=1):
-        print(f"{index:>2}. {item['obsCount']:>6} obs | {item['commonName']} | {item['scientificName']}")
+        print(f"{index:>2}. {item['reportDays']:>6} días | {item['commonName']} | {item['scientificName']}")
     if args.dry_run:
         return
 

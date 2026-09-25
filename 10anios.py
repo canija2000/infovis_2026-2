@@ -9,6 +9,11 @@ La API histórica de eBird consulta una fecha por solicitud. El script hace una
 solicitud diaria para Chile, cachea cada respuesta y asigna los puntos a las
 regiones usando el shapefile local. Así se requieren aproximadamente 3.650
 solicitudes, en vez de repetirlas para cada una de las 16 regiones.
+
+Importante: el endpoint histórico devuelve una sola fila por especie y día (el
+avistamiento más reciente), no todas las observaciones. Por eso la métrica
+exportada es ``reportDays``: días en que la especie se reportó en Chile, con
+esa fila asignada a la región del avistamiento más reciente.
 """
 
 from __future__ import annotations
@@ -150,29 +155,29 @@ def build_export(raw_rows: list[dict], regions: gpd.GeoDataFrame) -> tuple[gpd.G
     observations["obsDt"] = observations["obsDt"].astype(str)
     observations["date"] = pd.to_datetime(observations["obsDt"].str[:10], errors="coerce")
     observations["year_month"] = observations["date"].dt.to_period("M").astype(str)
-    observations["howMany"] = pd.to_numeric(observations.get("howMany", 1), errors="coerce").fillna(1)
     observations = assign_regions(observations, regions).dropna(subset=["region_code"])
 
+    # Cada fila es "especie reportada en Chile ese día"; contar días distintos
+    # deja explícita la semántica aunque la API devolviera duplicados.
     group_columns = ["region_code", "year_month", "speciesCode", "comName", "sciName"]
     compact = (
         observations.groupby(group_columns, dropna=False)
-        .agg(obsCount=("speciesCode", "size"), howMany=("howMany", "sum"), places=("locId", "nunique"))
+        .agg(reportDays=("date", "nunique"))
         .reset_index()
     )
 
     metrics = (
         compact.groupby("region_code")
         .agg(
-            observaciones=("obsCount", "sum"),
-            individuos_reportados=("howMany", "sum"),
+            dias_especie=("reportDays", "sum"),
             especies=("speciesCode", "nunique"),
             meses=("year_month", "nunique"),
         )
         .reset_index()
     )
-    metrics["participacion"] = metrics["observaciones"] / metrics["observaciones"].sum() * 100
+    metrics["participacion"] = metrics["dias_especie"] / metrics["dias_especie"].sum() * 100
     output_regions = regions.merge(metrics, on="region_code", how="left").fillna(
-        {"observaciones": 0, "individuos_reportados": 0, "especies": 0, "meses": 0, "participacion": 0}
+        {"dias_especie": 0, "especies": 0, "meses": 0, "participacion": 0}
     )
     # El mapa web solo necesita los límites regionales; simplificar reduce mucho
     # el peso del GeoJSON sin cambiar las métricas ni la asignación espacial.
@@ -239,11 +244,18 @@ def main() -> None:
         "updatedAt": datetime.now(timezone.utc).isoformat(),
         "startDate": args.start.isoformat(),
         "endDate": args.end.isoformat(),
-        "observationCount": int(compact["obsCount"].sum()),
+        "speciesDayCount": int(compact["reportDays"].sum()),
         "regionCount": int(compact["region_code"].nunique()),
         "aggregation": "region-month-species",
+        "metric": "reportDays",
+        "metricDescription": (
+            "Días del mes en que la especie se reportó en Chile y cuyo avistamiento "
+            "más reciente del día cayó en la región. No es un conteo de observaciones "
+            "ni de individuos."
+        ),
+        "source": "ebird-historic-national (una consulta diaria a CL, rank=mrec)",
     }
-    (WEB_DATA_DIR / "metadata.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
+    (WEB_DATA_DIR / "metadata.json").write_text(json.dumps(metadata, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"Exportado: {WEB_DATA_DIR}")
 
 
