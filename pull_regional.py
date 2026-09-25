@@ -63,6 +63,16 @@ class RateLimitError(RuntimeError):
     """eBird rechazó la solicitud porque la API key llegó al límite de tasa."""
 
 
+class DownloadFailedError(RuntimeError):
+    """Un día no se pudo descargar tras todos los reintentos (no es 401/403 ni 429)."""
+
+
+def log(message: str) -> None:
+    """Imprime con marca de tiempo (útil para diagnosticar corridas largas)."""
+    stamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    print(f"[{stamp}] {message}", flush=True)
+
+
 def read_api_key() -> str:
     """Lee el token desde .env o el entorno, sin exponerlo."""
     candidates = {"API_BIRD_KEY", "EBIRD_API_KEY", "X_EBIRDAPITOKEN"}
@@ -151,7 +161,7 @@ def fetch_region_day(
         if pause:
             time.sleep(pause)
         return rows
-    raise RuntimeError(
+    raise DownloadFailedError(
         f"No se pudo descargar {region} {day} después de {max_retries} intentos; "
         "la caché existente se conserva para continuar después."
     )
@@ -185,9 +195,9 @@ def download_all(
         nonlocal total_done
         pending = pending_days(region, days)
         if not pending:
-            print(f"{region}: todo cacheado ({len(days)} días)", flush=True)
+            log(f"{region}: todo cacheado ({len(days)} días)")
             return
-        print(f"{region}: {len(pending)} días pendientes", flush=True)
+        log(f"{region}: {len(pending)} días pendientes")
         try:
             with requests.Session() as session:
                 for index, day in enumerate(pending, start=1):
@@ -196,18 +206,21 @@ def download_all(
                     try:
                         fetch_region_day(session, region, day, api_key, pause)
                     except RateLimitError as error:
-                        print(error, flush=True)
+                        log(str(error))
                         note("rate_limited")
                         stop_event.set()
                         return
+                    except DownloadFailedError as error:
+                        # Día problemático: se omite y quedará pendiente para otra pasada.
+                        log(f"{region} {day}: se omite ({error})")
                     with total_lock:
                         total_done += 1
                         done = total_done
                     if index % 100 == 0 or index == len(pending):
-                        print(f"  {region}: {index}/{len(pending)} (total: {done})", flush=True)
+                        log(f"  {region}: {index}/{len(pending)} (total: {done})")
         except RuntimeError as error:
             # 401/403 u otros errores no recuperables: no reintentar a ciegas.
-            print(f"{region}: ERROR {error}", flush=True)
+            log(f"{region}: ERROR {error}")
             note("auth_error")
             stop_event.set()
 
@@ -418,7 +431,8 @@ def main() -> None:
         "--resume-wait",
         type=float,
         default=20.0,
-        help="Minutos de espera antes de reanudar tras un 429 (por defecto: 20).",
+        help="Minutos de espera antes de reanudar tras un 429. Con 0, la pasada "
+        "termina limpio ante un 429 en vez de dormir (por defecto: 20).",
     )
     parser.add_argument(
         "--paso0",
@@ -456,10 +470,15 @@ def main() -> None:
             break
         if status == "auth_error":
             raise RuntimeError("Descarga detenida por error de autenticación (revisar el log).")
-        print(
+        if args.resume_wait <= 0:
+            log(
+                f"Límite de tasa (429): pasada terminada limpio "
+                f"({remaining:,} solicitudes pendientes; la caché se conserva)."
+            )
+            break
+        log(
             f"Límite de tasa (429): esperando {args.resume_wait:.0f} min antes de "
-            f"reanudar... ({remaining:,} solicitudes pendientes)",
-            flush=True,
+            f"reanudar... ({remaining:,} solicitudes pendientes)"
         )
         time.sleep(args.resume_wait * 60)
     print("Descarga terminada. Caché en", CACHE_DIR)
