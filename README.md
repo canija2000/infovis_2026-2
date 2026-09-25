@@ -94,6 +94,32 @@ La carpeta `web/` puede publicarse como sitio estático en GitHub Pages. Railway
 
 Las observaciones se publican en dos archivos JSON para respetar el límite de 25 MiB por asset de Cloudflare Workers.
 
+## Descargar sonidos de las especies principales
+
+`descargar_sonidos.py` suma las observaciones de ambos archivos de la web,
+selecciona las especies más observadas y consulta sus grabaciones en
+[Xeno-canto](https://xeno-canto.org/). La API key se lee desde `api_sounds` en
+`.env`; nunca se escribe en el manifiesto.
+
+```bash
+python3 descargar_sonidos.py --dry-run
+python3 descargar_sonidos.py --top 25 --recordings-per-species 3
+```
+
+Los audios se guardan localmente en `sounds/` y sus metadatos, licencias y
+fuentes en `sounds/manifest.json`. La carpeta se excluye de Git porque los
+archivos binarios pueden ocupar cientos de megabytes.
+
+Para reducir audios PCM que Xeno-canto entrega con extensión `.mp3`:
+
+```bash
+python3 optimizar_sonidos.py --dry-run
+python3 optimizar_sonidos.py
+```
+
+El script conserva los nombres usados por el manifiesto y convierte los
+archivos a MP3 VBR a 44,1 kHz.
+
 ## Fuentes y atribución
 
 - Datos: [eBird API 2.0](https://documenter.getpostman.com/view/664302/S1ENwy59).

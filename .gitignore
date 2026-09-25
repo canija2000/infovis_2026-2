@@ -13,6 +13,8 @@
 .fseventsd
 .TemporaryItems
 cache_ebird/
+sounds/
+__pycache__/
 .VolumeIcon.icns
 
 
