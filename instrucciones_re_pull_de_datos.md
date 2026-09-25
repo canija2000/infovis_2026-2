@@ -77,7 +77,8 @@ representativa de cada día; documéntalo o descártalos.
 
 ## 4. Plan de trabajo
 
-Trabaja en una rama nueva desde `main`: `ruta-a-pull-regional`.
+Trabaja en una rama nueva **desde `metrica-dias-registro`** (ruta B, que ya
+exporta `reportDays`): `ruta-a-pull-regional`.
 
 ### Paso 0 — Verificación empírica (antes de lanzar la descarga)
 
@@ -88,7 +89,9 @@ Con **pocas** solicitudes (≤ 40), comprueba y reporta al usuario:
    - ¿las coordenadas caen dentro del polígono de su región (sjoin)? ¿qué %
      cae fuera (costa/mar, bordes)?
    - unión de especies regionales vs. lista nacional del mismo día en
-     `cache_ebird/` (debería coincidir o ser muy similar).
+     `cache_ebird/` (debería coincidir o ser muy similar). Si `cache_ebird/`
+     no existe (ejecución remota), consulta también `CL` para esas mismas
+     fechas y compara contra esa respuesta.
 2. Si pruebas el parámetro `r` (varias regiones en una sola llamada), verifica
    si devuelve filas **por región** o una lista **fusionada**. No lo asumas;
    si fusiona, no sirve.
@@ -150,9 +153,43 @@ para que `10anios.py` (fuente nacional, histórica) siga funcionando. Mantén el
 estilo del repo: español en mensajes y docstrings, `argparse`, `pathlib`,
 funciones pequeñas.
 
-## 5. Criterios de aceptación
+## 5. Ejecución remota (sin el computador del usuario)
 
-- [ ] Informe del Paso 0 entregado al usuario antes de la descarga masiva.
+Este trabajo puede ejecutarlo un agente en la nube que clona el repositorio.
+En ese caso:
+
+- **Repositorio:** `https://github.com/canija2000/infovis_2026-2`, rama base
+  `metrica-dias-registro`.
+- **No existen** `.env`, `cache_ebird/` ni `sounds/` (están fuera de Git).
+  Todo lo que en este documento dependa de `cache_ebird/` es opcional.
+- **API key:** se entrega como secreto/variable de entorno `API_BIRD_KEY`.
+  `10anios.py` ya la lee desde el entorno si no hay `.env`; haz lo mismo en el
+  script nuevo. No la escribas en archivos, commits, logs ni mensajes.
+- **Dependencias:** `python3 -m pip install geopandas pandas requests pyarrow`.
+  El shapefile `Regiones/` sí está versionado.
+- **Autonomía:** después del Paso 0, **no esperes confirmación**: deja el
+  informe del Paso 0 en `docs/re_pull_regional.md` (commiteado) y continúa
+  con la descarga completa. Detente solo ante un error 401/403 o si el Paso 0
+  muestra que la consulta por región no se comporta como se espera (p. ej.
+  respuestas vacías o idénticas a `CL`).
+- **429 / límite de tasa:** espera (p. ej. 15–30 min) y reanuda desde la
+  caché, en vez de terminar. Registra cada pausa en el log.
+- **Persistencia:** si el entorno es efímero, haz **commits de checkpoint**
+  del progreso que importa (scripts y, al final, `web/data/`). No commitees
+  la caché cruda (cientos de MB). Si el entorno ofrece almacenamiento
+  persistente, guarda ahí `cache_ebird_regional/` para poder reanudar.
+- **Entrega:** push de la rama `ruta-a-pull-regional` con:
+  - scripts nuevos o modificados;
+  - `web/data/` regenerado (cada archivo < 25 MiB);
+  - `docs/re_pull_regional.md` con el informe del Paso 0, la duración, las
+    solicitudes hechas, las pausas por 429 y la tabla comparativa
+    métrica antigua vs. nueva por región.
+
+  No hagas merge a `main` ni abras PR sin que el usuario lo pida.
+
+## 6. Criterios de aceptación
+
+- [ ] Informe del Paso 0 entregado al usuario (o en `docs/re_pull_regional.md` si es ejecución remota).
 - [ ] Caché regional completa (o reanudable, con conteo de pendientes = 0).
 - [ ] `web/data/` regenerado; la web carga sin errores en
       `python3 -m http.server` desde `web/`.
@@ -162,11 +199,11 @@ funciones pequeñas.
 - [ ] README actualizado: nueva fuente, semántica de la métrica, comandos.
 - [ ] La API key no aparece en logs, en commits ni en `web/`.
 - [ ] Commits pequeños y descriptivos en la rama `ruta-a-pull-regional`; sin
-      push ni merge a `main` sin confirmación del usuario.
+      merge a `main` sin confirmación del usuario.
 
-## 6. Qué no hacer
+## 7. Qué no hacer
 
-- No borrar ni sobrescribir `cache_ebird/` (es la fuente anterior y respaldo).
+- No borrar ni sobrescribir `cache_ebird/` si existe (es la fuente anterior y respaldo).
 - No versionar cachés ni audios.
 - No cambiar el diseño visual del frontend más allá de lo necesario para
   leer la nueva fuente (hay una propuesta separada en `propuesta_mejoras.md`).
