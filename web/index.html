@@ -18,7 +18,7 @@
     <main class="shell">
         <header class="masthead">
             <div>
-                <p class="eyebrow">eBird / Chile / observaciones</p>
+                <p class="eyebrow">eBird / Chile / días con registro</p>
                 <h1>El pulso de las aves<br><em>por región</em></h1>
             </div>
             <div class="status"><span class="status-dot"></span><span id="coverage">Cargando datos...</span></div>
@@ -33,23 +33,24 @@
             <div class="map-column">
                 <div class="section-head">
                     <div><span class="section-index">01</span>
-                        <h2>Mapa de observaciones</h2>
+                        <h2>Actividad de registro</h2>
                     </div>
                     <div class="legend"><span class="legend-label">participación
                             relativa</span><i></i><i></i><i></i><i></i><i></i></div>
                 </div>
                 <div id="map" aria-label="Mapa interactivo de las regiones de Chile"></div>
-                <p class="map-note">La intensidad representa el porcentaje de observaciones del dataset asignado a cada
-                    región.</p>
+                <p class="map-note">La intensidad representa el porcentaje de días-especie registrados que cae en cada
+                    región. eBird entrega un registro por especie y día para todo Chile (el más reciente), por lo que
+                    el mapa refleja dónde se reporta, no cuántas aves hay.</p>
             </div>
 
             <aside class="detail-panel" aria-live="polite">
                 <div class="panel-kicker">REGIÓN SELECCIONADA</div>
                 <h2 id="region-name">Selecciona una región</h2>
                 <div class="stat-grid">
-                    <div><strong id="region-observations">—</strong><span>observaciones</span></div>
+                    <div><strong id="region-observations">—</strong><span>días-especie</span></div>
                     <div><strong id="region-species">—</strong><span>especies</span></div>
-                    <div><strong id="region-individuals">—</strong><span>individuos</span></div>
+                    <div><strong id="region-months">—</strong><span>meses con datos</span></div>
                 </div>
                 <div class="media-row">
                     <div class="media-placeholder"><span
@@ -58,7 +59,7 @@
                             class="media-icon">◖</span><span>Canto<br><small>próximamente</small></span></div>
                 </div>
                 <div class="species-head"><span class="section-index">02</span>
-                    <h3>Especies más reportadas</h3>
+                    <h3>Especies con más días de registro</h3>
                 </div>
                 <ol id="species-list" class="species-list">
                     <li class="empty">Haz clic en una región del mapa.</li>
@@ -69,7 +70,7 @@
         <section class="timeline-section">
             <div class="section-head">
                 <div><span class="section-index">03</span>
-                    <h2>Ritmo mensual</h2>
+                    <h2>Ritmo mensual <small>(días-especie por mes)</small></h2>
                 </div><span id="timeline-label" class="mono">—</span>
             </div>
             <div id="timeline" class="timeline"></div>

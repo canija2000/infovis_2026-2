@@ -24,7 +24,7 @@ La descarga completada cubre `2016-09-17` a `2026-09-18`:
 
 - 3.654 días consultados.
 - 674.004 observaciones crudas.
-- 604.225 observaciones asignadas a las 16 regiones de Chile.
+- 604.225 registros especie-día asignados a las 16 regiones de Chile.
 - 171.341 filas compactas agregadas por región, mes y especie.
 - `cache_ebird/`: aproximadamente 218 MB, solo local y excluida de Git.
 - `web/data/`: aproximadamente 39 MB, destinada a la webpage.
@@ -35,7 +35,16 @@ El dataset web contiene observaciones agregadas por:
 region_code + year_month + speciesCode + comName + sciName
 ```
 
-Cada fila conserva el número de observaciones (`obsCount`), individuos reportados (`howMany`) y lugares (`places`).
+Cada fila tiene `reportDays`: **días del mes en que la especie se reportó en
+Chile** y cuyo avistamiento más reciente del día cayó en esa región.
+
+> **Limitación de la fuente.** El endpoint histórico de eBird devuelve una sola
+> fila por especie y día (el avistamiento más reciente, `rank=mrec`), no todas
+> las observaciones. Por eso la métrica no es un conteo de observaciones ni de
+> individuos, sino una frecuencia de reporte. Como se consulta todo Chile a la
+> vez, cada especie queda asignada a una sola región por día, lo que sesga la
+> distribución regional hacia las regiones con más actividad. La corrección
+> (una consulta por región) está descrita en `instrucciones_re_pull_de_datos.md`.
 
 ## Requisitos
 
@@ -81,10 +90,10 @@ Abrir <http://localhost:8000>.
 La página permite:
 
 - Explorar un mapa de las regiones de Chile.
-- Ver la participación relativa de observaciones por región.
+- Ver la participación relativa de días-especie registrados por región.
 - Seleccionar una región mediante clic.
 - Revisar sus métricas generales.
-- Ver las cinco especies más reportadas.
+- Ver las cinco especies con más días de registro.
 - Explorar la serie mensual.
 - Reservar espacios para futuras imágenes y audios.
 
@@ -96,8 +105,8 @@ Las observaciones se publican en dos archivos JSON para respetar el límite de 2
 
 ## Descargar sonidos de las especies principales
 
-`descargar_sonidos.py` suma las observaciones de ambos archivos de la web,
-selecciona las especies más observadas y consulta sus grabaciones en
+`descargar_sonidos.py` suma los días con registro de ambos archivos de la web,
+selecciona las especies reportadas más días y consulta sus grabaciones en
 [Xeno-canto](https://xeno-canto.org/). La API key se lee desde `api_sounds` en
 `.env`; nunca se escribe en el manifiesto.
 
