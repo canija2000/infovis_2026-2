@@ -167,52 +167,59 @@ def download_all(
     api_key: str,
     pause: float,
     workers: int,
-) -> None:
-    """Descarga todo lo pendiente, secuencial o con hilos (máx. 3)."""
+) -> str:
+    """Descarga todo lo pendiente. Devuelve 'ok', 'rate_limited' o 'auth_error'."""
     stop_event = threading.Event()
+    status = {"value": "ok"}
+    status_lock = threading.Lock()
     total_done = 0
     total_lock = threading.Lock()
 
-    def worker(region: str, day: date, session: requests.Session) -> None:
-        nonlocal total_done
-        if stop_event.is_set():
-            return
-        fetch_region_day(session, region, day, api_key, pause)
-        with total_lock:
-            total_done += 1
+    def note(new_status: str) -> None:
+        with status_lock:
+            order = {"ok": 0, "rate_limited": 1, "auth_error": 2}
+            if order[new_status] > order[status["value"]]:
+                status["value"] = new_status
 
     def region_job(region: str) -> None:
+        nonlocal total_done
         pending = pending_days(region, days)
         if not pending:
-            print(f"{region}: todo cacheado ({len(days)} días)")
+            print(f"{region}: todo cacheado ({len(days)} días)", flush=True)
             return
-        print(f"{region}: {len(pending)} días pendientes")
-        with requests.Session() as session:
-            for index, day in enumerate(pending, start=1):
-                if stop_event.is_set():
-                    return
-                try:
-                    worker(region, day, session)
-                except RateLimitError as error:
-                    print(error)
-                    stop_event.set()
-                    return
-                if index % 100 == 0 or index == len(pending):
+        print(f"{region}: {len(pending)} días pendientes", flush=True)
+        try:
+            with requests.Session() as session:
+                for index, day in enumerate(pending, start=1):
+                    if stop_event.is_set():
+                        return
+                    try:
+                        fetch_region_day(session, region, day, api_key, pause)
+                    except RateLimitError as error:
+                        print(error, flush=True)
+                        note("rate_limited")
+                        stop_event.set()
+                        return
                     with total_lock:
+                        total_done += 1
                         done = total_done
-                    print(f"  {region}: {index}/{len(pending)} (total: {done})")
+                    if index % 100 == 0 or index == len(pending):
+                        print(f"  {region}: {index}/{len(pending)} (total: {done})", flush=True)
+        except RuntimeError as error:
+            # 401/403 u otros errores no recuperables: no reintentar a ciegas.
+            print(f"{region}: ERROR {error}", flush=True)
+            note("auth_error")
+            stop_event.set()
 
     if workers == 1:
         for region in regions:
             region_job(region)
-            if stop_event.is_set():
+            if status["value"] == "auth_error":
                 break
     else:
         with ThreadPoolExecutor(max_workers=workers) as pool:
             list(pool.map(region_job, regions))
-
-    if stop_event.is_set():
-        print("Detenido por límite de tasa (429). Reanuda más tarde: la caché se conserva.")
+    return status["value"]
 
 
 def run_paso0(api_key: str) -> None:
@@ -408,6 +415,12 @@ def main() -> None:
         "--dry-run", action="store_true", help="Contar solicitudes pendientes sin llamar a la API."
     )
     parser.add_argument(
+        "--resume-wait",
+        type=float,
+        default=20.0,
+        help="Minutos de espera antes de reanudar tras un 429 (por defecto: 20).",
+    )
+    parser.add_argument(
         "--paso0",
         action="store_true",
         help="Verificación empírica (<=40 solicitudes) e informe en docs/re_pull_regional.md.",
@@ -436,7 +449,19 @@ def main() -> None:
         return
 
     api_key = read_api_key()
-    download_all(regions, days, api_key, args.pause, args.workers)
+    while True:
+        status = download_all(regions, days, api_key, args.pause, args.workers)
+        remaining = sum(len(pending_days(region, days)) for region in regions)
+        if status == "ok" or remaining == 0:
+            break
+        if status == "auth_error":
+            raise RuntimeError("Descarga detenida por error de autenticación (revisar el log).")
+        print(
+            f"Límite de tasa (429): esperando {args.resume_wait:.0f} min antes de "
+            f"reanudar... ({remaining:,} solicitudes pendientes)",
+            flush=True,
+        )
+        time.sleep(args.resume_wait * 60)
     print("Descarga terminada. Caché en", CACHE_DIR)
 
 

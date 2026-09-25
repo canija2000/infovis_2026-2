@@ -19,3 +19,5 @@ __pycache__/
 
 Regiones.zip
 cache_ebird_regional/
+download.log
+.progress_state.json
