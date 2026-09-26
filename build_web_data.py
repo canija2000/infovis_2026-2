@@ -262,6 +262,7 @@ def build_typical_year(rows: list[dict], regions: list[dict]):
     species_ids = {sci: i for i, sci in enumerate(sorted(names, key=lambda s: (-totals[s], s)))}
     table = []
     presence = defaultdict(lambda: [[0] * 4 for _ in range(12)])  # (scope) → mes → conteo por clase
+    weight = defaultdict(lambda: [[0.0] * 4 for _ in range(12)])  # (scope) → mes → presencia ponderada por clase
     for (sci, scope), s in sorted(series.items(), key=lambda kv: (species_ids[kv[0][0]], kv[0][1])):
         cls, amp, phase = classify(s["rel"], s["years"])
         peak = max(s["rel"])
@@ -271,6 +272,8 @@ def build_typical_year(rows: list[dict], regions: list[dict]):
         for m in range(12):
             if present[m]:
                 presence[scope][m][CLASSES.index(cls)] += 1
+            # Peso continuo: perfil relativo × fracción de años con registro.
+            weight[scope][m][CLASSES.index(cls)] += prof[m] * min(1.0, s["years"][m] / n_years)
         table.append(
             {
                 "sid": species_ids[sci],
@@ -289,7 +292,7 @@ def build_typical_year(rows: list[dict], regions: list[dict]):
         scope: [round(sum(effort[(scope, y, m)] for y in YEARS) / n_years) for m in range(12)]
         for scope in range(n_regions + 1)
     }
-    return names, totals, species_ids, table, presence, effort_mean
+    return names, totals, species_ids, table, presence, weight, effort_mean
 
 
 # --- Sonidos ----------------------------------------------------------------
@@ -352,7 +355,7 @@ def main() -> None:
 
     regions, geo = build_regions()
     rows = load_observations()
-    names, totals, species_ids, table, presence, effort_mean = build_typical_year(rows, regions)
+    names, totals, species_ids, table, presence, weight, effort_mean = build_typical_year(rows, regions)
     sounds = build_sounds(names, species_ids)
     with_sound = {s["sid"] for s in sounds["species"] if s["recordings"]}
 
@@ -383,7 +386,7 @@ def main() -> None:
 
     region_month = {
         "columns": ["riqueza", "residente", "visitante_estival", "visitante_invernal", "visitantes_prop", "esfuerzo"],
-        "note": "Especies presentes en el año típico (≥4 de 8 años y ≥20% de su mes pico). Esfuerzo = días-especie medios del mes.",
+        "note": "Conteos: especies presentes en el año típico (≥4 de 8 años y ≥20% de su mes pico). visitantes_prop: presencia de visitantes / presencia total, ponderando cada especie no ocasional por su perfil relativo × fracción de años con registro. Esfuerzo = días-especie medios del mes.",
         "scopes": {},
     }
     for scope in range(len(regions) + 1):
@@ -391,8 +394,10 @@ def main() -> None:
         for m in range(12):
             counts = presence[scope][m]
             rich = counts[0] + counts[1] + counts[2]
-            visitors = counts[1] + counts[2]
-            months.append([rich, counts[0], counts[1], counts[2], round(visitors / rich, 3) if rich else 0, effort_mean[scope][m]])
+            w = weight[scope][m]
+            total = w[0] + w[1] + w[2]
+            share = round((w[1] + w[2]) / total, 3) if total else 0
+            months.append([rich, counts[0], counts[1], counts[2], share, effort_mean[scope][m]])
         region_month["scopes"][str(scope)] = months
 
     source_meta = json.loads((DATA_DIR / "metadata.json").read_text(encoding="utf-8"))
