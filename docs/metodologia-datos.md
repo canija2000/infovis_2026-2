@@ -101,8 +101,8 @@ mismo mes. Los valores no son comparables 1:1 entre versiones.
   16 regiones.
 - `web/data/observations-01.json`, `observations-02.json` (partidos bajo
   20 MiB).
-- `web/data/metadata.json` lista los archivos en `observationFiles` (el
-  frontend los lee dinámicamente) y registra fuente, DOIs y métrica.
+- `web/data/metadata.json` lista los archivos en `observationFiles` (desde
+  V1 los lee `build_web_data.py`, no el frontend; ver §10) y registra fuente, DOIs y métrica.
 - `web/data/regions.geojson`: se recalcularon `dias_especie`, `especies` y
   `meses` por región con los datos nuevos.
 
@@ -122,3 +122,103 @@ reciente del día"). Total: 1.524.227 días-especie (vs 604.225 antes).
 - ~10% de registros fuera de polígonos (principalmente pelágicos) excluido.
 - La taxonomía sigue a GBIF; puede diferir puntualmente de la de eBird.
 - Sin `exoticCategory`: no se distingue especie exótica/nativa en esta versión.
+
+## 10. Capa web: año típico y clasificación estacional (V1)
+
+`build_web_data.py` (solo biblioteca estándar, salida determinista) lee
+`web/data/observations-*.json` + `regions.geojson` y escribe los archivos
+livianos que consume la web. La carga inicial baja de ~26 MB a ~0,86 MB.
+
+| Archivo | Contenido | Tamaño |
+|---|---|---:|
+| `meta.json` | regiones (id 0 = Chile, 1–16 de norte a sur), parámetros, DOIs | 4 KB |
+| `species.json` | id, sciName, comName, `taxonGroup`, clase nacional, mes pico, amplitud, totales, `hasSound` | 116 KB |
+| `typical_year.json` | filas dispersas `[sid, rid, cls, peak, phase, amp, present, freq×12, prof×12, years×12]` | 510 KB |
+| `region_month.json` | por región-mes: riqueza, presentes por clase, proporción de visitantes, esfuerzo | 5 KB |
+| `regions.min.geojson` | polígonos continentales simplificados (Douglas-Peucker 0,012°) | 220 KB |
+| `sounds.json` | nombre Xeno-canto, estado del sinónimo, grabaciones (diferido) | 86 KB |
+
+### 10.1 Año típico
+
+- **Años:** solo 2017–2024 (completos y con eBird en GBIF). 2016 es parcial y
+  2025–2026 no tienen eBird aún (§3): no se usan en ninguna vista.
+- **Frecuencia** (`freq`, en ‰): media sobre los 8 años de
+  `reportDays / días_del_mes`. Un año sin registros cuenta como 0. Para Chile
+  (`rid = 0`) se suma sobre regiones y se divide por 16 × días, o sea, la
+  media regional (así sigue en 0–1, porque una especie puede sumar días en
+  varias regiones).
+- **Corrección por esfuerzo** (`prof`): el esfuerzo crece ~2,5× entre 2017 y
+  2024 y además es estacional (en Chile hay ~1,6× más días-especie en enero
+  que en junio). Sin corregir, la Tórtola parece estacional (amplitud 0,28) y
+  el Picaflor chico queda en el límite (0,47). Se evaluaron dos opciones:
+  (a) normalizar el perfil de cada especie a su máximo y (b) dividir por el
+  total de días-especie de la región-mes-año. Se usan **ambas en cadena**:
+  `rel = media_años(reportDays / días-especie totales de la región-mes)` y
+  `prof = rel / max(rel)` (100 = mes pico). Con esto la Tórtola baja a 0,11 y
+  el Picaflor chico sube a 0,63. Sesgo conocido: en verano hay más especies,
+  y eso infla un poco el denominador, lo que amortigua los picos estivales
+  (es un sesgo conservador).
+
+### 10.2 Clasificación (nacional y por región)
+
+Parámetros en la cabecera de `build_web_data.py`:
+
+- **Amplitud** = 1 − (media de los 3 meses más bajos de `rel`) / (media de los 3 más altos).
+- **Fase** = mes medio circular de `rel` (vector medio sobre el círculo anual).
+- `ocasional`: ningún mes con registro en ≥ 4 de los 8 años.
+- `residente`: amplitud < 0,6.
+- `visitante_estival`: amplitud ≥ 0,6 y fase a ≤ 3 meses de enero (oct–abr).
+- `visitante_invernal`: amplitud ≥ 0,6 y fase en abr–oct.
+- **Presente** en un mes: registrada en ≥ 4 de 8 años **y** `prof` ≥ 20 %.
+
+Resultado nacional: 214 residentes, 121 visitantes estivales, 31 invernales y
+185 ocasionales. Es decir, entre las 366 especies regulares, 58 % se quedan y
+42 % viajan. Controles: Fío-fío estival (0,97, pico dic), Playero de Baird
+estival (0,92), Golondrina bermeja estival (0,96), Picaflor chico invernal
+(0,63, pico abr), Chorlito chileno y Dormilona tontita invernales, Tórtola,
+Chincol y Zorzal residentes.
+
+**Casos límite para revisar a mano** (amplitud 0,5–0,7 entre las más
+frecuentes): Diucón 0,50 (residente; migrante altitudinal parcial), Rayador
+0,59, Mero grande 0,53, Churrete chico 0,57 (residentes); Picaflor chico
+0,63, Vari ceniciento 0,65, Canquén 0,61, Zarapito de pico recto 0,61 y
+Bandurrilla común 0,67 (visitantes). Mover el umbral a 0,65 cambia a varios
+de ellos.
+
+**Limitación regional:** en regiones con poco esfuerzo (Tarapacá, Ñuble,
+Aysén, Antofagasta) el perfil mensual es ruidoso, y hay especies que salen
+como visitantes por azar de muestreo. Por eso esas filas aparecen con más
+visitantes todo el año en la grilla región × mes. Se muestra el esfuerzo medio
+en el tooltip y no se imputa nada.
+
+### 10.3 Proporción de visitantes (mapa, grilla y timbre)
+
+`visitantes_prop` = Σ presencia de visitantes / Σ presencia total, donde la
+presencia de cada especie no ocasional es `prof × min(1, años_con_registro/8)`.
+Se descartó el conteo binario de especies presentes porque casi no variaba en
+el año (el umbral de 20 % deja "presentes" a los visitantes en sus meses
+bajos). La versión ponderada muestra el pulso: Chile 14 % (jul) → 35 % (nov);
+RM 16 % (jun) → 39 % (dic). La **riqueza** (conteo binario) se mantiene para
+el ritmo de la sonificación y los tooltips.
+
+### 10.4 Geometría
+
+Se descarta la "Zona sin demarcar" (sin código regional) y los polígonos al
+oeste de 76° O (Juan Fernández, Desventuradas, Isla de Pascua), que
+estirarían el mapa. También se descartan los islotes de menos de 0,004 grados².
+Los anillos se reorientan para D3 (exterior horario).
+
+### 10.5 Taxonomía y cantos
+
+- `GBIF_ALIASES`: *Sylviorthorhynchus desmurii* (23 días-especie) se fusiona
+  con *S. desmursii* (Colilarga). Son variantes ortográficas dentro de GBIF.
+- `gbif/synonyms_xc.json`: nombres GBIF → Xeno-canto (IOC). Los tres casos del
+  cruce de sonidos son *Sturnella loyca* → *Leistes loyca*, *Buteo polyosoma*
+  → *Geranoaetus polyosoma* y *Xolmis pyrope* → *Pyrope pyrope* (en GBIF no
+  existen los nombres de Xeno-canto). Los marcados `verificar` (p. ej.
+  *Milvago* → *Daptrius*, *Accipiter* → *Astur*) deben confirmarse en
+  xeno-canto.org antes de descargar.
+- `sounds.json` lista todas las especies con su nombre Xeno-canto y un enlace
+  de búsqueda. Las grabaciones se llenan desde `sounds/manifest.json` (local,
+  generado por `descargar_sonidos.py`) y se reproducen desde xeno-canto.org,
+  porque `sounds/` no se publica.

@@ -30,3 +30,4 @@ gbif/state.json
 gbif/worker.log
 gbif/*_out.txt
 gbif/__pycache__/
+cache_xenocanto/

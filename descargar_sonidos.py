@@ -30,6 +30,15 @@ OBSERVATION_FILES = (
 SOUNDS_DIR = PROJECT_DIR / "sounds"
 MANIFEST_PATH = SOUNDS_DIR / "manifest.json"
 API_URL = "https://xeno-canto.org/api/3/recordings"
+SYNONYMS_PATH = PROJECT_DIR / "gbif" / "synonyms_xc.json"
+
+
+def load_synonyms() -> dict[str, str]:
+    """Nombre GBIF → nombre Xeno-canto (IOC). Ver gbif/synonyms_xc.json."""
+    if not SYNONYMS_PATH.exists():
+        return {}
+    data = json.loads(SYNONYMS_PATH.read_text(encoding="utf-8"))
+    return {gbif: item["xc"] for gbif, item in data.get("synonyms", {}).items()}
 
 
 def read_api_key() -> str:
@@ -97,7 +106,9 @@ def fetch_recordings(session: requests.Session, scientific_name: str, api_key: s
         params={"query": f'sp:"{scientific_name}"', "key": api_key},
         timeout=60,
     )
-    response.raise_for_status()
+    if not response.ok:
+        # No usar raise_for_status(): su mensaje incluye la URL con la key.
+        raise requests.HTTPError(f"Xeno-canto respondió {response.status_code} para sp:\"{scientific_name}\"")
     payload = response.json()
     return payload.get("recordings", [])
 
@@ -143,6 +154,7 @@ def main() -> None:
         return
 
     api_key = read_api_key()
+    synonyms = load_synonyms()
     SOUNDS_DIR.mkdir(parents=True, exist_ok=True)
     manifest = {
         "source": "Xeno-canto API v3",
@@ -152,8 +164,10 @@ def main() -> None:
     }
     with requests.Session() as session:
         for index, species in enumerate(selected, start=1):
-            print(f"[{index}/{len(selected)}] Consultando {species['scientificName']}")
-            recordings = fetch_recordings(session, species["scientificName"], api_key)
+            xc_name = synonyms.get(species["scientificName"], species["scientificName"])
+            species["xcName"] = xc_name
+            print(f"[{index}/{len(selected)}] Consultando {xc_name}")
+            recordings = fetch_recordings(session, xc_name, api_key)
             downloaded = []
             for recording in recordings[: args.recordings_per_species]:
                 try:

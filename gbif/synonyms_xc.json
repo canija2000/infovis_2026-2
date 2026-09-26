@@ -1,0 +1,120 @@
+{
+ "description": "Nombres científicos GBIF (backbone) → nombre usado por Xeno-canto (taxonomía IOC). Solo se listan los que difieren. status: 'confirmado' = cambio de género/especie documentado en IOC; 'verificar' = revisar contra xeno-canto.org antes de descargar (cambios recientes o tratamiento dudoso).",
+ "synonyms": {
+  "Sturnella loyca": {
+   "xc": "Leistes loyca",
+   "status": "confirmado",
+   "comName": "Loica"
+  },
+  "Buteo polyosoma": {
+   "xc": "Geranoaetus polyosoma",
+   "status": "confirmado",
+   "comName": "Aguilucho común"
+  },
+  "Buteo poecilochrous": {
+   "xc": "Geranoaetus poecilochrous",
+   "status": "verificar",
+   "comName": "Aguilucho de la puna"
+  },
+  "Xolmis pyrope": {
+   "xc": "Pyrope pyrope",
+   "status": "confirmado",
+   "comName": "Diucón"
+  },
+  "Phalacrocorax brasilianus": {
+   "xc": "Nannopterum brasilianum",
+   "status": "confirmado",
+   "comName": "Yeco"
+  },
+  "Phalacrocorax gaimardi": {
+   "xc": "Poikilocarbo gaimardi",
+   "status": "confirmado",
+   "comName": "Lile"
+  },
+  "Phalacrocorax magellanicus": {
+   "xc": "Leucocarbo magellanicus",
+   "status": "confirmado",
+   "comName": "Cormorán de las rocas"
+  },
+  "Asthenes humicola": {
+   "xc": "Pseudasthenes humicola",
+   "status": "confirmado",
+   "comName": "Canastero"
+  },
+  "Puffinus griseus": {
+   "xc": "Ardenna grisea",
+   "status": "confirmado",
+   "comName": "Fardela negra"
+  },
+  "Puffinus creatopus": {
+   "xc": "Ardenna creatopus",
+   "status": "confirmado",
+   "comName": "Fardela blanca"
+  },
+  "Puffinus gravis": {
+   "xc": "Ardenna gravis",
+   "status": "confirmado",
+   "comName": "Fardela capirotada"
+  },
+  "Puffinus bulleri": {
+   "xc": "Ardenna bulleri",
+   "status": "confirmado",
+   "comName": "Fardela de Buller"
+  },
+  "Milvago chimango": {
+   "xc": "Daptrius chimango",
+   "status": "verificar",
+   "comName": "Tiuque"
+  },
+  "Phalcoboenus megalopterus": {
+   "xc": "Daptrius megalopterus",
+   "status": "verificar",
+   "comName": "Carancho cordillerano"
+  },
+  "Phalcoboenus albogularis": {
+   "xc": "Daptrius albogularis",
+   "status": "verificar",
+   "comName": "Carancho cordillerano del sur"
+  },
+  "Accipiter chilensis": {
+   "xc": "Astur chilensis",
+   "status": "verificar",
+   "comName": "Peuquito"
+  },
+  "Accipiter bicolor": {
+   "xc": "Astur bicolor",
+   "status": "verificar",
+   "comName": "Gavilán bicolor"
+  },
+  "Himantopus mexicanus": {
+   "xc": "Himantopus mexicanus",
+   "status": "verificar",
+   "comName": "Perrito (IOC lo trata como H. mexicanus melanurus)"
+  },
+  "Sylviorthorhynchus desmursii": {
+   "xc": "Sylviorthorhynchus desmurii",
+   "status": "confirmado",
+   "comName": "Colilarga"
+  },
+  "Troglodytes musculus": {
+   "xc": "Troglodytes aedon",
+   "status": "confirmado",
+   "comName": "Chercán común"
+  },
+  "Notiochelidon cyanoleuca": {
+   "xc": "Pygochelidon cyanoleuca",
+   "status": "confirmado",
+   "comName": "Golondrina de dorso negro"
+  },
+  "Upucerthia ruficaudus": {
+   "xc": "Ochetorhynchus ruficaudus",
+   "status": "confirmado",
+   "comName": "Bandurrilla de pico recto"
+  },
+  "Oceanodroma markhami": {
+   "xc": "Hydrobates markhami",
+   "status": "confirmado",
+   "comName": "Paíño de Markham"
+  }
+ }
+}
