@@ -157,12 +157,11 @@
   function renderSummary() {
     const c = [0, 0, 0, 0];
     D.species.forEach((s) => c[CLASS_KEYS.indexOf(s.class)]++);
-    const regular = c[0] + c[1] + c[2];
     document.getElementById("summary").innerHTML =
-      `De las <b>${regular}</b> especies que se registran con regularidad en Chile, ` +
-      `<b class="c0">${c[0]} (${pct(c[0] / regular)}) son residentes</b> y ` +
-      `<b class="c1">${c[1] + c[2]} (${pct((c[1] + c[2]) / regular)}) son visitantes</b>: ` +
-      `${c[1]} llegan en verano y ${c[2]} en invierno. Otras ${c[3]} aparecen solo ocasionalmente.`;
+      `<li><span class="term term-stay">Sedentarios</span>: ${c[0]} especies que se registran parejo todo el año.</li>` +
+      `<li><span class="term term-travel">Nómadas</span>: ${c[1] + c[2]} especies que llegan y se van, ` +
+      `${c[1]} en verano y ${c[2]} en invierno.</li>` +
+      `<li class="muted">Otras ${c[3]} especies aparecen solo ocasionalmente y no se clasifican.</li>`;
   }
 
   // ---------------------------------------------------------------- mapa

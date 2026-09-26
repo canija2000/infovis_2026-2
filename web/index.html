@@ -9,7 +9,13 @@
     content="Calendario interactivo y sonoro de las aves de Chile: especies residentes y visitantes estacionales por región, año típico 2017–2024 (GBIF).">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Barlow+Condensed:ital,wght@1,700&family=Fredoka:wdth,wght@125,700&family=Cormorant+Garamond:ital,wght@1,400&display=swap"
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Barlow+Condensed:ital,wght@1,700&family=Fredoka:wdth,wght@125,700&family=Cormorant+Garamond:ital,wght@1,400&display=swap"
+    rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Changa+One:ital@0;1&family=Shrikhand&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Pixelify+Sans:wght@400..700&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -17,21 +23,24 @@
 <body>
   <header class="masthead">
     <p class="kicker">Atlas sonoro · Aves de Chile · año típico 2017–2024</p>
-    <h1><span class="travel">Nómadas</span> <span class="amp">&amp;</span> <span class="stay">sedentarios</span>
-      <span class="subtitle">las avifaunas de Chile continental</span></h1>
-    <p class="lede" id="lede">Cada fila es una especie; cada columna, un mes. El color indica qué tan presente está la especie
-      respecto de su mejor mes. Las visitantes de verano llegan en primavera y se van en otoño, como una ola; las de invierno
-      hacen lo inverso; las residentes forman un bloque parejo. Cambia de ventana para ver cada grupo.</p>
-    <p class="summary" id="summary" aria-live="polite"></p>
+    <h1><span class="travel">Nómadas</span> <span class="amp"> & </span> <span class="stay">sedentarios</span>
+      <span class="subtitle">las avifaunas de Chile continental</span>
+    </h1>
+    <p class="lede" id="lede">Más de <b>6,5 millones de registros</b> de aves en Chile (GBIF, 2017–2024) muestran dos
+      formas de habitar el país:</p>
+    <ul class="summary" id="summary" aria-live="polite"></ul>
   </header>
 
   <nav class="toolbar" aria-label="Controles">
     <div class="tool play-tool">
       <button id="play" class="play icon-btn" type="button" aria-pressed="false" aria-label="Escuchar el año"
         title="Escuchar el año (barra espaciadora)">
-        <svg viewBox="0 0 16 16" aria-hidden="true"><path id="play-icon" d="M4.5 2.5v11l9-5.5z" /></svg>
+        <svg viewBox="0 0 16 16" aria-hidden="true">
+          <path id="play-icon" d="M4.5 2.5v11l9-5.5z" />
+        </svg>
       </button>
-      <button id="mute" class="ghost icon-btn" type="button" aria-pressed="false" aria-label="Silenciar" title="Silenciar">
+      <button id="mute" class="ghost icon-btn" type="button" aria-pressed="false" aria-label="Silenciar"
+        title="Silenciar">
         <svg viewBox="0 0 20 20" aria-hidden="true">
           <path class="speaker" d="M3 7.5h3l4-3.5v12l-4-3.5H3z" />
           <path class="waves" d="M13 7a4 4 0 0 1 0 6M15.5 4.5a7.5 7.5 0 0 1 0 11" />
@@ -68,7 +77,7 @@
         <h2 id="cal-title">Calendario de la avifauna · <span id="scope-name">Chile</span></h2>
       </div>
       <p class="howto">Cada fila es una especie; cada columna, un mes. Cuanto más intenso el color, más presente está la
-        especie respecto de su mejor mes.</p>
+        especie respecto de su mejor mes. Cambia de pestaña para ver cada grupo.</p>
       <div class="legend-row">
         <div id="cal-legend" class="legend"></div>
         <span class="key"><i class="key-cell faint"></i>Celda tenue: registrada en pocos de los 8 años</span>
@@ -81,6 +90,35 @@
         <details class="how">
           <summary>¿Cómo se calcula y se ordena?</summary>
           <p id="cal-note"></p>
+          <div class="formula">
+            <p>Presencia relativa de la especie <i>s</i> en el mes <i>m</i>:</p>
+            <math display="block" aria-label="r sub s m igual a un octavo de la suma, de 2017 a 2024, de d sub s m a dividido por E sub m a">
+              <msub><mi>r</mi><mrow><mi>s</mi><mo>,</mo><mi>m</mi></mrow></msub><mo>=</mo>
+              <mfrac><mn>1</mn><mn>8</mn></mfrac>
+              <munderover><mo>∑</mo><mrow><mi>a</mi><mo>=</mo><mn>2017</mn></mrow><mn>2024</mn></munderover>
+              <mfrac>
+                <msub><mi>d</mi><mrow><mi>s</mi><mo>,</mo><mi>m</mi><mo>,</mo><mi>a</mi></mrow></msub>
+                <msub><mi>E</mi><mrow><mi>m</mi><mo>,</mo><mi>a</mi></mrow></msub>
+              </mfrac>
+            </math>
+            <math display="block" aria-label="color de la celda igual a 100 por r sub s m dividido por el máximo de r sub s en los 12 meses">
+              <msub><mtext>color</mtext><mrow><mi>s</mi><mo>,</mo><mi>m</mi></mrow></msub><mo>=</mo><mn>100</mn><mo>·</mo>
+              <mfrac>
+                <msub><mi>r</mi><mrow><mi>s</mi><mo>,</mo><mi>m</mi></mrow></msub>
+                <mrow><munder><mo movablelimits="false">máx</mo><msup><mi>m</mi><mo>′</mo></msup></munder>
+                  <msub><mi>r</mi><mrow><mi>s</mi><mo>,</mo><msup><mi>m</mi><mo>′</mo></msup></mrow></msub></mrow>
+              </mfrac>
+            </math>
+            <dl class="symbols">
+              <dt><i>d</i><sub>s,m,a</sub></dt><dd>días del mes <i>m</i> del año <i>a</i> en que se registró la especie
+                <i>s</i> en la región (o en Chile).</dd>
+              <dt><i>E</i><sub>m,a</sub></dt><dd>suma de esos días para todas las especies en ese mes y año: cuánto se
+                observó en total. Corrige que en algunos meses (verano) sale más gente a observar.</dd>
+              <dt><i>r</i><sub>s,m</sub></dt><dd>participación de la especie en lo observado ese mes, promedio de los 8
+                años.</dd>
+              <dt>color</dt><dd>se divide por el mejor mes de la especie: 100 % = su mejor mes.</dd>
+            </dl>
+          </div>
         </details>
       </div>
 
@@ -97,7 +135,8 @@
       <div id="region-grid" class="grid-chart"></div>
       <details class="how">
         <summary>¿Cómo se calcula?</summary>
-        <p>Proporción de visitantes = peso de las especies visitantes (de verano y de invierno) en la presencia total del
+        <p>Proporción de visitantes = peso de las especies visitantes (de verano y de invierno) en la presencia total
+          del
           mes, donde cada especie pondera según qué tan presente está. Se muestra la diferencia entre cada mes y el
           promedio de los 12 meses de esa misma región, así una región con pocos registros no aparece "más visitada"
           solo por tener menos datos. La escala satura en el percentil 95 de las diferencias.</p>
@@ -125,25 +164,30 @@
   </aside>
 
   <section class="sound-legend" aria-labelledby="sl-title">
-    <h2 id="sl-title">Cómo suena</h2>
-    <p>Con <b>▶</b> (Escuchar el año) cada mes dura 2,4 s y recorre Chile de norte a sur en cinco macrozonas (Norte Grande,
+    <h2 id="sl-title" style="color:#13139e;">Cómo suena</h2>
+    <p>Con <b>▶</b> (Escuchar el año) cada mes dura 2,4 s y recorre Chile de norte a sur en cinco macrozonas (Norte
+      Grande,
       Norte Chico, Centro, Sur y Austral). Un golpe grave y suave marca el inicio de cada mes.</p>
     <ul>
-      <li><b>Timbre ← clase.</b> Las residentes son un colchón sostenido y estable: los <i>sedentarios</i>. Las visitantes
-        son cantos reales: el <b>Fío-fío</b> (izquierda) por las de verano y el <b>Picaflor chico</b> (derecha) por las de
+      <li><b>Timbre ← clase.</b> Las residentes son un colchón sostenido y estable: los <i>sedentarios</i>. Las
+        visitantes
+        son cantos reales: el <b>Fío-fío</b> (izquierda) por las de verano y el <b>Picaflor chico</b> (derecha) por las
+        de
         invierno: los <i>nómadas</i>.</li>
       <li><b>Ritmo ← la ola.</b> Cuantas más visitantes hay en una zona respecto de su propio año, más cantos suenan en
         su tiempo del compás: la ola de verano crece en primavera y se apaga en otoño.</li>
-      <li><b>Tono ← latitud.</b> Los cantos se transponen: norte más agudo, sur más grave (escala pentatónica, ±6 semitonos),
+      <li><b>Tono ← latitud.</b> Los cantos se transponen: norte más agudo, sur más grave (escala pentatónica, ±6
+        semitonos),
         sobre una base una quinta más grave que el canto original y filtrada para que no suene estridente.</li>
       <li><b>Volumen ← cantidad.</b> Las zonas con más especies visitantes suenan más fuerte.</li>
-      <li>Si seleccionas una región, solo suena ella (con más detalle). Si abres una especie, suena <b>su</b> canto donde
+      <li>Si seleccionas una región, solo suena ella (con más detalle). Si abres una especie, suena <b>su</b> canto
+        donde
         y cuando está presente.</li>
     </ul>
   </section>
 
   <footer class="method">
-    <h2>Qué mide y de dónde viene</h2>
+    <h2 style="color: #13139e;">Qué mide y de dónde viene</h2>
     <p id="method-text"></p>
     <p class="dois" id="dois"></p>
     <p>Cantos: <a href="https://xeno-canto.org" target="_blank" rel="noopener">Xeno-canto</a>, con autor y licencia
