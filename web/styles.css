@@ -9,13 +9,13 @@
   --rule: #e4e2dc;
   --empty: #ecebe6;
   --accent: #16161a;
-  --c0: #2f6fc0; /* residente */
+  --c0: #2f8f5b; /* residente: verde (arraigo) */
   --c1: #eb6834; /* visitante de verano */
-  --c2: #1baf7a; /* visitante de invierno */
+  --c2: #2c8fc9; /* visitante de invierno: azul frío */
   --c3: #cfcdc6; /* ocasional */
-  --c0-ink: #2560b0;
+  --c0-ink: #1f6e44;
   --c1-ink: #c2531e;
-  --c2-ink: #138356;
+  --c2-ink: #1d6a99;
   --cursor: #16161a;
   --font: "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, monospace;
@@ -32,13 +32,13 @@
     --rule: #34332f;
     --empty: #2a2a28;
     --accent: #f4f3ef;
-    --c0: #4f8fdc;
+    --c0: #3fae72;
     --c1: #d95926;
-    --c2: #199e70;
+    --c2: #4aa3dc;
     --c3: #4a4945;
-    --c0-ink: #72a6e8;
+    --c0-ink: #6fd29b;
     --c1-ink: #ee8b55;
-    --c2-ink: #5fd1a0;
+    --c2-ink: #8cc8ef;
     --cursor: #f4f3ef;
   }
 }
@@ -53,13 +53,13 @@
   --rule: #34332f;
   --empty: #2a2a28;
   --accent: #f4f3ef;
-  --c0: #4f8fdc;
+  --c0: #3fae72;
   --c1: #d95926;
-  --c2: #199e70;
+  --c2: #4aa3dc;
   --c3: #4a4945;
-  --c0-ink: #72a6e8;
+  --c0-ink: #6fd29b;
   --c1-ink: #ee8b55;
-  --c2-ink: #5fd1a0;
+  --c2-ink: #8cc8ef;
   --cursor: #f4f3ef;
 }
 
@@ -105,15 +105,21 @@ h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.01em; }
   max-width: 22ch;
 }
 
-/* Las palabras clave del título llevan el color de su clase (texto, no subrayado).
-   Nómadas = degradado verano → invierno, porque hay visitantes en ambas estaciones. */
-.masthead .stay { color: var(--c0-ink); }
-.masthead .travel {
-  color: var(--c1-ink);
-  background: linear-gradient(90deg, var(--c1-ink), var(--c2-ink));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+/* Palabras clave del título: letra en tinta; el subrayado lleva el color de la clase.
+   Nómadas: subrayado degradado verano → invierno (hay nómadas en ambas estaciones).
+   Sedentarios: slab serif pesada, asentada sobre su base, con subrayado sólido. */
+.masthead .travel,
+.masthead .stay {
+  background-repeat: no-repeat;
+  background-position: 0 92%;
+  background-size: 100% 0.16em;
+}
+.masthead .travel { background-image: linear-gradient(90deg, var(--c1), var(--c2)); }
+.masthead .stay {
+  font-family: "Zilla Slab", Georgia, serif;
+  font-weight: 700;
+  letter-spacing: 0;
+  background-image: linear-gradient(var(--c0), var(--c0));
 }
 
 .lede { max-width: 70ch; margin: 14px 0 6px; color: var(--ink-2); }
@@ -171,9 +177,11 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .ghost.small { padding: 2px 10px; font-size: 13px; }
 
 /* botones de solo ícono: play/pausa y sonido */
-.icon-btn { display: inline-grid; place-items: center; width: 40px; height: 40px; padding: 0; border-radius: 50%; }
-.play.icon-btn svg { width: 18px; height: 18px; }
-#mute svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.icon-btn { display: inline-grid; place-items: center; width: 36px; height: 36px; padding: 0; border-radius: 50%; }
+/* El play es relleno y se ve más grande que el de sonido (solo borde): va un poco más chico. */
+.play.icon-btn { width: 34px; height: 34px; }
+.play.icon-btn svg { width: 15px; height: 15px; margin-left: 1px; }
+#mute svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 #mute .speaker { fill: currentColor; }
 #mute .cross { display: none; }
 #mute[aria-pressed="true"] .waves { display: none; }
