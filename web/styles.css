@@ -105,21 +105,22 @@ h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.01em; }
   max-width: 22ch;
 }
 
-/* Palabras clave del título: letra en tinta; el subrayado lleva el color de la clase.
-   Nómadas: subrayado degradado verano → invierno (hay nómadas en ambas estaciones).
-   Sedentarios: slab serif pesada, asentada sobre su base, con subrayado sólido. */
-.masthead .travel,
-.masthead .stay {
+/* Palabras clave del título.
+   Nómadas: letra en tinta con subrayado degradado verano → invierno (hay nómadas en ambas estaciones).
+   Sedentarios: sin subrayado, en el verde de las residentes, condensada e inclinada. */
+.masthead .travel {
+  background-image: linear-gradient(90deg, var(--c1), var(--c2));
   background-repeat: no-repeat;
   background-position: 0 92%;
   background-size: 100% 0.16em;
 }
-.masthead .travel { background-image: linear-gradient(90deg, var(--c1), var(--c2)); }
 .masthead .stay {
-  font-family: "Zilla Slab", Georgia, serif;
+  font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
+  font-style: italic;
   font-weight: 700;
-  letter-spacing: 0;
-  background-image: linear-gradient(var(--c0), var(--c0));
+  font-size: 1.12em;
+  letter-spacing: 0.01em;
+  color: var(--c0-ink);
 }
 
 .lede { max-width: 70ch; margin: 14px 0 6px; color: var(--ink-2); }
