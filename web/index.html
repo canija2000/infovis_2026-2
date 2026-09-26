@@ -2,85 +2,125 @@
 <html lang="es">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Atlas de aves de Chile</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;600;700;800&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dos avifaunas · Atlas sonoro de aves de Chile</title>
+  <meta name="description"
+    content="Calendario interactivo y sonoro de las aves de Chile: especies residentes y visitantes estacionales por región, año típico 2017–2024 (GBIF).">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <main class="shell">
-        <header class="masthead">
-            <div>
-                <p class="eyebrow">eBird / Chile / días con registro</p>
-                <h1>El pulso de las aves<br><em>por región</em></h1>
-            </div>
-            <div class="status"><span class="status-dot"></span><span id="coverage">Cargando datos...</span></div>
-        </header>
+  <header class="masthead">
+    <p class="kicker">Atlas sonoro · Aves de Chile · año típico 2017–2024</p>
+    <h1>Chile tiene dos avifaunas: <span class="stay">la que se queda</span> y <span class="travel">la que viaja</span>.</h1>
+    <p class="lede" id="lede">Cada fila es una especie; cada columna, un mes. El color indica qué tan presente está la especie
+      respecto de su mejor mes. Las residentes forman un bloque parejo; las visitantes aparecen como olas que llegan y se
+      van con las estaciones.</p>
+    <p class="summary" id="summary" aria-live="polite"></p>
+  </header>
 
-        <section class="intro">
-            <p>Explora dónde se concentra el registro de aves y cómo cambia a través del tiempo. Selecciona una región
-                para abrir su historia, sus especies más reportadas y sus próximas capas multimedia.</p>
-        </section>
+  <nav class="toolbar" aria-label="Controles">
+    <div class="tool play-tool">
+      <button id="play" class="play" type="button" aria-pressed="false" title="Reproducir el año (barra espaciadora)">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path id="play-icon" d="M4 2.5v11l9-5.5z" /></svg>
+        <span id="play-label">Escuchar el año</span>
+      </button>
+      <button id="mute" class="ghost" type="button" aria-pressed="false" title="Silenciar">Sonido: sí</button>
+    </div>
+    <div class="tool month-tool">
+      <label for="month" class="tool-label">Mes <strong id="month-label">enero</strong></label>
+      <input id="month" type="range" min="0" max="11" step="1" value="6" aria-describedby="month-label">
+      <div class="month-ticks" aria-hidden="true" id="month-ticks"></div>
+    </div>
+    <div class="tool">
+      <span class="tool-label">Clases</span>
+      <div class="chips" id="chips" role="group" aria-label="Filtrar por clase estacional"></div>
+    </div>
+    <div class="tool search-tool">
+      <label for="search" class="tool-label">Especie</label>
+      <input id="search" type="search" list="species-list" placeholder="Fío-fío, Tórtola, Calidris…" autocomplete="off">
+      <datalist id="species-list"></datalist>
+    </div>
+  </nav>
 
-        <section class="dashboard">
-            <div class="map-column">
-                <div class="section-head">
-                    <div><span class="section-index">01</span>
-                        <h2>Actividad de registro</h2>
-                    </div>
-                    <div class="legend"><span class="legend-label">participación
-                            relativa</span><i></i><i></i><i></i><i></i><i></i></div>
-                </div>
-                <div id="map" aria-label="Mapa interactivo de las regiones de Chile"></div>
-                <p class="map-note">La intensidad representa el porcentaje de días-especie registrados que cae en cada
-                    región. eBird entrega un registro por especie y día para todo Chile (el más reciente), por lo que
-                    el mapa refleja dónde se reporta, no cuántas aves hay.</p>
-            </div>
+  <main class="layout">
+    <section class="map-col" aria-labelledby="map-title">
+      <div class="block-head">
+        <h2 id="map-title">Visitantes en <span id="map-month">enero</span></h2>
+        <button id="reset" class="ghost small" type="button" hidden>← Chile</button>
+      </div>
+      <p class="hint">Clic en una región para verla sola.</p>
+      <div id="map" class="map"></div>
+      <div id="map-legend" class="legend"></div>
+      <dl class="scope-stats" id="scope-stats"></dl>
+    </section>
 
-            <aside class="detail-panel" aria-live="polite">
-                <div class="panel-kicker">REGIÓN SELECCIONADA</div>
-                <h2 id="region-name">Selecciona una región</h2>
-                <div class="stat-grid">
-                    <div><strong id="region-observations">—</strong><span>días-especie</span></div>
-                    <div><strong id="region-species">—</strong><span>especies</span></div>
-                    <div><strong id="region-months">—</strong><span>meses con datos</span></div>
-                </div>
-                <div class="media-row">
-                    <div class="media-placeholder"><span
-                            class="media-icon">◌</span><span>Imagen<br><small>próximamente</small></span></div>
-                    <div class="media-placeholder"><span
-                            class="media-icon">◖</span><span>Canto<br><small>próximamente</small></span></div>
-                </div>
-                <div class="species-head"><span class="section-index">02</span>
-                    <h3>Especies con más días de registro</h3>
-                </div>
-                <ol id="species-list" class="species-list">
-                    <li class="empty">Haz clic en una región del mapa.</li>
-                </ol>
-            </aside>
-        </section>
+    <section class="viz-col" aria-labelledby="cal-title">
+      <div class="block-head">
+        <h2 id="grid-title">Proporción de visitantes por región y mes</h2>
+      </div>
+      <p class="hint">Peso de las especies visitantes en la presencia total del mes (cada especie pondera por qué tan presente está). Filas de norte a sur.</p>
+      <div id="region-grid" class="grid-chart"></div>
 
-        <section class="timeline-section">
-            <div class="section-head">
-                <div><span class="section-index">03</span>
-                    <h2>Ritmo mensual <small>(días-especie por mes)</small></h2>
-                </div><span id="timeline-label" class="mono">—</span>
-            </div>
-            <div id="timeline" class="timeline"></div>
-        </section>
+      <div class="block-head cal-head">
+        <h2 id="cal-title">Calendario de la avifauna · <span id="scope-name">Chile</span></h2>
+        <div id="cal-legend" class="legend"></div>
+      </div>
+      <div id="calendar" class="grid-chart"></div>
+      <p class="note" id="cal-note"></p>
+    </section>
+  </main>
 
-        <footer><span>Fuente: eBird API 2.0</span><span>Pipeline en Python · visualización estática para GitHub
-                Pages</span></footer>
-    </main>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="app.js"></script>
+  <aside id="panel" class="panel" aria-live="polite" hidden>
+    <button id="panel-close" class="ghost close" type="button" aria-label="Cerrar ficha">✕</button>
+    <p class="kicker" id="p-class"></p>
+    <h2 id="p-name"></h2>
+    <p class="sci" id="p-sci"></p>
+    <div class="panel-grid">
+      <figure>
+        <figcaption>Perfil anual en <span id="p-scope"></span></figcaption>
+        <div id="p-radial"></div>
+      </figure>
+      <figure>
+        <figcaption>Frecuencia media por región</figcaption>
+        <div id="p-map"></div>
+      </figure>
+    </div>
+    <p class="note" id="p-note"></p>
+    <div id="p-sound" class="sound-box"></div>
+  </aside>
+
+  <section class="sound-legend" aria-labelledby="sl-title">
+    <h2 id="sl-title">Cómo suena</h2>
+    <p>Con <b>▶ Escuchar el año</b> cada mes es un compás de 1,6 s y cada región una voz.</p>
+    <ul>
+      <li><b>Tono ← latitud.</b> Norte agudo, sur grave, en escala pentatónica.</li>
+      <li><b>Ritmo ← riqueza.</b> Más especies presentes, más notas por compás.</li>
+      <li><b>Timbre ← visitantes.</b> Cuanto mayor la proporción de visitantes, más brillante el sonido; con solo residentes suena
+        como una onda pura.</li>
+      <li>Si seleccionas una región, suena solo esa voz. Si abres una especie, se oye <b>su</b> presencia: la voz de cada
+        región suena cuando la especie está ahí.</li>
+    </ul>
+  </section>
+
+  <footer class="method">
+    <h2>Qué mide y de dónde viene</h2>
+    <p id="method-text"></p>
+    <p class="dois" id="dois"></p>
+    <p>Cantos: <a href="https://xeno-canto.org" target="_blank" rel="noopener">Xeno-canto</a>, con autor y licencia
+      Creative Commons en cada grabación. Proyecto del curso Visualización de Información 2026-2.</p>
+  </footer>
+
+  <div id="tooltip" class="tooltip" role="tooltip" hidden></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+  <script src="sonify.js"></script>
+  <script src="app.js"></script>
 </body>
 
 </html>
