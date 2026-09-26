@@ -17,7 +17,7 @@
   const CLASS_LABEL = ["Residentes", "Visitantes de verano", "Visitantes de invierno", "Ocasionales"];
   const TAB_LABEL = ["Residentes", "De verano", "De invierno"];
   const CLASS_ONE = ["residente", "visitante de verano", "visitante de invierno", "ocasional"];
-  // Ventana que se abre por defecto: la ola de verano es la que comunica "la que viaja" sin interacción.
+  // Ventana que se abre por defecto: la ola de verano es la que comunica a los "nómadas" sin interacción.
   const DEFAULT_TAB = 1;
   // Cada ventana centra su estación; residentes usan el año austral como la grilla general.
   const TAB_ORDER = [AUSTRAL, AUSTRAL, CALENDAR];
@@ -460,20 +460,49 @@
     const panel = document.getElementById("panel");
     panel.hidden = false;
     document.body.classList.add("with-panel");
-    const clsHere = rows.get(state.scope) ? CLASS_ONE[rows.get(state.scope).cls] : "sin registros aquí";
-    document.getElementById("p-class").innerHTML =
-      `<span class="sw c${CLASS_KEYS.indexOf(s.class)}"></span>En Chile: ${CLASS_ONE[CLASS_KEYS.indexOf(s.class)]}` +
-      (state.scope ? ` · en ${scopeName(state.scope)}: ${clsHere}` : "");
+    const clsIdx = CLASS_KEYS.indexOf(s.class);
+    const hereRow = rows.get(state.scope);
+    document.getElementById("p-class").innerHTML = `<span class="sw c${clsIdx}"></span>${CLASS_ONE[clsIdx]}`;
     document.getElementById("p-name").textContent = s.comName;
     document.getElementById("p-sci").textContent = s.sciName;
-    document.getElementById("p-scope").textContent = rows.get(state.scope) ? scopeName(state.scope) : "Chile";
-    document.getElementById("p-note").textContent =
-      `Amplitud estacional ${s.seasonality.toFixed(2).replace(".", ",")} (0 = pareja todo el año, 1 = ausente parte del año). ` +
-      `Mes pico en Chile: ${MONTHS[s.peak]}. ${fmt.format(s.reportDays)} días-especie 2017–2024 en ${s.regions} regiones con presencia regular.`;
+    document.getElementById("p-scope").textContent = hereRow ? scopeName(state.scope) : "Chile";
+    renderFacts(s, rows, hereRow);
     renderRadial(row);
     renderSpeciesMap(sid);
     renderSound(sid);
     renderCalendar();
+  }
+
+  // Ficha: datos cortos con etiqueta, en vez de un párrafo.
+  // Mejor mes = mes pico del perfil (el mismo que marca el calendario), con los días reales de registro.
+  function daysIn(row, m) {
+    const days = new Date(2021, m + 1, 0).getDate();
+    return { m, days, seen: Math.round((row.freq[m] / 1000) * days) };
+  }
+
+  function renderFacts(s, rows, hereRow) {
+    const facts = [];
+    const clsIdx = CLASS_KEYS.indexOf(s.class);
+    facts.push(["Clase", `<span class="sw c${clsIdx}"></span>${CLASS_ONE[clsIdx]} en Chile` +
+      (state.scope ? `<br><span class="sw c${hereRow ? hereRow.cls : 3}"></span>` +
+        (hereRow ? `${CLASS_ONE[hereRow.cls]} en ${scopeName(state.scope)}` : `sin registros regulares en ${scopeName(state.scope)}`) : "")]);
+    // Mejor mes: en la región elegida o, en Chile, en la región donde más se registra ese mes.
+    const peak = hereRow ? hereRow.peak : s.peak;
+    let where = state.scope && hereRow ? state.scope : null;
+    if (!where) {
+      const regional = [...rows.values()].filter((r) => r.rid);
+      where = regional.length ? d3.greatest(regional, (r) => r.freq[peak]).rid : null;
+    }
+    if (where) {
+      const b = daysIn(rows.get(where), peak);
+      facts.push(["Mejor mes", `${MONTHS[peak]}: en ${scopeName(where)} se registra <b>${b.seen} de ${b.days} días</b>`]);
+    }
+    const a = s.seasonality;
+    const shape = a < 0.3 ? "pareja todo el año" : a < 0.6 ? "varía con las estaciones" : "se ausenta parte del año";
+    facts.push(["Estacionalidad", `${shape} <span class="muted">(amplitud ${a.toFixed(2).replace(".", ",")}; 0 = pareja, 1 = ausente parte del año)</span>`]);
+    facts.push(["Presencia regular", `${s.regions} de 16 regiones`]);
+    facts.push(["Registros", `${fmt.format(s.reportDays)} días-especie, 2017–2024`]);
+    document.getElementById("p-facts").innerHTML = facts.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("");
   }
 
   function closeSpecies() {
@@ -558,11 +587,11 @@
       `<figure class="rec"><audio controls preload="none" src="${r.src}"></audio>` +
       `<figcaption><a href="${r.url}" target="_blank" rel="noopener">XC${r.id}</a> · ${r.recordist || "autor s/i"}` +
       ` · ${r.type || ""} · ${r.country || ""} · <a href="${r.license}" target="_blank" rel="noopener">licencia</a>` +
-      `<br><span class="muted">Clip de 8 s (el tramo de mayor energía) de la grabación original.</span></figcaption></figure>`).join("");
+      `<br><span class="muted">Clip de 6 s (el tramo con más canto) de la grabación original.</span></figcaption></figure>`).join("");
   }
 
   // ---------------------------------------------------------------- sonificación
-  // Residentes = colchón estable ("la que se queda"); visitantes = cantos reales ("la que viaja").
+  // Residentes = colchón estable ("sedentarios"); visitantes = cantos reales ("nómadas").
   // Cada mes recorre Chile de norte a sur: tiempo dentro del compás y tono ← latitud; densidad ← la ola.
   const regionLat = (id) => D.regionById.get(id).lat;
   function latSemis(lat) {

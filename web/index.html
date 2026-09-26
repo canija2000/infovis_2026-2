@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dos avifaunas · Atlas sonoro de aves de Chile</title>
+  <title>Nómadas y sedentarios · Atlas sonoro de aves de Chile</title>
   <meta name="description"
     content="Calendario interactivo y sonoro de las aves de Chile: especies residentes y visitantes estacionales por región, año típico 2017–2024 (GBIF).">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,7 +17,7 @@
 <body>
   <header class="masthead">
     <p class="kicker">Atlas sonoro · Aves de Chile · año típico 2017–2024</p>
-    <h1>Chile tiene dos avifaunas: <span class="stay">la que se queda</span> y <span class="travel">la que viaja</span>.</h1>
+    <h1><span class="travel">Nómadas</span> y <span class="stay">sedentarios</span>: las avifaunas de Chile continental</h1>
     <p class="lede" id="lede">Cada fila es una especie; cada columna, un mes. El color indica qué tan presente está la especie
       respecto de su mejor mes. Las visitantes de verano llegan en primavera y se van en otoño, como una ola; las de invierno
       hacen lo inverso; las residentes forman un bloque parejo. Cambia de ventana para ver cada grupo.</p>
@@ -111,7 +111,7 @@
     <p class="sci" id="p-sci"></p>
     <div class="panel-grid">
       <figure>
-        <figcaption>Perfil anual en <span id="p-scope"></span></figcaption>
+        <figcaption>Perfil anual en <span id="p-scope"></span><br>100 % = su mejor mes</figcaption>
         <div id="p-radial"></div>
       </figure>
       <figure>
@@ -119,7 +119,7 @@
         <div id="p-map"></div>
       </figure>
     </div>
-    <p class="note" id="p-note"></p>
+    <dl class="facts" id="p-facts"></dl>
     <div id="p-sound" class="sound-box"></div>
   </aside>
 
@@ -128,9 +128,9 @@
     <p>Con <b>▶</b> (Escuchar el año) cada mes dura 2,4 s y recorre Chile de norte a sur en cinco macrozonas (Norte Grande,
       Norte Chico, Centro, Sur y Austral). Un golpe grave y suave marca el inicio de cada mes.</p>
     <ul>
-      <li><b>Timbre ← clase.</b> Las residentes son un colchón sostenido y estable: <i>la que se queda</i>. Las visitantes
+      <li><b>Timbre ← clase.</b> Las residentes son un colchón sostenido y estable: los <i>sedentarios</i>. Las visitantes
         son cantos reales: el <b>Fío-fío</b> (izquierda) por las de verano y el <b>Picaflor chico</b> (derecha) por las de
-        invierno: <i>la que viaja</i>.</li>
+        invierno: los <i>nómadas</i>.</li>
       <li><b>Ritmo ← la ola.</b> Cuantas más visitantes hay en una zona respecto de su propio año, más cantos suenan en
         su tiempo del compás: la ola de verano crece en primavera y se apaga en otoño.</li>
       <li><b>Tono ← latitud.</b> Los cantos se transponen: norte más agudo, sur más grave (escala pentatónica, ±6 semitonos),
