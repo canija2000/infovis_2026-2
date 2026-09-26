@@ -18,3 +18,15 @@ __pycache__/
 .VolumeIcon.icns
 
 Regiones.zip
+cache_ebird_regional/
+download.log
+.progress_state.json
+
+# Pipeline GBIF (ruta A): datos crudos y estado efímero fuera del repo.
+# Se versionan solo los scripts gbif/*.py y la metodología.
+gbif/downloads/
+gbif/staging/
+gbif/state.json
+gbif/worker.log
+gbif/*_out.txt
+gbif/__pycache__/
