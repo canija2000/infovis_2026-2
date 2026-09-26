@@ -26,11 +26,17 @@
 
   <nav class="toolbar" aria-label="Controles">
     <div class="tool play-tool">
-      <button id="play" class="play" type="button" aria-pressed="false" title="Reproducir el año (barra espaciadora)">
-        <svg viewBox="0 0 16 16" aria-hidden="true"><path id="play-icon" d="M4 2.5v11l9-5.5z" /></svg>
-        <span id="play-label">Escuchar el año</span>
+      <button id="play" class="play icon-btn" type="button" aria-pressed="false" aria-label="Escuchar el año"
+        title="Escuchar el año (barra espaciadora)">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path id="play-icon" d="M4.5 2.5v11l9-5.5z" /></svg>
       </button>
-      <button id="mute" class="ghost" type="button" aria-pressed="false" title="Silenciar">Sonido: sí</button>
+      <button id="mute" class="ghost icon-btn" type="button" aria-pressed="false" aria-label="Silenciar" title="Silenciar">
+        <svg viewBox="0 0 20 20" aria-hidden="true">
+          <path class="speaker" d="M3 7.5h3l4-3.5v12l-4-3.5H3z" />
+          <path class="waves" d="M13 7a4 4 0 0 1 0 6M15.5 4.5a7.5 7.5 0 0 1 0 11" />
+          <path class="cross" d="M13 7.5l5 5M18 7.5l-5 5" />
+        </svg>
+      </button>
     </div>
     <div class="tool month-tool">
       <label for="month" class="tool-label">Mes <strong id="month-label">enero</strong></label>
@@ -47,7 +53,7 @@
   <main class="layout">
     <section class="map-col" aria-labelledby="map-title">
       <div class="block-head">
-        <h2 id="map-title">Visitantes en <span id="map-month">enero</span></h2>
+        <h2 id="map-title">Presentes en <span id="map-month">enero</span></h2>
         <button id="reset" class="ghost small" type="button" hidden>← Chile</button>
       </div>
       <p class="hint">Clic en una región para verla sola.</p>
@@ -59,21 +65,42 @@
     <section class="viz-col" aria-labelledby="cal-title">
       <div class="block-head">
         <h2 id="cal-title">Calendario de la avifauna · <span id="scope-name">Chile</span></h2>
+      </div>
+      <p class="howto">Cada fila es una especie; cada columna, un mes. Cuanto más intenso el color, más presente está la
+        especie respecto de su mejor mes.</p>
+      <div class="legend-row">
         <div id="cal-legend" class="legend"></div>
+        <span class="key"><i class="key-cell faint"></i>Celda tenue: registrada en pocos de los 8 años</span>
+        <span class="key"><i class="key-bar"></i>Barra: días con registro al mes (qué tan común es)</span>
       </div>
       <div class="tabs" id="tabs" role="tablist" aria-label="Ventana por clase estacional"></div>
       <div id="calendar" class="grid-chart window" role="tabpanel"></div>
-      <button id="cal-more" class="ghost small" type="button" hidden></button>
-      <p class="note" id="cal-note"></p>
+      <div class="below">
+        <button id="cal-more" class="ghost small" type="button" hidden></button>
+        <details class="how">
+          <summary>¿Cómo se calcula y se ordena?</summary>
+          <p id="cal-note"></p>
+        </details>
+      </div>
 
       <div class="block-head grid-head">
         <h2 id="grid-title">¿Cuándo pesan más las visitantes? Por región y mes</h2>
-        <div id="grid-legend" class="legend"></div>
       </div>
-      <p class="hint">Cada región comparada consigo misma: violeta = el mes tiene más visitantes que su promedio anual; azul =
-        menos (dominan las residentes). Filas de norte a sur. * pocos registros (&lt; 400 días-especie al mes): valores
-        inestables.</p>
+      <p class="howto">Cada región comparada consigo misma: violeta, el mes tiene más visitantes que su promedio anual;
+        azul, menos (dominan las residentes). Filas de norte a sur.</p>
+      <div class="legend-row">
+        <div id="grid-legend" class="legend"></div>
+        <span class="key"><i class="key-star">*</i>Región con pocos registros (&lt; 400 días-especie al mes): valores
+          inestables</span>
+      </div>
       <div id="region-grid" class="grid-chart"></div>
+      <details class="how">
+        <summary>¿Cómo se calcula?</summary>
+        <p>Proporción de visitantes = peso de las especies visitantes (de verano y de invierno) en la presencia total del
+          mes, donde cada especie pondera según qué tan presente está. Se muestra la diferencia entre cada mes y el
+          promedio de los 12 meses de esa misma región, así una región con pocos registros no aparece "más visitada"
+          solo por tener menos datos. La escala satura en el percentil 95 de las diferencias.</p>
+      </details>
     </section>
   </main>
 
@@ -98,15 +125,16 @@
 
   <section class="sound-legend" aria-labelledby="sl-title">
     <h2 id="sl-title">Cómo suena</h2>
-    <p>Con <b>▶ Escuchar el año</b> cada mes dura 2,4 s y recorre Chile de norte a sur en cinco macrozonas (Norte Grande,
-      Norte Chico, Centro, Sur y Austral). Un golpe suave marca el inicio de cada mes.</p>
+    <p>Con <b>▶</b> (Escuchar el año) cada mes dura 2,4 s y recorre Chile de norte a sur en cinco macrozonas (Norte Grande,
+      Norte Chico, Centro, Sur y Austral). Un golpe grave y suave marca el inicio de cada mes.</p>
     <ul>
       <li><b>Timbre ← clase.</b> Las residentes son un colchón sostenido y estable: <i>la que se queda</i>. Las visitantes
         son cantos reales: el <b>Fío-fío</b> (izquierda) por las de verano y el <b>Picaflor chico</b> (derecha) por las de
         invierno: <i>la que viaja</i>.</li>
       <li><b>Ritmo ← la ola.</b> Cuantas más visitantes hay en una zona respecto de su propio año, más cantos suenan en
         su tiempo del compás: la ola de verano crece en primavera y se apaga en otoño.</li>
-      <li><b>Tono ← latitud.</b> Los cantos se transponen: norte más agudo, sur más grave (escala pentatónica, ±6 semitonos).</li>
+      <li><b>Tono ← latitud.</b> Los cantos se transponen: norte más agudo, sur más grave (escala pentatónica, ±6 semitonos),
+        sobre una base una quinta más grave que el canto original y filtrada para que no suene estridente.</li>
       <li><b>Volumen ← cantidad.</b> Las zonas con más especies visitantes suenan más fuerte.</li>
       <li>Si seleccionas una región, solo suena ella (con más detalle). Si abres una especie, suena <b>su</b> canto donde
         y cuando está presente.</li>

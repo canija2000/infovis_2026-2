@@ -192,8 +192,7 @@
     const m = state.month;
     const col = state.tab + 1;
     const scale = mapScale();
-    document.getElementById("map-title").innerHTML =
-      `${CLASS_LABEL[state.tab]} en <span id="map-month">${MONTHS[m]}</span>`;
+    document.getElementById("map-month").textContent = MONTHS[m];
     drawChile(document.getElementById("map"), {
       width: 170, height: 760, selected: state.scope || null,
       fill: (id) => scale(rm(id, m)[col]),
@@ -201,7 +200,7 @@
       onHover: (id) => regionTip(id, m),
     }).attr("aria-label", `Mapa de Chile: ${CLASS_LABEL[state.tab].toLowerCase()} presentes por región en ${MONTHS[m]}`);
     renderLegend(document.getElementById("map-legend"), scale, {
-      label: "Especies presentes", ticks: scale.ticks(4), format: (d) => fmt.format(d),
+      label: `${TAB_LABEL[state.tab]} · n.º de especies`, ticks: scale.ticks(4), format: (d) => fmt.format(d),
     });
   }
 
@@ -215,8 +214,8 @@
       `<span class="muted">Esfuerzo medio: ${fmt.format(effort)} días-especie${lowEffort(id) ? " · pocos registros, valores inestables" : ""}</span>`;
   }
 
-  function renderLegend(el, scale, { label, ticks, format }) {
-    const w = 220, h = 34, x0 = 6, x1 = w - 10;
+  function renderLegend(el, scale, { label, ticks, format, width = 220 }) {
+    const w = width, h = 34, x0 = 6, x1 = w - 10;
     const dom = scale.domain();
     const [a, b] = [dom[0], dom[dom.length - 1]];
     const x = d3.scaleLinear().domain([a, b]).range([x0, x1]);
@@ -272,7 +271,7 @@
   // Matriz general: región × mes, color = cuánto se aleja la proporción de visitantes del promedio anual de la región.
   function renderRegionGrid() {
     const order = AUSTRAL;
-    const rowH = 13, top = 34;
+    const rowH = 16, top = 36;
     const ids = [0, ...D.meta.regions.filter((r) => r.id).map((r) => r.id)];
     const y = (i) => top + i * rowH + (i > 0 ? 6 : 0);
     const h = y(ids.length) + 4;
@@ -287,7 +286,7 @@
       .classed("low", (id) => lowEffort(id))
       .style("cursor", "pointer")
       .on("click", (e, id) => selectScope(id === state.scope ? 0 : id));
-    rows.selectAll("text").data((id) => [id]).join("text").attr("x", LABEL - 8).attr("y", rowH - 3).attr("text-anchor", "end")
+    rows.selectAll("text").data((id) => [id]).join("text").attr("x", LABEL - 8).attr("y", rowH / 2).attr("dy", "0.35em").attr("text-anchor", "end")
       .attr("class", (id) => (id === 0 ? "label strong" : "label"))
       .text((id) => (id === 0 ? "Chile" : scopeName(id)) + (lowEffort(id) ? " *" : ""));
     rows.selectAll("rect").data((id) => order.map((m) => ({ id, m }))).join("rect")
@@ -356,7 +355,7 @@
     const order = tabOrder();
     const color = classScale[state.tab];
     const { rows: list, total } = selectRows();
-    const rowH = 13, top = 34;
+    const rowH = 19, top = 36;
     const h = Math.max(top + list.length * rowH + 6, 80);
     const svg = d3.select("#calendar").selectAll("svg").data([0]).join("svg").attr("viewBox", `0 0 ${W} ${h}`)
       .attr("aria-label", `Calendario de ${CLASS_LABEL[state.tab].toLowerCase()} por mes en ${scopeName(state.scope)}`);
@@ -371,9 +370,9 @@
       .join((enter) => {
         const g = enter.append("g").attr("class", "srow");
         g.append("rect").attr("class", "hit").attr("x", 0).attr("width", W).attr("height", rowH);
-        g.append("text").attr("class", "label").attr("x", LABEL - 8).attr("y", rowH - 3).attr("text-anchor", "end");
-        g.append("rect").attr("class", "freq").attr("y", 3).attr("height", rowH - 6).attr("rx", 1);
-        g.append("text").attr("class", "freq-val").attr("y", rowH - 3);
+        g.append("text").attr("class", "label").attr("x", LABEL - 8).attr("y", rowH / 2).attr("dy", "0.35em").attr("text-anchor", "end");
+        g.append("rect").attr("class", "freq").attr("y", 5).attr("height", rowH - 10).attr("rx", 1);
+        g.append("text").attr("class", "freq-val").attr("y", rowH / 2).attr("dy", "0.35em");
         return g;
       })
       .attr("transform", (r, i) => `translate(0,${top + i * rowH})`)
@@ -386,7 +385,7 @@
     rows.select("text.freq-val").attr("x", barX + barW + 4)
       .text((r) => (r.mean / 1000 * 30.4).toFixed(r.mean < 330 ? 1 : 0).replace(".", ","));
     rows.selectAll("rect.cell").data((r) => order.map((m) => ({ r, m }))).join("rect").attr("class", "cell")
-      .attr("x", (c) => colX(order, c.m) + 1).attr("y", 1).attr("width", CW - 2).attr("height", rowH - 2).attr("rx", 1.5)
+      .attr("x", (c) => colX(order, c.m) + 1.5).attr("y", 1.5).attr("width", CW - 3).attr("height", rowH - 3).attr("rx", 2)
       .attr("fill", (c) => color(c.r.prof[c.m]))
       // Confianza: menos años con registro en ese mes → celda más tenue.
       .attr("fill-opacity", (c) => 0.3 + 0.7 * (c.r.years[c.m] / 8))
@@ -406,12 +405,14 @@
       label: "Presencia (% del mes pico)", ticks: [0, 50, 100], format: (d) => `${d} %`,
     });
     const sortText = state.tab === 0
-      ? "Ordenadas por frecuencia."
-      : `Ordenadas por mes de llegada (primer mes sobre el 50 % de su pico); eje ${order === AUSTRAL ? "julio → junio, con el verano al centro" : "enero → diciembre, con el invierno al centro"}.`;
-    document.getElementById("cal-note").textContent = list.length
-      ? `${list.length} de ${total} especies. Color: presencia relativa al mes pico de cada especie, corregida por esfuerzo; ` +
-        `las celdas tenues tienen registro en pocos de los 8 años. ${sortText} La barra de la derecha indica cuán común es ` +
-        `(días con registro por mes, promedio anual). Clic en una especie para ver su ficha.`
+      ? "<b>Orden:</b> por frecuencia (las más comunes arriba)."
+      : `<b>Orden:</b> por llegada, es decir, el inicio del tramo más largo sobre el 50 % de su pico. <b>Eje:</b> ` +
+        (order === AUSTRAL ? "julio → junio, con el verano al centro." : "enero → diciembre, con el invierno al centro.");
+    document.getElementById("cal-note").innerHTML = list.length
+      ? `<b>Se muestran</b> ${list.length} de ${total} especies (las más frecuentes). ` +
+        `<b>Color:</b> presencia de cada mes respecto del mes pico de la especie (100 % = su mejor mes), corregida por el ` +
+        `esfuerzo de registro de la región y el mes. <b>Tenue:</b> el mes tuvo registro en pocos de los 8 años (2017–2024). ` +
+        `${sortText} <b>Barra:</b> días con registro al mes, promedio anual. Clic en una especie para ver su ficha.`
       : "No hay especies de esta clase en la región.";
   }
 
@@ -587,7 +588,8 @@
     const layers = (sounds && sounds.layers) || {};
     const zones = state.scope ? [{ ids: [state.scope] }] : ZONES;
     const slot = 1 / zones.length;
-    const maxPer = state.scope ? 6 : 3;
+    // Pocos cantos por zona: con más, los granos se encimaban y el resultado era ruido.
+    const maxPer = state.scope ? 3 : 2;
     const hits = [];
     const place = (z, k, n, shift) => z * slot + ((k + 0.5) / n + shift) * slot * 0.9;
     zones.forEach((zone, z) => {
@@ -624,8 +626,9 @@
     if (Sonifier.playing) {
       Sonifier.stop();
       btn.setAttribute("aria-pressed", "false");
-      document.getElementById("play-label").textContent = "Escuchar el año";
-      document.getElementById("play-icon").setAttribute("d", "M4 2.5v11l9-5.5z");
+      btn.setAttribute("aria-label", "Escuchar el año");
+      btn.title = "Escuchar el año (barra espaciadora)";
+      document.getElementById("play-icon").setAttribute("d", "M4.5 2.5v11l9-5.5z");
       return;
     }
     try {
@@ -639,7 +642,8 @@
     if (!ok) return;
     Sonifier.setMuted(state.muted);
     btn.setAttribute("aria-pressed", "true");
-    document.getElementById("play-label").textContent = "Pausa";
+    btn.setAttribute("aria-label", "Pausar");
+    btn.title = "Pausar (barra espaciadora)";
     document.getElementById("play-icon").setAttribute("d", "M4 2.5h3v11H4zM9 2.5h3v11H9z");
   }
 
@@ -683,7 +687,8 @@
       state.muted = !state.muted;
       Sonifier.setMuted(state.muted);
       e.currentTarget.setAttribute("aria-pressed", String(state.muted));
-      e.currentTarget.textContent = state.muted ? "Sonido: no" : "Sonido: sí";
+      e.currentTarget.setAttribute("aria-label", state.muted ? "Activar sonido" : "Silenciar");
+      e.currentTarget.title = state.muted ? "Activar sonido" : "Silenciar";
     });
     document.getElementById("reset").addEventListener("click", () => selectScope(0));
     document.getElementById("panel-close").addEventListener("click", closeSpecies);
@@ -718,7 +723,7 @@
       setupControls();
       setupSearch();
       renderLegend(document.getElementById("grid-legend"), deviation, {
-        label: "Visitantes vs. promedio anual de la región", ticks: deviation.domain(),
+        label: "Visitantes vs. promedio anual de la región", ticks: deviation.domain(), width: 320,
         format: (d) => (d === 0 ? "igual" : `${d > 0 ? "+" : "−"}${pct(Math.abs(d))}${d > 0 ? " o más" : " o menos"}`),
       });
       renderRegionGrid();
