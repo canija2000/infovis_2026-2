@@ -9,7 +9,7 @@ Entrada (no se modifica):
                                                              region × mes × especie
     web/data/regions.geojson                                 polígonos regionales
     gbif/synonyms_xc.json                                    nombres GBIF → Xeno-canto
-    sounds/manifest.json (opcional, local)                   grabaciones descargadas
+    web/audio/clips.json (preparar_audio_web.py)            clips de canto publicados
 
 Salida (web/data/):
     meta.json           regiones, parámetros, fuente y DOIs
@@ -36,7 +36,7 @@ from pathlib import Path
 PROJECT_DIR = Path(__file__).resolve().parent
 DATA_DIR = PROJECT_DIR / "web" / "data"
 SYNONYMS_PATH = PROJECT_DIR / "gbif" / "synonyms_xc.json"
-SOUNDS_MANIFEST = PROJECT_DIR / "sounds" / "manifest.json"
+AUDIO_CLIPS = PROJECT_DIR / "web" / "audio" / "clips.json"
 
 # --- Parámetros revisables (documentados en metodologia-datos.md §10) --------
 YEARS = list(range(2017, 2025))  # solo años completos con eBird en GBIF
@@ -299,29 +299,25 @@ def build_typical_year(rows: list[dict], regions: list[dict]):
 
 
 def build_sounds(names: dict, species_ids: dict) -> dict:
+    """Enlaza los clips publicados en web/audio/ (ver preparar_audio_web.py)."""
     synonyms = load_json(SYNONYMS_PATH, {}).get("synonyms", {})
-    manifest = load_json(SOUNDS_MANIFEST, {"species": []})
-    reverse = {v["xc"]: k for k, v in synonyms.items()}
+    clips = load_json(AUDIO_CLIPS, {"clips": [], "layers": {}})
     recordings = defaultdict(list)
-    for item in manifest.get("species", []):
-        sci = item.get("scientificName") or item.get("sciName") or ""
-        sci = GBIF_ALIASES.get(reverse.get(sci, sci), reverse.get(sci, sci))
-        for rec in item.get("recordings", []):
-            if not rec.get("id"):
-                continue
-            recordings[sci].append(
-                {
-                    "id": str(rec["id"]),
-                    # Se reproduce desde Xeno-canto: sounds/ no se publica.
-                    "src": f"https://xeno-canto.org/{rec['id']}/download",
-                    "url": rec.get("sourceUrl") or f"https://xeno-canto.org/{rec['id']}",
-                    "type": rec.get("type"),
-                    "quality": rec.get("quality"),
-                    "country": rec.get("country"),
-                    "recordist": rec.get("recordist"),
-                    "license": ("https:" + rec["license"]) if str(rec.get("license", "")).startswith("//") else rec.get("license"),
-                }
-            )
+    for clip in clips.get("clips", []):
+        sci = GBIF_ALIASES.get(clip["sciName"], clip["sciName"])
+        recordings[sci].append(
+            {
+                "id": clip["id"],
+                "src": clip["clip"],
+                "grain": clip["grain"],
+                "url": clip["url"],
+                "type": clip.get("type"),
+                "quality": clip.get("quality"),
+                "country": clip.get("country"),
+                "recordist": clip.get("recordist"),
+                "license": clip.get("license"),
+            }
+        )
     out = []
     for sci in sorted(names, key=lambda s: species_ids[s]):
         syn = synonyms.get(sci)
@@ -335,7 +331,16 @@ def build_sounds(names: dict, species_ids: dict) -> dict:
                 "recordings": recordings.get(sci, []),
             }
         )
-    return {"source": "Xeno-canto (xeno-canto.org), licencias Creative Commons por grabación", "species": out}
+    layers = {
+        cls: species_ids[sci]
+        for cls, sci in clips.get("layers", {}).items()
+        if sci in species_ids and recordings.get(sci)
+    }
+    return {
+        "source": "Xeno-canto (xeno-canto.org), licencias Creative Commons por grabación",
+        "layers": layers,
+        "species": out,
+    }
 
 
 # --- Escritura --------------------------------------------------------------
