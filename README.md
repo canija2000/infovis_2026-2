@@ -84,12 +84,16 @@ python3 preparar_audio_web.py             # descarga faltantes y genera web/audi
 python3 build_web_data.py                 # enlaza web/audio/clips.json en web/data/sounds.json
 ```
 
-`preparar_audio_web.py` toma la mejor grabación de cada especie en `sounds/`
-(prioriza Chile, canto o llamado, calidad A y licencias sin ND) y descarga
-desde Xeno-canto (`cnt:chile`) los visitantes más frecuentes y las especies
-cuya grabación local no era de Chile o Argentina. De cada una publica un clip
-de 8 s (la ventana de mayor energía, normalizada) y un grano de 1,2 s para la
-sonificación, en total unos 3 MB. Requiere `ffmpeg` y `numpy`. La API key se
+`preparar_audio_web.py` cubre todas las especies que la web muestra sin
+expandir (232: top por pestaña en Chile y en cada región). Junta candidatas
+locales (`sounds/`) y de Xeno-canto (Chile primero, calidad A/B) y elige la
+mejor (Chile, canto o llamado, calidad, licencia sin ND). De cada una publica
+un clip de 6 s y un grano de 0,9 s para la sonificación, tomados del tramo con
+más energía en la banda de las aves (1,5–9 kHz) ponderada por tonalidad, para
+evitar viento o ruido de fondo. Hoy: 231 de 232 especies (falta el Guanay, sin
+grabaciones en Xeno-canto), ~13 MB. Los ajustes a mano (excluir una grabación,
+forzar otra, fijar el segundo de inicio) van en `audio_overrides.json`; las
+respuestas de la API quedan en `cache_xenocanto/` (fuera de Git). Requiere `ffmpeg` y `numpy`. La API key se
 lee de `api_sounds` (`.env` o variable de entorno) y nunca se escribe ni se
 imprime. `sounds/` (originales) sigue fuera de Git; `web/audio/` sí se publica,
 con autor, licencia y enlace a la grabación original en la ficha.
