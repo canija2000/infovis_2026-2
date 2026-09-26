@@ -101,18 +101,27 @@ h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.01em; }
 
 .masthead h1 {
   font-size: clamp(26px, 3.6vw, 40px);
-  line-height: 1.1;
-  max-width: 22ch;
+  line-height: 1.12;
+  max-width: 30ch;
 }
 
 /* Palabras clave del título.
-   Nómadas: letra en tinta con subrayado degradado verano → invierno (hay nómadas en ambas estaciones).
+   Nómadas: ancha, inclinada y hueca, con contorno degradado verano → invierno (hay nómadas en ambas estaciones).
    Sedentarios: sin subrayado, en el verde de las residentes, condensada e inclinada. */
 .masthead .travel {
-  background-image: linear-gradient(90deg, var(--c1), var(--c2));
-  background-repeat: no-repeat;
-  background-position: 0 92%;
-  background-size: 100% 0.16em;
+  /* Letra ancha, inclinada y hueca: solo el contorno, con el degradado verano → invierno.
+     El fondo degradado se recorta al texto (incluido el trazo) y el relleno se pinta del color de fondo. */
+  font-family: "Archivo", "Arial Black", sans-serif;
+  font-style: italic;
+  font-weight: 800;
+  font-stretch: 125%;
+  letter-spacing: 0.01em;
+  padding-right: 0.08em;
+  background: linear-gradient(90deg, var(--c1), var(--c2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: var(--bg);
+  -webkit-text-stroke: 0.1em transparent; /* la mitad interior la tapa el relleno: se ve ~0,05em */
 }
 .masthead .stay {
   font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
