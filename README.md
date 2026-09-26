@@ -1,138 +1,93 @@
-# Atlas de aves de Chile
+# Atlas sonoro de aves de Chile
 
-Prototipo de visualización interactiva de observaciones de aves en Chile usando la API de eBird 2.0 y las divisiones regionales de Chile de la Biblioteca del Congreso Nacional.
+Visualización interactiva y sonora (curso de Visualización de Información
+2026-2). El mensaje es: **“Chile tiene dos avifaunas: la que se queda y la que
+viaja”**. Un calendario especie × mes (año típico 2017–2024) muestra el bloque
+de especies residentes y las “olas” de visitantes de verano e invierno, por
+región. El año se puede reproducir como sonido.
 
 ## Arquitectura
 
 ```text
-eBird API -> 10anios.py -> datos procesados -> web/
-                                      |
-                                      +-> GitHub Pages / Railway
+GBIF (11 descargas anuales, Aves, Chile)
+  └─ gbif/*.py ───────────────► web/data/observations-*.json   agregado región × mes × especie
+                                 web/data/regions.geojson       (entrada, no la carga la web)
+  └─ build_web_data.py ───────► web/data/meta.json, species.json, typical_year.json,
+                                 region_month.json, regions.min.geojson, sounds.json
+  └─ web/ (HTML + D3 + Web Audio, sin build step) ─► GitHub Pages / Cloudflare
 ```
 
-- `10anios.py`: descarga histórica, usa caché local, asigna observaciones a regiones y genera los archivos que consume la web.
-- `testeo.ipynb`: exploración inicial de la API (histórico; ya no forma parte del pipeline).
-- `Regiones/`: shapefile regional de Chile usado para el mapa y la asignación espacial.
-- `web/`: frontend estático con Leaflet, HTML, CSS y JavaScript.
-- `web/data/`: datos procesados publicados por el frontend.
+- `gbif/`: pipeline de descarga, join espacial y agregación desde GBIF. Ver
+  [`docs/metodologia-datos.md`](docs/metodologia-datos.md) (fuente, DOIs,
+  limpieza, métrica y, en §10, año típico y clasificación estacional).
+- `build_web_data.py`: genera los archivos livianos de la web (~0,86 MB de
+  carga inicial). Solo usa la biblioteca estándar y su salida es determinista.
+- `gbif/synonyms_xc.json`: nombres científicos GBIF → Xeno-canto (IOC).
+- `web/`: frontend estático. `app.js` contiene las vistas y la interacción;
+  `sonify.js`, la sonificación.
+- `descargar_sonidos.py`, `optimizar_sonidos.py`: cantos desde Xeno-canto (local).
+- `docs/proceso/`: bitácora de versiones (V1 → V4) para la entrega.
+- Histórico (se conserva como evidencia del proceso, no se usa en la web):
+  `10anios.py` (eBird nacional), `pull_regional.py`, `progress_check.py`,
+  `docs/re_pull_regional.md` e `instrucciones_re_pull_de_datos.md` (ruta eBird
+  por región, abandonada por errores 429 sostenidos), `testeo.ipynb`.
 
-El frontend utiliza el GeoJSON local de las regiones. No depende de Carto ni de otro proveedor de teselas de mapas.
-
-## Datos históricos
-
-La descarga completada cubre `2016-09-17` a `2026-09-18`:
-
-- 3.654 días consultados.
-- 674.004 observaciones crudas.
-- 604.225 registros especie-día asignados a las 16 regiones de Chile.
-- 171.341 filas compactas agregadas por región, mes y especie.
-- `cache_ebird/`: aproximadamente 218 MB, solo local y excluida de Git.
-- `web/data/`: aproximadamente 39 MB, destinada a la webpage.
-
-El dataset web contiene observaciones agregadas por:
-
-```text
-region_code + year_month + speciesCode + comName + sciName
-```
-
-Cada fila tiene `reportDays`: **días del mes en que la especie se reportó en
-Chile** y cuyo avistamiento más reciente del día cayó en esa región.
-
-> **Limitación de la fuente.** El endpoint histórico de eBird devuelve una sola
-> fila por especie y día (el avistamiento más reciente, `rank=mrec`), no todas
-> las observaciones. Por eso la métrica no es un conteo de observaciones ni de
-> individuos, sino una frecuencia de reporte. Como se consulta todo Chile a la
-> vez, cada especie queda asignada a una sola región por día, lo que sesga la
-> distribución regional hacia las regiones con más actividad. La corrección
-> (una consulta por región) está descrita en `instrucciones_re_pull_de_datos.md`.
-
-## Requisitos
-
-Python 3.11 o superior y estas dependencias:
+## Regenerar los datos de la web
 
 ```bash
-python3 -m pip install geopandas pandas requests pyarrow
+python3 build_web_data.py            # reescribe web/data/*.json derivados
+python3 build_web_data.py --report   # además imprime especies de control
 ```
 
-La API key debe estar en `.env` y nunca debe subirse al repositorio:
+Para rehacer el agregado desde GBIF, ver `gbif/run_pipeline.py` y la
+metodología. Las descargas crudas quedan fuera de Git.
 
-```text
-API_BIRD_KEY=...
-```
-
-## Procesar la caché existente
-
-Para regenerar los datos de la webpage sin hacer nuevas solicitudes:
-
-```bash
-python3 10anios.py --start 2016-09-17 --end 2026-09-18 --pause 0
-```
-
-El script detecta automáticamente los JSON ya descargados en `cache_ebird/`.
-
-Para revisar el número de solicitudes pendientes sin consultar la API:
-
-```bash
-python3 10anios.py --dry-run
-```
-
-La API histórica requiere una solicitud por fecha. eBird no publica en su documentación una cuota numérica fija de solicitudes por minuto; ante un `429`, el script se detiene y conserva la caché para reanudar posteriormente.
-
-## Ejecutar la webpage localmente
+## Ejecutar la web localmente
 
 ```bash
 cd web
 python3 -m http.server 8000
 ```
 
-Abrir <http://localhost:8000>.
+Abrir <http://localhost:8000>. D3 se carga desde jsDelivr, así que se necesita
+conexión a internet.
 
-La página permite:
-
-- Explorar un mapa de las regiones de Chile.
-- Ver la participación relativa de días-especie registrados por región.
-- Seleccionar una región mediante clic.
-- Revisar sus métricas generales.
-- Ver las cinco especies con más días de registro.
-- Explorar la serie mensual.
-- Reservar espacios para futuras imágenes y audios.
+- **Overview:** mensaje, resumen de clases, mapa y grilla región × mes con la
+  proporción de visitantes, y el calendario de la avifauna.
+- **Zoom & filter:** clic en una región (mapa o grilla), filtros por clase,
+  buscador de especie y scrubber de mes con ▶ (también con la barra espaciadora).
+- **Detalle:** ficha de especie con perfil anual radial, mapa de frecuencia
+  por región y canto de Xeno-canto (si hay grabación).
+- **Sonificación:** cada mes es un compás y cada región una voz. Tono ←
+  latitud, ritmo ← riqueza, timbre ← proporción de visitantes. El audio parte
+  solo después de pulsar Play.
 
 ## Publicación
 
-La carpeta `web/` puede publicarse como sitio estático en GitHub Pages. Railway también puede servirla, aunque no es necesario un backend para esta versión: los diez años ya están procesados en archivos estáticos.
+GitHub Pages: publicar la carpeta `web/` como raíz del sitio (por ejemplo, con
+una GitHub Action de Pages que suba `web/`). Cloudflare Workers también la
+sirve como assets estáticos (`wrangler.jsonc`).
 
-Las observaciones se publican en dos archivos JSON para respetar el límite de 25 MiB por asset de Cloudflare Workers.
-
-## Descargar sonidos de las especies principales
-
-`descargar_sonidos.py` suma los días con registro de ambos archivos de la web,
-selecciona las especies reportadas más días y consulta sus grabaciones en
-[Xeno-canto](https://xeno-canto.org/). La API key se lee desde `api_sounds` en
-`.env`; nunca se escribe en el manifiesto.
+## Cantos (Xeno-canto)
 
 ```bash
 python3 descargar_sonidos.py --dry-run
 python3 descargar_sonidos.py --top 25 --recordings-per-species 3
+python3 build_web_data.py            # incorpora sounds/manifest.json a web/data/sounds.json
 ```
 
-Los audios se guardan localmente en `sounds/` y sus metadatos, licencias y
-fuentes en `sounds/manifest.json`. La carpeta se excluye de Git porque los
-archivos binarios pueden ocupar cientos de megabytes.
-
-Para reducir audios PCM que Xeno-canto entrega con extensión `.mp3`:
-
-```bash
-python3 optimizar_sonidos.py --dry-run
-python3 optimizar_sonidos.py
-```
-
-El script conserva los nombres usados por el manifiesto y convierte los
-archivos a MP3 VBR a 44,1 kHz.
+La API key se lee de `api_sounds` (`.env` o una variable de entorno) y nunca
+se escribe en archivos ni en logs. La consulta usa el nombre de Xeno-canto
+según `gbif/synonyms_xc.json`. Los audios quedan en `sounds/` (fuera de Git);
+la web los reproduce desde xeno-canto.org, con autor y licencia. El plan de
+mejora (filtro por país, calidad, clips propios) está en
+`refactorizacion_sounds_api.md`.
 
 ## Fuentes y atribución
 
-- Datos: [eBird API 2.0](https://documenter.getpostman.com/view/664302/S1ENwy59).
+- Ocurrencias: GBIF.org, 11 descargas (DOIs en `docs/metodologia-datos.md` y
+  en el pie de la web). eBird aporta el 91–98 % de los registros 2016–2024.
 - Divisiones regionales: [Mapoteca BCN](https://www.bcn.cl/siit/mapas_vectoriales/index_html).
-- eBird debe atribuirse como fuente de los datos publicados.
+- Cantos: [Xeno-canto](https://xeno-canto.org), licencias Creative Commons por grabación.
 
-El uso está planteado para un proyecto educativo y no comercial. La API key no debe exponerse en el frontend ni compartirse públicamente.
+Uso educativo y no comercial.
