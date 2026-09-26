@@ -1,7 +1,7 @@
 # Atlas sonoro de aves de Chile
 
 Visualización interactiva y sonora (curso de Visualización de Información
-2026-2). El mensaje es: **“Nómadas y sedentarios: las avifaunas de Chile
+2026-2). El mensaje es: **“Nómadas & sedentarios: las avifaunas de Chile
 continental”**. Un calendario especie × mes (año típico 2017–2024) muestra el bloque
 de especies residentes y las “olas” de visitantes de verano e invierno, por
 región. El año se puede reproducir como sonido.

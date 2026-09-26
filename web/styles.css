@@ -4,17 +4,18 @@
   --bg: #fcfcfb;
   --surface: #ffffff;
   --ink: #16161a;
+  --title: #13139e; /* título y encabezados */
   --ink-2: #4f4e4a;
   --ink-3: #85847e;
   --rule: #e4e2dc;
   --empty: #ecebe6;
   --accent: #16161a;
-  --c0: #2f8f5b; /* residente: verde (arraigo) */
-  --c1: #eb6834; /* visitante de verano */
+  --c0: #288665; /* residente: verde (arraigo) */
+  --c1: #ee9b45; /* visitante de verano */
   --c2: #2c8fc9; /* visitante de invierno: azul frío */
   --c3: #cfcdc6; /* ocasional */
-  --c0-ink: #1f6e44;
-  --c1-ink: #c2531e;
+  --c0-ink: #288665;
+  --c1-ink: #b86a14;
   --c2-ink: #1d6a99;
   --cursor: #16161a;
   --font: "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -27,17 +28,19 @@
     --bg: #151514;
     --surface: #1c1c1b;
     --ink: #f4f3ef;
+  --title: #b4b4ff;
+    --title: #b4b4ff;
     --ink-2: #c3c2b7;
     --ink-3: #8f8e86;
     --rule: #34332f;
     --empty: #2a2a28;
     --accent: #f4f3ef;
-    --c0: #3fae72;
-    --c1: #d95926;
+    --c0: #36a67e;
+    --c1: #ee9b45;
     --c2: #4aa3dc;
     --c3: #4a4945;
-    --c0-ink: #6fd29b;
-    --c1-ink: #ee8b55;
+    --c0-ink: #5cc79f;
+    --c1-ink: #f3b36e;
     --c2-ink: #8cc8ef;
     --cursor: #f4f3ef;
   }
@@ -48,17 +51,18 @@
   --bg: #151514;
   --surface: #1c1c1b;
   --ink: #f4f3ef;
+  --title: #b4b4ff;
   --ink-2: #c3c2b7;
   --ink-3: #8f8e86;
   --rule: #34332f;
   --empty: #2a2a28;
   --accent: #f4f3ef;
-  --c0: #3fae72;
-  --c1: #d95926;
+  --c0: #36a67e;
+  --c1: #ee9b45;
   --c2: #4aa3dc;
   --c3: #4a4945;
-  --c0-ink: #6fd29b;
-  --c1-ink: #ee8b55;
+  --c0-ink: #5cc79f;
+  --c1-ink: #f3b36e;
   --c2-ink: #8cc8ef;
   --cursor: #f4f3ef;
 }
@@ -77,7 +81,7 @@ body {
 
 a { color: inherit; text-underline-offset: 2px; }
 
-h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.01em; }
+h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.01em; color: var(--title); }
 
 .kicker, .tool-label, .hint, .legend, .note, .mono { font-family: var(--mono); }
 
@@ -105,23 +109,33 @@ h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.01em; }
   max-width: 30ch;
 }
 
-/* Palabras clave del título.
-   Nómadas: ancha, inclinada y hueca, con contorno degradado verano → invierno (hay nómadas en ambas estaciones).
-   Sedentarios: sin subrayado, en el verde de las residentes, condensada e inclinada. */
+/* Título: «Nómadas & sedentarios» grande; la segunda línea, más chica y liviana.
+   Nómadas: redondeada tipo burbuja, ancha e inclinada, hueca, con contorno degradado verano → invierno.
+   Sedentarios: condensada e inclinada, en el verde de las residentes.
+   «&»: serif cursiva fina y clara, para que pese poco. */
 .masthead .travel {
-  /* Letra ancha, inclinada y hueca: solo el contorno, con el degradado verano → invierno.
-     El fondo degradado se recorta al texto (incluido el trazo) y el relleno se pinta del color de fondo. */
-  font-family: "Archivo", "Arial Black", sans-serif;
-  font-style: italic;
-  font-weight: 800;
+  font-family: "Fredoka", "Arial Rounded MT Bold", sans-serif;
+  font-weight: 700;
   font-stretch: 125%;
+  /* Fredoka no tiene cursiva: se inclina con una transformación. */
+  display: inline-block;
+  transform: skewX(-9deg);
   letter-spacing: 0.01em;
-  padding-right: 0.08em;
+  padding-right: 0.1em;
   background: linear-gradient(90deg, var(--c1), var(--c2));
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: var(--bg);
-  -webkit-text-stroke: 0.1em transparent; /* la mitad interior la tapa el relleno: se ve ~0,05em */
+  /* la mitad interior del trazo la tapa el relleno: se ve ~0,07em */
+  -webkit-text-stroke: 0.14em transparent;
+}
+.masthead .amp {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 0.95em;
+  color: var(--ink-3);
+  margin: 0 0.06em;
 }
 .masthead .stay {
   font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
@@ -130,6 +144,13 @@ h1, h2, h3 { margin: 0; font-weight: 700; letter-spacing: -0.01em; }
   font-size: 1.12em;
   letter-spacing: 0.01em;
   color: var(--c0-ink);
+}
+.masthead .subtitle {
+  display: block;
+  margin-top: 0.15em;
+  font-size: 0.55em;
+  font-weight: 600;
+  letter-spacing: 0;
 }
 
 .lede { max-width: 70ch; margin: 14px 0 6px; color: var(--ink-2); }
