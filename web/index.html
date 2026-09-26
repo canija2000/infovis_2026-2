@@ -19,8 +19,8 @@
     <p class="kicker">Atlas sonoro · Aves de Chile · año típico 2017–2024</p>
     <h1>Chile tiene dos avifaunas: <span class="stay">la que se queda</span> y <span class="travel">la que viaja</span>.</h1>
     <p class="lede" id="lede">Cada fila es una especie; cada columna, un mes. El color indica qué tan presente está la especie
-      respecto de su mejor mes. Las residentes forman un bloque parejo; las visitantes aparecen como olas que llegan y se
-      van con las estaciones.</p>
+      respecto de su mejor mes. Las visitantes de verano llegan en primavera y se van en otoño, como una ola; las de invierno
+      hacen lo inverso; las residentes forman un bloque parejo. Cambia de ventana para ver cada grupo.</p>
     <p class="summary" id="summary" aria-live="polite"></p>
   </header>
 
@@ -36,10 +36,6 @@
       <label for="month" class="tool-label">Mes <strong id="month-label">enero</strong></label>
       <input id="month" type="range" min="0" max="11" step="1" value="6" aria-describedby="month-label">
       <div class="month-ticks" aria-hidden="true" id="month-ticks"></div>
-    </div>
-    <div class="tool">
-      <span class="tool-label">Clases</span>
-      <div class="chips" id="chips" role="group" aria-label="Filtrar por clase estacional"></div>
     </div>
     <div class="tool search-tool">
       <label for="search" class="tool-label">Especie</label>
@@ -62,17 +58,22 @@
 
     <section class="viz-col" aria-labelledby="cal-title">
       <div class="block-head">
-        <h2 id="grid-title">Proporción de visitantes por región y mes</h2>
-      </div>
-      <p class="hint">Peso de las especies visitantes en la presencia total del mes (cada especie pondera por qué tan presente está). Filas de norte a sur.</p>
-      <div id="region-grid" class="grid-chart"></div>
-
-      <div class="block-head cal-head">
         <h2 id="cal-title">Calendario de la avifauna · <span id="scope-name">Chile</span></h2>
         <div id="cal-legend" class="legend"></div>
       </div>
-      <div id="calendar" class="grid-chart"></div>
+      <div class="tabs" id="tabs" role="tablist" aria-label="Ventana por clase estacional"></div>
+      <div id="calendar" class="grid-chart window" role="tabpanel"></div>
+      <button id="cal-more" class="ghost small" type="button" hidden></button>
       <p class="note" id="cal-note"></p>
+
+      <div class="block-head grid-head">
+        <h2 id="grid-title">¿Cuándo pesan más las visitantes? Por región y mes</h2>
+        <div id="grid-legend" class="legend"></div>
+      </div>
+      <p class="hint">Cada región comparada consigo misma: violeta = el mes tiene más visitantes que su promedio anual; azul =
+        menos (dominan las residentes). Filas de norte a sur. * pocos registros (&lt; 400 días-especie al mes): valores
+        inestables.</p>
+      <div id="region-grid" class="grid-chart"></div>
     </section>
   </main>
 
@@ -97,14 +98,18 @@
 
   <section class="sound-legend" aria-labelledby="sl-title">
     <h2 id="sl-title">Cómo suena</h2>
-    <p>Con <b>▶ Escuchar el año</b> cada mes es un compás de 1,6 s y cada región una voz.</p>
+    <p>Con <b>▶ Escuchar el año</b> cada mes dura 2,4 s y recorre Chile de norte a sur en cinco macrozonas (Norte Grande,
+      Norte Chico, Centro, Sur y Austral). Un golpe suave marca el inicio de cada mes.</p>
     <ul>
-      <li><b>Tono ← latitud.</b> Norte agudo, sur grave, en escala pentatónica.</li>
-      <li><b>Ritmo ← riqueza.</b> Más especies presentes, más notas por compás.</li>
-      <li><b>Timbre ← visitantes.</b> Cuanto mayor la proporción de visitantes, más brillante el sonido; con solo residentes suena
-        como una onda pura.</li>
-      <li>Si seleccionas una región, suena solo esa voz. Si abres una especie, se oye <b>su</b> presencia: la voz de cada
-        región suena cuando la especie está ahí.</li>
+      <li><b>Timbre ← clase.</b> Las residentes son un colchón sostenido y estable: <i>la que se queda</i>. Las visitantes
+        son cantos reales: el <b>Fío-fío</b> (izquierda) por las de verano y el <b>Picaflor chico</b> (derecha) por las de
+        invierno: <i>la que viaja</i>.</li>
+      <li><b>Ritmo ← la ola.</b> Cuantas más visitantes hay en una zona respecto de su propio año, más cantos suenan en
+        su tiempo del compás: la ola de verano crece en primavera y se apaga en otoño.</li>
+      <li><b>Tono ← latitud.</b> Los cantos se transponen: norte más agudo, sur más grave (escala pentatónica, ±6 semitonos).</li>
+      <li><b>Volumen ← cantidad.</b> Las zonas con más especies visitantes suenan más fuerte.</li>
+      <li>Si seleccionas una región, solo suena ella (con más detalle). Si abres una especie, suena <b>su</b> canto donde
+        y cuando está presente.</li>
     </ul>
   </section>
 

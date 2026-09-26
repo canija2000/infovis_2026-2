@@ -1,6 +1,6 @@
 /* Atlas sonoro de aves de Chile — V1
  * Overview: mapa + grilla región × mes + calendario especie × mes (año típico).
- * Zoom & filter: región, clases, buscador, scrubber de mes con play.
+ * Zoom & filter: región, ventana por clase (residentes / verano / invierno), buscador, scrubber de mes con play.
  * Details on demand: ficha de especie con perfil radial, mapa y canto.
  * Datos precalculados por build_web_data.py (ver docs/metodologia-datos.md §10).
  */
@@ -9,21 +9,29 @@
 
   const MONTHS = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
   const MON = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
-  // Año austral: julio → junio, para que el verano (dic–feb) quede al centro.
-  const ORDER = [6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5];
-  const SEASONS = [
-    { label: "invierno", from: 0, to: 2 },
-    { label: "primavera", from: 2, to: 5 },
-    { label: "verano", from: 5, to: 8 },
-    { label: "otoño", from: 8, to: 11 },
-    { label: "inv.", from: 11, to: 12 },
-  ];
+  // Año austral (jul → jun): el verano queda al centro. Año calendario (ene → dic): el invierno queda al centro.
+  const AUSTRAL = [6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5];
+  const CALENDAR = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+  const SEASON_OF = ["verano", "verano", "otoño", "otoño", "otoño", "invierno", "invierno", "invierno", "primavera", "primavera", "primavera", "verano"];
   const CLASS_KEYS = ["residente", "visitante_estival", "visitante_invernal", "ocasional"];
   const CLASS_LABEL = ["Residentes", "Visitantes de verano", "Visitantes de invierno", "Ocasionales"];
-  const CHIP_LABEL = ["Residentes", "De verano", "De invierno", "Ocasionales"];
+  const TAB_LABEL = ["Residentes", "De verano", "De invierno"];
   const CLASS_ONE = ["residente", "visitante de verano", "visitante de invierno", "ocasional"];
-  const GROUP_ORDER = [1, 2, 0, 3]; // olas primero, luego el bloque residente
-  const GROUP_LIMIT = { 0: 20, 1: 16, 2: 10, 3: 10 };
+  // Ventana que se abre por defecto: la ola de verano es la que comunica "la que viaja" sin interacción.
+  const DEFAULT_TAB = 1;
+  // Cada ventana centra su estación; residentes usan el año austral como la grilla general.
+  const TAB_ORDER = [AUSTRAL, AUSTRAL, CALENDAR];
+  const TAB_LIMIT = [12, 24, 16];
+  // Esfuerzo medio (días-especie por mes) bajo el cual una región tiene valores inestables.
+  const EFFORT_LOW = 400;
+  // Macrozonas para la sonificación (norte → sur); cada una es un tiempo del compás.
+  const ZONES = [
+    { name: "Norte Grande", ids: [1, 2, 3] },
+    { name: "Norte Chico", ids: [4, 5] },
+    { name: "Centro", ids: [6, 7, 8, 9] },
+    { name: "Sur", ids: [10, 11, 12, 13, 14] },
+    { name: "Austral", ids: [15, 16] },
+  ];
   const PENTATONIC = [0, 3, 5, 7, 10];
 
   const fmt = new Intl.NumberFormat("es-CL");
@@ -32,7 +40,8 @@
   const state = {
     scope: 0,
     month: 0, // índice calendario (0 = enero)
-    classes: new Set([0, 1, 2]),
+    tab: DEFAULT_TAB,
+    expanded: false,
     species: null,
     muted: false,
   };
@@ -42,14 +51,24 @@
 
   // ---------------------------------------------------------------- colores
   const dark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-  const RAMP_BLUE = dark
-    ? ["#20252d", "#184f95", "#2a78d6", "#6da7ec", "#cde2fb"]
-    : ["#f1f4f8", "#b7d3f6", "#5598e7", "#1c5cab", "#0d366b"];
-  const RAMP_VIOLET = dark
-    ? ["#24222c", "#3b2f8a", "#6a5cd0", "#9085e9", "#d6d0f7"]
-    : ["#f3f1f8", "#c9c2ee", "#8a7ddc", "#4a3aa7", "#271b66"];
-  const blue = d3.scaleSequential(d3.interpolateRgbBasis(RAMP_BLUE)).domain([0, 100]);
-  const violet = d3.scaleSequential(d3.interpolateRgbBasis(RAMP_VIOLET));
+  // Una rampa secuencial por clase (mismo tono que su muestra de color).
+  const RAMPS = dark
+    ? [
+        ["#1f242c", "#1d4a86", "#2f73c9", "#72a6e8", "#d0e2f8"],
+        ["#29211d", "#7a3414", "#c4541f", "#ee8b55", "#fbd9c4"],
+        ["#1c2622", "#0f5a3e", "#179e6c", "#5fd1a0", "#c8f1dd"],
+      ]
+    : [
+        ["#eef3f9", "#b5cef0", "#5e95dc", "#2560b0", "#0f366b"],
+        ["#fbf2ec", "#f6c6a8", "#ec8950", "#c2531e", "#76290a"],
+        ["#edf7f1", "#b1e1c8", "#4dbd8c", "#138356", "#0a4a31"],
+      ];
+  const classScale = RAMPS.map((r) => d3.scaleSequential(d3.interpolateRgbBasis(r)).domain([0, 100]));
+  // Grilla general: desviación de la proporción de visitantes respecto del promedio anual de la región.
+  const DIVERGING = dark
+    ? ["#2f73c9", "#23405f", "#2a2a28", "#56427f", "#9a85ea"]
+    : ["#2560b0", "#a9c3e6", "#f1f0ec", "#c3b6ec", "#5b44b8"];
+  const deviation = d3.scaleDiverging(d3.interpolateRgbBasis(DIVERGING));
 
   // ---------------------------------------------------------------- tooltip
   const tip = document.getElementById("tooltip");
@@ -90,17 +109,41 @@
       bySpecies.get(row.sid).set(row.rid, row);
     }
     const regionById = new Map(meta.regions.map((r) => [r.id, r]));
-    const shares = [];
-    for (const [k, months] of Object.entries(regionMonth.scopes)) if (k !== "0") months.forEach((m) => shares.push(m[4]));
-    violet.domain([0, Math.ceil(d3.max(shares) * 10) / 10]);
-    D = { meta, species, byScope, bySpecies, regionMonth: regionMonth.scopes, geo, regionById };
+    const effortMean = new Map(Object.entries(regionMonth.scopes).map(([k, months]) => [+k, d3.mean(months, (x) => x[5])]));
+    // Dominio simétrico de la desviación (proporción de visitantes − promedio anual de la región).
+    // Percentil 95 de |desviación| para que un extremo no apague el resto (la escala satura arriba de eso).
+    const devs = [];
+    for (const months of Object.values(regionMonth.scopes)) {
+      const mean = d3.mean(months, (x) => x[4]);
+      months.forEach((x) => devs.push(Math.abs(x[4] - mean)));
+    }
+    const dev = Math.ceil(d3.quantile(devs.sort(d3.ascending), 0.95) * 100) / 100;
+    deviation.domain([-dev, 0, dev]).clamp(true);
+    D = { meta, species, byScope, bySpecies, regionMonth: regionMonth.scopes, geo, regionById, effortMean };
   }
 
   // ---------------------------------------------------------------- helpers
   const scopeName = (id) => D.regionById.get(id).name;
   const rm = (scope, m) => D.regionMonth[String(scope)][m];
-  const displayIndex = (m) => ORDER.indexOf(m);
-  const austral = (phase) => (phase - 6 + 12) % 12;
+  const colX = (order, m) => LABEL + order.indexOf(m) * CW;
+  const tabOrder = () => TAB_ORDER[state.tab];
+  const lowEffort = (id) => id !== 0 && D.effortMean.get(id) < EFFORT_LOW;
+  const shareMean = (id) => d3.mean(D.regionMonth[String(id)], (x) => x[4]);
+
+  // Tramos de estación consecutivos para el encabezado de una grilla.
+  function seasonRuns(order) {
+    const runs = [];
+    order.forEach((m, i) => {
+      const last = runs[runs.length - 1];
+      if (last && last.label === SEASON_OF[m]) last.to = i + 1;
+      else runs.push({ label: SEASON_OF[m], from: i, to: i + 1 });
+    });
+    runs.forEach((r) => {
+      if (r.to - r.from === 1) r.label = r.label.slice(0, 3) + ".";
+    });
+    return runs;
+  }
+
 
   function freqText(row, m) {
     const f = row.freq[m] / 1000;
@@ -138,29 +181,44 @@
     return svg;
   }
 
+  // El mapa sigue a la ventana activa: cuántas especies de esa clase están presentes en el mes.
+  function mapScale() {
+    const col = state.tab + 1;
+    const max = d3.max(D.meta.regions.filter((r) => r.id), (r) => d3.max(D.regionMonth[String(r.id)], (x) => x[col]));
+    return d3.scaleSequential(d3.interpolateRgbBasis(RAMPS[state.tab])).domain([0, max]);
+  }
+
   function renderMap() {
     const m = state.month;
-    document.getElementById("map-month").textContent = MONTHS[m];
-    const el = document.getElementById("map");
-    drawChile(el, {
+    const col = state.tab + 1;
+    const scale = mapScale();
+    document.getElementById("map-title").innerHTML =
+      `${CLASS_LABEL[state.tab]} en <span id="map-month">${MONTHS[m]}</span>`;
+    drawChile(document.getElementById("map"), {
       width: 170, height: 760, selected: state.scope || null,
-      fill: (id) => violet(rm(id, m)[4]),
+      fill: (id) => scale(rm(id, m)[col]),
       onClick: (id) => selectScope(state.scope === id ? 0 : id),
       onHover: (id) => regionTip(id, m),
-    }).attr("aria-label", `Mapa de Chile: proporción de visitantes por región en ${MONTHS[m]}`);
+    }).attr("aria-label", `Mapa de Chile: ${CLASS_LABEL[state.tab].toLowerCase()} presentes por región en ${MONTHS[m]}`);
+    renderLegend(document.getElementById("map-legend"), scale, {
+      label: "Especies presentes", ticks: scale.ticks(4), format: (d) => fmt.format(d),
+    });
   }
 
   function regionTip(id, m) {
     const [rich, res, est, inv, share, effort] = rm(id, m);
+    const dev = share - shareMean(id);
     return `<b>${scopeName(id)}</b> · ${MONTHS[m]}<br>` +
       `${rich} especies presentes<br>` +
       `<span class="sw c1"></span>${est} de verano · <span class="sw c2"></span>${inv} de invierno · <span class="sw c0"></span>${res} residentes<br>` +
-      `Visitantes: <b>${pct(share)}</b> de la presencia<br><span class="muted">Esfuerzo medio: ${fmt.format(effort)} días-especie</span>`;
+      `Visitantes: <b>${pct(share)}</b> de la presencia (${dev >= 0 ? "+" : "−"}${pct(Math.abs(dev))} vs. su promedio anual)<br>` +
+      `<span class="muted">Esfuerzo medio: ${fmt.format(effort)} días-especie${lowEffort(id) ? " · pocos registros, valores inestables" : ""}</span>`;
   }
 
   function renderLegend(el, scale, { label, ticks, format }) {
     const w = 220, h = 34, x0 = 6, x1 = w - 10;
-    const [a, b] = scale.domain();
+    const dom = scale.domain();
+    const [a, b] = [dom[0], dom[dom.length - 1]];
     const x = d3.scaleLinear().domain([a, b]).range([x0, x1]);
     const svg = d3.select(el).selectAll("svg").data([0]).join("svg").attr("viewBox", `0 0 ${w} ${h}`)
       .attr("width", w).attr("height", h).attr("aria-label", label);
@@ -187,109 +245,151 @@
   }
 
   // ---------------------------------------------------------------- grillas
-  const W = 760, LABEL = 178, RIGHT = 8;
+  const W = 760, LABEL = 178, RIGHT = 74;
   const CW = (W - LABEL - RIGHT) / 12;
-  const colX = (m) => LABEL + displayIndex(m) * CW;
 
-  function monthAxis(g, y) {
-    g.selectAll("text.mon").data(ORDER).join("text").attr("class", "mon")
-      .attr("x", (m) => colX(m) + CW / 2).attr("y", y).attr("text-anchor", "middle")
+  function monthAxis(svg, order, y) {
+    const g = svg.selectAll("g.axis").data([0]).join("g").attr("class", "axis");
+    g.selectAll("text.mon").data(order, (m) => m).join("text").attr("class", "mon")
+      .attr("x", (m) => colX(order, m) + CW / 2).attr("y", y).attr("text-anchor", "middle")
       .classed("current", (m) => m === state.month).text((m) => MON[m]);
   }
 
+  function seasonHeader(svg, order, y, h) {
+    const runs = seasonRuns(order);
+    svg.selectAll("g.seasons").data([0]).join("g").attr("class", "seasons").selectAll("text").data(runs).join("text")
+      .attr("x", (s) => LABEL + ((s.from + s.to) / 2) * CW).attr("y", y).attr("text-anchor", "middle").text((s) => s.label);
+    svg.selectAll("g.season-lines").data([0]).join("g").attr("class", "season-lines").selectAll("line").data(runs.slice(1))
+      .join("line").attr("x1", (s) => LABEL + s.from * CW).attr("x2", (s) => LABEL + s.from * CW).attr("y1", y - 8).attr("y2", h);
+  }
+
+  function cursor(svg, order, top, h) {
+    svg.node().__order = order;
+    svg.selectAll("rect.cursor").data([0]).join("rect").attr("class", "cursor").raise()
+      .attr("x", colX(order, state.month)).attr("y", top).attr("width", CW).attr("height", h - top).attr("rx", 3);
+  }
+
+  // Matriz general: región × mes, color = cuánto se aleja la proporción de visitantes del promedio anual de la región.
   function renderRegionGrid() {
+    const order = AUSTRAL;
     const rowH = 13, top = 34;
     const ids = [0, ...D.meta.regions.filter((r) => r.id).map((r) => r.id)];
     const y = (i) => top + i * rowH + (i > 0 ? 6 : 0);
     const h = y(ids.length) + 4;
     const svg = d3.select("#region-grid").selectAll("svg").data([0]).join("svg").attr("viewBox", `0 0 ${W} ${h}`)
-      .attr("aria-label", "Grilla: proporción de visitantes por región (filas, norte a sur) y mes (columnas)");
-    // estaciones
-    svg.selectAll("g.seasons").data([0]).join("g").attr("class", "seasons").selectAll("text").data(SEASONS).join("text")
-      .attr("x", (s) => LABEL + ((s.from + s.to) / 2) * CW).attr("y", 10).attr("text-anchor", "middle").text((s) => s.label);
-    svg.selectAll("g.season-lines").data([0]).join("g").attr("class", "season-lines").selectAll("line").data(SEASONS.slice(1))
-      .join("line").attr("x1", (s) => LABEL + s.from * CW).attr("x2", (s) => LABEL + s.from * CW).attr("y1", 2).attr("y2", h);
-    monthAxis(svg.selectAll("g.axis").data([0]).join("g").attr("class", "axis"), 27);
+      .attr("aria-label", "Grilla: variación estacional de la proporción de visitantes por región (filas, norte a sur) y mes (columnas)");
+    seasonHeader(svg, order, 10, h);
+    monthAxis(svg, order, 27);
 
     const rows = svg.selectAll("g.row").data(ids).join("g").attr("class", "row")
       .attr("transform", (id, i) => `translate(0,${y(i)})`)
       .classed("selected", (id) => id === state.scope)
+      .classed("low", (id) => lowEffort(id))
       .style("cursor", "pointer")
       .on("click", (e, id) => selectScope(id === state.scope ? 0 : id));
     rows.selectAll("text").data((id) => [id]).join("text").attr("x", LABEL - 8).attr("y", rowH - 3).attr("text-anchor", "end")
-      .attr("class", (id) => (id === 0 ? "label strong" : "label")).text((id) => (id === 0 ? "Chile" : scopeName(id)));
-    rows.selectAll("rect").data((id) => ORDER.map((m) => ({ id, m }))).join("rect")
-      .attr("x", (d) => colX(d.m) + 1).attr("width", CW - 2).attr("height", rowH - 2).attr("rx", 1.5)
-      .attr("fill", (d) => violet(rm(d.id, d.m)[4]))
+      .attr("class", (id) => (id === 0 ? "label strong" : "label"))
+      .text((id) => (id === 0 ? "Chile" : scopeName(id)) + (lowEffort(id) ? " *" : ""));
+    rows.selectAll("rect").data((id) => order.map((m) => ({ id, m }))).join("rect")
+      .attr("x", (d) => colX(order, d.m) + 1).attr("width", CW - 2).attr("height", rowH - 2).attr("rx", 1.5)
+      .attr("fill", (d) => deviation(rm(d.id, d.m)[4] - shareMean(d.id)))
       .on("pointermove", (e, d) => showTip(e, regionTip(d.id, d.m))).on("pointerleave", hideTip);
-    svg.selectAll("rect.cursor").data([0]).join("rect").attr("class", "cursor")
-      .attr("x", colX(state.month)).attr("y", top - 2).attr("width", CW).attr("height", h - top).attr("rx", 3);
+    cursor(svg, order, top - 2, h);
+  }
+
+  // Llegada y salida: inicio y fin del tramo continuo más largo sobre el 50 % del pico, en el orden de la ventana
+  // (cada ventana centra su estación, así que la estadía principal no se corta en los bordes).
+  function arrival(row, order) {
+    let best = [12, 12], start = -1;
+    order.forEach((m, i) => {
+      const on = row.prof[m] >= 50;
+      if (on && start < 0) start = i;
+      if (start >= 0 && (!on || i === 11)) {
+        const end = on ? i : i - 1;
+        if (end - start > best[1] - best[0] || best[0] === 12) best = [start, end];
+        start = -1;
+      }
+    });
+    return best;
   }
 
   function selectRows() {
-    const all = (D.byScope.get(state.scope) || []).filter((r) => state.classes.has(r.cls));
-    const groups = [];
-    for (const cls of GROUP_ORDER) {
-      if (!state.classes.has(cls)) continue;
-      const pool = all.filter((r) => r.cls === cls);
-      if (!pool.length) continue;
-      let chosen = pool.slice().sort((a, b) => b.mean - a.mean || a.sid - b.sid).slice(0, GROUP_LIMIT[cls]);
-      const pinned = pool.find((r) => r.sid === state.species);
-      if (pinned && !chosen.includes(pinned)) chosen.push(pinned);
-      chosen.sort((a, b) => austral(a.phase) - austral(b.phase) || b.mean - a.mean);
-      if (cls === 0 || cls === 3) chosen.sort((a, b) => b.mean - a.mean);
-      groups.push({ cls, rows: chosen, total: pool.length });
+    const order = tabOrder();
+    const pool = (D.byScope.get(state.scope) || []).filter((r) => r.cls === state.tab);
+    let rows = pool.slice().sort((a, b) => b.mean - a.mean || a.sid - b.sid);
+    if (!state.expanded) rows = rows.slice(0, TAB_LIMIT[state.tab]);
+    const pinned = pool.find((r) => r.sid === state.species);
+    if (pinned && !rows.includes(pinned)) rows.push(pinned);
+    if (state.tab !== 0) {
+      // Escalera: primero los que llegan antes; a igual llegada, los que se van antes.
+      rows.sort((a, b) => {
+        const [a0, a1] = arrival(a, order);
+        const [b0, b1] = arrival(b, order);
+        return a0 - b0 || a1 - b1 || b.mean - a.mean;
+      });
     }
-    return groups;
+    return { rows, total: pool.length };
+  }
+
+  function renderTabs() {
+    const rows = D.byScope.get(state.scope) || [];
+    const counts = [0, 0, 0, 0];
+    rows.forEach((r) => counts[r.cls]++);
+    d3.select("#tabs").selectAll("button").data([0, 1, 2]).join("button")
+      .attr("type", "button").attr("role", "tab").attr("class", (c) => `tab c${c}`)
+      .attr("aria-selected", (c) => c === state.tab)
+      .html((c) => `<span class="sw c${c}"></span>${TAB_LABEL[c]} <span class="n">${counts[c]}</span>`)
+      .on("click", (e, c) => setTab(c));
+  }
+
+  function setTab(c) {
+    if (c === state.tab) return;
+    state.tab = c;
+    state.expanded = false;
+    renderTabs();
+    renderMap();
+    renderCalendar();
   }
 
   function renderCalendar() {
     document.getElementById("scope-name").textContent = scopeName(state.scope);
-    const groups = selectRows();
-    const rowH = 12, head = 22, gap = 10, top = 20;
-    let y = top;
-    const layout = [];
-    for (const g of groups) {
-      layout.push({ type: "head", g, y });
-      y += head;
-      for (const r of g.rows) {
-        layout.push({ type: "row", r, y });
-        y += rowH;
-      }
-      y += gap;
-    }
-    const h = Math.max(y, 60);
+    const order = tabOrder();
+    const color = classScale[state.tab];
+    const { rows: list, total } = selectRows();
+    const rowH = 13, top = 34;
+    const h = Math.max(top + list.length * rowH + 6, 80);
     const svg = d3.select("#calendar").selectAll("svg").data([0]).join("svg").attr("viewBox", `0 0 ${W} ${h}`)
-      .attr("aria-label", `Calendario especie por mes en ${scopeName(state.scope)}`);
-    monthAxis(svg.selectAll("g.axis").data([0]).join("g").attr("class", "axis"), 12);
-    svg.selectAll("g.season-lines").data([0]).join("g").attr("class", "season-lines").selectAll("line").data(SEASONS.slice(1))
-      .join("line").attr("x1", (s) => LABEL + s.from * CW).attr("x2", (s) => LABEL + s.from * CW).attr("y1", top).attr("y2", h);
+      .attr("aria-label", `Calendario de ${CLASS_LABEL[state.tab].toLowerCase()} por mes en ${scopeName(state.scope)}`);
+    seasonHeader(svg, order, 10, h);
+    monthAxis(svg, order, 27);
+    const barX = W - RIGHT + 10, barW = RIGHT - 44;
+    const maxMean = d3.max(list, (r) => r.mean) || 1;
+    svg.selectAll("text.bar-head").data([0]).join("text").attr("class", "bar-head")
+      .attr("x", barX).attr("y", 27).text("días/mes");
 
-    const heads = svg.selectAll("g.ghead").data(layout.filter((d) => d.type === "head"), (d) => d.g.cls)
-      .join((enter) => {
-        const g = enter.append("g").attr("class", "ghead");
-        g.append("rect").attr("width", 10).attr("height", 10).attr("rx", 2).attr("y", 5);
-        g.append("text").attr("x", 16).attr("y", 14);
-        return g;
-      })
-      .attr("transform", (d) => `translate(0,${d.y})`);
-    heads.select("rect").attr("class", (d) => `sw-rect c${d.g.cls}`);
-    heads.select("text").html((d) => `<tspan class="strong">${CLASS_LABEL[d.g.cls]}</tspan><tspan class="muted"> · ${d.g.rows.length} de ${d.g.total} especies${d.g.cls === 0 ? ", las más frecuentes" : ""}</tspan>`);
-
-    const rows = svg.selectAll("g.srow").data(layout.filter((d) => d.type === "row"), (d) => `${d.r.cls}-${d.r.sid}`)
+    const rows = svg.selectAll("g.srow").data(list, (r) => r.sid)
       .join((enter) => {
         const g = enter.append("g").attr("class", "srow");
         g.append("rect").attr("class", "hit").attr("x", 0).attr("width", W).attr("height", rowH);
-        g.append("text").attr("class", "label").attr("x", LABEL - 8).attr("y", rowH - 2.5).attr("text-anchor", "end");
+        g.append("text").attr("class", "label").attr("x", LABEL - 8).attr("y", rowH - 3).attr("text-anchor", "end");
+        g.append("rect").attr("class", "freq").attr("y", 3).attr("height", rowH - 6).attr("rx", 1);
+        g.append("text").attr("class", "freq-val").attr("y", rowH - 3);
         return g;
       })
-      .attr("transform", (d) => `translate(0,${d.y})`)
-      .classed("selected", (d) => d.r.sid === state.species)
-      .on("click", (e, d) => openSpecies(d.r.sid));
-    rows.select("text.label").text((d) => D.species[d.r.sid].comName);
-    rows.selectAll("rect.cell").data((d) => ORDER.map((m) => ({ r: d.r, m }))).join("rect").attr("class", "cell")
-      .attr("x", (c) => colX(c.m) + 1).attr("y", 1).attr("width", CW - 2).attr("height", rowH - 2).attr("rx", 1.5)
-      .attr("fill", (c) => blue(c.r.prof[c.m]))
+      .attr("transform", (r, i) => `translate(0,${top + i * rowH})`)
+      .classed("selected", (r) => r.sid === state.species)
+      .on("click", (e, r) => openSpecies(r.sid));
+    rows.select("text.label").text((r) => D.species[r.sid].comName);
+    // Frecuencia absoluta: el color es relativo al mes pico, esta barra dice qué tan común es la especie.
+    rows.select("rect.freq").attr("x", barX).attr("width", (r) => Math.max(1, (r.mean / maxMean) * barW))
+      .attr("class", `freq c${state.tab}`);
+    rows.select("text.freq-val").attr("x", barX + barW + 4)
+      .text((r) => (r.mean / 1000 * 30.4).toFixed(r.mean < 330 ? 1 : 0).replace(".", ","));
+    rows.selectAll("rect.cell").data((r) => order.map((m) => ({ r, m }))).join("rect").attr("class", "cell")
+      .attr("x", (c) => colX(order, c.m) + 1).attr("y", 1).attr("width", CW - 2).attr("height", rowH - 2).attr("rx", 1.5)
+      .attr("fill", (c) => color(c.r.prof[c.m]))
+      // Confianza: menos años con registro en ese mes → celda más tenue.
+      .attr("fill-opacity", (c) => 0.3 + 0.7 * (c.r.years[c.m] / 8))
       .on("pointermove", (e, c) => {
         const s = D.species[c.r.sid];
         showTip(e, `<b>${s.comName}</b> <i>${s.sciName}</i><br>${MONTHS[c.m]} · ${scopeName(state.scope)}<br>` +
@@ -297,32 +397,22 @@
           `<span class="muted">Con registro en ${c.r.years[c.m]} de 8 años · ${CLASS_ONE[c.r.cls]}</span>`);
       })
       .on("pointerleave", hideTip);
+    cursor(svg, order, top - 2, h);
 
-    svg.selectAll("rect.cursor").data([0]).join("rect").attr("class", "cursor").raise()
-      .attr("x", colX(state.month)).attr("y", top - 2).attr("width", CW).attr("height", h - top).attr("rx", 3);
-
-    const shown = groups.reduce((a, g) => a + g.rows.length, 0);
-    document.getElementById("cal-note").textContent = shown
-      ? `Color: presencia relativa al mes pico de cada especie (100 % = su mejor mes), corregida por esfuerzo de registro. ` +
-        `Grupos de visitantes ordenados por mes central de presencia; residentes por frecuencia. Clic en una especie para ver su ficha.`
-      : "No hay especies para esta combinación de región y clases.";
-  }
-
-  // ---------------------------------------------------------------- chips y buscador
-  function renderChips() {
-    const rows = D.byScope.get(state.scope) || [];
-    const counts = [0, 0, 0, 0];
-    rows.forEach((r) => counts[r.cls]++);
-    const el = d3.select("#chips");
-    el.selectAll("button").data(GROUP_ORDER).join("button")
-      .attr("type", "button").attr("class", (c) => `chip c${c}`)
-      .attr("aria-pressed", (c) => state.classes.has(c))
-      .html((c) => `<span class="sw c${c}"></span>${CHIP_LABEL[c]} <span class="n">${counts[c]}</span>`)
-      .on("click", (e, c) => {
-        state.classes.has(c) ? state.classes.delete(c) : state.classes.add(c);
-        renderChips();
-        renderCalendar();
-      });
+    const more = document.getElementById("cal-more");
+    more.hidden = total <= TAB_LIMIT[state.tab];
+    more.textContent = state.expanded ? `Mostrar solo las ${TAB_LIMIT[state.tab]} más frecuentes` : `Mostrar las ${total} especies`;
+    renderLegend(document.getElementById("cal-legend"), color, {
+      label: "Presencia (% del mes pico)", ticks: [0, 50, 100], format: (d) => `${d} %`,
+    });
+    const sortText = state.tab === 0
+      ? "Ordenadas por frecuencia."
+      : `Ordenadas por mes de llegada (primer mes sobre el 50 % de su pico); eje ${order === AUSTRAL ? "julio → junio, con el verano al centro" : "enero → diciembre, con el invierno al centro"}.`;
+    document.getElementById("cal-note").textContent = list.length
+      ? `${list.length} de ${total} especies. Color: presencia relativa al mes pico de cada especie, corregida por esfuerzo; ` +
+        `las celdas tenues tienen registro en pocos de los 8 años. ${sortText} La barra de la derecha indica cuán común es ` +
+        `(días con registro por mes, promedio anual). Clic en una especie para ver su ficha.`
+      : "No hay especies de esta clase en la región.";
   }
 
   function setupSearch() {
@@ -357,6 +447,14 @@
     state.species = sid;
     const s = D.species[sid];
     const rows = D.bySpecies.get(sid);
+    const here = rows.get(state.scope) || rows.get(0);
+    if (here && here.cls < 3 && here.cls !== state.tab) {
+      state.tab = here.cls;
+      state.expanded = false;
+      renderTabs();
+      renderMap();
+    }
+    if (Sonifier.playing) loadSounds().then(() => Sonifier.load([grainOf(sid)])).catch(() => {});
     const row = rows.get(state.scope) || rows.get(0);
     const panel = document.getElementById("panel");
     panel.hidden = false;
@@ -412,7 +510,7 @@
     const rows = D.bySpecies.get(sid);
     const means = [...rows.values()].filter((r) => r.rid).map((r) => r.mean);
     const max = Math.max(1, d3.max(means) || 1);
-    const scale = d3.scaleSequential(d3.interpolateRgbBasis(RAMP_BLUE)).domain([0, max]);
+    const scale = d3.scaleSequential(d3.interpolateRgbBasis(RAMPS[0])).domain([0, max]);
     const el = document.getElementById("p-map");
     drawChile(el, {
       width: 60, height: 270, selected: null,
@@ -427,65 +525,98 @@
     }).attr("aria-label", "Mapa de frecuencia media anual de la especie por región");
   }
 
+  async function loadSounds() {
+    if (!sounds) sounds = await fetch("data/sounds.json").then((r) => r.json());
+    return sounds;
+  }
+  const soundEntry = (sid) => sounds && sounds.species.find((x) => x.sid === sid);
+  const grainOf = (sid) => {
+    const e = soundEntry(sid);
+    return e && e.recordings.length ? e.recordings[0].grain : null;
+  };
+
   async function renderSound(sid) {
     const box = document.getElementById("p-sound");
     box.innerHTML = `<p class="muted">Buscando grabaciones…</p>`;
     try {
-      if (!sounds) sounds = await fetch("data/sounds.json").then((r) => r.json());
+      await loadSounds();
     } catch (err) {
       box.innerHTML = `<p class="muted">No se pudo cargar el índice de cantos.</p>`;
       return;
     }
     if (state.species !== sid) return;
-    const entry = sounds.species.find((x) => x.sid === sid);
+    const entry = soundEntry(sid);
     if (!entry) return (box.innerHTML = "");
     const name = entry.xcName !== D.species[sid].sciName ? ` (en Xeno-canto: <i>${entry.xcName}</i>)` : "";
     if (!entry.recordings.length) {
-      box.innerHTML = `<h3>Canto</h3><p class="muted">Aún no hay una grabación seleccionada para esta especie${name}. ` +
-        `<a href="${entry.searchUrl}" target="_blank" rel="noopener">Escuchar en Xeno-canto ↗</a></p>`;
+      box.innerHTML = `<h3>Canto</h3><p class="muted">Aún no hay un clip para esta especie${name}; al reproducir el año suena ` +
+        `con un tono sintético. <a href="${entry.searchUrl}" target="_blank" rel="noopener">Escuchar en Xeno-canto ↗</a></p>`;
       return;
     }
     box.innerHTML = `<h3>Canto${name}</h3>` + entry.recordings.map((r) =>
       `<figure class="rec"><audio controls preload="none" src="${r.src}"></audio>` +
       `<figcaption><a href="${r.url}" target="_blank" rel="noopener">XC${r.id}</a> · ${r.recordist || "autor s/i"}` +
-      ` · ${r.type || ""} · ${r.country || ""} · <a href="${r.license}" target="_blank" rel="noopener">licencia</a></figcaption></figure>`).join("");
+      ` · ${r.type || ""} · ${r.country || ""} · <a href="${r.license}" target="_blank" rel="noopener">licencia</a>` +
+      `<br><span class="muted">Clip de 8 s (el tramo de mayor energía) de la grabación original.</span></figcaption></figure>`).join("");
   }
 
   // ---------------------------------------------------------------- sonificación
-  const lats = () => D.meta.regions.filter((r) => r.id).map((r) => r.lat);
-  function pitch(regionId) {
-    const [lo, hi] = d3.extent(lats());
-    const degree = Math.round(((D.regionById.get(regionId).lat - lo) / (hi - lo)) * 14); // 0 = sur … 14 = norte
-    const semis = 12 * Math.floor(degree / 5) + PENTATONIC[degree % 5];
-    return 110 * Math.pow(2, semis / 12);
+  // Residentes = colchón estable ("la que se queda"); visitantes = cantos reales ("la que viaja").
+  // Cada mes recorre Chile de norte a sur: tiempo dentro del compás y tono ← latitud; densidad ← la ola.
+  const regionLat = (id) => D.regionById.get(id).lat;
+  function latSemis(lat) {
+    const [lo, hi] = d3.extent(D.meta.regions.filter((r) => r.id), (r) => r.lat);
+    const degree = Math.round(((lat - lo) / (hi - lo)) * 5); // 0 = sur … 5 = norte
+    return 12 * Math.floor(degree / 5) + PENTATONIC[degree % 5] - 6; // −6 … +6 semitonos
+  }
+  const rateFor = (lat) => Math.pow(2, latSemis(lat) / 12);
+
+  // Presencia estacional de una clase en una región, 0–1 respecto de su propio rango anual.
+  function waveLevel(id, col, m) {
+    const series = D.regionMonth[String(id)].map((x) => x[col]);
+    const [lo, hi] = d3.extent(series);
+    return hi > lo ? (series[m] - lo) / (hi - lo) : 0;
+  }
+  // Peso absoluto (para el volumen): cuántas especies de la clase hay, vs. el máximo nacional.
+  function waveWeight(id, col, m) {
+    const max = d3.max(D.meta.regions.filter((r) => r.id), (r) => d3.max(D.regionMonth[String(r.id)], (x) => x[col]));
+    return rm(id, m)[col] / max;
   }
 
-  function voices(m) {
-    const ids = state.scope ? [state.scope] : D.meta.regions.filter((r) => r.id).map((r) => r.id);
-    const solo = ids.length === 1;
-    if (state.species !== null) {
-      const rows = D.bySpecies.get(state.species);
-      return ids.filter((id) => rows.get(id)).map((id) => {
-        const r = rows.get(id);
-        return {
-          freq: pitch(id),
-          pulses: (Sonifier.STEPS * r.prof[m] * r.years[m]) / 800,
-          bright: r.cls === 1 || r.cls === 2 ? 0.85 : 0.1,
-          gain: solo ? 0.16 : 0.07,
-        };
+  function barFor(m) {
+    const layers = (sounds && sounds.layers) || {};
+    const zones = state.scope ? [{ ids: [state.scope] }] : ZONES;
+    const slot = 1 / zones.length;
+    const maxPer = state.scope ? 6 : 3;
+    const hits = [];
+    const place = (z, k, n, shift) => z * slot + ((k + 0.5) / n + shift) * slot * 0.9;
+    zones.forEach((zone, z) => {
+      const lat = d3.mean(zone.ids, regionLat);
+      if (state.species !== null) {
+        const rows = D.bySpecies.get(state.species);
+        const level = d3.max(zone.ids, (id) => (rows.get(id) ? (rows.get(id).prof[m] / 100) * (rows.get(id).years[m] / 8) : 0)) || 0;
+        const n = Math.round(level * maxPer);
+        for (let k = 0; k < n; k++) hits.push({ at: place(z, k, n, 0), sample: grainOf(state.species), rate: rateFor(lat), gain: 0.32, pan: 0 });
+        return;
+      }
+      [[1, "visitante_estival", -0.35, 0], [2, "visitante_invernal", 0.35, 0.25 / maxPer]].forEach(([cls, key, pan, shift]) => {
+        const col = cls + 1;
+        const level = d3.mean(zone.ids, (id) => waveLevel(id, col, m));
+        const weight = d3.mean(zone.ids, (id) => waveWeight(id, col, m));
+        const n = Math.round(level * maxPer);
+        const sample = layers[key] !== undefined ? grainOf(layers[key]) : null;
+        for (let k = 0; k < n; k++) {
+          hits.push({ at: place(z, k, n, shift), sample, rate: rateFor(lat), gain: 0.1 + 0.3 * Math.sqrt(weight), pan });
+        }
       });
-    }
-    const maxRich = d3.max(ids, (id) => d3.max(D.regionMonth[String(id)], (x) => x[0]));
-    const [, vmax] = violet.domain();
-    return ids.map((id) => {
-      const [rich, , , , share] = rm(id, m);
-      return {
-        freq: pitch(id),
-        pulses: Math.max(1, Math.round((rich / maxRich) * Sonifier.STEPS)),
-        bright: Math.min(1, share / vmax),
-        gain: solo ? 0.14 : 0.045,
-      };
     });
+    const root = state.scope ? 110 * rateFor(regionLat(state.scope)) : 110;
+    const residents = rm(state.scope, m)[1] / d3.max(D.regionMonth[String(state.scope)], (x) => x[1]);
+    return {
+      tick: true,
+      pad: { freqs: [root, root * 1.5], gain: (state.species !== null ? 0.025 : 0.06) * residents },
+      hits,
+    };
   }
 
   async function togglePlay() {
@@ -497,7 +628,14 @@
       document.getElementById("play-icon").setAttribute("d", "M4 2.5v11l9-5.5z");
       return;
     }
-    const ok = await Sonifier.start(state.month, voices, (m) => setMonth(m));
+    try {
+      await loadSounds();
+    } catch (err) {
+      console.warn("Sin índice de cantos; se usarán tonos sintéticos", err);
+    }
+    const layers = (sounds && sounds.layers) || {};
+    const urls = [...Object.values(layers).map(grainOf), state.species !== null ? grainOf(state.species) : null];
+    const ok = await Sonifier.start(state.month, barFor, (m) => setMonth(m), urls);
     if (!ok) return;
     Sonifier.setMuted(state.muted);
     btn.setAttribute("aria-pressed", "true");
@@ -505,15 +643,18 @@
     document.getElementById("play-icon").setAttribute("d", "M4 2.5h3v11H4zM9 2.5h3v11H9z");
   }
 
+
   // ---------------------------------------------------------------- estado
   function setMonth(m) {
     state.month = m;
-    document.getElementById("month").value = displayIndex(m);
+    document.getElementById("month").value = AUSTRAL.indexOf(m);
     document.getElementById("month-label").textContent = MONTHS[m];
-    d3.selectAll("#month-ticks span").classed("current", (d, i) => ORDER[i] === m);
+    d3.selectAll("#month-ticks span").classed("current", (d, i) => AUSTRAL[i] === m);
     renderMap();
     renderScopeStats();
-    d3.selectAll("rect.cursor").attr("x", colX(m));
+    d3.selectAll(".grid-chart svg").each(function () {
+      if (this.__order) d3.select(this).select("rect.cursor").attr("x", colX(this.__order, m));
+    });
     d3.selectAll("text.mon").classed("current", (d) => d === m);
     d3.selectAll("#p-radial text.mlab").classed("current", (d) => d === m);
   }
@@ -524,15 +665,19 @@
     renderMap();
     renderScopeStats();
     renderRegionGrid();
-    renderChips();
+    renderTabs();
     if (state.species !== null) openSpecies(state.species);
     else renderCalendar();
   }
 
   function setupControls() {
     const ticks = document.getElementById("month-ticks");
-    ticks.innerHTML = ORDER.map((m) => `<span>${MON[m][0].toUpperCase()}</span>`).join("");
-    document.getElementById("month").addEventListener("input", (e) => setMonth(ORDER[+e.target.value]));
+    ticks.innerHTML = AUSTRAL.map((m) => `<span>${MON[m][0].toUpperCase()}</span>`).join("");
+    document.getElementById("month").addEventListener("input", (e) => setMonth(AUSTRAL[+e.target.value]));
+    document.getElementById("cal-more").addEventListener("click", () => {
+      state.expanded = !state.expanded;
+      renderCalendar();
+    });
     document.getElementById("play").addEventListener("click", togglePlay);
     document.getElementById("mute").addEventListener("click", (e) => {
       state.muted = !state.muted;
@@ -572,14 +717,12 @@
       renderSummary();
       setupControls();
       setupSearch();
-      renderLegend(document.getElementById("map-legend"), violet, {
-        label: "Visitantes (% de la presencia)", ticks: d3.ticks(...violet.domain(), 3), format: (d) => pct(d),
-      });
-      renderLegend(document.getElementById("cal-legend"), blue, {
-        label: "Presencia (% del mes pico)", ticks: [0, 50, 100], format: (d) => `${d} %`,
+      renderLegend(document.getElementById("grid-legend"), deviation, {
+        label: "Visitantes vs. promedio anual de la región", ticks: deviation.domain(),
+        format: (d) => (d === 0 ? "igual" : `${d > 0 ? "+" : "−"}${pct(Math.abs(d))}${d > 0 ? " o más" : " o menos"}`),
       });
       renderRegionGrid();
-      renderChips();
+      renderTabs();
       renderCalendar();
       renderMethod();
       setMonth(0);

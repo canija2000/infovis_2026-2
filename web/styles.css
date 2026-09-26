@@ -9,7 +9,7 @@
   --rule: #e4e2dc;
   --empty: #ecebe6;
   --accent: #16161a;
-  --c0: #8b8a84; /* residente: neutro */
+  --c0: #2f6fc0; /* residente */
   --c1: #eb6834; /* visitante de verano */
   --c2: #1baf7a; /* visitante de invierno */
   --c3: #cfcdc6; /* ocasional */
@@ -29,7 +29,7 @@
     --rule: #34332f;
     --empty: #2a2a28;
     --accent: #f4f3ef;
-    --c0: #9a998f;
+    --c0: #4f8fdc;
     --c1: #d95926;
     --c2: #199e70;
     --c3: #4a4945;
@@ -47,7 +47,7 @@
   --rule: #34332f;
   --empty: #2a2a28;
   --accent: #f4f3ef;
-  --c0: #9a998f;
+  --c0: #4f8fdc;
   --c1: #d95926;
   --c2: #199e70;
   --c3: #4a4945;
@@ -152,7 +152,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 }
 
 .ghost.small { padding: 2px 10px; font-size: 13px; }
-.ghost:hover, .chip:hover { border-color: var(--ink-3); }
+.ghost:hover, .tab:hover { border-color: var(--ink-3); }
 
 button:focus-visible, input:focus-visible { outline: 2px solid var(--c1); outline-offset: 2px; }
 
@@ -160,24 +160,6 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--c1); outlin
 .month-tool input { width: 100%; margin: 0; accent-color: var(--ink); }
 .month-ticks { display: grid; grid-template-columns: repeat(12, 1fr); font: 10px var(--mono); color: var(--ink-3); text-align: center; padding: 0 3px; }
 .month-ticks span.current { color: var(--ink); font-weight: 500; }
-
-.chips { display: flex; flex-wrap: wrap; gap: 6px; }
-
-.chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
-  border: 1px solid var(--rule);
-  border-radius: 999px;
-  background: var(--surface);
-  font-size: 14px;
-  color: var(--ink-3);
-}
-
-.chip[aria-pressed="true"] { color: var(--ink); border-color: var(--ink-3); }
-.chip[aria-pressed="false"] .sw { opacity: 0.35; }
-.chip .n { font: 12px var(--mono); color: var(--ink-3); }
 
 .search-tool input {
   width: 230px;
@@ -213,7 +195,31 @@ body.with-panel .toolbar { padding-right: 404px; }
 
 .block-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 .block-head h2 { font-size: 17px; }
-.cal-head { margin-top: 28px; }
+.grid-head { margin-top: 36px; }
+
+/* ventana: pestañas por clase sobre el calendario */
+.tabs { display: flex; gap: 4px; margin: 10px 0 0; border-bottom: 1px solid var(--rule); }
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: -1px;
+  padding: 7px 14px 6px;
+  border: 1px solid transparent;
+  border-bottom: 2px solid transparent;
+  border-radius: 6px 6px 0 0;
+  background: none;
+  color: var(--ink-3);
+  font: 600 14px var(--font);
+  cursor: pointer;
+}
+.tab .n { font: 12px var(--mono); color: var(--ink-3); }
+.tab[aria-selected="true"] { color: var(--ink); background: var(--surface); border-color: var(--rule); border-bottom-color: var(--surface); }
+.tab.c0[aria-selected="true"] { box-shadow: inset 0 3px 0 var(--c0); }
+.tab.c1[aria-selected="true"] { box-shadow: inset 0 3px 0 var(--c1); }
+.tab.c2[aria-selected="true"] { box-shadow: inset 0 3px 0 var(--c2); }
+.window { padding: 8px 10px 6px; background: var(--surface); border: 1px solid var(--rule); border-top: none; border-radius: 0 0 8px 8px; }
+#cal-more { margin-top: 8px; }
 .hint { margin: 2px 0 8px; font-size: 11px; color: var(--ink-3); }
 .note { font-size: 12px; color: var(--ink-3); max-width: 90ch; }
 
@@ -246,8 +252,15 @@ path.region.dim { opacity: 0.45; }
 .grid-chart .ghead .muted { fill: var(--ink-3); font-weight: 400; }
 .grid-chart rect.hit { fill: transparent; }
 .grid-chart .srow { cursor: pointer; }
-.grid-chart .srow.selected rect.hit { fill: color-mix(in srgb, var(--c1) 10%, transparent); }
+.grid-chart .srow.selected rect.hit { fill: color-mix(in srgb, var(--ink) 8%, transparent); }
 .grid-chart rect.cell:hover, .grid-chart .row rect:hover { stroke: var(--ink); stroke-width: 1; }
+.grid-chart .row.low rect { opacity: 0.5; }
+.grid-chart .row.low text.label { font-style: italic; fill: var(--ink-3); }
+.grid-chart rect.freq.c0 { fill: var(--c0); }
+.grid-chart rect.freq.c1 { fill: var(--c1); }
+.grid-chart rect.freq.c2 { fill: var(--c2); }
+.grid-chart text.freq-val { font: 10px var(--mono); fill: var(--ink-3); }
+.grid-chart text.bar-head { font: 10px var(--mono); fill: var(--ink-3); }
 rect.cursor { fill: none; stroke: var(--cursor); stroke-width: 1.5; pointer-events: none; transition: x 0.25s ease; }
 
 /* -------------------------------------------------------------- ficha */
