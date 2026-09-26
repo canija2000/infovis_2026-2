@@ -1,0 +1,186 @@
+{
+ "title": "Atlas de aves de Chile — año típico",
+ "taxonGroup": "Aves",
+ "years": [
+  2017,
+  2024
+ ],
+ "excludedYears": "2016 (parcial) y 2025–2026 (sin eBird en GBIF aún)",
+ "classes": [
+  "residente",
+  "visitante_estival",
+  "visitante_invernal",
+  "ocasional"
+ ],
+ "parameters": {
+  "presenceMinYears": 4,
+  "presenceMinProfile": 0.2,
+  "seasonalMinAmplitude": 0.6
+ },
+ "regions": [
+  {
+   "id": 0,
+   "code": "CL",
+   "name": "Chile",
+   "fullName": "Chile (16 regiones)",
+   "lat": null,
+   "lon": null
+  },
+  {
+   "id": 1,
+   "code": "CL-AP",
+   "name": "Arica y Parinacota",
+   "fullName": "Región de Arica y Parinacota",
+   "lat": -18.5,
+   "lon": -69.63
+  },
+  {
+   "id": 2,
+   "code": "CL-TA",
+   "name": "Tarapacá",
+   "fullName": "Región de Tarapacá",
+   "lat": -20.22,
+   "lon": -69.39
+  },
+  {
+   "id": 3,
+   "code": "CL-AN",
+   "name": "Antofagasta",
+   "fullName": "Región de Antofagasta",
+   "lat": -23.54,
+   "lon": -69.12
+  },
+  {
+   "id": 4,
+   "code": "CL-AT",
+   "name": "Atacama",
+   "fullName": "Región de Atacama",
+   "lat": -27.4,
+   "lon": -69.91
+  },
+  {
+   "id": 5,
+   "code": "CL-CO",
+   "name": "Coquimbo",
+   "fullName": "Región de Coquimbo",
+   "lat": -30.62,
+   "lon": -70.86
+  },
+  {
+   "id": 6,
+   "code": "CL-VS",
+   "name": "Valparaíso",
+   "fullName": "Región de Valparaíso",
+   "lat": -32.78,
+   "lon": -70.96
+  },
+  {
+   "id": 7,
+   "code": "CL-RM",
+   "name": "Metropolitana",
+   "fullName": "Región Metropolitana de Santiago",
+   "lat": -33.6,
+   "lon": -70.63
+  },
+  {
+   "id": 8,
+   "code": "CL-LI",
+   "name": "O'Higgins",
+   "fullName": "Región del Libertador Bernardo O'Higgins",
+   "lat": -34.44,
+   "lon": -71.05
+  },
+  {
+   "id": 9,
+   "code": "CL-ML",
+   "name": "Maule",
+   "fullName": "Región del Maule",
+   "lat": -35.62,
+   "lon": -71.45
+  },
+  {
+   "id": 10,
+   "code": "CL-NB",
+   "name": "Ñuble",
+   "fullName": "Región de Ñuble",
+   "lat": -36.65,
+   "lon": -71.98
+  },
+  {
+   "id": 11,
+   "code": "CL-BI",
+   "name": "Biobío",
+   "fullName": "Región del Bío-Bío",
+   "lat": -37.5,
+   "lon": -72.4
+  },
+  {
+   "id": 12,
+   "code": "CL-AR",
+   "name": "La Araucanía",
+   "fullName": "Región de La Araucanía",
+   "lat": -38.65,
+   "lon": -72.27
+  },
+  {
+   "id": 13,
+   "code": "CL-LR",
+   "name": "Los Ríos",
+   "fullName": "Región de Los Ríos",
+   "lat": -40.01,
+   "lon": -72.57
+  },
+  {
+   "id": 14,
+   "code": "CL-LL",
+   "name": "Los Lagos",
+   "fullName": "Región de Los Lagos",
+   "lat": -42.04,
+   "lon": -72.9
+  },
+  {
+   "id": 15,
+   "code": "CL-AI",
+   "name": "Aysén",
+   "fullName": "Región de Aysén del Gral.Ibañez del Campo",
+   "lat": -46.42,
+   "lon": -73.25
+  },
+  {
+   "id": 16,
+   "code": "CL-MA",
+   "name": "Magallanes",
+   "fullName": "Región de Magallanes y Antártica Chilena",
+   "lat": -52.44,
+   "lon": -71.89
+  }
+ ],
+ "typicalYearColumns": {
+  "sid": "id de especie (species.json)",
+  "rid": "id de región (0 = Chile)",
+  "cls": "índice en classes",
+  "peak": "mes pico del perfil corregido (0 = enero)",
+  "phase": "mes medio circular",
+  "amp": "amplitud estacional 0–1",
+  "freq": "‰ de días del mes con registro, media 2017–2024",
+  "prof": "perfil corregido por esfuerzo, 100 = mes pico",
+  "years": "años (de 8) con registro en ese mes",
+  "present": "bitmask de meses con presencia"
+ },
+ "metric": "Días del mes en que la especie se registró en la región (coordenadas dentro del polígono regional). No es un conteo de observaciones ni de individuos: múltiples registros de la misma especie el mismo día cuentan una vez.",
+ "source": "11 descargas anuales GBIF (2016-2026), filtros: TaxonKey=Aves, Country=CL, HasCoordinate=true, HasGeospatialIssue=false, EventDate 2016-09-17 a 2026-09-25. Todos los datasets incluidos (eBird ~95% en 2016-2024; 2025-2026 sin datos eBird aún, solo iNaturalist y otros). Join espacial a 16 polígonos regionales.",
+ "dois": [
+  "https://doi.org/10.15468/dl.kzmxav",
+  "https://doi.org/10.15468/dl.q4gkgp",
+  "https://doi.org/10.15468/dl.bbzdhf",
+  "https://doi.org/10.15468/dl.zd43an",
+  "https://doi.org/10.15468/dl.6g73xy",
+  "https://doi.org/10.15468/dl.ay45wx",
+  "https://doi.org/10.15468/dl.c8636y",
+  "https://doi.org/10.15468/dl.ha69dg",
+  "https://doi.org/10.15468/dl.mhq47r",
+  "https://doi.org/10.15468/dl.zduqq6",
+  "https://doi.org/10.15468/dl.ykt9z2"
+ ],
+ "gbifCitation": "GBIF.org (2026) GBIF Occurrence Downloads, Aves, Chile, 2016–2026. Ver DOIs."
+}

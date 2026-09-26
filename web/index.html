@@ -2,85 +2,158 @@
 <html lang="es">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Atlas de aves de Chile</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;600;700;800&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dos avifaunas · Atlas sonoro de aves de Chile</title>
+  <meta name="description"
+    content="Calendario interactivo y sonoro de las aves de Chile: especies residentes y visitantes estacionales por región, año típico 2017–2024 (GBIF).">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <main class="shell">
-        <header class="masthead">
-            <div>
-                <p class="eyebrow">eBird / Chile / días con registro</p>
-                <h1>El pulso de las aves<br><em>por región</em></h1>
-            </div>
-            <div class="status"><span class="status-dot"></span><span id="coverage">Cargando datos...</span></div>
-        </header>
+  <header class="masthead">
+    <p class="kicker">Atlas sonoro · Aves de Chile · año típico 2017–2024</p>
+    <h1>Chile tiene dos avifaunas: <span class="stay">la que se queda</span> y <span class="travel">la que viaja</span>.</h1>
+    <p class="lede" id="lede">Cada fila es una especie; cada columna, un mes. El color indica qué tan presente está la especie
+      respecto de su mejor mes. Las visitantes de verano llegan en primavera y se van en otoño, como una ola; las de invierno
+      hacen lo inverso; las residentes forman un bloque parejo. Cambia de ventana para ver cada grupo.</p>
+    <p class="summary" id="summary" aria-live="polite"></p>
+  </header>
 
-        <section class="intro">
-            <p>Explora dónde se concentra el registro de aves y cómo cambia a través del tiempo. Selecciona una región
-                para abrir su historia, sus especies más reportadas y sus próximas capas multimedia.</p>
-        </section>
+  <nav class="toolbar" aria-label="Controles">
+    <div class="tool play-tool">
+      <button id="play" class="play icon-btn" type="button" aria-pressed="false" aria-label="Escuchar el año"
+        title="Escuchar el año (barra espaciadora)">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path id="play-icon" d="M4.5 2.5v11l9-5.5z" /></svg>
+      </button>
+      <button id="mute" class="ghost icon-btn" type="button" aria-pressed="false" aria-label="Silenciar" title="Silenciar">
+        <svg viewBox="0 0 20 20" aria-hidden="true">
+          <path class="speaker" d="M3 7.5h3l4-3.5v12l-4-3.5H3z" />
+          <path class="waves" d="M13 7a4 4 0 0 1 0 6M15.5 4.5a7.5 7.5 0 0 1 0 11" />
+          <path class="cross" d="M13 7.5l5 5M18 7.5l-5 5" />
+        </svg>
+      </button>
+    </div>
+    <div class="tool month-tool">
+      <label for="month" class="tool-label">Mes <strong id="month-label">enero</strong></label>
+      <input id="month" type="range" min="0" max="11" step="1" value="6" aria-describedby="month-label">
+      <div class="month-ticks" aria-hidden="true" id="month-ticks"></div>
+    </div>
+    <div class="tool search-tool">
+      <label for="search" class="tool-label">Especie</label>
+      <input id="search" type="search" list="species-list" placeholder="Fío-fío, Tórtola, Calidris…" autocomplete="off">
+      <datalist id="species-list"></datalist>
+    </div>
+  </nav>
 
-        <section class="dashboard">
-            <div class="map-column">
-                <div class="section-head">
-                    <div><span class="section-index">01</span>
-                        <h2>Actividad de registro</h2>
-                    </div>
-                    <div class="legend"><span class="legend-label">participación
-                            relativa</span><i></i><i></i><i></i><i></i><i></i></div>
-                </div>
-                <div id="map" aria-label="Mapa interactivo de las regiones de Chile"></div>
-                <p class="map-note">La intensidad representa el porcentaje de días-especie registrados que cae en cada
-                    región. eBird entrega un registro por especie y día para todo Chile (el más reciente), por lo que
-                    el mapa refleja dónde se reporta, no cuántas aves hay.</p>
-            </div>
+  <main class="layout">
+    <section class="map-col" aria-labelledby="map-title">
+      <div class="block-head">
+        <h2 id="map-title">Presentes en <span id="map-month">enero</span></h2>
+        <button id="reset" class="ghost small" type="button" hidden>← Chile</button>
+      </div>
+      <p class="hint">Clic en una región para verla sola.</p>
+      <div id="map" class="map"></div>
+      <div id="map-legend" class="legend"></div>
+      <dl class="scope-stats" id="scope-stats"></dl>
+    </section>
 
-            <aside class="detail-panel" aria-live="polite">
-                <div class="panel-kicker">REGIÓN SELECCIONADA</div>
-                <h2 id="region-name">Selecciona una región</h2>
-                <div class="stat-grid">
-                    <div><strong id="region-observations">—</strong><span>días-especie</span></div>
-                    <div><strong id="region-species">—</strong><span>especies</span></div>
-                    <div><strong id="region-months">—</strong><span>meses con datos</span></div>
-                </div>
-                <div class="media-row">
-                    <div class="media-placeholder"><span
-                            class="media-icon">◌</span><span>Imagen<br><small>próximamente</small></span></div>
-                    <div class="media-placeholder"><span
-                            class="media-icon">◖</span><span>Canto<br><small>próximamente</small></span></div>
-                </div>
-                <div class="species-head"><span class="section-index">02</span>
-                    <h3>Especies con más días de registro</h3>
-                </div>
-                <ol id="species-list" class="species-list">
-                    <li class="empty">Haz clic en una región del mapa.</li>
-                </ol>
-            </aside>
-        </section>
+    <section class="viz-col" aria-labelledby="cal-title">
+      <div class="block-head">
+        <h2 id="cal-title">Calendario de la avifauna · <span id="scope-name">Chile</span></h2>
+      </div>
+      <p class="howto">Cada fila es una especie; cada columna, un mes. Cuanto más intenso el color, más presente está la
+        especie respecto de su mejor mes.</p>
+      <div class="legend-row">
+        <div id="cal-legend" class="legend"></div>
+        <span class="key"><i class="key-cell faint"></i>Celda tenue: registrada en pocos de los 8 años</span>
+        <span class="key"><i class="key-bar"></i>Barra: días con registro al mes (qué tan común es)</span>
+      </div>
+      <div class="tabs" id="tabs" role="tablist" aria-label="Ventana por clase estacional"></div>
+      <div id="calendar" class="grid-chart window" role="tabpanel"></div>
+      <div class="below">
+        <button id="cal-more" class="ghost small" type="button" hidden></button>
+        <details class="how">
+          <summary>¿Cómo se calcula y se ordena?</summary>
+          <p id="cal-note"></p>
+        </details>
+      </div>
 
-        <section class="timeline-section">
-            <div class="section-head">
-                <div><span class="section-index">03</span>
-                    <h2>Ritmo mensual <small>(días-especie por mes)</small></h2>
-                </div><span id="timeline-label" class="mono">—</span>
-            </div>
-            <div id="timeline" class="timeline"></div>
-        </section>
+      <div class="block-head grid-head">
+        <h2 id="grid-title">¿Cuándo pesan más las visitantes? Por región y mes</h2>
+      </div>
+      <p class="howto">Cada región comparada consigo misma: violeta, el mes tiene más visitantes que su promedio anual;
+        azul, menos (dominan las residentes). Filas de norte a sur.</p>
+      <div class="legend-row">
+        <div id="grid-legend" class="legend"></div>
+        <span class="key"><i class="key-star">*</i>Región con pocos registros (&lt; 400 días-especie al mes): valores
+          inestables</span>
+      </div>
+      <div id="region-grid" class="grid-chart"></div>
+      <details class="how">
+        <summary>¿Cómo se calcula?</summary>
+        <p>Proporción de visitantes = peso de las especies visitantes (de verano y de invierno) en la presencia total del
+          mes, donde cada especie pondera según qué tan presente está. Se muestra la diferencia entre cada mes y el
+          promedio de los 12 meses de esa misma región, así una región con pocos registros no aparece "más visitada"
+          solo por tener menos datos. La escala satura en el percentil 95 de las diferencias.</p>
+      </details>
+    </section>
+  </main>
 
-        <footer><span>Fuente: eBird API 2.0</span><span>Pipeline en Python · visualización estática para GitHub
-                Pages</span></footer>
-    </main>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="app.js"></script>
+  <aside id="panel" class="panel" aria-live="polite" hidden>
+    <button id="panel-close" class="ghost close" type="button" aria-label="Cerrar ficha">✕</button>
+    <p class="kicker" id="p-class"></p>
+    <h2 id="p-name"></h2>
+    <p class="sci" id="p-sci"></p>
+    <div class="panel-grid">
+      <figure>
+        <figcaption>Perfil anual en <span id="p-scope"></span></figcaption>
+        <div id="p-radial"></div>
+      </figure>
+      <figure>
+        <figcaption>Frecuencia media por región</figcaption>
+        <div id="p-map"></div>
+      </figure>
+    </div>
+    <p class="note" id="p-note"></p>
+    <div id="p-sound" class="sound-box"></div>
+  </aside>
+
+  <section class="sound-legend" aria-labelledby="sl-title">
+    <h2 id="sl-title">Cómo suena</h2>
+    <p>Con <b>▶</b> (Escuchar el año) cada mes dura 2,4 s y recorre Chile de norte a sur en cinco macrozonas (Norte Grande,
+      Norte Chico, Centro, Sur y Austral). Un golpe grave y suave marca el inicio de cada mes.</p>
+    <ul>
+      <li><b>Timbre ← clase.</b> Las residentes son un colchón sostenido y estable: <i>la que se queda</i>. Las visitantes
+        son cantos reales: el <b>Fío-fío</b> (izquierda) por las de verano y el <b>Picaflor chico</b> (derecha) por las de
+        invierno: <i>la que viaja</i>.</li>
+      <li><b>Ritmo ← la ola.</b> Cuantas más visitantes hay en una zona respecto de su propio año, más cantos suenan en
+        su tiempo del compás: la ola de verano crece en primavera y se apaga en otoño.</li>
+      <li><b>Tono ← latitud.</b> Los cantos se transponen: norte más agudo, sur más grave (escala pentatónica, ±6 semitonos),
+        sobre una base una quinta más grave que el canto original y filtrada para que no suene estridente.</li>
+      <li><b>Volumen ← cantidad.</b> Las zonas con más especies visitantes suenan más fuerte.</li>
+      <li>Si seleccionas una región, solo suena ella (con más detalle). Si abres una especie, suena <b>su</b> canto donde
+        y cuando está presente.</li>
+    </ul>
+  </section>
+
+  <footer class="method">
+    <h2>Qué mide y de dónde viene</h2>
+    <p id="method-text"></p>
+    <p class="dois" id="dois"></p>
+    <p>Cantos: <a href="https://xeno-canto.org" target="_blank" rel="noopener">Xeno-canto</a>, con autor y licencia
+      Creative Commons en cada grabación. Proyecto del curso Visualización de Información 2026-2.</p>
+  </footer>
+
+  <div id="tooltip" class="tooltip" role="tooltip" hidden></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+  <script src="sonify.js"></script>
+  <script src="app.js"></script>
 </body>
 
 </html>

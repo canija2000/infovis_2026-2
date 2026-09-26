@@ -1,35 +1,16 @@
-# Atlas de aves de Chile
+# web/ — Atlas sonoro de aves de Chile (V1)
 
-La webpage es un frontend estático. No ejecuta Python ni necesita la API key de eBird.
-El mapa usa solamente el GeoJSON local de las regiones, sin teselas de Carto,
-OpenStreetMap ni otro proveedor externo de mapas.
-
-## Flujo
-
-1. Generar `web/data/` con `10anios.py` (usa la caché local si existe).
-2. Abrir `web/index.html` mediante un servidor HTTP local.
+Sitio estático sin build step: `index.html`, `styles.css`, `app.js` (vistas e
+interacción, D3 v7 desde jsDelivr) y `sonify.js` (sonificación con Web Audio API).
 
 ```bash
-python 10anios.py --dry-run
-python 10anios.py
+cd web && python3 -m http.server 8000   # abrir http://localhost:8000
 ```
 
-El script consulta Chile una vez por día, asigna cada observación a una región
-mediante `Regional.shp`, y publica datos compactos agregados por región, mes y
-especie. Las respuestas diarias quedan en `cache_ebird/` y no se versionan.
-Una década implica aproximadamente 3.650 solicitudes nuevas la primera vez.
+La página carga solo los archivos derivados de `data/` (~0,9 MB):
+`meta.json`, `species.json`, `typical_year.json`, `region_month.json`,
+`regions.min.geojson`; `sounds.json` se pide al abrir una ficha de especie.
+Se regeneran con `python3 build_web_data.py` desde la raíz del repo.
 
-```bash
-cd web
-python3 -m http.server 8000
-```
-
-Luego visitar <http://localhost:8000>.
-
-El script genera:
-
-- `data/regions.geojson`: regiones y métricas agregadas.
-- `data/observations-01.json` y `data/observations-02.json`: observaciones normalizadas particionadas para respetar el límite de tamaño de assets de Cloudflare Workers.
-- `data/metadata.json`: cobertura y fecha de actualización.
-
-Para GitHub Pages, publicar la carpeta `web/` como raíz del sitio. Las fotografías y audios todavía son placeholders; se pueden completar en `app.js` cuando exista la tabla de correspondencias por nombre científico.
+`data/observations-*.json`, `data/regions.geojson` y `data/metadata.json` son
+la entrada del build (agregado GBIF completo); la web no los descarga.
