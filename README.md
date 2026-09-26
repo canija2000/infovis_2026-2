@@ -25,7 +25,9 @@ GBIF (11 descargas anuales, Aves, Chile)
 - `gbif/synonyms_xc.json`: nombres científicos GBIF → Xeno-canto (IOC).
 - `web/`: frontend estático. `app.js` contiene las vistas y la interacción;
   `sonify.js`, la sonificación.
-- `descargar_sonidos.py`, `optimizar_sonidos.py`: cantos desde Xeno-canto (local).
+- `preparar_audio_web.py`: elige, descarga (Xeno-canto, `cnt:chile`) y recorta los
+  cantos que publica la web en `web/audio/` (clips + `clips.json`).
+- `descargar_sonidos.py`, `optimizar_sonidos.py`: descarga inicial de cantos (histórico).
 - `docs/proceso/`: bitácora de versiones (V1 → V4) para la entrega.
 - Histórico (se conserva como evidencia del proceso, no se usa en la web):
   `10anios.py` (eBird nacional), `pull_regional.py`, `progress_check.py`,
@@ -52,15 +54,21 @@ python3 -m http.server 8000
 Abrir <http://localhost:8000>. D3 se carga desde jsDelivr, así que se necesita
 conexión a internet.
 
-- **Overview:** mensaje, resumen de clases, mapa y grilla región × mes con la
-  proporción de visitantes, y el calendario de la avifauna.
-- **Zoom & filter:** clic en una región (mapa o grilla), filtros por clase,
-  buscador de especie y scrubber de mes con ▶ (también con la barra espaciadora).
+- **Overview:** mensaje, resumen de clases, mapa y una "ventana" con el
+  calendario especie × mes de una clase (pestañas Residentes / De verano / De
+  invierno, cada una con su rampa de color; abre en verano). Debajo, la grilla
+  general región × mes: cuánto se aleja cada mes del promedio anual de
+  visitantes de la región.
+- **Zoom & filter:** clic en una región (mapa o grilla), pestañas por clase,
+  "mostrar todas", buscador de especie y scrubber de mes con ▶ (también con la
+  barra espaciadora).
 - **Detalle:** ficha de especie con perfil anual radial, mapa de frecuencia
-  por región y canto de Xeno-canto (si hay grabación).
-- **Sonificación:** cada mes es un compás y cada región una voz. Tono ←
-  latitud, ritmo ← riqueza, timbre ← proporción de visitantes. El audio parte
-  solo después de pulsar Play.
+  por región y clip de canto (si hay).
+- **Sonificación:** cada mes (2,4 s) recorre Chile de norte a sur en cinco
+  macrozonas. Residentes = colchón sostenido; visitantes = cantos reales
+  (Fío-fío en verano, Picaflor chico en invierno). Densidad ← la ola de cada
+  zona respecto de su propio año; tono ← latitud; volumen ← cantidad. El audio
+  parte solo después de pulsar Play.
 
 ## Publicación
 
@@ -71,17 +79,20 @@ sirve como assets estáticos (`wrangler.jsonc`).
 ## Cantos (Xeno-canto)
 
 ```bash
-python3 descargar_sonidos.py --dry-run
-python3 descargar_sonidos.py --top 25 --recordings-per-species 3
-python3 build_web_data.py            # incorpora sounds/manifest.json a web/data/sounds.json
+python3 preparar_audio_web.py --dry-run   # selección y faltantes
+python3 preparar_audio_web.py             # descarga faltantes y genera web/audio/
+python3 build_web_data.py                 # enlaza web/audio/clips.json en web/data/sounds.json
 ```
 
-La API key se lee de `api_sounds` (`.env` o una variable de entorno) y nunca
-se escribe en archivos ni en logs. La consulta usa el nombre de Xeno-canto
-según `gbif/synonyms_xc.json`. Los audios quedan en `sounds/` (fuera de Git);
-la web los reproduce desde xeno-canto.org, con autor y licencia. El plan de
-mejora (filtro por país, calidad, clips propios) está en
-`refactorizacion_sounds_api.md`.
+`preparar_audio_web.py` toma la mejor grabación de cada especie en `sounds/`
+(prioriza Chile, canto o llamado, calidad A y licencias sin ND) y descarga
+desde Xeno-canto (`cnt:chile`) los visitantes más frecuentes y las especies
+cuya grabación local no era de Chile o Argentina. De cada una publica un clip
+de 8 s (la ventana de mayor energía, normalizada) y un grano de 1,2 s para la
+sonificación, en total unos 3 MB. Requiere `ffmpeg` y `numpy`. La API key se
+lee de `api_sounds` (`.env` o variable de entorno) y nunca se escribe ni se
+imprime. `sounds/` (originales) sigue fuera de Git; `web/audio/` sí se publica,
+con autor, licencia y enlace a la grabación original en la ficha.
 
 ## Fuentes y atribución
 
