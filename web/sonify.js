@@ -8,7 +8,11 @@
 
 const Sonifier = (() => {
   const BAR_SECONDS = 2.4;
-  const GRAIN_SECONDS = 0.55;
+  const GRAIN_SECONDS = 0.9;
+  // Los cantos se bajan una quinta y se filtran: los granos cortos de cantos agudos (Fío-fío ~4 kHz,
+  // Picaflor chico ~8 kHz) sonaban como "beeps".
+  const TRANSPOSE = Math.pow(2, -7 / 12);
+  const GRAIN_LOWPASS = 3500;
   const LOOKAHEAD = 0.2;
   let ctx = null;
   let master = null;
@@ -82,6 +86,11 @@ const Sonifier = (() => {
   // Grano de canto real. Si el audio no cargó, cae a un pulso sintético.
   function hit(time, { sample, rate = 1, gain = 0.3, pan = 0 }) {
     const out = ctx.createGain();
+    const lowpass = ctx.createBiquadFilter();
+    lowpass.type = "lowpass";
+    lowpass.frequency.value = GRAIN_LOWPASS;
+    lowpass.Q.value = 0.5;
+    lowpass.connect(out);
     const panner = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
     if (panner) {
       panner.pan.value = pan;
@@ -89,40 +98,42 @@ const Sonifier = (() => {
     } else out.connect(master);
     const buffer = buffers.get(sample);
     const dur = GRAIN_SECONDS;
+    const r = rate * TRANSPOSE;
+    // Envolvente suave: entra en 60 ms y se desvanece en la segunda mitad.
     out.gain.setValueAtTime(0.0001, time);
-    out.gain.exponentialRampToValueAtTime(gain, time + 0.015);
-    out.gain.setValueAtTime(gain, time + dur * 0.6);
+    out.gain.exponentialRampToValueAtTime(gain, time + 0.06);
+    out.gain.setValueAtTime(gain, time + dur * 0.45);
     out.gain.exponentialRampToValueAtTime(0.0001, time + dur);
     if (buffer) {
       const src = ctx.createBufferSource();
       src.buffer = buffer;
-      src.playbackRate.value = rate;
-      src.connect(out);
-      src.start(time, 0, dur * rate + 0.05);
+      src.playbackRate.value = r;
+      src.connect(lowpass);
+      src.start(time, 0, dur * r + 0.05);
     } else {
+      // Especie sin clip: nota suave y grave en vez de un pitido.
       const osc = ctx.createOscillator();
-      osc.type = "triangle";
-      osc.frequency.value = 880 * rate;
-      osc.connect(out);
+      osc.type = "sine";
+      osc.frequency.value = 330 * rate;
+      osc.connect(lowpass);
       osc.start(time);
       osc.stop(time + dur);
     }
   }
 
+  // Marca de mes: golpe grave y corto (tipo tambor apagado), no un clic agudo.
   function tick(time) {
-    const len = 0.03;
-    const noise = ctx.createBuffer(1, Math.ceil(ctx.sampleRate * len), ctx.sampleRate);
-    const data = noise.getChannelData(0);
-    for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / data.length) ** 3;
-    const src = ctx.createBufferSource();
-    src.buffer = noise;
-    const bp = ctx.createBiquadFilter();
-    bp.type = "bandpass";
-    bp.frequency.value = 1800;
+    const osc = ctx.createOscillator();
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(140, time);
+    osc.frequency.exponentialRampToValueAtTime(70, time + 0.12);
     const g = ctx.createGain();
-    g.gain.value = 0.12;
-    src.connect(bp).connect(g).connect(master);
-    src.start(time);
+    g.gain.setValueAtTime(0.0001, time);
+    g.gain.exponentialRampToValueAtTime(0.18, time + 0.005);
+    g.gain.exponentialRampToValueAtTime(0.0001, time + 0.18);
+    osc.connect(g).connect(master);
+    osc.start(time);
+    osc.stop(time + 0.2);
   }
 
   function scheduleBar(m, t0) {
