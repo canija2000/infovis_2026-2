@@ -1,11 +1,29 @@
 {
-  "updatedAt": "2026-09-25T20:36:10.096000+00:00",
-  "startDate": "2016-09-17",
-  "endDate": "2026-09-18",
-  "speciesDayCount": 604225,
-  "regionCount": 16,
-  "aggregation": "region-month-species",
-  "metric": "reportDays",
-  "metricDescription": "Días del mes en que la especie se reportó en Chile y cuyo avistamiento más reciente del día cayó en la región. No es un conteo de observaciones ni de individuos.",
-  "source": "ebird-historic-national (una consulta diaria a CL, rank=mrec)"
+ "updatedAt": "2026-09-26T01:37:24.506281+00:00",
+ "startDate": "2016-09-17",
+ "endDate": "2026-09-25",
+ "speciesDayCount": 1524227,
+ "regionCount": 16,
+ "aggregation": "region-month-species",
+ "metric": "reportDays",
+ "metricDescription": "Días del mes en que la especie se registró en la región (coordenadas dentro del polígono regional). No es un conteo de observaciones ni de individuos: múltiples registros de la misma especie el mismo día cuentan una vez.",
+ "source": "gbif-annual-downloads (Aves, Chile, con coordenadas, sin problemas geoespaciales)",
+ "sourceDetail": "11 descargas anuales GBIF (2016-2026), filtros: TaxonKey=Aves, Country=CL, HasCoordinate=true, HasGeospatialIssue=false, EventDate 2016-09-17 a 2026-09-25. Todos los datasets incluidos (eBird ~95% en 2016-2024; 2025-2026 sin datos eBird aún, solo iNaturalist y otros). Join espacial a 16 polígonos regionales.",
+ "dois": [
+  "https://doi.org/10.15468/dl.kzmxav",
+  "https://doi.org/10.15468/dl.q4gkgp",
+  "https://doi.org/10.15468/dl.bbzdhf",
+  "https://doi.org/10.15468/dl.zd43an",
+  "https://doi.org/10.15468/dl.6g73xy",
+  "https://doi.org/10.15468/dl.ay45wx",
+  "https://doi.org/10.15468/dl.c8636y",
+  "https://doi.org/10.15468/dl.ha69dg",
+  "https://doi.org/10.15468/dl.mhq47r",
+  "https://doi.org/10.15468/dl.zduqq6",
+  "https://doi.org/10.15468/dl.ykt9z2"
+ ],
+ "observationFiles": [
+  "observations-01.json",
+  "observations-02.json"
+ ]
 }

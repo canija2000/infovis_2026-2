@@ -20,25 +20,23 @@ const escapeHtml = (value) =>
   );
 
 async function loadData() {
-  const [
-    regionResponse,
-    observationsPartOneResponse,
-    observationsPartTwoResponse,
-    metadataResponse,
-  ] = await Promise.all([
+  const [regionResponse, metadataResponse] = await Promise.all([
     fetch(`${DATA_PATH}regions.geojson`),
-    fetch(`${DATA_PATH}observations-01.json`),
-    fetch(`${DATA_PATH}observations-02.json`),
     fetch(`${DATA_PATH}metadata.json`).catch(() => null),
   ]);
   const geojson = await regionResponse.json();
-  const [observationsPartOne, observationsPartTwo] = await Promise.all([
-    observationsPartOneResponse.json(),
-    observationsPartTwoResponse.json(),
-  ]);
-  observations = observationsPartOne.concat(observationsPartTwo);
-  regions = geojson.features;
   const metadata = metadataResponse ? await metadataResponse.json() : {};
+  // Los archivos de observaciones se leen desde metadata (observationFiles);
+  // fallback a los dos archivos históricos si metadata no los trae.
+  const files = metadata.observationFiles || [
+    "observations-01.json",
+    "observations-02.json",
+  ];
+  const parts = await Promise.all(
+    files.map((f) => fetch(`${DATA_PATH}${f}`).then((r) => r.json())),
+  );
+  observations = parts.flat();
+  regions = geojson.features;
   document.querySelector("#coverage").textContent =
     metadata.startDate && metadata.endDate
       ? `${metadata.startDate} — ${metadata.endDate}`
