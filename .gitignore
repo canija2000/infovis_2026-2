@@ -31,3 +31,9 @@ gbif/worker.log
 gbif/*_out.txt
 gbif/__pycache__/
 cache_xenocanto/
+
+# Enriquecimiento del mundo 3D: respuestas HTTP, datasets crudos y fotos de referencia
+# (solo uso interno; las fotos no se redistribuyen).
+python_scripts/enrich/cache/
+python_scripts/enrich/__pycache__/
+refs/
