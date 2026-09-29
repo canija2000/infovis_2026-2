@@ -1,0 +1,5712 @@
+{
+ "Accipiter bicolor": {
+  "avonet": "Woodland",
+  "biomes": [
+   "bosque",
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Accipiter chilensis": {
+  "avonet": "Woodland",
+  "biomes": [
+   "bosque",
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Actitis macularius": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Aeronautes andecolus": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "denso",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Agapornis fischeri": {
+  "avonet": "Woodland",
+  "biomes": [
+   "bosque",
+   "matorral",
+   "valle"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Agapornis personatus": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Agapornis roseicollis": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Agelasticus thilius": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Agriornis andicola": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Agriornis lividus": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Agriornis micropterus": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Agriornis montanus": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Aix galericulata": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Aix sponsa": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Alopochelidon fucata": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Amazona aestiva": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Anairetes fernandezianus": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Anairetes flavirostris": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Anairetes parulus": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Anairetes reguloides": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Anas bahamensis": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Anas flavirostris": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Anas georgica": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Anas platyrhynchos": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Anous albivitta": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Anous minutus": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Anous stolidus": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Anser anser": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Anser cygnoides": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Anthus correndera": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Anthus hellmayri": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Anthus peruvianus": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Aphrastura masafuerae": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Aphrastura spinicauda": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Aphrodroma brevirostris": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Aptenodytes patagonicus": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Ara ararauna": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "denso",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Ara severus": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "denso",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Aramus guarauna": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Aratinga acuticaudata": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Aratinga erythrogenys": {
+  "avonet": "Woodland",
+  "biomes": [
+   "bosque",
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Aratinga mitrata": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "denso",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Ardea alba": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Ardea cocoi": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Arenaria interpres": {
+  "avonet": "Coastal",
+  "biomes": [
+   "costa",
+   "fiordo",
+   "humedal"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Asio flammeus": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Asthenes anthoides": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Asthenes dorbignyi": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Asthenes humicola": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Asthenes modesta": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Asthenes pudibunda": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Asthenes pyrrholeuca": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Athene cunicularia": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Attagis gayi": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Attagis malouinus": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Aythya fuligula": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Bartramia longicauda": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Branta leucopsis": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Bubo magellanicus": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Bubo virginianus": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Bubulcus ibis": {
+  "avonet": "Human Modified",
+  "biomes": [
+   "ciudad",
+   "valle",
+   "pradera"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Buteo albigula": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Buteo poecilochrous": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Buteo polyosoma": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Buteo swainsoni": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Buteo ventralis": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "denso",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Buteogallus urubitinga": {
+  "avonet": "Woodland",
+  "biomes": [
+   "bosque",
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Butorides striata": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Cairina moschata": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Calidris alba": {
+  "avonet": "Coastal",
+  "biomes": [
+   "costa",
+   "fiordo",
+   "humedal"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Calidris bairdii": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Calidris canutus": {
+  "avonet": "Coastal",
+  "biomes": [
+   "costa",
+   "fiordo",
+   "humedal"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Calidris ferruginea": {
+  "avonet": "Coastal",
+  "biomes": [
+   "costa",
+   "fiordo",
+   "humedal"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Calidris fuscicollis": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Calidris himantopus": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Calidris mauri": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Calidris melanotos": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Calidris minutilla": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Calidris pusilla": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Calidris subruficollis": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Calidris virgata": {
+  "avonet": "Coastal",
+  "biomes": [
+   "costa",
+   "fiordo",
+   "humedal"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Callipepla californica": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Callonetta leucophrys": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Campephilus magellanicus": {
+  "avonet": "Woodland",
+  "biomes": [
+   "bosque",
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Caracara plancus": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Casiornis rufus": {
+  "avonet": "Woodland",
+  "biomes": [
+   "bosque",
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Catamenia analis": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Cathartes aura": {
+  "avonet": "Human Modified",
+  "biomes": [
+   "ciudad",
+   "valle",
+   "pradera"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Catharus ustulatus": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "denso",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Chaetura pelagica": {
+  "avonet": "Human Modified",
+  "biomes": [
+   "ciudad",
+   "valle",
+   "pradera"
+  ],
+  "density": "denso",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Charadrius alticola": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Charadrius collaris": {
+  "avonet": "Riverine",
+  "biomes": [
+   "rio",
+   "humedal",
+   "lago"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Charadrius falklandicus": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Charadrius modestus": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Charadrius nivosus": {
+  "avonet": "Coastal",
+  "biomes": [
+   "costa",
+   "fiordo",
+   "humedal"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Charadrius semipalmatus": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Charadrius vociferus": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Chauna torquata": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Chilia melanura": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Chionis albus": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Chloephaga hybrida": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Chloephaga melanoptera": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Chloephaga picta": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Chloephaga poliocephala": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Chloephaga rubidiceps": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Chordeiles acutipennis": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Chordeiles nacunda": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Chroicocephalus cirrocephalus": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Chroicocephalus maculipennis": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Chroicocephalus serranus": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Chrysomus ruficapillus": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Ciconia maguari": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Cinclodes antarcticus": {
+  "avonet": "Coastal",
+  "biomes": [
+   "costa",
+   "fiordo",
+   "humedal"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Cinclodes atacamensis": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Cinclodes fuscus": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Cinclodes nigrofumosus": {
+  "avonet": "Rock",
+  "biomes": [
+   "cordillera",
+   "altiplano",
+   "costa"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Cinclodes oustaleti": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Cinclodes patagonicus": {
+  "avonet": "Riverine",
+  "biomes": [
+   "rio",
+   "humedal",
+   "lago"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Circus cinereus": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Cistothorus platensis": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Coccyzus americanus": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "denso",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Colaptes melanochloros": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Colaptes pitius": {
+  "avonet": "Woodland",
+  "biomes": [
+   "bosque",
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Colaptes rupicola": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Colibri coruscans": {
+  "avonet": "Human Modified",
+  "biomes": [
+   "ciudad",
+   "valle",
+   "pradera"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Colorhamphus parvirostris": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "denso",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Columba livia": {
+  "avonet": "Human Modified",
+  "biomes": [
+   "ciudad",
+   "valle",
+   "pradera"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Columbina cruziana": {
+  "avonet": "Human Modified",
+  "biomes": [
+   "ciudad",
+   "valle",
+   "pradera"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Columbina picui": {
+  "avonet": "Human Modified",
+  "biomes": [
+   "ciudad",
+   "valle",
+   "pradera"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Conirostrum binghami": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Conirostrum cinereum": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Conirostrum tamarugense": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "denso",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Coragyps atratus": {
+  "avonet": "Human Modified",
+  "biomes": [
+   "ciudad",
+   "valle",
+   "pradera"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Coscoroba coscoroba": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Coturnix japonica": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Creagrus furcatus": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Crotophaga ani": {
+  "avonet": "Human Modified",
+  "biomes": [
+   "ciudad",
+   "valle",
+   "pradera"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Crotophaga sulcirostris": {
+  "avonet": "Human Modified",
+  "biomes": [
+   "ciudad",
+   "valle",
+   "pradera"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Curaeus curaeus": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Cyanocorax chrysops": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "denso",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Cyanoliseus patagonus": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Cygnus atratus": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Cygnus melancoryphus": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Cygnus olor": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Daption capense": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Dendrocygna autumnalis": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Dendrocygna viduata": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Diglossa brunneiventris": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Diomedea epomophora": {
+  "avonet": null,
+  "biomes": [],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Diomedea exulans": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Diomedea sanfordi": {
+  "avonet": null,
+  "biomes": [],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Diuca diuca": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": "matorral",
+  "source": "AVONET + revisión manual (RM)"
+ },
+ "Dolichonyx oryzivorus": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "denso",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Egretta caerulea": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Egretta thula": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Egretta tricolor": {
+  "avonet": "Coastal",
+  "biomes": [
+   "costa",
+   "fiordo",
+   "humedal"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Elaenia albiceps": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Elaenia chilensis": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Elanoides forficatus": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Elanus leucurus": {
+  "avonet": "Human Modified",
+  "biomes": [
+   "ciudad",
+   "valle",
+   "pradera"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Enicognathus ferrugineus": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Enicognathus leptorhynchus": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Eremobius phoenicurus": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Eudromia elegans": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Eudyptes chrysocome": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Eudyptes chrysolophus": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Eugralla paradoxa": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "denso",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Eulidia yarrellii": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Falco femoralis": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Falco peregrinus": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Falco sparverius": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Fregata magnificens": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Fregata minor": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Fregetta grallaria": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Fulica ardesiaca": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Fulica armillata": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Fulica cornuta": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Fulica gigantea": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Fulica leucoptera": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Fulica rufifrons": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Fulmarus glacialoides": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Gallinago andina": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Gallinago magellanica": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Gallinago paraguaiae": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Gallinago stricklandii": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Gallinula chloropus": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Gallinula melanops": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Gallus gallus": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "denso",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Gelochelidon nilotica": {
+  "avonet": "Coastal",
+  "biomes": [
+   "costa",
+   "fiordo",
+   "humedal"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Geositta antarctica": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Geositta cunicularia": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Geositta isabellina": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Geositta maritima": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Geositta punensis": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Geositta rufipennis": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Geospizopsis plebejus": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Geospizopsis unicolor": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Geothlypis velata": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Geranoaetus melanoleucus": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Glaucidium nana": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Glaucidium peruanum": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Guira guira": {
+  "avonet": "Human Modified",
+  "biomes": [
+   "ciudad",
+   "valle",
+   "pradera"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Gygis alba": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Haematopus ater": {
+  "avonet": "Coastal",
+  "biomes": [
+   "costa",
+   "fiordo",
+   "humedal"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Haematopus leucopodus": {
+  "avonet": "Coastal",
+  "biomes": [
+   "costa",
+   "fiordo",
+   "humedal"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Haematopus palliatus": {
+  "avonet": "Coastal",
+  "biomes": [
+   "costa",
+   "fiordo",
+   "humedal"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Halobaena caerulea": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Haplochelidon andecola": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Heteronetta atricapilla": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Himantopus melanurus": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Himantopus mexicanus": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Hirundinea ferruginea": {
+  "avonet": "Rock",
+  "biomes": [
+   "cordillera",
+   "altiplano",
+   "costa"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Hirundo rustica": {
+  "avonet": "Human Modified",
+  "biomes": [
+   "ciudad",
+   "valle",
+   "pradera"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Hydropsalis torquata": {
+  "avonet": "Human Modified",
+  "biomes": [
+   "ciudad",
+   "valle",
+   "pradera"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Hymenops perspicillatus": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Icterus cayanensis": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Icterus galbula": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "denso",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Ictinia mississippiensis": {
+  "avonet": "Woodland",
+  "biomes": [
+   "bosque",
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Idiopsar dorsalis": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Idiopsar erythronotus": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Idiopsar speculifer": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Ixobrychus involucris": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "denso",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Jabiru mycteria": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Knipolegus aterrimus": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Larosterna inca": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Larus belcheri": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Larus dominicanus": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Laterallus jamaicensis": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Leptasthenura aegithaloides": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Leptasthenura striata": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Lessonia oreas": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Lessonia rufa": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Leucocarbo albiventer": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Leucocarbo atriceps": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Leucocarbo bougainvilliorum": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Leucochloris albicollis": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "denso",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Leucophaeus atricilla": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Leucophaeus modestus": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Leucophaeus pipixcan": {
+  "avonet": "Coastal",
+  "biomes": [
+   "costa",
+   "fiordo",
+   "humedal"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Leucophaeus scoresbii": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Limnodromus griseus": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Limosa fedoa": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Limosa haemastica": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Limosa lapponica": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Lophonetta specularioides": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Machetornis rixosa": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Macronectes giganteus": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Macronectes halli": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Mareca sibilatrix": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Megaceryle torquata": {
+  "avonet": "Riverine",
+  "biomes": [
+   "rio",
+   "humedal",
+   "lago"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Megarynchus pitangua": {
+  "avonet": "Woodland",
+  "biomes": [
+   "bosque",
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Melanodera melanodera": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Melanodera xanthogramma": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Meleagris gallopavo": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Melopsittacus undulatus": {
+  "avonet": "Woodland",
+  "biomes": [
+   "bosque",
+   "matorral",
+   "valle"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Merganetta armata": {
+  "avonet": "Riverine",
+  "biomes": [
+   "rio",
+   "humedal",
+   "lago"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Metriopelia aymara": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Metriopelia ceciliae": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Metriopelia melanoptera": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Microspingus torquatus": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Milvago chimango": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Mimus dorsalis": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Mimus patagonicus": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Mimus saturninus": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Mimus thenca": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": "matorral",
+  "source": "AVONET + revisión manual (RM)"
+ },
+ "Mimus triurus": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Molothrus bonariensis": {
+  "avonet": "Woodland",
+  "biomes": [
+   "bosque",
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Molothrus rufoaxillaris": {
+  "avonet": "Human Modified",
+  "biomes": [
+   "ciudad",
+   "valle",
+   "pradera"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Motacilla alba": {
+  "avonet": "Human Modified",
+  "biomes": [
+   "ciudad",
+   "valle",
+   "pradera"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Muscigralla brevicauda": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Muscisaxicola albifrons": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Muscisaxicola albilora": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Muscisaxicola capistratus": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Muscisaxicola cinereus": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Muscisaxicola flavinucha": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Muscisaxicola frontalis": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": "cordillera",
+  "source": "AVONET + revisión manual (RM)"
+ },
+ "Muscisaxicola juninensis": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Muscisaxicola maclovianus": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Muscisaxicola maculirostris": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Muscisaxicola rufivertex": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Mycteria americana": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Myiodynastes luteiventris": {
+  "avonet": "Woodland",
+  "biomes": [
+   "bosque",
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Myiodynastes maculatus": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Myiopagis viridicata": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Myiophobus fasciatus": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Myiopsitta monachus": {
+  "avonet": "Human Modified",
+  "biomes": [
+   "ciudad",
+   "valle",
+   "pradera"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Myiotheretes striaticollis": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Neoxolmis rufiventris": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Netta peposaca": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Netta rufina": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Nothoprocta ornata": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Nothoprocta pentlandii": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Nothoprocta perdicaria": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Notiochelidon cyanoleuca": {
+  "avonet": "Human Modified",
+  "biomes": [
+   "ciudad",
+   "valle",
+   "pradera"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Numenius hudsonicus": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Numenius phaeopus": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Numenius tahitiensis": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Numida meleagris": {
+  "avonet": "Woodland",
+  "biomes": [
+   "bosque",
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Nyctanassa violacea": {
+  "avonet": "Coastal",
+  "biomes": [
+   "costa",
+   "fiordo",
+   "humedal"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Nycticorax nycticorax": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Nycticryphes semicollaris": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "denso",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Nymphicus hollandicus": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Oceanites gracilis": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Oceanites oceanicus": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Oceanites pincoyae": {
+  "avonet": null,
+  "biomes": [],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Oceanodroma hornbyi": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Oceanodroma markhami": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Oceanodroma tethys": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Ochthoeca leucophrys": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Ochthoeca oenanthoides": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Onychoprion fuscatus": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Oreopholus ruficollis": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Oreotrochilus estella": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Oreotrochilus leucopleurus": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": "cordillera",
+  "source": "AVONET + revisión manual (RM)"
+ },
+ "Oxyura ferruginea": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Oxyura jamaicensis": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Oxyura vittata": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Pachyptila belcheri": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Pachyptila desolata": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Pachyptila vittata": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Pandion haliaetus": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Parabuteo unicinctus": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Pardirallus sanguinolentus": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Paroaria coronata": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Passer domesticus": {
+  "avonet": "Human Modified",
+  "biomes": [
+   "ciudad",
+   "valle",
+   "pradera"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Patagioenas araucana": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Patagioenas fasciata": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Patagioenas maculosa": {
+  "avonet": "Woodland",
+  "biomes": [
+   "bosque",
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Patagioenas picazuro": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Patagona gigas": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Pavo cristatus": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Pelecanoides garnotii": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Pelecanoides magellani": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Pelecanoides urinatrix": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Pelecanus occidentalis": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Pelecanus thagus": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Petrochelidon pyrrhonota": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Phaethon aethereus": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Phaethon lepturus": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Phaethon rubricauda": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Phalacrocorax brasilianus": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Phalacrocorax gaimardi": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Phalacrocorax magellanicus": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Phalaropus fulicarius": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Phalaropus lobatus": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Phalaropus tricolor": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Phalcoboenus albogularis": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Phalcoboenus megalopterus": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Phasianus colchicus": {
+  "avonet": "Human Modified",
+  "biomes": [
+   "ciudad",
+   "valle",
+   "pradera"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Phegornis mitchellii": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Pheucticus aureoventris": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Pheucticus chrysogaster": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Phleocryptes melanops": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Phoebastria irrorata": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Phoebetria palpebrata": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Phoenicoparrus andinus": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Phoenicoparrus jamesi": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Phoenicopterus chilensis": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Phrygilus atriceps": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Phrygilus gayi": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Phrygilus patagonicus": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Phytotoma rara": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Phytotoma rutila": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Piranga ludoviciana": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "denso",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Pitangus sulphuratus": {
+  "avonet": "Human Modified",
+  "biomes": [
+   "ciudad",
+   "valle",
+   "pradera"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Platalea ajaja": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Platycercus elegans": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "denso",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Platycercus eximius": {
+  "avonet": "Woodland",
+  "biomes": [
+   "bosque",
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Plegadis chihi": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Plegadis ridgwayi": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Pluvialis dominica": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Pluvialis squatarola": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Pluvianellus socialis": {
+  "avonet": "Coastal",
+  "biomes": [
+   "costa",
+   "fiordo",
+   "humedal"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Podiceps gallardoi": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Podiceps major": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Podiceps occipitalis": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Podilymbus podiceps": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Polioxolmis rufipennis": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Porphyrio martinica": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Porphyrospiza alaudina": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Porzana spiloptera": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Procellaria aequinoctialis": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Procellaria westlandica": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Progne chalybea": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Progne elegans": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Progne murphyi": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Progne tapera": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Psephotus haematonotus": {
+  "avonet": "Woodland",
+  "biomes": [
+   "bosque",
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Pseudocolopteryx citreola": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Psilopsiagon aurifrons": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Psittacula krameri": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Pterodroma alba": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Pterodroma atrata": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Pterodroma defilippiana": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Pterodroma externa": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Pterodroma heraldica": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Pterodroma longirostris": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Pterodroma mollis": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Pterodroma neglecta": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Pterodroma nigripennis": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Pterodroma ultima": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Pteroptochos castaneus": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "denso",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Pteroptochos megapodius": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": "matorral",
+  "source": "AVONET + revisión manual (RM)"
+ },
+ "Pteroptochos tarnii": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "denso",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Puffinus assimilis": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Puffinus bulleri": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Puffinus creatopus": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Puffinus gravis": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Puffinus griseus": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Puffinus nativitatis": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Puffinus puffinus": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Pygarrhichas albogularis": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "denso",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Pygoscelis antarcticus": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Pygoscelis papua": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Pyrocephalus obscurus": {
+  "avonet": "Woodland",
+  "biomes": [
+   "bosque",
+   "matorral",
+   "valle"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Pyrocephalus rubinus": {
+  "avonet": "Woodland",
+  "biomes": [
+   "bosque",
+   "matorral",
+   "valle"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Quiscalus mexicanus": {
+  "avonet": "Human Modified",
+  "biomes": [
+   "ciudad",
+   "valle",
+   "pradera"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Rallus antarcticus": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Rauenia bonariensis": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Recurvirostra andina": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Rhea pennata": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Rhodopis vesper": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Rhopospina fruticeti": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Riparia riparia": {
+  "avonet": "Riverine",
+  "biomes": [
+   "rio",
+   "humedal",
+   "lago"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Rollandia rolland": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Rupornis magnirostris": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "denso",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Rynchops niger": {
+  "avonet": "Riverine",
+  "biomes": [
+   "rio",
+   "humedal",
+   "lago"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Saltator aurantiirostris": {
+  "avonet": "Woodland",
+  "biomes": [
+   "bosque",
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Sarkidiornis sylvicola": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Scelorchilus albicollis": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": "matorral",
+  "source": "AVONET + revisión manual (RM)"
+ },
+ "Scelorchilus rubecula": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "denso",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Scytalopus fuscus": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Scytalopus magellanicus": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Sephanoides fernandensis": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Sephanoides sephaniodes": {
+  "avonet": "Human Modified",
+  "biomes": [
+   "ciudad",
+   "valle",
+   "pradera"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Serinus canaria": {
+  "avonet": "Woodland",
+  "biomes": [
+   "bosque",
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Setophaga pitiayumi": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Setophaga ruticilla": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "denso",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Setophaga striata": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "denso",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Sicalis auriventris": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Sicalis flaveola": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Sicalis lebruni": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Sicalis lutea": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Sicalis luteola": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Sicalis olivascens": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Sicalis raimondii": {
+  "avonet": "Rock",
+  "biomes": [
+   "cordillera",
+   "altiplano",
+   "costa"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Sicalis uropigyalis": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Spatula clypeata": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Spatula cyanoptera": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Spatula discors": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Spatula platalea": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Spatula puna": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Spatula versicolor": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Speculanas specularis": {
+  "avonet": "Riverine",
+  "biomes": [
+   "rio",
+   "humedal",
+   "lago"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Spheniscus humboldti": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Spheniscus magellanicus": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Spinus atratus": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Spinus barbatus": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Spinus crassirostris": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Spinus magellanicus": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Spinus uropygialis": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Spiza americana": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Sporophila caerulescens": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Sporophila telasco": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Steatornis caripensis": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "denso",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Stercorarius antarcticus": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Stercorarius chilensis": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Stercorarius longicaudus": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Stercorarius maccormicki": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Stercorarius parasiticus": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Stercorarius pomarinus": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Sterna hirundinacea": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Sterna hirundo": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Sterna paradisaea": {
+  "avonet": "Coastal",
+  "biomes": [
+   "costa",
+   "fiordo",
+   "humedal"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Sterna trudeaui": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Sternula antillarum": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Sternula lorata": {
+  "avonet": "Coastal",
+  "biomes": [
+   "costa",
+   "fiordo",
+   "humedal"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Streptopelia roseogrisea": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Streptoprocne zonaris": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "denso",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Strix rufipes": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "denso",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Sturnella bellicosa": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Sturnella loyca": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": "rio",
+  "source": "AVONET + revisión manual (RM)"
+ },
+ "Sturnella superciliaris": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Sturnus vulgaris": {
+  "avonet": "Human Modified",
+  "biomes": [
+   "ciudad",
+   "valle",
+   "pradera"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Sula dactylatra": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Sula granti": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Sula nebouxii": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Sula sula": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Sula variegata": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Sylviorthorhynchus desmursii": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "denso",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Systellura decussata": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Systellura longirostris": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Tachuris rubrigastra": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Tachycineta leucopyga": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Tachyeres leucocephalus": {
+  "avonet": "Coastal",
+  "biomes": [
+   "costa",
+   "fiordo",
+   "humedal"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Tachyeres patachonicus": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Tachyeres pteneres": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Taeniopygia guttata": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Tersina viridis": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Thalassarche bulleri": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Thalassarche cauta": {
+  "avonet": null,
+  "biomes": [],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Thalassarche chrysostoma": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Thalassarche eremita": {
+  "avonet": null,
+  "biomes": [],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Thalassarche melanophris": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Thalassarche salvini": {
+  "avonet": null,
+  "biomes": [],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Thalasseus acuflavidus": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Thalasseus elegans": {
+  "avonet": "Coastal",
+  "biomes": [
+   "costa",
+   "fiordo",
+   "humedal"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Thalasseus maximus": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Thalasseus sandvicensis": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Thaumastura cora": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Theristicus caudatus": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Theristicus melanopis": {
+  "avonet": "Human Modified",
+  "biomes": [
+   "ciudad",
+   "valle",
+   "pradera"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Thinocorus orbignyianus": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Thinocorus rumicivorus": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Thraupis sayaca": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Tinamotis ingoufi": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Tinamotis pentlandii": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Tringa flavipes": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Tringa incana": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Tringa melanoleuca": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Tringa semipalmata": {
+  "avonet": "Coastal",
+  "biomes": [
+   "costa",
+   "fiordo",
+   "humedal"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Tringa solitaria": {
+  "avonet": "Wetland",
+  "biomes": [
+   "humedal",
+   "lago",
+   "rio"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Troglodytes aedon": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Troglodytes musculus": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "abierto",
+  "rm": "ciudad",
+  "source": "AVONET + revisión manual (RM)"
+ },
+ "Turdus amaurochalinus": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Turdus chiguanco": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Turdus falcklandii": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "semiabierto",
+  "rm": "ciudad",
+  "source": "AVONET + revisión manual (RM)"
+ },
+ "Tyrannus melancholicus": {
+  "avonet": "Human Modified",
+  "biomes": [
+   "ciudad",
+   "valle",
+   "pradera"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Tyrannus savana": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Tyrannus tyrannus": {
+  "avonet": "Woodland",
+  "biomes": [
+   "bosque",
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Tyto alba": {
+  "avonet": "Human Modified",
+  "biomes": [
+   "ciudad",
+   "valle",
+   "pradera"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Tyto furcata": {
+  "avonet": "Human Modified",
+  "biomes": [
+   "ciudad",
+   "valle",
+   "pradera"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Upucerthia albigula": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Upucerthia dumetaria": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Upucerthia jelskii": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Upucerthia ruficaudus": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Upucerthia saturatior": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Upucerthia validirostris": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Vanellus chilensis": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": "rio",
+  "source": "AVONET + revisión manual (RM)"
+ },
+ "Vanellus resplendens": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Veniliornis lignarius": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "denso",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Vireo olivaceus": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "denso",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Volatinia jacarina": {
+  "avonet": "Human Modified",
+  "biomes": [
+   "ciudad",
+   "valle",
+   "pradera"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Vultur gryphus": {
+  "avonet": "Grassland",
+  "biomes": [
+   "pradera",
+   "estepa",
+   "altiplano"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Xema sabini": {
+  "avonet": "Marine",
+  "biomes": [
+   "costa",
+   "fiordo"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Xenospingus concolor": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Xolmis coronatus": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "abierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Xolmis pyrope": {
+  "avonet": "Forest",
+  "biomes": [
+   "bosque"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Zenaida auriculata": {
+  "avonet": "Human Modified",
+  "biomes": [
+   "ciudad",
+   "valle",
+   "pradera"
+  ],
+  "density": "abierto",
+  "rm": "ciudad",
+  "source": "AVONET + revisión manual (RM)"
+ },
+ "Zenaida meloda": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "semiabierto",
+  "rm": null,
+  "source": "AVONET"
+ },
+ "Zonotrichia capensis": {
+  "avonet": "Shrubland",
+  "biomes": [
+   "matorral",
+   "valle"
+  ],
+  "density": "abierto",
+  "rm": "ciudad",
+  "source": "AVONET + revisión manual (RM)"
+ }
+}

@@ -12,3 +12,9 @@ Agrega una línea numerada por entrada, con tu nombre entre paréntesis.
    prefiriendo CC0/CC BY/CC BY-SA. Escribe solo metadatos (autor, licencia, página) en
    `web/data/game/enrich/images.json`; las fotos quedan en `refs/` (gitignored, no se publican: son referencia
    para proporciones y paletas). `refs/INDEX.html` sirve para marcar la vista de cada foto. (Joaquín)
+4. Morfología y hábitat: `python_scripts/enrich/join_traits.py` cruza las 551 especies con AVONET (Tobias et al.
+   2022, hoja eBird, CC BY 4.0) y EltonTraits 1.0 (Wilman et al. 2014, CC0). Escribe `enrich/morphology.json`
+   (medidas en mm y g, proporciones para el modelo, escala relativa al chucao, dieta y estratos de forrajeo) y
+   `enrich/habitat.json` (hábitat AVONET → biomas del juego vía `enrich/habitat_map.json`, editable; bioma de la
+   RM revisado a mano para el MVP). Cobertura 551/551; 26 nombres resueltos a mano en `enrich/synonyms.json`
+   (8 son especies separadas recientemente: se usa la especie madre como aproximación). (Joaquín)
