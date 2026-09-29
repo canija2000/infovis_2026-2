@@ -35,3 +35,6 @@ Agrega una línea numerada por entrada, con tu nombre entre paréntesis.
    por las fotos de referencia con licencia. En `index.json` va una versión compacta (proporciones, escala, masa, dieta,
    estratos; medidas crudas quedan en `enrich/`). La RM gana `terrainFile`. `notes`, `source` y `dois` citan AVONET,
    EltonTraits, iNaturalist/Commons, WorldCover, AWS Terrain Tiles y OSM. `index.json`: 414 → 531 KB (+28 %). (Joaquín)
+8. Resumen del enriquecimiento del mundo 3D (rama `enrich-referencias`): fotos de referencia con licencia, morfología y
+   hábitat de las 551 especies (AVONET + EltonTraits), paletas por zona de las 12 aves del MVP, terreno de 4 mini-escenas
+   de la RM y `build_game_data.py` integrando todo en `web/data/game/` sin publicar las fotos. (Joaquín)
