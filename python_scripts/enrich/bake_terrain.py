@@ -137,7 +137,12 @@ def rivers(bb, n: int) -> list[dict]:
     w, s, e, nn = bb
     out = []
     for el in d["elements"]:
-        pts = [[round((g["lon"] - w) / (e - w) * n, 1), round((nn - g["lat"]) / (nn - s) * n, 1)] for g in el["geometry"]]
+        raw = [[round((g["lon"] - w) / (e - w) * n, 1), round((nn - g["lat"]) / (nn - s) * n, 1)] for g in el["geometry"]]
+        pts = raw[:1]  # simplificar: descartar vértices a menos de media celda del anterior
+        for p in raw[1:-1]:
+            if math.dist(p, pts[-1]) >= 0.5:
+                pts.append(p)
+        pts += raw[-1:] if len(raw) > 1 else []
         if len(pts) >= 2:
             out.append({"type": el["tags"]["waterway"], "name": el["tags"].get("name"), "path": pts})
     return out
