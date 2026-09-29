@@ -35,6 +35,7 @@ from pathlib import Path
 import build_web_data as web
 
 OUT_DIR = web.DATA_DIR / "game"
+ENRICH_DIR = OUT_DIR / "enrich"  # datos laterales de python_scripts/enrich/ (no los sobrescribe este build)
 YEARS = web.YEARS
 CLASSES = web.CLASSES
 OCASIONAL = CLASSES.index("ocasional")
@@ -77,6 +78,55 @@ def gbif_images_url(sci: str) -> str:
             + sci.replace(" ", "%20"))
 
 
+# Citas de las fuentes de enriquecimiento (se agregan a "dois" si existe enrich/).
+ENRICH_DOIS = [
+    "https://doi.org/10.1111/ele.13898",  # AVONET, Tobias et al. 2022 (CC BY 4.0)
+    "https://doi.org/10.6084/m9.figshare.16586228",
+    "https://doi.org/10.1890/13-1917.1",  # EltonTraits 1.0, Wilman et al. 2014 (CC0)
+    "https://doi.org/10.5281/zenodo.7254221",  # ESA WorldCover 10 m 2021 v200 (CC BY 4.0)
+]
+
+
+def load_enrich() -> dict[str, dict]:
+    """Lee web/data/game/enrich/<campo>.json (indexados por sciName) si existen."""
+    out = {}
+    for field in ("images", "morphology", "habitat", "palette"):
+        path = ENRICH_DIR / f"{field}.json"
+        out[field] = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+    return out
+
+
+def compact_morphology(m: dict | None) -> dict | None:
+    """Solo lo que usa el juego; medidas crudas en enrich/morphology.json."""
+    if not m:
+        return None
+    p = m["prop"]
+    st = m.get("stratum")
+    return {
+        "prop": [None if p[k] is None else round(p[k], 2) for k in ("beak", "beakDepth", "tarsus", "tail", "hwi")],
+        "scale": m["scale"],
+        "mass": m["raw"]["mass"],
+        "lifestyle": m.get("lifestyle"),
+        "diet": m.get("diet"),
+        "stratum": [st[k] for k in ("ground", "understory", "midhigh", "canopy", "aerial", "water")] if st else None,
+    }
+
+
+def compact_habitat(h: dict | None) -> dict | None:
+    if not h:
+        return None
+    out = {"avonet": h.get("avonet"), "biomes": h.get("biomes", [])}
+    if h.get("rm"):
+        out["rm"] = h["rm"]
+    return out
+
+
+def compact_palette(p: dict | None) -> dict | None:
+    if not p:
+        return None
+    return {k: v for k, v in p.items() if k not in ("photos", "manual")}
+
+
 def per_year(rows: list[dict], regions: list[dict]):
     """reportDays y esfuerzo por (especie, región, año, mes); región 0 = Chile."""
     rid = {r["code"]: r["id"] for r in regions}
@@ -101,6 +151,7 @@ def main() -> None:
     sounds = web.build_sounds(names, species_ids)
     report, effort = per_year(rows, regions)
     sci_of = {sid: sci for sci, sid in species_ids.items()}
+    enrich = load_enrich()
     n_regions = len(regions)
     n_years = len(YEARS)
 
@@ -166,10 +217,11 @@ def main() -> None:
                 "regionsPresent": len(regional_class),
                 "reportDays": round(totals[sci]),
                 "clip": clip,
-                "habitat": None,
-                "morphology": None,
-                "palette": None,
-                "images": gbif_images_url(sci),
+                "habitat": compact_habitat(enrich["habitat"].get(sci)),
+                "morphology": compact_morphology(enrich["morphology"].get(sci)),
+                "palette": compact_palette(enrich["palette"].get(sci)),
+                # Fotos de referencia con licencia (solo metadatos) o, si no hay, la búsqueda GBIF.
+                "images": enrich["images"].get(sci) or gbif_images_url(sci),
             }
         )
 
@@ -265,6 +317,7 @@ def main() -> None:
                 **{k: region[k] for k in ("id", "code", "name", "fullName", "lat", "lon")},
                 "file": f"region-{code}.json",
                 "biomes": BIOMES.get(code, []),
+                **({"terrainFile": f"terrain-{code}.json"} if (OUT_DIR / f"terrain-{code}.json").exists() else {}),
                 "topResidents": top("residente"),
                 "topSummer": top("visitante_estival"),
                 "topWinter": top("visitante_invernal"),
@@ -292,13 +345,22 @@ def main() -> None:
             "topRegions": "ids de región con mayor share medio en el año típico.",
             "monthsPresent": "bitmask de meses con presencia nacional (bit 0 = enero).",
             "biomes": "propuesta manual de escenarios, no derivada de datos.",
-            "habitat/morphology/palette": "vacíos: completar con AVONET y referencias fotográficas (ver SET_UP).",
+            "habitat": "AVONET Habitat + biomas del juego (enrich/habitat_map.json); rm = bioma de la escena RM, revisado a mano.",
+            "morphology": "prop = [pico/ala, alto pico/pico, tarso/ala, cola/ala, HWI/100]; scale = cbrt(masa/masa chucao); "
+                          "mass en g; stratum = % forrajeo [suelo, sotobosque, medio, dosel, aire, agua] (EltonTraits). "
+                          "Medidas crudas en enrich/morphology.json.",
+            "palette": "RGB 5 bits por zona del cuerpo desde fotos de referencia (MVP); pattern = textura por zona.",
+            "images": "fotos de referencia con licencia (solo metadatos, no se publican las fotos) o URL de búsqueda GBIF.",
+            "terrainFile": "mini-escenas de la región (relieve, cobertura, ríos); ver terrain-<CODE>.json.",
             "audio": "rutas relativas a web/ (p. ej. audio/XC123.mp3); licencias por grabación en clip.license.",
         },
         "regions": region_index,
         "species": species,
-        "source": source_meta.get("sourceDetail"),
-        "dois": source_meta.get("dois", []),
+        "source": source_meta.get("sourceDetail") + (
+            " Enriquecimiento: AVONET (Tobias et al. 2022), EltonTraits 1.0 (Wilman et al. 2014), fotos de referencia de "
+            "iNaturalist/Wikimedia Commons (licencia por foto), ESA WorldCover 2021, AWS Terrain Tiles y © OpenStreetMap."
+            if ENRICH_DIR.exists() else ""),
+        "dois": source_meta.get("dois", []) + (ENRICH_DOIS if ENRICH_DIR.exists() else []),
     }
     path = OUT_DIR / "index.json"
     path.write_text(json.dumps(index, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")

@@ -30,3 +30,8 @@ Agrega una línea numerada por entrada, con tu nombre entre paréntesis.
    Los Morros) y cordillera (La Parva, 2.500–2.900 m). Relieve de AWS Terrain Tiles, cobertura de ESA WorldCover 10 m
    2021 y ríos de OpenStreetMap. Salida `web/data/game/terrain-CL-RM.json` (< 100 KB); preview en
    `refs/terrain_preview.png`. Vegetación y props por escena en `enrich/props_rm.json` (tabla manual). (Joaquín)
+7. `build_game_data.py` ahora integra el enriquecimiento: si existe `web/data/game/enrich/<campo>.json` usa ese valor
+   (por sciName) en vez de `null` en `habitat`, `morphology` y `palette`, y en `images` reemplaza la URL de búsqueda GBIF
+   por las fotos de referencia con licencia. En `index.json` va una versión compacta (proporciones, escala, masa, dieta,
+   estratos; medidas crudas quedan en `enrich/`). La RM gana `terrainFile`. `notes`, `source` y `dois` citan AVONET,
+   EltonTraits, iNaturalist/Commons, WorldCover, AWS Terrain Tiles y OSM. `index.json`: 414 → 531 KB (+28 %). (Joaquín)

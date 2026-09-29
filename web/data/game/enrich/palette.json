@@ -456,9 +456,9 @@
  },
  "Sturnella loyca": {
   "accent": [
-   152,
-   88,
-   32
+   224,
+   64,
+   24
   ],
   "accentWhere": "pecho",
   "back": [
@@ -502,6 +502,7 @@
    88
   ],
   "manual": [
+   "accent",
    "beak",
    "legs"
   ],
@@ -513,7 +514,7 @@
    "https://www.inaturalist.org/observations/280363184",
    "https://www.inaturalist.org/observations/28155679"
   ],
-  "reviewed": true,
+  "reviewed": false,
   "tail": [
    80,
    64,

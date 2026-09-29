@@ -58,7 +58,7 @@ MANUAL = {
                                 "flank": [72, 56, 48], "tail": [168, 88, 48], "head": [104, 80, 64]},
     "Diuca diuca": {"beak": [72, 72, 80], "legs": [56, 52, 56], "accent": [144, 64, 40]},
     "Vanellus chilensis": {"eye": [176, 40, 40], "beak": [168, 120, 136], "legs": [176, 112, 120]},
-    "Sturnella loyca": {"beak": [168, 160, 160], "legs": [96, 88, 88]},
+    "Sturnella loyca": {"beak": [168, 160, 160], "legs": [96, 88, 88], "accent": [224, 64, 24]},
     "Oreotrochilus leucopleurus": {"beak": [24, 24, 24], "legs": [40, 36, 36], "eye": [16, 16, 16]},
     "Muscisaxicola frontalis": {"beak": [32, 32, 32], "legs": [40, 40, 40], "accent": [32, 32, 32]},
 }
