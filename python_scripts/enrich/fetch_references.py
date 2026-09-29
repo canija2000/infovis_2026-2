@@ -58,11 +58,12 @@ def inat_taxon(sci: str) -> dict | None:
     return {"id": t["id"], "name": t["name"]}
 
 
-def inat_photos(taxon_id: int, licenses: str) -> list[dict]:
-    d = c.fetch_json("https://api.inaturalist.org/v1/observations", {
-        "taxon_id": taxon_id, "place_id": 7182, "quality_grade": "research", "photos": "true",
-        "photo_license": licenses, "order_by": "votes", "per_page": 30,
-    })
+def inat_photos(taxon_id: int, licenses: str, alive_only: bool = False) -> list[dict]:
+    params = {"taxon_id": taxon_id, "place_id": 7182, "quality_grade": "research", "photos": "true",
+              "photo_license": licenses, "order_by": "votes", "per_page": 30}
+    if alive_only:  # excluye observaciones anotadas como muerto (19) o huevo (7)
+        params["without_term_value_id"] = "19,7"
+    d = c.fetch_json("https://api.inaturalist.org/v1/observations", params)
     out = []
     for o in d["results"]:
         ann = {a["controlled_attribute_id"]: a["controlled_value_id"] for a in o.get("annotations") or []}
@@ -174,7 +175,9 @@ def macaulay_link(sci: str, codes: dict[str, str], syn: dict) -> str | None:
 
 
 # --- selección, descarga e índice ------------------------------------------------------
-def collect(sci: str, syn: dict) -> tuple[dict, list[dict]]:
+def collect(sci: str, syn: dict, prev: list[str], discarded: set[str], refill: bool) -> tuple[dict, list[dict]]:
+    """Hasta PER_SPECIES fotos. La selección es estable: se conservan las de la corrida anterior
+    (refs/manifest.json). Con refill, las marcadas 'descartar' se reemplazan por otras candidatas."""
     info: dict = {"inat": None}
     taxon = inat_taxon(sci)
     if taxon is None and sci in syn:
@@ -183,9 +186,9 @@ def collect(sci: str, syn: dict) -> tuple[dict, list[dict]]:
     free, nc = [], []
     if taxon:
         free += inat_photos(taxon["id"], "cc0,cc-by,cc-by-sa")
+        free += inat_photos(taxon["id"], "cc0,cc-by,cc-by-sa", alive_only=True)
     titles = wikidata_p18(sci)
-    commons = (commons_files(titles=titles) if titles else []) + commons_files(search=f'"{sci}"')
-    free += commons
+    free += (commons_files(titles=titles) if titles else []) + commons_files(search=f'"{sci}"')
     if taxon and len(free) < PER_SPECIES:
         nc += inat_photos(taxon["id"], "cc-by-nc")
     if len(free) + len(nc) < MIN_FREE:
@@ -202,6 +205,13 @@ def collect(sci: str, syn: dict) -> tuple[dict, list[dict]]:
         seen |= keys
         p["nc"] = p["license"] not in FREE
         picked.append(p)
+    if prev:
+        order = {pid: i for i, pid in enumerate(prev)}
+        picked.sort(key=lambda p: (p["id"] not in order, order.get(p["id"], 0)))
+        if not refill:
+            picked = [p for p in picked if p["id"] in order] or picked
+    if refill:
+        picked = [p for p in picked if p["id"] not in discarded]
     return info, picked[:PER_SPECIES]
 
 
@@ -256,6 +266,8 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     c.species_args(ap)
     ap.add_argument("--download", action="store_true", help="descargar las fotos a refs/ (gitignored)")
+    ap.add_argument("--refill", action="store_true",
+                    help="reemplazar las fotos marcadas 'descartar' en refs/views.json por otras candidatas")
     args = ap.parse_args()
 
     index = c.load_index()
@@ -270,7 +282,10 @@ def main() -> None:
     views = json.loads(views_path.read_text(encoding="utf-8")) if views_path.exists() else {}
 
     for sci in species:
-        info, photos = collect(sci, syn)
+        prev = {p["id"] for p in manifest.get(sci, {}).get("photos", [])}
+        discarded = {i for i in prev if views.get(i) == "descartar"}
+        info, photos = collect(sci, syn, [p["id"] for p in manifest.get(sci, {}).get("photos", [])],
+                               discarded, args.refill)
         for p in photos:
             p["view"] = views.get(p["id"], "?")
         if args.download:

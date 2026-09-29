@@ -18,3 +18,10 @@ Agrega una línea numerada por entrada, con tu nombre entre paréntesis.
    `enrich/habitat.json` (hábitat AVONET → biomas del juego vía `enrich/habitat_map.json`, editable; bioma de la
    RM revisado a mano para el MVP). Cobertura 551/551; 26 nombres resueltos a mano en `enrich/synonyms.json`
    (8 son especies separadas recientemente: se usa la especie madre como aproximación). (Joaquín)
+5. Paletas por zona del cuerpo (MVP): `python_scripts/enrich/extract_palette.py` (venv con numpy y Pillow en
+   `python_scripts/enrich/.venv`, gitignored) toma 2–3 fotos laterales por especie, un punto anotado a mano por
+   zona (`refs/zones.json`, con ayuda de las grillas de `palette_grid.py`), k-means k=3 por muestra, mediana entre
+   fotos y cuantizado a 5 bits por canal como `makeTex`. Pico, patas, ojo y algunos acentos se fijan a mano
+   (listados en `manual`). Salida `web/data/game/enrich/palette.json` con patrón (barrado/estriado/liso) y dónde va
+   el acento; `reviewed: false` hasta revisión humana en `refs/PALETTES.html`. `fetch_references.py` ahora
+   conserva la selección entre corridas y con `--refill` reemplaza fotos descartadas (aves muertas, nidos). (Joaquín)

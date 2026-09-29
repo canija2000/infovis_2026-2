@@ -36,4 +36,5 @@ cache_xenocanto/
 # (solo uso interno; las fotos no se redistribuyen).
 python_scripts/enrich/cache/
 python_scripts/enrich/__pycache__/
+python_scripts/enrich/.venv/
 refs/
