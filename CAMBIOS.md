@@ -25,3 +25,8 @@ Agrega una línea numerada por entrada, con tu nombre entre paréntesis.
    (listados en `manual`). Salida `web/data/game/enrich/palette.json` con patrón (barrado/estriado/liso) y dónde va
    el acento; `reviewed: false` hasta revisión humana en `refs/PALETTES.html`. `fetch_references.py` ahora
    conserva la selección entre corridas y con `--refill` reemplaza fotos descartadas (aves muertas, nidos). (Joaquín)
+6. Terreno de la RM: `python_scripts/enrich/bake_terrain.py` hornea 4 mini-escenas ("cuartos" unidos por senderos,
+   1,4 × 1,4 km, grilla 48×48): ciudad (Cerro Santa Lucía y Parque Forestal), matorral (Aguas de Ramón), río (Maipo en
+   Los Morros) y cordillera (La Parva, 2.500–2.900 m). Relieve de AWS Terrain Tiles, cobertura de ESA WorldCover 10 m
+   2021 y ríos de OpenStreetMap. Salida `web/data/game/terrain-CL-RM.json` (< 100 KB); preview en
+   `refs/terrain_preview.png`. Vegetación y props por escena en `enrich/props_rm.json` (tabla manual). (Joaquín)
