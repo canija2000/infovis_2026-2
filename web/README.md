@@ -10,7 +10,7 @@ cd web && python3 -m http.server 8000   # abrir http://localhost:8000
 La página carga solo los archivos derivados de `data/` (~0,9 MB):
 `meta.json`, `species.json`, `typical_year.json`, `region_month.json`,
 `regions.min.geojson`; `sounds.json` se pide al abrir una ficha de especie.
-Se regeneran con `python3 build_web_data.py` desde la raíz del repo.
+Se regeneran con `python3 python_scripts/build_web_data.py` desde la raíz del repo.
 
 `data/observations-*.json`, `data/regions.geojson` y `data/metadata.json` son
 la entrada del build (agregado GBIF completo); la web no los descarga.

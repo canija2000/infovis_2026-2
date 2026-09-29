@@ -16,7 +16,8 @@ import zipfile
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from gbif_downloads import submit, status, load_state, save_state, YEARS  # noqa
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# Datos del pipeline en <repo>/gbif/; los scripts viven en python_scripts/gbif/.
+BASE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "gbif")
 DL_DIR = os.path.join(BASE_DIR, "downloads")
 LOG = os.path.join(BASE_DIR, "worker.log")
 ACTIVE = {"SUBMITTED", "PREPARING", "RUNNING"}

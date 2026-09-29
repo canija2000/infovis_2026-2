@@ -14,7 +14,7 @@ import json
 import time
 from pathlib import Path
 
-PROJECT_DIR = Path(__file__).resolve().parent
+PROJECT_DIR = Path(__file__).resolve().parents[2]  # raíz del repo (script histórico en python_scripts/python_historicos/)
 CACHE_DIR = PROJECT_DIR / "cache_ebird_regional"
 LOG_PATH = PROJECT_DIR / "download.log"
 STATE_PATH = PROJECT_DIR / ".progress_state.json"

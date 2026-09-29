@@ -10,38 +10,63 @@ región. El año se puede reproducir como sonido.
 
 ```text
 GBIF (11 descargas anuales, Aves, Chile)
-  └─ gbif/*.py ───────────────► web/data/observations-*.json   agregado región × mes × especie
+  └─ python_scripts/gbif/*.py ► web/data/observations-*.json   agregado región × mes × especie
                                  web/data/regions.geojson       (entrada, no la carga la web)
-  └─ build_web_data.py ───────► web/data/meta.json, species.json, typical_year.json,
+  └─ python_scripts/build_web_data.py ► web/data/meta.json, species.json, typical_year.json,
                                  region_month.json, regions.min.geojson, sounds.json
   └─ web/ (HTML + D3 + Web Audio, sin build step) ─► GitHub Pages / Cloudflare
 ```
 
-- `gbif/`: pipeline de descarga, join espacial y agregación desde GBIF. Ver
+- `python_scripts/`: scripts de Python en uso (ver «Estructura de scripts» abajo).
+- `python_scripts/gbif/`: pipeline de descarga, join espacial y agregación desde GBIF;
+  sus datos intermedios y tablas de nombres viven en `gbif/`. Ver
   [`docs/metodologia-datos.md`](docs/metodologia-datos.md) (fuente, DOIs,
   limpieza, métrica y, en §10, año típico y clasificación estacional).
-- `build_web_data.py`: genera los archivos livianos de la web (~0,86 MB de
+- `python_scripts/build_web_data.py`: genera los archivos livianos de la web (~0,86 MB de
   carga inicial). Solo usa la biblioteca estándar y su salida es determinista.
 - `gbif/synonyms_xc.json`: nombres científicos GBIF → Xeno-canto (IOC).
 - `web/`: frontend estático. `app.js` contiene las vistas y la interacción;
   `sonify.js`, la sonificación.
-- `preparar_audio_web.py`: elige, descarga (Xeno-canto, `cnt:chile`) y recorta los
+- `python_scripts/preparar_audio_web.py`: elige, descarga (Xeno-canto, `cnt:chile`) y recorta los
   cantos que publica la web en `web/audio/` (clips + `clips.json`).
-- `descargar_sonidos.py`, `optimizar_sonidos.py`: descarga inicial de cantos (histórico).
 - `docs/proceso/`: bitácora de versiones (V1 → V4) para la entrega.
-- Histórico (se conserva como evidencia del proceso, no se usa en la web):
-  `10anios.py` (eBird nacional), `pull_regional.py`, `progress_check.py`,
-  `docs/re_pull_regional.md` e `instrucciones_re_pull_de_datos.md` (ruta eBird
-  por región, abandonada por errores 429 sostenidos), `testeo.ipynb`.
+- `python_scripts/python_historicos/`: scripts antiguos, conservados como
+  evidencia del proceso (no se usan en la web). Ver «Estructura de scripts».
+  Documentación asociada: `docs/re_pull_regional.md` e
+  `instrucciones_re_pull_de_datos.md` (ruta eBird por región, abandonada por
+  errores 429 sostenidos), `testeo.ipynb`.
+- `CAMBIOS.md`: registro compartido de cambios, ideas e innovaciones del equipo.
+
+## Estructura de scripts
+
+Todos se ejecutan desde la raíz del repo (las rutas se resuelven solas).
+
+```text
+python_scripts/
+├── build_web_data.py        genera web/data/ (año típico, clases, geometría, sonidos)
+├── preparar_audio_web.py    cantos de Xeno-canto → clips en web/audio/
+├── gbif/                    pipeline GBIF (datos en <repo>/gbif/)
+│   ├── gbif_downloads.py    pedir descargas anuales (API GBIF)
+│   ├── run_pipeline.py      orquesta descarga + estado (gbif/state.json)
+│   ├── progress.py          estado de las descargas
+│   ├── join_aggregate.py    join espacial a regiones + agregado región × mes × especie
+│   ├── fetch_vernacular_es.py, merge_names.py, patch_comnames.py   nombres en español
+│   └── install.py           instala los agregados en web/data/
+└── python_historicos/       solo registro, no forman parte del flujo actual
+    ├── 10anios.py           pipeline original eBird nacional
+    ├── pull_regional.py, progress_check.py   ruta eBird por región (abandonada, 429)
+    ├── descargar_sonidos.py, optimizar_sonidos.py   primera descarga de cantos
+    └── gbif_pruebas/        prototipos y validaciones de la migración a GBIF
+```
 
 ## Regenerar los datos de la web
 
 ```bash
-python3 build_web_data.py            # reescribe web/data/*.json derivados
-python3 build_web_data.py --report   # además imprime especies de control
+python3 python_scripts/build_web_data.py            # reescribe web/data/*.json derivados
+python3 python_scripts/build_web_data.py --report   # además imprime especies de control
 ```
 
-Para rehacer el agregado desde GBIF, ver `gbif/run_pipeline.py` y la
+Para rehacer el agregado desde GBIF, ver `python_scripts/gbif/run_pipeline.py` y la
 metodología. Las descargas crudas quedan fuera de Git.
 
 ## Ejecutar la web localmente
@@ -79,12 +104,12 @@ sirve como assets estáticos (`wrangler.jsonc`).
 ## Cantos (Xeno-canto)
 
 ```bash
-python3 preparar_audio_web.py --dry-run   # selección y faltantes
-python3 preparar_audio_web.py             # descarga faltantes y genera web/audio/
-python3 build_web_data.py                 # enlaza web/audio/clips.json en web/data/sounds.json
+python3 python_scripts/preparar_audio_web.py --dry-run   # selección y faltantes
+python3 python_scripts/preparar_audio_web.py             # descarga faltantes y genera web/audio/
+python3 python_scripts/build_web_data.py                 # enlaza web/audio/clips.json en web/data/sounds.json
 ```
 
-`preparar_audio_web.py` cubre todas las especies que la web muestra sin
+`python_scripts/preparar_audio_web.py` cubre todas las especies que la web muestra sin
 expandir (232: top por pestaña en Chile y en cada región). Junta candidatas
 locales (`sounds/`) y de Xeno-canto (Chile primero, calidad A/B) y elige la
 mejor (Chile, canto o llamado, calidad, licencia sin ND). De cada una publica

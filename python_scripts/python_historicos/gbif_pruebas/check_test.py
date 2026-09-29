@@ -7,7 +7,8 @@ import os
 import urllib.request
 
 KEY = "0008171-260921141020460"
-STATE = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".test_watch.json")
+# Datos del pipeline en <repo>/gbif/; este script vive en python_scripts/python_historicos/gbif_pruebas/.
+STATE = os.path.join(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), "gbif"), ".test_watch.json")
 TERMINAL = {"SUCCEEDED", "FAILED", "KILLED", "CANCELLED"}
 
 

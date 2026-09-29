@@ -1,8 +1,8 @@
 """Genera los archivos livianos que consume la web (año típico y clases estacionales).
 
 Uso:
-    python3 build_web_data.py            # regenera web/data/*.json derivados
-    python3 build_web_data.py --report   # además imprime clases de especies de control
+    python3 python_scripts/build_web_data.py            # regenera web/data/*.json derivados
+    python3 python_scripts/build_web_data.py --report   # además imprime clases de especies de control
 
 Entrada (no se modifica):
     web/data/metadata.json + web/data/observations-*.json   agregado GBIF
@@ -33,7 +33,7 @@ import math
 from collections import defaultdict
 from pathlib import Path
 
-PROJECT_DIR = Path(__file__).resolve().parent
+PROJECT_DIR = Path(__file__).resolve().parents[1]  # raíz del repo (el script vive en python_scripts/)
 DATA_DIR = PROJECT_DIR / "web" / "data"
 SYNONYMS_PATH = PROJECT_DIR / "gbif" / "synonyms_xc.json"
 AUDIO_CLIPS = PROJECT_DIR / "web" / "audio" / "clips.json"

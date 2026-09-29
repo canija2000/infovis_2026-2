@@ -1,8 +1,8 @@
 """Cruza las especies observadas con Xeno-canto y descarga sus grabaciones.
 
 Ejemplos:
-    python3 descargar_sonidos.py --dry-run
-    python3 descargar_sonidos.py --top 25 --recordings-per-species 3
+    python3 python_scripts/python_historicos/descargar_sonidos.py --dry-run
+    python3 python_scripts/python_historicos/descargar_sonidos.py --top 25 --recordings-per-species 3
 
 La API de Xeno-canto se consulta por nombre cientifico. El resultado queda en
 ``sounds/`` y ``sounds/manifest.json`` para que la web pueda consumirlo sin
@@ -22,7 +22,7 @@ from urllib.parse import urlparse
 
 import requests
 
-PROJECT_DIR = Path(__file__).resolve().parent
+PROJECT_DIR = Path(__file__).resolve().parents[2]  # raíz del repo (script histórico en python_scripts/python_historicos/)
 OBSERVATION_FILES = (
     PROJECT_DIR / "web" / "data" / "observations-01.json",
     PROJECT_DIR / "web" / "data" / "observations-02.json",

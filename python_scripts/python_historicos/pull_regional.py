@@ -34,7 +34,7 @@ from pathlib import Path
 
 import requests
 
-PROJECT_DIR = Path(__file__).resolve().parent
+PROJECT_DIR = Path(__file__).resolve().parents[2]  # raíz del repo (script histórico en python_scripts/python_historicos/)
 CACHE_DIR = PROJECT_DIR / "cache_ebird_regional"
 DOCS_DIR = PROJECT_DIR / "docs"
 API_URL = "https://api.ebird.org/v2/data/obs/{region}/historic"

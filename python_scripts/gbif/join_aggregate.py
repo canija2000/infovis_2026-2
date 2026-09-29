@@ -20,7 +20,8 @@ from collections import defaultdict
 from shapely.geometry import Point, shape
 from shapely.strtree import STRtree
 
-BASE = os.path.dirname(os.path.abspath(__file__))
+# Datos del pipeline en <repo>/gbif/; los scripts viven en python_scripts/gbif/.
+BASE = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "gbif")
 DL = os.path.join(BASE, "downloads")
 STAGING = os.path.join(BASE, "staging")
 GEOJSON = os.path.abspath(os.path.join(BASE, "..", "web", "data", "regions.geojson"))

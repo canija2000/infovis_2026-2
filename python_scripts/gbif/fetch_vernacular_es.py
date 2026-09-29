@@ -10,7 +10,8 @@ import urllib.parse
 import urllib.request
 from collections import Counter
 
-BASE = os.path.dirname(os.path.abspath(__file__))
+# Datos del pipeline en <repo>/gbif/; los scripts viven en python_scripts/gbif/.
+BASE = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "gbif")
 DATA = os.path.abspath(os.path.join(BASE, "..", "web", "data"))
 
 

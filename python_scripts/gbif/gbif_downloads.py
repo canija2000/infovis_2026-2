@@ -12,7 +12,8 @@ import urllib.request
 import urllib.error
 
 API = "https://api.gbif.org/v1"
-STATE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "state.json")
+# Datos del pipeline en <repo>/gbif/; los scripts viven en python_scripts/gbif/.
+STATE = os.path.join(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "gbif"), "state.json")
 
 TAXON_KEY = "212"  # Aves
 COUNTRY = "CL"

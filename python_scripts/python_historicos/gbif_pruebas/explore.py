@@ -14,7 +14,8 @@ import os
 import zipfile
 from collections import Counter
 
-BASE = os.path.dirname(os.path.abspath(__file__))
+# Datos del pipeline en <repo>/gbif/; este script vive en python_scripts/python_historicos/gbif_pruebas/.
+BASE = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), "gbif")
 DL = os.path.join(BASE, "downloads")
 EBIRD_KEY = "4fa7b334-ce0d-4e88-aaae-2e0c138d049e"
 

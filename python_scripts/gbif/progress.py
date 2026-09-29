@@ -4,7 +4,8 @@ Uso: progress.py  -> imprime estado de las 11 descargas anuales.
 import json
 import os
 
-BASE = os.path.dirname(os.path.abspath(__file__))
+# Datos del pipeline en <repo>/gbif/; los scripts viven en python_scripts/gbif/.
+BASE = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "gbif")
 st = json.load(open(os.path.join(BASE, "state.json")))
 dls = st.get("downloads", {})
 

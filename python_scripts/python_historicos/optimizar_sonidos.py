@@ -1,8 +1,8 @@
 """Reduce audios PCM disfrazados de MP3 para uso web.
 
 Uso:
-    python3 optimizar_sonidos.py --dry-run
-    python3 optimizar_sonidos.py
+    python3 python_scripts/python_historicos/optimizar_sonidos.py --dry-run
+    python3 python_scripts/python_historicos/optimizar_sonidos.py
 
 La conversión mantiene el nombre de cada archivo para no romper
 ``sounds/manifest.json``. Solo procesa audio PCM o archivos que superen el
@@ -17,7 +17,7 @@ import subprocess
 import tempfile
 from pathlib import Path
 
-SOUNDS_DIR = Path(__file__).resolve().parent / "sounds"
+SOUNDS_DIR = Path(__file__).resolve().parents[2] / "sounds"  # raíz del repo
 PCM_CODECS = {"pcm_s16le", "pcm_s24le", "pcm_s32le", "pcm_f32le", "pcm_f64le"}
 
 

@@ -2,7 +2,7 @@
  * Overview: mapa + grilla región × mes + calendario especie × mes (año típico).
  * Zoom & filter: región, ventana por clase (residentes / verano / invierno), buscador, scrubber de mes con play.
  * Details on demand: ficha de especie con perfil radial, mapa y canto.
- * Datos precalculados por build_web_data.py (ver docs/metodologia-datos.md §10).
+ * Datos precalculados por python_scripts/build_web_data.py (ver docs/metodologia-datos.md §10).
  */
 (() => {
   "use strict";

@@ -29,7 +29,7 @@ import geopandas as gpd
 import pandas as pd
 import requests
 
-PROJECT_DIR = Path(__file__).resolve().parent
+PROJECT_DIR = Path(__file__).resolve().parents[2]  # raíz del repo (script histórico en python_scripts/python_historicos/)
 API_URL = "https://api.ebird.org/v2/data/obs/CL/historic"
 SHAPEFILE_PATH = PROJECT_DIR / "Regiones" / "Regional.shp"
 CACHE_DIR = PROJECT_DIR / "cache_ebird"

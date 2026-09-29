@@ -102,7 +102,7 @@ mismo mes. Los valores no son comparables 1:1 entre versiones.
 - `web/data/observations-01.json`, `observations-02.json` (partidos bajo
   20 MiB).
 - `web/data/metadata.json` lista los archivos en `observationFiles` (desde
-  V1 los lee `build_web_data.py`, no el frontend; ver §10) y registra fuente, DOIs y métrica.
+  V1 los lee `python_scripts/build_web_data.py`, no el frontend; ver §10) y registra fuente, DOIs y métrica.
 - `web/data/regions.geojson`: se recalcularon `dias_especie`, `especies` y
   `meses` por región con los datos nuevos.
 
@@ -125,7 +125,7 @@ reciente del día"). Total: 1.524.227 días-especie (vs 604.225 antes).
 
 ## 10. Capa web: año típico y clasificación estacional (V1)
 
-`build_web_data.py` (solo biblioteca estándar, salida determinista) lee
+`python_scripts/build_web_data.py` (solo biblioteca estándar, salida determinista) lee
 `web/data/observations-*.json` + `regions.geojson` y escribe los archivos
 livianos que consume la web. La carga inicial baja de ~26 MB a ~0,86 MB.
 
@@ -161,7 +161,7 @@ livianos que consume la web. La carga inicial baja de ~26 MB a ~0,86 MB.
 
 ### 10.2 Clasificación (nacional y por región)
 
-Parámetros en la cabecera de `build_web_data.py`:
+Parámetros en la cabecera de `python_scripts/build_web_data.py`:
 
 - **Amplitud** = 1 − (media de los 3 meses más bajos de `rel`) / (media de los 3 más altos).
 - **Fase** = mes medio circular de `rel` (vector medio sobre el círculo anual).
@@ -220,5 +220,5 @@ Los anillos se reorientan para D3 (exterior horario).
   xeno-canto.org antes de descargar.
 - `sounds.json` lista todas las especies con su nombre Xeno-canto y un enlace
   de búsqueda. Las grabaciones se llenan desde `sounds/manifest.json` (local,
-  generado por `descargar_sonidos.py`) y se reproducen desde xeno-canto.org,
+  generado por `python_scripts/python_historicos/descargar_sonidos.py`) y se reproducen desde xeno-canto.org,
   porque `sounds/` no se publica.

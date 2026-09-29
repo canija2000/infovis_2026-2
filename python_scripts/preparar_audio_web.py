@@ -1,9 +1,9 @@
 """Prepara los clips de canto que publica la web (web/audio/).
 
 Uso:
-    python3 preparar_audio_web.py --dry-run        # selección, cobertura y faltantes
-    python3 preparar_audio_web.py                  # descarga faltantes y genera web/audio/
-    python3 preparar_audio_web.py --no-download    # solo grabaciones ya locales
+    python3 python_scripts/preparar_audio_web.py --dry-run        # selección, cobertura y faltantes
+    python3 python_scripts/preparar_audio_web.py                  # descarga faltantes y genera web/audio/
+    python3 python_scripts/preparar_audio_web.py --no-download    # solo grabaciones ya locales
 
 Cobertura: todas las especies que la web muestra sin expandir (top por clase
 en cada región y en Chile, igual que ``TAB_LIMIT`` en web/app.js) más las dos
@@ -36,7 +36,7 @@ from pathlib import Path
 import numpy as np
 import requests
 
-PROJECT_DIR = Path(__file__).resolve().parent
+PROJECT_DIR = Path(__file__).resolve().parents[1]  # raíz del repo (el script vive en python_scripts/)
 SOUNDS_DIR = PROJECT_DIR / "sounds"
 MANIFEST_PATH = SOUNDS_DIR / "manifest.json"
 CACHE_DIR = PROJECT_DIR / "cache_xenocanto"
@@ -365,7 +365,7 @@ def main() -> None:
     print(f"{len(clips)} especies con clip · web/audio/ = {total / 1024 / 1024:.1f} MB · sin grabación: {len(missing)}")
     if missing:
         print("  " + ", ".join(sorted(missing)))
-    print("Siguiente paso: python3 build_web_data.py (enlaza los clips en web/data/sounds.json)")
+    print("Siguiente paso: python3 python_scripts/build_web_data.py (enlaza los clips en web/data/sounds.json)")
 
 
 def write_clips(clips: list[dict]) -> None:

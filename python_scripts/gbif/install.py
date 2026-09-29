@@ -7,7 +7,8 @@ import json
 import os
 import shutil
 
-BASE = os.path.dirname(os.path.abspath(__file__))
+# Datos del pipeline en <repo>/gbif/; los scripts viven en python_scripts/gbif/.
+BASE = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "gbif")
 REPO = os.path.abspath(os.path.join(BASE, ".."))
 STAGING = os.path.join(BASE, "staging")
 DATA = os.path.join(REPO, "web", "data")
