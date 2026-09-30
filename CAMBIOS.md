@@ -15,3 +15,5 @@ Agrega una línea numerada por entrada, con tu nombre entre paréntesis.
 5. Agregar opciones/botones para que el usuario pueda reproducir sonidos de manera personalizada. Por ej: podría seleccionar varios pájaros de la región de Magallanes y otras especies poco frecuentes en el mismo mix. Además podrían haber mixes predeterminados para centrarse en un ambiente solo de pájaros sedentarios, otro solo de pájaros nómadas, u otro mix interesante. (Matías)
 6. Fotos: 23 especies cuya foto principal era un ave muerta, piel de museo o libreta ahora usan fotos revisadas de `imagenes_aves_chile`
    (`python_scripts/imagenes_revisadas.json`); la ficha muestra la licencia real de cada foto (algunas CC BY-NC). (Joaquín)
+7. Mezclador: pasa de una sección entre la barra y el mapa a un dock inferior que se abre con el botón **Mezcla**; pistas en una línea,
+   "+ Añadir a la mezcla" en la ficha, "Mezclar lo que se ve" y carga de `sounds.json`/`images.json` solo al abrirlo. (Joaquín)
