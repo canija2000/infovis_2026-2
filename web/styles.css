@@ -893,6 +893,33 @@ rect.cursor {
   font: 11px var(--mono);
   color: var(--ink-3);
 }
+.images-box h3 {
+  font-size: 15px;
+  margin: 18px 0 8px;
+}
+.image-gallery {
+  display: grid;
+  gap: 12px;
+}
+.image-gallery figure[hidden] {
+  display: none;
+}
+.image-gallery img {
+  display: block;
+  width: 100%;
+  max-height: 270px;
+  object-fit: contain;
+  background: var(--empty);
+  border-radius: 4px;
+}
+.image-gallery figcaption {
+  margin-top: 4px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.image-more {
+  margin-top: 10px;
+}
 
 /* -------------------------------------------------------------- pie */
 .sound-legend,

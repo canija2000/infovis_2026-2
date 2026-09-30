@@ -48,6 +48,7 @@
 
   let D = null; // datos cargados
   let sounds = null;
+  let images = null;
 
   // ---------------------------------------------------------------- colores
   const dark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -470,6 +471,7 @@
     renderRadial(row);
     renderSpeciesMap(sid);
     renderSound(sid);
+    renderImages(sid);
     renderCalendar();
   }
 
@@ -589,6 +591,68 @@
       `<figcaption><a href="${r.url}" target="_blank" rel="noopener">XC${r.id}</a> · ${r.recordist || "autor s/i"}` +
       ` · ${r.type || ""} · ${r.country || ""} · <a href="${r.license}" target="_blank" rel="noopener">licencia</a>` +
       `<br><span class="muted">Clip de 6 s (el tramo con más canto) de la grabación original.</span></figcaption></figure>`).join("");
+  }
+
+  async function renderImages(sid) {
+    const box = document.getElementById("p-images");
+    box.replaceChildren();
+    try {
+      if (!images) {
+        const response = await fetch("data/images.json", { cache: "no-store" });
+        if (!response.ok) throw new Error(`images.json: ${response.status}`);
+        images = await response.json();
+      }
+    } catch (_) {
+      if (state.species === sid) box.textContent = "No se pudieron cargar las fotografías.";
+      return;
+    }
+    if (state.species !== sid) return;
+    const photos = (images.species.find((entry) => entry.sid === sid)?.images || []).slice(0, 8);
+    if (!photos.length) return;
+
+    const title = document.createElement("h3");
+    title.textContent = "Fotografías";
+    const gallery = document.createElement("div");
+    gallery.className = "image-gallery";
+    const figures = photos.map((photo, index) => {
+      const figure = document.createElement("figure");
+      figure.hidden = index > 0;
+      const img = document.createElement("img");
+      img.src = photo.url;
+      img.alt = `${D.species[sid].comName}, fotografía ${index + 1}`;
+      img.loading = "lazy";
+      img.decoding = "async";
+      const caption = document.createElement("figcaption");
+      const source = document.createElement("a");
+      source.href = photo.source;
+      source.target = "_blank";
+      source.rel = "noopener noreferrer";
+      source.textContent = photo.author;
+      const license = document.createElement("a");
+      license.href = photo.license;
+      license.target = "_blank";
+      license.rel = "noopener noreferrer";
+      license.textContent = "CC BY";
+      caption.append(source, " · ", license, " · GBIF");
+      figure.append(img, caption);
+      gallery.append(figure);
+      return figure;
+    });
+    box.append(title, gallery);
+    if (photos.length > 1) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "image-more ghost";
+      button.textContent = `Mostrar más (${photos.length - 1})`;
+      button.setAttribute("aria-expanded", "false");
+      button.addEventListener("click", () => {
+        const expanded = button.getAttribute("aria-expanded") !== "true";
+        figures.slice(1).forEach((figure) => { figure.hidden = !expanded; });
+        button.setAttribute("aria-expanded", String(expanded));
+        button.textContent = expanded ? "Mostrar menos" : `Mostrar más (${photos.length - 1})`;
+      });
+      box.append(button);
+    }
   }
 
   // ---------------------------------------------------------------- sonificación

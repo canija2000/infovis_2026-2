@@ -18,6 +18,7 @@ Salida (web/data/):
     region_month.json   riqueza y composición estacional por región-mes
     regions.min.geojson polígonos simplificados (continente) para D3
     sounds.json         sinónimos y grabaciones por especie (carga diferida)
+    images.json         fotos CC BY por especie, si ya se consultaron con preparar_imagenes_web.py
 
 Solo usa la biblioteca estándar. La salida es determinista: mismo input,
 mismos bytes (sin marcas de tiempo; orden estable; redondeo fijo).
@@ -388,6 +389,16 @@ def main() -> None:
                 "hasSound": sid in with_sound,
             }
         )
+
+    # Mantiene el índice de fotos alineado con los IDs al regenerar los datos.
+    # La consulta a GBIF se hace aparte para conservar este build sin red.
+    image_path = DATA_DIR / "images.json"
+    if image_path.exists():
+        from preparar_imagenes_web import write_index
+
+        previous_images = load_json(image_path, {"species": []})
+        images_by_name = {row["sciName"]: row["images"] for row in previous_images["species"]}
+        write_index(species, images_by_name)
 
     region_month = {
         "columns": ["riqueza", "residente", "visitante_estival", "visitante_invernal", "visitantes_prop", "esfuerzo"],

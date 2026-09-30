@@ -29,6 +29,14 @@ GBIF (11 descargas anuales, Aves, Chile)
   `sonify.js`, la sonificación.
 - `python_scripts/preparar_audio_web.py`: elige, descarga (Xeno-canto, `cnt:chile`) y recorta los
   cantos que publica la web en `web/audio/` (clips + `clips.json`).
+- `python_scripts/preparar_imagenes_web.py`: consulta fotos de ocurrencias chilenas en GBIF
+  y, si reúne menos de 32, completa con registros globales de la misma especie.
+  Reúne hasta 64 candidatas
+  CC BY por especie, con autor, licencia y fuente, en `cache_images/candidates.json`.
+- `python_scripts/ordenar_imagenes_web.py`: analiza todas las candidatas y publica
+  las ocho mejores por especie en `web/data/images.json`, priorizando aves grandes,
+  nítidas y reconocibles. Usa un detector SSD MobileNet del ONNX Model Zoo y guarda
+  las puntuaciones en `cache_images/` para reutilizarlas.
 - `docs/proceso/`: bitácora de versiones (V1 → V4) para la entrega.
 - `python_scripts/python_historicos/`: scripts antiguos, conservados como
   evidencia del proceso (no se usan en la web). Ver «Estructura de scripts».
@@ -45,6 +53,8 @@ Todos se ejecutan desde la raíz del repo (las rutas se resuelven solas).
 python_scripts/
 ├── build_web_data.py        genera web/data/ (año típico, clases, geometría, sonidos)
 ├── preparar_audio_web.py    cantos de Xeno-canto → clips en web/audio/
+├── preparar_imagenes_web.py fotos CC BY de GBIF → cache_images/candidates.json
+├── ordenar_imagenes_web.py  puntúa candidatas → ocho mejores en web/data/images.json
 ├── gbif/                    pipeline GBIF (datos en <repo>/gbif/)
 │   ├── gbif_downloads.py    pedir descargas anuales (API GBIF)
 │   ├── run_pipeline.py      orquesta descarga + estado (gbif/state.json)
@@ -64,7 +74,19 @@ python_scripts/
 ```bash
 python3 python_scripts/build_web_data.py            # reescribe web/data/*.json derivados
 python3 python_scripts/build_web_data.py --report   # además imprime especies de control
+python3 python_scripts/preparar_imagenes_web.py      # reúne hasta 64 candidatas por especie
+python3 python_scripts/ordenar_imagenes_web.py       # publica las ocho mejores en la web
 ```
+
+Para ordenar las fotos se necesitan `pillow`, `numpy` y `onnxruntime`
+(`python3 -m pip install pillow numpy onnxruntime`). La primera
+ejecución descarga el detector (~9 MB) y las miniaturas; todo queda en
+`cache_images/`, fuera de Git. La web solo lee las ocho seleccionadas en `images.json`.
+El detector es [SSD MobileNet v1 de ONNX Model Zoo](https://huggingface.co/onnxmodelzoo/ssd_mobilenet_v1_12-int8).
+Las fotos que no se pueden descargar para el análisis no se publican en la galería.
+Si se regeneran todas las candidatas con `preparar_imagenes_web.py --force`, hay que
+volver a ejecutar el ordenador. Se puede revisar una sola especie con
+`python3 python_scripts/ordenar_imagenes_web.py --species "Zonotrichia capensis" --dry-run`.
 
 Para rehacer el agregado desde GBIF, ver `python_scripts/gbif/run_pipeline.py` y la
 metodología. Las descargas crudas quedan fuera de Git.
@@ -88,7 +110,7 @@ conexión a internet.
   "mostrar todas", buscador de especie y scrubber de mes con ▶ (también con la
   barra espaciadora).
 - **Detalle:** ficha de especie con perfil anual radial, mapa de frecuencia
-  por región y clip de canto (si hay).
+  por región, clip de canto (si hay) y galería de hasta ocho fotos (si hay).
 - **Sonificación:** cada mes (2,4 s) recorre Chile de norte a sur en cinco
   macrozonas. Residentes = colchón sostenido; visitantes = cantos reales
   (Fío-fío en verano, Picaflor chico en invierno). Densidad ← la ola de cada
@@ -129,5 +151,8 @@ con autor, licencia y enlace a la grabación original en la ficha.
   en el pie de la web). eBird aporta el 91–98 % de los registros 2016–2024.
 - Divisiones regionales: [Mapoteca BCN](https://www.bcn.cl/siit/mapas_vectoriales/index_html).
 - Cantos: [Xeno-canto](https://xeno-canto.org), licencias Creative Commons por grabación.
+- Fotos: [GBIF](https://www.gbif.org), licencia CC BY explícita por medio; cada foto
+  enlaza su ocurrencia, autor y licencia. Las fotos se sirven desde el proveedor
+  original, por lo que su disponibilidad depende de él.
 
 Uso educativo y no comercial.
