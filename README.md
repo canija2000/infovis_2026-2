@@ -29,6 +29,10 @@ GBIF (11 descargas anuales, Aves, Chile)
   `sonify.js`, la sonificación.
 - `python_scripts/preparar_audio_web.py`: elige, descarga (Xeno-canto, `cnt:chile`) y recorta los
   cantos que publica la web en `web/audio/` (clips + `clips.json`).
+- `python_scripts/preparar_audio_mixer.py`: reduce el ambiente de los clips que
+  admiten modificaciones y prepara las pistas independientes del mezclador.
+  Ver [`docs/mezclador-sonoro.md`](docs/mezclador-sonoro.md) para su uso,
+  funcionamiento y límites.
 - `python_scripts/preparar_imagenes_web.py`: consulta fotos de ocurrencias chilenas en GBIF
   y, si reúne menos de 32, completa con registros globales de la misma especie.
   Reúne hasta 64 candidatas
@@ -55,6 +59,7 @@ Todos se ejecutan desde la raíz del repo (las rutas se resuelven solas).
 python_scripts/
 ├── build_web_data.py        genera web/data/ (año típico, clases, geometría, sonidos)
 ├── preparar_audio_web.py    cantos de Xeno-canto → clips en web/audio/
+├── preparar_audio_mixer.py  clips con menos ambiente → web/audio/mixer/
 ├── preparar_imagenes_web.py fotos CC BY de GBIF → cache_images/candidates.json
 ├── ordenar_imagenes_web.py  puntúa candidatas → ocho mejores en web/data/images.json
 ├── gbif/                    pipeline GBIF (datos en <repo>/gbif/)
@@ -118,6 +123,10 @@ conexión a internet.
   (Fío-fío en verano, Picaflor chico en invierno). Densidad ← la ola de cada
   zona respecto de su propio año; tono ← latitud; volumen ← cantidad. El audio
   parte solo después de pulsar Play.
+- **Mezclador:** grilla con foto, búsqueda y filtro estacional para elegir
+  especies; volumen individual y reproducción simultánea, desincronizada por
+  defecto o sincronizada con la casilla. Ver
+  [`docs/mezclador-sonoro.md`](docs/mezclador-sonoro.md).
 
 ## Publicación
 
@@ -131,12 +140,13 @@ sirve como assets estáticos (`wrangler.jsonc`).
 python3 python_scripts/preparar_audio_web.py --dry-run   # selección y faltantes
 python3 python_scripts/preparar_audio_web.py             # descarga faltantes y genera web/audio/
 python3 python_scripts/build_web_data.py                 # enlaza web/audio/clips.json en web/data/sounds.json
+python3 python_scripts/preparar_audio_mixer.py           # crea pistas con menos ambiente para el mezclador
 ```
 
 `python_scripts/preparar_audio_web.py` cubre todas las especies que la web muestra sin
 expandir (232: top por pestaña en Chile y en cada región). Junta candidatas
 locales (`sounds/`) y de Xeno-canto (Chile primero, calidad A/B) y elige la
-mejor (Chile, canto o llamado, calidad, licencia sin ND). De cada una publica
+mejor (Chile, canto o llamado, calidad, priorizando licencias sin ND). De cada una publica
 un clip de 6 s y un grano de 0,9 s para la sonificación, tomados del tramo con
 más energía en la banda de las aves (1,5–9 kHz) ponderada por tonalidad, para
 evitar viento o ruido de fondo. Hoy: 231 de 232 especies (falta el Guanay, sin
@@ -146,6 +156,10 @@ respuestas de la API quedan en `cache_xenocanto/` (fuera de Git). Requiere `ffmp
 lee de `api_sounds` (`.env` o variable de entorno) y nunca se escribe ni se
 imprime. `sounds/` (originales) sigue fuera de Git; `web/audio/` sí se publica,
 con autor, licencia y enlace a la grabación original en la ficha.
+El mezclador usa 178 pistas con reducción espectral del fondo (177 archivos
+únicos); 53 grabaciones con licencia ND conservan el clip previo y aparecen
+marcadas como audio original. [Creative Commons explica que las licencias ND no
+permiten compartir adaptaciones](https://creativecommons.org/licenses/by-nc-nd/4.0/).
 
 ## Fuentes y atribución
 

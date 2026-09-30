@@ -310,6 +310,7 @@ def build_sounds(names: dict, species_ids: dict) -> dict:
             {
                 "id": clip["id"],
                 "src": clip["clip"],
+                "mixer": clip.get("mixer"),
                 "grain": clip["grain"],
                 "url": clip["url"],
                 "type": clip.get("type"),

@@ -1,15 +1,30 @@
-# web/ — Atlas sonoro de aves de Chile (V1)
+# web/ — Atlas sonoro de aves de Chile
 
 Sitio estático sin build step: `index.html`, `styles.css`, `app.js` (vistas e
 interacción, D3 v7 desde jsDelivr) y `sonify.js` (sonificación con Web Audio API).
+El mezclador permite añadir especies con grabación, escuchar sus clips juntos
+y ajustar el volumen de cada pista. El botón de silencio
+general también silencia la mezcla. Sus pistas limpias se generan con
+`python3 python_scripts/preparar_audio_mixer.py` desde la raíz del repositorio.
+El proceso reduce el fondo de los clips con licencia que admite modificaciones;
+las grabaciones con licencia ND se identifican como audio original en el selector.
+El selector muestra una grilla con la primera foto de `data/images.json`; permite
+buscar por nombre común o científico y filtrar por residentes, visitantes de
+verano o visitantes de invierno. Un clic en una tarjeta añade la especie al mix.
+Por defecto cada canto entra tras una espera aleatoria de 0,2 a 5,2 s y vuelve
+a esperar entre repeticiones. «Sincronizar cantos» inicia todas las pistas seleccionadas
+en el mismo instante y las repite en ciclos comunes de 6 s; cambiar el modo
+reinicia la mezcla. La guía completa está en
+[`docs/mezclador-sonoro.md`](../docs/mezclador-sonoro.md).
 
 ```bash
 cd web && python3 -m http.server 8000   # abrir http://localhost:8000
 ```
 
-La página carga solo los archivos derivados de `data/` (~0,9 MB):
+La página carga los datos base derivados de `data/` (~0,9 MB):
 `meta.json`, `species.json`, `typical_year.json`, `region_month.json`,
-`regions.min.geojson`; `sounds.json` e `images.json` se piden al abrir una ficha de especie.
+`regions.min.geojson`; el mezclador pide `sounds.json` e `images.json` al
+inicializarse y las fichas de especie reutilizan esos datos.
 Se regeneran con `python3 python_scripts/build_web_data.py` desde la raíz del repo.
 Las candidatas se reúnen con `python3 python_scripts/preparar_imagenes_web.py`;
 después `python3 python_scripts/ordenar_imagenes_web.py` analiza hasta 64 por
