@@ -48,6 +48,11 @@ REGION_SCENES = {"CL-RM": {
     "humedal": {"name": "Desembocadura del río Aconcagua (Concón)", "lon": -71.5060, "lat": -32.9210, "km": 1.4},
     "matorral": {"name": "P. N. La Campana, sector Granizo (Olmué)", "lon": -71.1400, "lat": -32.9720, "km": 1.4},
     "ciudad": {"name": "Cerros de Valparaíso", "lon": -71.6250, "lat": -33.0430, "km": 1.4},
+}, "CL-MA": {
+    "estepa": {"name": "Laguna Amarga (Torres del Paine)", "lon": -72.8000, "lat": -50.9750, "km": 1.4},
+    "bosque": {"name": "Reserva Nacional Magallanes (bosque de lenga)", "lon": -71.0300, "lat": -53.1300, "km": 1.4},
+    "costa": {"name": "Costa del Seno Otway (pingüinera)", "lon": -71.2200, "lat": -52.9750, "km": 1.4},
+    "fiordo": {"name": "Seno Última Esperanza (Puerto Natales)", "lon": -72.5200, "lat": -51.7000, "km": 1.4},
 }}
 # WorldCover → código del juego (un dígito).
 COVER = {10: 0, 20: 1, 30: 2, 40: 3, 50: 4, 60: 5, 70: 6, 80: 7, 90: 8, 95: 8, 100: 9}

@@ -131,6 +131,72 @@
    "view": "?"
   }
  ],
+ "Aphrastura spinicauda": [
+  {
+   "author": "(c) Flavien Saboureau, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/208781209",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/369425345/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Víctor Sarabia Sánchez, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/182912144",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/319015133/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Nicolás Villaseca Merino, some rights reserved (CC BY-SA)",
+   "license": "cc-by-sa",
+   "page": "https://www.inaturalist.org/observations/245152547",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/437409967/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/254253500",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/455374150/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Jonathan Lorencetti Ehlert, some rights reserved (CC BY-SA)",
+   "license": "cc-by-sa",
+   "page": "https://www.inaturalist.org/observations/341661194",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/622027104/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) ivesklein, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/192687065",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/338316765/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Pablo, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/199280838",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/351415013/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Lucas Illanes, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/262609084",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/471637590/large.jpeg",
+   "view": "?"
+  }
+ ],
  "Callipepla californica": [
   {
    "author": "no rights reserved",
@@ -197,6 +263,72 @@
    "view": "?"
   }
  ],
+ "Campephilus magellanicus": [
+  {
+   "author": "(c) Viktor, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/332232553",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/602890021/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Tristan Jobin, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/147113804",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/253083348/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Hayden Jones, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/259480581",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/465795604/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Daniel Nuñez Michea, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/341007217",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/620588095/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Jay Pruett, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/118930985",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/200996805/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Flavien Saboureau, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/208865477",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/369588717/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Pablo Silva, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/259214237",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/465263299/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Karin Klock Barría, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/335829124",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/610162630/large.jpg",
+   "view": "?"
+  }
+ ],
  "Cathartes aura": [
   {
    "author": "(c) Philipp, some rights reserved (CC BY)",
@@ -260,6 +392,72 @@
    "page": "https://www.inaturalist.org/observations/141124442",
    "src": "inat",
    "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/241685235/large.jpg",
+   "view": "?"
+  }
+ ],
+ "Chloephaga picta": [
+  {
+   "author": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/252768974",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/452524076/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/252768794",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/452523244/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Ingvild Riska, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/266653623",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/479118689/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Pablo, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/199280864",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/351415091/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/195922329",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/344805109/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Jorge Herreros de Lartundo, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/237119986",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/421951871/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) María Regina Silva, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/136333099",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/232646659/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Darío De la Fuente, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/299116104",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/538867100/large.jpg",
    "view": "?"
   }
  ],
@@ -395,6 +593,138 @@
    "view": "?"
   }
  ],
+ "Coscoroba coscoroba": [
+  {
+   "author": "(c) Christoph Moning, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/206791477",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/365706053/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Matias Thiele, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/34659533",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/54572049/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Nicolás Villaseca Merino, some rights reserved (CC BY-SA)",
+   "license": "cc-by-sa",
+   "page": "https://www.inaturalist.org/observations/203174016",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/358929055/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Ben Lyle Bedard, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/177860701",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/309395978/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Jorge Herreros de Lartundo, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/36316482",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/57393598/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Pablo Maass Zepeda, some rights reserved (CC BY-SA)",
+   "license": "cc-by-sa",
+   "page": "https://www.inaturalist.org/observations/213918173",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/378070115/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Christoph Moning, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/206791479",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/365706058/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Nicolas Olejnik, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/108893501",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/183428859/large.jpeg",
+   "view": "?"
+  }
+ ],
+ "Cygnus melancoryphus": [
+  {
+   "author": "(c) Cesar Ormazabal, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/233602258",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/415168957/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Adrien Jailloux, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/259291002",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/465419361/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Nicolás Villaseca Merino, some rights reserved (CC BY-SA)",
+   "license": "cc-by-sa",
+   "page": "https://www.inaturalist.org/observations/203174017",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/358929124/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) cstobie, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/12750229",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/18472149/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Cristian Riquelme, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/20137729",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/31057825/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/261030589",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/468876850/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Dave Richardson, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/188646181",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/330239726/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) ivesklein, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/193919799",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/340731725/large.jpg",
+   "view": "?"
+  }
+ ],
  "Diuca diuca": [
   {
    "author": "(c) Ben Lyle Bedard, some rights reserved (CC BY)",
@@ -492,6 +822,138 @@
    "page": "https://www.inaturalist.org/observations/52835367",
    "src": "inat",
    "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/84006267/large.jpg",
+   "view": "?"
+  }
+ ],
+ "Enicognathus ferrugineus": [
+  {
+   "author": "(c) Jay Pruett, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/118930670",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/200996175/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Caroline Quinn, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/325968054",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/590284359/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Eric Schmidt, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/326138318",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/590622121/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Franco Arenas, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/195441815",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/343829541/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Jay Pruett, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/118933128",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/201000119/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Lucy Keith-Diagne, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/66470019",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/107159510/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Darío De la Fuente, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/34147514",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/53703945/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Christoph Moning, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/207401030",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/366853670/large.jpeg",
+   "view": "?"
+  }
+ ],
+ "Haematopus leucopodus": [
+  {
+   "author": "(c) Mathieu Sauzay, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/15558734",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/23278377/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/238494706",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/424606372/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Rajan Rao, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/195848632",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/344650876/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Cheryl McCleary-Catalano, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/199716794",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/352246771/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/260851163",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/468518856/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/252768946",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/452523972/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Josh Noseworthy, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/268269887",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/482192614/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/40051914",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/63608308/large.png",
    "view": "?"
   }
  ],
@@ -693,6 +1155,72 @@
    "view": "?"
   }
  ],
+ "Leucocarbo atriceps": [
+  {
+   "author": "(c) Charlotte Kirchner, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/249682423",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/446378903/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) F. Bemmerlein-Lux, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/199675071",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/352169186/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/366210385",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/668672395/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Frank Dietze, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/382273212",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/699558944/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Gabriela Cartes, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/193969145",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/340833691/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Jan Ebr &amp; Ivana Ebrová, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/192919766",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/338782697/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/371711273",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/679089374/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Tony Rebelo, some rights reserved (CC BY-SA)",
+   "license": "cc-by-sa",
+   "page": "https://www.inaturalist.org/observations/20141519",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/31065455/large.jpg",
+   "view": "?"
+  }
+ ],
  "Leucophaeus modestus": [
   {
    "author": "(c) ignacio_diaz05, some rights reserved (CC BY)",
@@ -756,6 +1284,72 @@
    "page": "https://www.inaturalist.org/observations/205001044",
    "src": "inat",
    "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/362415561/large.jpeg",
+   "view": "?"
+  }
+ ],
+ "Lophonetta specularioides": [
+  {
+   "author": "(c) SebaArosZ, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/239645888",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/426840027/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Philipp, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/91235472",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/150879627/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Ben Lyle Bedard, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/192190420",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/337332447/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Jorge Herreros de Lartundo, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/195536767",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/344026940/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Cheryl McCleary-Catalano, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/200112047",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/352995059/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/317149718",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/573059552/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) William Stephens, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/40529631",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/64229153/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Jan Ebr &amp; Ivana Ebrová, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/192937674",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/338788573/large.jpeg",
    "view": "?"
   }
  ],
@@ -1083,6 +1677,138 @@
    "view": "?"
   }
  ],
+ "Phoenicopterus chilensis": [
+  {
+   "author": "(c) Tobias Demetz, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/229835563",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/408137050/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Darío De la Fuente, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/124335908",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/210735497/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Jonas Kraft, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/131077217",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/223008515/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Bruno Avilez, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/150953812",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/260384751/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Philipp, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/91247872",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/150900685/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Darío De la Fuente, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/124335907",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/210735477/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Gonzalo Romero, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/205590663",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/363537999/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Viktor, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/332917963",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/604296818/large.jpg",
+   "view": "?"
+  }
+ ],
+ "Phrygilus patagonicus": [
+  {
+   "author": "(c) Charlotte Kirchner, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/249678050",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/446369128/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/344677106",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/628050669/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Duban Espinoza, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/140618461",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/240730277/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/323484137",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/585327127/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Pierre Pericard, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/315452509",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/569856728/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Franco Arenas, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/146001168",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/250910398/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Viktor, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/332359210",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/603121315/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Eric Schmidt, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/264043636",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/474449560/large.jpeg",
+   "view": "?"
+  }
+ ],
  "Phytotoma rara": [
   {
    "author": "(c) Jonas Kraft, some rights reserved (CC BY)",
@@ -1189,6 +1915,72 @@
    "src": "inat",
    "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/650567088/large.jpg",
    "view": "lateral"
+  }
+ ],
+ "Rhea pennata": [
+  {
+   "author": "(c) Christoph Moning, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/206434131",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/365103209/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Gonzalo Romero, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/205590675",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/363541859/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Christoph Moning, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/206433544",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/365102653/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Nicolas Olejnik, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/207996947",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/367967801/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/241089993",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/429632121/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Sebastián Saiter V., some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/149401661",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/257437176/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Christoph Moning, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/206434133",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/365103215/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) desertnaturalist, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/41972995",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/66611946/large.jpg",
+   "view": "?"
   }
  ],
  "Scelorchilus albicollis": [
@@ -1307,6 +2099,138 @@
    "view": "?"
   }
  ],
+ "Spheniscus magellanicus": [
+  {
+   "author": "(c) Nicolas Olejnik, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/108872766",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/183390545/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/249263533",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/445545488/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/195922332",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/344805327/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/200305666",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/353375744/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) F. Bemmerlein-Lux, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/175339663",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/304712604/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Adrienne Pinsoneault, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/71988394",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/117294859/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/195922328",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/344805105/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/195922333",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/344805347/large.jpeg",
+   "view": "?"
+  }
+ ],
+ "Stercorarius chilensis": [
+  {
+   "author": "(c) Paul Asman and Jill Lenoble, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/98603366",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/164205423/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Christoph Moning, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/206773342",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/365673533/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Javier Solís, some rights reserved (CC BY-SA)",
+   "license": "cc-by-sa",
+   "page": "https://www.inaturalist.org/observations/20460637",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/31584376/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Frank Dietze, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/382273210",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/699558927/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Christoph Moning, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/206772785",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/365672934/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Christoph Moning, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/206773347",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/365673557/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Pablo, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/107394393",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/180646954/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) SK53, some rights reserved (CC BY-SA)",
+   "license": "cc-by-sa",
+   "page": "https://www.inaturalist.org/observations/108497325",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/182684955/large.jpg",
+   "view": "?"
+  }
+ ],
  "Sturnella loyca": [
   {
    "author": "(c) Steven Bodzin, some rights reserved (CC BY)",
@@ -1347,6 +2271,72 @@
    "src": "inat",
    "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/503527680/large.jpg",
    "view": "lateral"
+  }
+ ],
+ "Tachyeres patachonicus": [
+  {
+   "author": "(c) Darío De la Fuente, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/213324684",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/377001276/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Ben Lyle Bedard, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/190526843",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/334023109/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Thibaud Aronson, some rights reserved (CC BY-SA)",
+   "license": "cc-by-sa",
+   "page": "https://www.inaturalist.org/observations/71717053",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/116806164/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Víctor Vidal Echeverría, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/111004985",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/187343891/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Philipp Pavelka, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/19292959",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/29654443/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) nitsuga74, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/324356687",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/587053466/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Christoph Moning, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/213475702",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/377268041/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) avocat, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/256467595",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/459841062/large.jpg",
+   "view": "?"
   }
  ],
  "Troglodytes musculus": [
@@ -1481,6 +2471,72 @@
    "src": "inat",
    "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/348657442/large.jpg",
    "view": "lateral"
+  }
+ ],
+ "Vultur gryphus": [
+  {
+   "author": "(c) Viktor, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/331849161",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/602098858/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Cesar Ormazabal, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/158931425",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/274595658/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/363780128",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/664067822/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Gabriela Cartes, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/261921542",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/470639408/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Charlotte Kirchner, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/249682284",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/446378698/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/376669821",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/688720589/large.jpg",
+   "view": "?"
+  },
+  {
+   "author": "no rights reserved",
+   "license": "cc0",
+   "page": "https://www.inaturalist.org/observations/254252458",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/455371169/large.jpeg",
+   "view": "?"
+  },
+  {
+   "author": "(c) Ben Lyle Bedard, some rights reserved (CC BY)",
+   "license": "cc-by",
+   "page": "https://www.inaturalist.org/observations/180954772",
+   "src": "inat",
+   "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/315294641/large.jpeg",
+   "view": "?"
   }
  ],
  "Zenaida auriculata": [

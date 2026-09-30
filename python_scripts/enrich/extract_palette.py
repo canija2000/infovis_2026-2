@@ -70,9 +70,23 @@ MANUAL = {
     "Phytotoma rara": {"eye": [200, 40, 32], "accent": [168, 72, 40]},
     "Anairetes parulus": {"belly": [208, 208, 192], "back": [104, 104, 96], "head": [40, 40, 40], "eye": [232, 216, 96]},
     "Callipepla californica": {"throat": [24, 24, 24], "accent": [232, 232, 232]},
+    # Magallanes
+    "Chloephaga picta": {"head": [216, 212, 200], "throat": [224, 220, 208], "belly": [224, 220, 208], "back": [128, 120, 112]},
+    "Vultur gryphus": {"head": [136, 88, 88], "accent": [240, 240, 232], "beak": [216, 208, 192]},
+    "Aphrastura spinicauda": {"belly": [232, 228, 216], "throat": [232, 224, 208], "back": [120, 72, 40], "accent": [216, 152, 72]},
+    "Enicognathus ferrugineus": {"tail": [120, 40, 40], "accent": [168, 48, 40]},
+    "Phrygilus patagonicus": {"back": [96, 104, 56], "flank": [184, 160, 40], "throat": [96, 104, 120]},
+    "Spheniscus magellanicus": {"belly": [232, 232, 232], "flank": [232, 232, 232], "accent": [232, 232, 232], "beak": [48, 44, 44], "legs": [80, 64, 64]},
+    "Leucocarbo atriceps": {"belly": [232, 232, 224], "throat": [232, 232, 224], "legs": [216, 160, 160], "accent": [232, 168, 48]},
+    "Haematopus leucopodus": {"belly": [232, 232, 224], "eye": [232, 200, 64]},
+    "Cygnus melancoryphus": {"beak": [96, 104, 128], "accent": [200, 40, 40]},
+    "Tachyeres patachonicus": {"beak": [224, 168, 48], "legs": [216, 152, 56]},
+    "Coscoroba coscoroba": {"legs": [232, 150, 150]},
 }
 # Dónde va el acento cuando el modelo no lo detecta (palabras que entiende bird.js).
-ACCENT_FIX = {"Sephanoides sephaniodes": "frente", "Phytotoma rara": "pecho", "Callipepla californica": "bigote"}
+ACCENT_FIX = {"Sephanoides sephaniodes": "frente", "Phytotoma rara": "pecho", "Callipepla californica": "bigote",
+              "Vultur gryphus": "collar", "Aphrastura spinicauda": "bigote", "Enicognathus ferrugineus": "pecho",
+              "Spheniscus magellanicus": "collar", "Leucocarbo atriceps": "frente", "Cygnus melancoryphus": "frente"}
 DEFAULTS = {"eye": [16, 16, 16], "beak": [40, 32, 28], "legs": [72, 64, 56]}
 
 

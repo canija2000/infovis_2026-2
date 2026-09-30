@@ -36,5 +36,27 @@
   "Columba livia": "ciudad",
   "Zonotrichia capensis": "ciudad",
   "Zenaida auriculata": "ciudad"
+ },
+ "CL-MA": {
+  "Chloephaga picta": "estepa",
+  "Rhea pennata": "estepa",
+  "Vultur gryphus": "estepa",
+  "Phoenicopterus chilensis": "estepa",
+  "Sturnella loyca": "estepa",
+  "Vanellus chilensis": "estepa",
+  "Aphrastura spinicauda": "bosque",
+  "Enicognathus ferrugineus": "bosque",
+  "Campephilus magellanicus": "bosque",
+  "Phrygilus patagonicus": "bosque",
+  "Turdus falcklandii": "bosque",
+  "Spheniscus magellanicus": "costa",
+  "Leucocarbo atriceps": "costa",
+  "Haematopus leucopodus": "costa",
+  "Stercorarius chilensis": "costa",
+  "Larus dominicanus": "costa",
+  "Cygnus melancoryphus": "fiordo",
+  "Tachyeres patachonicus": "fiordo",
+  "Lophonetta specularioides": "fiordo",
+  "Coscoroba coscoroba": "fiordo"
  }
 }

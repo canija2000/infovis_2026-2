@@ -62,3 +62,6 @@ Agrega una línea numerada por entrada, con tu nombre entre paréntesis.
    a `region-<CODE>.json → featured` (se cargan solo al entrar a la región), así `index.json` no crece con cada región nueva
    (+27 % sobre el original). Revisión editable de paletas en `python_scripts/enrich/review_palettes.py` (servidor local con selector
    de color por zona; decisiones en `enrich/palette_review.json`). Las 28 paletas de RM y Valparaíso están aprobadas. (Joaquín)
+18. Región de Magallanes para el mundo 3D: 16 especies nuevas con fotos (iNaturalist) y paletas automáticas (Qwen3-VL) con
+   correcciones manuales; terreno de 4 escenas (`terrain-CL-MA.json`: Laguna Amarga en Torres del Paine, R. N. Magallanes, costa del
+   Seno Otway y Seno Última Esperanza) y vegetación austral en `enrich/props_ma.json` (lenga, ñirre, calafate, mata negra). (Joaquín)
