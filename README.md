@@ -36,7 +36,9 @@ GBIF (11 descargas anuales, Aves, Chile)
 - `python_scripts/ordenar_imagenes_web.py`: analiza todas las candidatas y publica
   las ocho mejores por especie en `web/data/images.json`, priorizando aves grandes,
   nítidas y reconocibles. Usa un detector SSD MobileNet del ONNX Model Zoo y guarda
-  las puntuaciones en `cache_images/` para reutilizarlas.
+  las puntuaciones en `cache_images/` para reutilizarlas. Ver
+  [`docs/imagenes-especies.md`](docs/imagenes-especies.md) para filtros, puntuación,
+  regeneración y límites.
 - `docs/proceso/`: bitácora de versiones (V1 → V4) para la entrega.
 - `python_scripts/python_historicos/`: scripts antiguos, conservados como
   evidencia del proceso (no se usan en la web). Ver «Estructura de scripts».

@@ -15,6 +15,7 @@ Las candidatas se reúnen con `python3 python_scripts/preparar_imagenes_web.py`;
 después `python3 python_scripts/ordenar_imagenes_web.py` analiza hasta 64 por
 especie y publica las ocho mejores. Este análisis se ejecuta al preparar los
 datos, no en el navegador. Sus dependencias y caché se describen en el README raíz.
+La metodología completa está en [`docs/imagenes-especies.md`](../docs/imagenes-especies.md).
 El build normal conserva las fotos y vuelve a asociarlas por nombre científico.
 
 `data/observations-*.json`, `data/regions.geojson` y `data/metadata.json` son
