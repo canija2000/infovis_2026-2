@@ -37,12 +37,18 @@ WORLDCOVER = ("/vsicurl/https://esa-worldcover.s3.eu-central-1.amazonaws.com/v20
               "ESA_WorldCover_10m_2021_v200_{tile}_Map.tif")
 OVERPASS = "https://overpass-api.de/api/interpreter"
 
-SCENES = {
+# Mini-escenas por región (lugares reales, revisados con el usuario).
+REGION_SCENES = {"CL-RM": {
     "ciudad": {"name": "Cerro Santa Lucía y Parque Forestal", "lon": -70.6430, "lat": -33.4380, "km": 1.4},
     "matorral": {"name": "Parque Natural Aguas de Ramón", "lon": -70.5100, "lat": -33.4380, "km": 1.4},
     "rio": {"name": "Río Maipo en Los Morros", "lon": -70.6750, "lat": -33.6580, "km": 1.4},
     "cordillera": {"name": "La Parva, camino a Valle Nevado", "lon": -70.2900, "lat": -33.3400, "km": 1.4},
-}
+}, "CL-VS": {
+    "costa": {"name": "Roquerío de Montemar (Reñaca–Concón)", "lon": -71.5470, "lat": -32.9500, "km": 1.4},
+    "humedal": {"name": "Desembocadura del río Aconcagua (Concón)", "lon": -71.5060, "lat": -32.9210, "km": 1.4},
+    "matorral": {"name": "P. N. La Campana, sector Granizo (Olmué)", "lon": -71.1400, "lat": -32.9720, "km": 1.4},
+    "ciudad": {"name": "Cerros de Valparaíso", "lon": -71.6250, "lat": -33.0430, "km": 1.4},
+}}
 # WorldCover → código del juego (un dígito).
 COVER = {10: 0, 20: 1, 30: 2, 40: 3, 50: 4, 60: 5, 70: 6, 80: 7, 90: 8, 95: 8, 100: 9}
 LEGEND = ["arboles", "matorral", "pastizal", "cultivo", "urbano", "suelo desnudo", "nieve", "agua", "humedal", "musgo/liquen"]
@@ -89,7 +95,8 @@ def elevation(bb, n: int) -> np.ndarray:
     ix1, iy1 = np.minimum(ix + 1, mosaic.shape[1] - 1), np.minimum(iy + 1, mosaic.shape[0] - 1)
     v = (mosaic[iy, ix] * (1 - fx) * (1 - fy) + mosaic[iy, ix1] * fx * (1 - fy)
          + mosaic[iy1, ix] * (1 - fx) * fy + mosaic[iy1, ix1] * fx * fy)
-    return v.reshape(n, sub, n, sub).mean(axis=(1, 3))
+    v = v.reshape(n, sub, n, sub).mean(axis=(1, 3))
+    return np.where(v < 0, -1.0, v)  # el mar (batimetría negativa) queda plano bajo el nivel 0
 
 
 def worldcover_tile(lon: float, lat: float) -> str:
@@ -180,10 +187,11 @@ def preview(scenes: dict, n: int) -> Image.Image:
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--size", type=int, default=48, help="celdas por lado de cada escena")
+    ap.add_argument("--region", default="CL-RM", choices=sorted(REGION_SCENES))
     args = ap.parse_args()
     n = args.size
     scenes = {}
-    for key, s in SCENES.items():
+    for key, s in REGION_SCENES[args.region].items():
         bb = bbox(s)
         h = elevation(bb, n)
         h_min, h_max = int(math.floor(h.min())), int(math.ceil(h.max()))
@@ -204,17 +212,18 @@ def main() -> None:
         print(f"{key:10s} {h_min}–{h_max} m · {mix} · {len(scenes[key]['rivers'])} cursos de agua")
 
     out = {
-        "region": "CL-RM",
-        "note": "Mini-escenas (cuartos) de la RM. Grilla fila 0 = norte; height en m sobre hMin; cover = índice de legend. "
+        "region": args.region,
+        "note": "Mini-escenas (cuartos) de la región. Grilla fila 0 = norte; height en m sobre hMin; cover = índice de legend. "
                 "Relieve AWS Terrain Tiles; cobertura ESA WorldCover 10 m 2021 v200 (CC BY 4.0); ríos © OpenStreetMap (ODbL).",
         "size": [n, n],
         "legend": LEGEND,
         "scenes": scenes,
     }
-    path = c.GAME_DIR / "terrain-CL-RM.json"
+    path = c.GAME_DIR / f"terrain-{args.region}.json"
     path.write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
-    preview(scenes, n).save(c.REFS_DIR / "terrain_preview.png")
-    print(f"→ {path.relative_to(c.ROOT)} ({path.stat().st_size / 1024:.1f} KB) · refs/terrain_preview.png")
+    prev = c.REFS_DIR / f"terrain_preview_{args.region}.png"
+    preview(scenes, n).save(prev)
+    print(f"→ {path.relative_to(c.ROOT)} ({path.stat().st_size / 1024:.1f} KB) · {prev.relative_to(c.ROOT)}")
 
 
 if __name__ == "__main__":

@@ -103,6 +103,7 @@ def compact_morphology(m: dict | None) -> dict | None:
     p = m["prop"]
     st = m.get("stratum")
     return {
+        "family": m.get("family"),
         "prop": [None if p[k] is None else round(p[k], 2) for k in ("beak", "beakDepth", "tarsus", "tail", "hwi")],
         "scale": m["scale"],
         "mass": m["raw"]["mass"],
@@ -124,7 +125,7 @@ def compact_habitat(h: dict | None) -> dict | None:
 def compact_palette(p: dict | None) -> dict | None:
     if not p:
         return None
-    return {k: v for k, v in p.items() if k not in ("photos", "manual")}
+    return {k: v for k, v in p.items() if k not in ("photos", "manual", "annotation", "edited")}
 
 
 def per_year(rows: list[dict], regions: list[dict]):
@@ -152,6 +153,9 @@ def main() -> None:
     report, effort = per_year(rows, regions)
     sci_of = {sid: sci for sci, sid in species_ids.items()}
     enrich = load_enrich()
+    featured_path = ENRICH_DIR / "featured.json"
+    featured = {k: v for k, v in json.loads(featured_path.read_text(encoding="utf-8")).items() if not k.startswith("_")} \
+        if featured_path.exists() else {}
     n_regions = len(regions)
     n_years = len(YEARS)
 
@@ -219,9 +223,9 @@ def main() -> None:
                 "clip": clip,
                 "habitat": compact_habitat(enrich["habitat"].get(sci)),
                 "morphology": compact_morphology(enrich["morphology"].get(sci)),
-                "palette": compact_palette(enrich["palette"].get(sci)),
-                # Fotos de referencia con licencia (solo metadatos) o, si no hay, la búsqueda GBIF.
-                "images": enrich["images"].get(sci) or gbif_images_url(sci),
+                # paleta y fotos de referencia van en region-<CODE>.json → "featured" (solo especies destacadas)
+                "palette": None,
+                "images": gbif_images_url(sci),
             }
         )
 
@@ -281,6 +285,16 @@ def main() -> None:
             },
             "typical": typical_months,
             "years": years,
+            # Especies destacadas del mundo 3D en esta región: escena, paleta y fotos de referencia
+            # (enrich/featured.json + palette.json + images.json). Se cargan solo al entrar a la región.
+            "featured": {
+                str(species_ids[sci]): {
+                    "scene": scene,
+                    "palette": compact_palette(enrich["palette"].get(sci)),
+                    "images": (enrich["images"].get(sci) or [])[:3],
+                }
+                for sci, scene in sorted(featured.get(code, {}).items()) if sci in species_ids
+            },
         }
         path = OUT_DIR / f"region-{code}.json"
         path.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
@@ -349,8 +363,9 @@ def main() -> None:
             "morphology": "prop = [pico/ala, alto pico/pico, tarso/ala, cola/ala, HWI/100]; scale = cbrt(masa/masa chucao); "
                           "mass en g; stratum = % forrajeo [suelo, sotobosque, medio, dosel, aire, agua] (EltonTraits). "
                           "Medidas crudas en enrich/morphology.json.",
-            "palette": "RGB 5 bits por zona del cuerpo desde fotos de referencia (MVP); pattern = textura por zona.",
-            "images": "fotos de referencia con licencia (solo metadatos, no se publican las fotos) o URL de búsqueda GBIF.",
+            "palette": "null aquí: la paleta (RGB 5 bits por zona, pattern por zona) de las especies destacadas va en region-<CODE>.json → featured.",
+            "images": "URL de búsqueda GBIF; las fotos de referencia con licencia de las destacadas van en region-<CODE>.json → featured.",
+            "featured": "region-<CODE>.json → featured = {sid: {scene, palette, images}}: especies destacadas del mundo 3D en esa región.",
             "terrainFile": "mini-escenas de la región (relieve, cobertura, ríos); ver terrain-<CODE>.json.",
             "audio": "rutas relativas a web/ (p. ej. audio/XC123.mp3); licencias por grabación en clip.license.",
         },

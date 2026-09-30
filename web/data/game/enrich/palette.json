@@ -1,4 +1,446 @@
 {
+ "Anairetes parulus": {
+  "accentWhere": null,
+  "annotation": "auto (qwen3-vl-plus)",
+  "back": [
+   104,
+   104,
+   96
+  ],
+  "back_dark": [
+   96,
+   80,
+   56
+  ],
+  "beak": [
+   48,
+   48,
+   40
+  ],
+  "belly": [
+   240,
+   224,
+   136
+  ],
+  "edited": [
+   "belly"
+  ],
+  "eye": [
+   232,
+   216,
+   96
+  ],
+  "flank": [
+   128,
+   128,
+   88
+  ],
+  "head": [
+   40,
+   40,
+   40
+  ],
+  "legs": [
+   80,
+   72,
+   40
+  ],
+  "manual": [
+   "back",
+   "belly",
+   "eye",
+   "head"
+  ],
+  "pattern": {
+   "belly": "streaked",
+   "flank": "streaked"
+  },
+  "photos": [
+   "https://www.inaturalist.org/observations/127037629",
+   "https://www.inaturalist.org/observations/255728552",
+   "https://www.inaturalist.org/observations/255523557",
+   "https://www.inaturalist.org/observations/183999733",
+   "https://www.inaturalist.org/observations/288089383"
+  ],
+  "reviewed": true,
+  "tail": [
+   96,
+   96,
+   64
+  ],
+  "throat": [
+   88,
+   80,
+   56
+  ],
+  "wing": [
+   96,
+   88,
+   64
+  ]
+ },
+ "Anas georgica": {
+  "accentWhere": null,
+  "annotation": "auto (qwen3-vl-plus)",
+  "back": [
+   104,
+   88,
+   72
+  ],
+  "back_dark": [
+   72,
+   56,
+   48
+  ],
+  "beak": [
+   200,
+   168,
+   56
+  ],
+  "belly": [
+   152,
+   136,
+   112
+  ],
+  "eye": [
+   112,
+   96,
+   72
+  ],
+  "flank": [
+   112,
+   96,
+   80
+  ],
+  "head": [
+   128,
+   104,
+   80
+  ],
+  "legs": [
+   128,
+   104,
+   88
+  ],
+  "manual": [],
+  "pattern": {},
+  "photos": [
+   "https://www.inaturalist.org/observations/178984315",
+   "https://www.inaturalist.org/observations/206635950"
+  ],
+  "reviewed": true,
+  "tail": [
+   104,
+   96,
+   88
+  ],
+  "throat": [
+   168,
+   160,
+   144
+  ],
+  "wing": [
+   80,
+   64,
+   56
+  ]
+ },
+ "Callipepla californica": {
+  "accent": [
+   232,
+   232,
+   232
+  ],
+  "accentWhere": "bigote",
+  "annotation": "auto (qwen3-vl-plus)",
+  "back": [
+   112,
+   96,
+   88
+  ],
+  "back_dark": [
+   80,
+   64,
+   56
+  ],
+  "beak": [
+   32,
+   32,
+   40
+  ],
+  "belly": [
+   56,
+   48,
+   40
+  ],
+  "eye": [
+   24,
+   24,
+   16
+  ],
+  "flank": [
+   72,
+   48,
+   40
+  ],
+  "head": [
+   40,
+   32,
+   24
+  ],
+  "legs": [
+   96,
+   88,
+   72
+  ],
+  "manual": [
+   "accent",
+   "throat"
+  ],
+  "pattern": {},
+  "photos": [
+   "https://www.inaturalist.org/observations/195271106",
+   "https://www.inaturalist.org/observations/195440102",
+   "https://www.inaturalist.org/observations/192386270",
+   "https://www.inaturalist.org/observations/191497786"
+  ],
+  "reviewed": true,
+  "tail": [
+   32,
+   24,
+   24
+  ],
+  "throat": [
+   24,
+   24,
+   24
+  ],
+  "wing": [
+   104,
+   80,
+   72
+  ]
+ },
+ "Cathartes aura": {
+  "accentWhere": null,
+  "annotation": "auto (qwen3-vl-plus)",
+  "back": [
+   32,
+   32,
+   32
+  ],
+  "back_dark": [
+   24,
+   24,
+   24
+  ],
+  "beak": [
+   224,
+   216,
+   200
+  ],
+  "belly": [
+   32,
+   32,
+   40
+  ],
+  "edited": [
+   "legs"
+  ],
+  "eye": [
+   24,
+   24,
+   40
+  ],
+  "flank": [
+   32,
+   40,
+   40
+  ],
+  "head": [
+   184,
+   64,
+   56
+  ],
+  "legs": [
+   160,
+   104,
+   88
+  ],
+  "manual": [
+   "beak",
+   "head",
+   "legs"
+  ],
+  "pattern": {},
+  "photos": [
+   "https://www.inaturalist.org/observations/200406128",
+   "https://www.inaturalist.org/observations/294433789",
+   "https://www.inaturalist.org/observations/141124442"
+  ],
+  "reviewed": true,
+  "tail": [
+   64,
+   48,
+   56
+  ],
+  "throat": [
+   48,
+   40,
+   40
+  ],
+  "wing": [
+   88,
+   72,
+   56
+  ]
+ },
+ "Columba livia": {
+  "accentWhere": null,
+  "annotation": "auto (qwen3-vl-plus)",
+  "back": [
+   128,
+   128,
+   152
+  ],
+  "back_dark": [
+   88,
+   88,
+   104
+  ],
+  "beak": [
+   136,
+   160,
+   176
+  ],
+  "belly": [
+   152,
+   136,
+   168
+  ],
+  "edited": [
+   "belly",
+   "legs",
+   "throat"
+  ],
+  "eye": [
+   176,
+   160,
+   184
+  ],
+  "flank": [
+   112,
+   128,
+   136
+  ],
+  "head": [
+   144,
+   168,
+   176
+  ],
+  "legs": [
+   176,
+   144,
+   48
+  ],
+  "manual": [],
+  "pattern": {
+   "wing": "barred"
+  },
+  "photos": [
+   "https://www.inaturalist.org/observations/267286238",
+   "https://www.inaturalist.org/observations/185747420",
+   "https://www.inaturalist.org/observations/235092043",
+   "https://www.inaturalist.org/observations/340105229",
+   "https://www.inaturalist.org/observations/343694304"
+  ],
+  "reviewed": true,
+  "tail": [
+   64,
+   72,
+   80
+  ],
+  "throat": [
+   96,
+   176,
+   160
+  ],
+  "wing": [
+   80,
+   96,
+   112
+  ]
+ },
+ "Columbina picui": {
+  "accentWhere": null,
+  "annotation": "auto (qwen3-vl-plus)",
+  "back": [
+   136,
+   112,
+   96
+  ],
+  "back_dark": [
+   96,
+   80,
+   64
+  ],
+  "beak": [
+   72,
+   72,
+   64
+  ],
+  "belly": [
+   200,
+   168,
+   160
+  ],
+  "eye": [
+   192,
+   176,
+   152
+  ],
+  "flank": [
+   184,
+   168,
+   152
+  ],
+  "head": [
+   144,
+   120,
+   88
+  ],
+  "legs": [
+   64,
+   56,
+   48
+  ],
+  "manual": [],
+  "pattern": {
+   "wing": "barred"
+  },
+  "photos": [
+   "https://www.inaturalist.org/observations/297830726",
+   "https://www.inaturalist.org/observations/187971938",
+   "https://www.inaturalist.org/observations/185348500",
+   "https://www.inaturalist.org/observations/146802781"
+  ],
+  "reviewed": true,
+  "tail": [
+   64,
+   56,
+   48
+  ],
+  "throat": [
+   184,
+   168,
+   152
+  ],
+  "wing": [
+   176,
+   152,
+   128
+  ]
+ },
  "Diuca diuca": {
   "accent": [
    144,
@@ -6,6 +448,7 @@
    40
   ],
   "accentWhere": "subcaudales",
+  "annotation": "manual",
   "back": [
    88,
    80,
@@ -74,8 +517,371 @@
    56
   ]
  },
+ "Egretta thula": {
+  "accentWhere": null,
+  "annotation": "auto (qwen3-vl-plus)",
+  "back": [
+   200,
+   200,
+   192
+  ],
+  "back_dark": [
+   136,
+   136,
+   128
+  ],
+  "beak": [
+   64,
+   64,
+   32
+  ],
+  "belly": [
+   128,
+   144,
+   160
+  ],
+  "edited": [
+   "beak",
+   "flank",
+   "legs",
+   "tail",
+   "wing"
+  ],
+  "eye": [
+   136,
+   136,
+   128
+  ],
+  "flank": [
+   200,
+   200,
+   208
+  ],
+  "head": [
+   160,
+   160,
+   152
+  ],
+  "legs": [
+   144,
+   120,
+   72
+  ],
+  "manual": [],
+  "pattern": {},
+  "photos": [
+   "https://www.inaturalist.org/observations/180667167",
+   "https://www.inaturalist.org/observations/135583770",
+   "https://www.inaturalist.org/observations/85463432",
+   "https://www.inaturalist.org/observations/123726559",
+   "https://www.inaturalist.org/observations/88213410"
+  ],
+  "reviewed": true,
+  "tail": [
+   200,
+   200,
+   208
+  ],
+  "throat": [
+   160,
+   160,
+   160
+  ],
+  "wing": [
+   208,
+   208,
+   208
+  ]
+ },
+ "Haematopus palliatus": {
+  "accentWhere": null,
+  "annotation": "auto (qwen3-vl-plus)",
+  "back": [
+   160,
+   144,
+   136
+  ],
+  "back_dark": [
+   112,
+   96,
+   96
+  ],
+  "beak": [
+   224,
+   88,
+   88
+  ],
+  "belly": [
+   184,
+   192,
+   192
+  ],
+  "edited": [
+   "beak",
+   "eye",
+   "head",
+   "legs"
+  ],
+  "eye": [
+   72,
+   32,
+   32
+  ],
+  "flank": [
+   64,
+   64,
+   64
+  ],
+  "head": [
+   72,
+   72,
+   96
+  ],
+  "legs": [
+   208,
+   168,
+   168
+  ],
+  "manual": [],
+  "pattern": {},
+  "photos": [
+   "https://www.inaturalist.org/observations/340263450",
+   "https://www.inaturalist.org/observations/199513975"
+  ],
+  "reviewed": true,
+  "tail": [
+   64,
+   56,
+   56
+  ],
+  "throat": [
+   192,
+   184,
+   184
+  ],
+  "wing": [
+   104,
+   96,
+   96
+  ]
+ },
+ "Himantopus mexicanus": {
+  "accentWhere": null,
+  "annotation": "auto (qwen3-vl-plus)",
+  "back": [
+   24,
+   24,
+   32
+  ],
+  "back_dark": [
+   16,
+   16,
+   24
+  ],
+  "beak": [
+   24,
+   24,
+   24
+  ],
+  "belly": [
+   136,
+   136,
+   136
+  ],
+  "eye": [
+   32,
+   32,
+   32
+  ],
+  "flank": [
+   128,
+   120,
+   112
+  ],
+  "head": [
+   40,
+   40,
+   40
+  ],
+  "legs": [
+   232,
+   120,
+   140
+  ],
+  "manual": [
+   "beak",
+   "head",
+   "legs"
+  ],
+  "pattern": {},
+  "photos": [
+   "https://www.inaturalist.org/observations/187724376",
+   "https://www.inaturalist.org/observations/375947694",
+   "https://www.inaturalist.org/observations/244709533"
+  ],
+  "reviewed": true,
+  "tail": [
+   24,
+   24,
+   24
+  ],
+  "throat": [
+   160,
+   168,
+   176
+  ],
+  "wing": [
+   24,
+   24,
+   24
+  ]
+ },
+ "Larus dominicanus": {
+  "accentWhere": null,
+  "annotation": "auto (qwen3-vl-plus)",
+  "back": [
+   88,
+   72,
+   64
+  ],
+  "back_dark": [
+   56,
+   48,
+   40
+  ],
+  "beak": [
+   232,
+   200,
+   64
+  ],
+  "belly": [
+   232,
+   232,
+   232
+  ],
+  "eye": [
+   232,
+   224,
+   224
+  ],
+  "flank": [
+   224,
+   224,
+   224
+  ],
+  "head": [
+   216,
+   224,
+   224
+  ],
+  "legs": [
+   208,
+   200,
+   120
+  ],
+  "manual": [
+   "beak",
+   "belly",
+   "flank",
+   "legs",
+   "throat"
+  ],
+  "pattern": {
+   "wing": "barred"
+  },
+  "photos": [
+   "https://www.inaturalist.org/observations/132039011",
+   "https://www.inaturalist.org/observations/329061317",
+   "https://www.inaturalist.org/observations/307403366",
+   "https://www.inaturalist.org/observations/260218175",
+   "https://www.inaturalist.org/observations/260218433"
+  ],
+  "reviewed": true,
+  "tail": [
+   96,
+   64,
+   56
+  ],
+  "throat": [
+   240,
+   240,
+   240
+  ],
+  "wing": [
+   72,
+   56,
+   56
+  ]
+ },
+ "Leucophaeus modestus": {
+  "accentWhere": null,
+  "annotation": "auto (qwen3-vl-plus)",
+  "back": [
+   96,
+   80,
+   80
+  ],
+  "back_dark": [
+   64,
+   56,
+   56
+  ],
+  "beak": [
+   96,
+   104,
+   120
+  ],
+  "belly": [
+   72,
+   64,
+   64
+  ],
+  "eye": [
+   64,
+   56,
+   56
+  ],
+  "flank": [
+   80,
+   80,
+   80
+  ],
+  "head": [
+   128,
+   120,
+   112
+  ],
+  "legs": [
+   104,
+   104,
+   104
+  ],
+  "manual": [],
+  "pattern": {},
+  "photos": [
+   "https://www.inaturalist.org/observations/358442224",
+   "https://www.inaturalist.org/observations/306660643"
+  ],
+  "reviewed": true,
+  "tail": [
+   72,
+   88,
+   112
+  ],
+  "throat": [
+   80,
+   72,
+   80
+  ],
+  "wing": [
+   96,
+   88,
+   88
+  ]
+ },
  "Mimus thenca": {
   "accentWhere": null,
+  "annotation": "manual",
   "back": [
    104,
    72,
@@ -153,6 +959,7 @@
    32
   ],
   "accentWhere": "frente",
+  "annotation": "manual",
   "back": [
    176,
    160,
@@ -228,6 +1035,7 @@
    56
   ],
   "accentWhere": "gorguera",
+  "annotation": "manual",
   "back": [
    136,
    136,
@@ -296,6 +1104,302 @@
    128
   ]
  },
+ "Patagona gigas": {
+  "accentWhere": null,
+  "annotation": "auto (qwen3-vl-plus)",
+  "back": [
+   48,
+   56,
+   48
+  ],
+  "back_dark": [
+   32,
+   40,
+   32
+  ],
+  "beak": [
+   96,
+   112,
+   96
+  ],
+  "belly": [
+   168,
+   128,
+   96
+  ],
+  "eye": [
+   40,
+   40,
+   32
+  ],
+  "flank": [
+   144,
+   112,
+   104
+  ],
+  "head": [
+   56,
+   56,
+   56
+  ],
+  "legs": [
+   104,
+   72,
+   56
+  ],
+  "manual": [],
+  "pattern": {},
+  "photos": [
+   "https://www.inaturalist.org/observations/132935072",
+   "https://www.inaturalist.org/observations/214438546",
+   "https://www.inaturalist.org/observations/214177441",
+   "https://www.inaturalist.org/observations/400105869",
+   "https://www.inaturalist.org/observations/135018901"
+  ],
+  "reviewed": true,
+  "tail": [
+   40,
+   48,
+   48
+  ],
+  "throat": [
+   144,
+   128,
+   104
+  ],
+  "wing": [
+   88,
+   72,
+   64
+  ]
+ },
+ "Pelecanus thagus": {
+  "accentWhere": null,
+  "annotation": "auto (qwen3-vl-plus)",
+  "back": [
+   48,
+   48,
+   48
+  ],
+  "back_dark": [
+   32,
+   32,
+   32
+  ],
+  "beak": [
+   136,
+   64,
+   16
+  ],
+  "belly": [
+   72,
+   72,
+   80
+  ],
+  "edited": [
+   "beak"
+  ],
+  "eye": [
+   88,
+   80,
+   88
+  ],
+  "flank": [
+   40,
+   40,
+   48
+  ],
+  "head": [
+   216,
+   216,
+   208
+  ],
+  "legs": [
+   128,
+   128,
+   136
+  ],
+  "manual": [],
+  "pattern": {
+   "flank": "barred",
+   "wing": "barred"
+  },
+  "photos": [
+   "https://www.inaturalist.org/observations/267227942",
+   "https://www.inaturalist.org/observations/322492812",
+   "https://www.inaturalist.org/observations/49981799",
+   "https://www.inaturalist.org/observations/227635057",
+   "https://www.inaturalist.org/observations/337015116"
+  ],
+  "reviewed": true,
+  "tail": [
+   16,
+   16,
+   16
+  ],
+  "throat": [
+   24,
+   24,
+   24
+  ],
+  "wing": [
+   104,
+   104,
+   112
+  ]
+ },
+ "Phalacrocorax brasilianus": {
+  "accentWhere": null,
+  "annotation": "auto (qwen3-vl-plus)",
+  "back": [
+   80,
+   72,
+   72
+  ],
+  "back_dark": [
+   56,
+   48,
+   48
+  ],
+  "beak": [
+   168,
+   128,
+   80
+  ],
+  "belly": [
+   64,
+   56,
+   64
+  ],
+  "edited": [
+   "beak"
+  ],
+  "eye": [
+   40,
+   40,
+   40
+  ],
+  "flank": [
+   40,
+   32,
+   32
+  ],
+  "head": [
+   56,
+   48,
+   48
+  ],
+  "legs": [
+   32,
+   32,
+   40
+  ],
+  "manual": [],
+  "pattern": {},
+  "photos": [
+   "https://www.inaturalist.org/observations/370942885",
+   "https://www.inaturalist.org/observations/5052379",
+   "https://www.inaturalist.org/observations/318500602",
+   "https://www.inaturalist.org/observations/286892675",
+   "https://www.inaturalist.org/observations/394471641"
+  ],
+  "reviewed": true,
+  "tail": [
+   40,
+   32,
+   32
+  ],
+  "throat": [
+   128,
+   112,
+   104
+  ],
+  "wing": [
+   64,
+   64,
+   72
+  ]
+ },
+ "Phytotoma rara": {
+  "accent": [
+   168,
+   72,
+   40
+  ],
+  "accentWhere": "pecho",
+  "annotation": "auto (qwen3-vl-plus)",
+  "back": [
+   144,
+   128,
+   112
+  ],
+  "back_dark": [
+   96,
+   88,
+   80
+  ],
+  "beak": [
+   128,
+   96,
+   56
+  ],
+  "belly": [
+   152,
+   64,
+   24
+  ],
+  "eye": [
+   200,
+   40,
+   32
+  ],
+  "flank": [
+   112,
+   104,
+   88
+  ],
+  "head": [
+   128,
+   96,
+   72
+  ],
+  "legs": [
+   32,
+   24,
+   16
+  ],
+  "manual": [
+   "accent",
+   "eye"
+  ],
+  "pattern": {
+   "back": "streaked",
+   "flank": "streaked"
+  },
+  "photos": [
+   "https://www.inaturalist.org/observations/148218379",
+   "https://www.inaturalist.org/observations/130054644",
+   "https://www.inaturalist.org/observations/28629960",
+   "https://www.inaturalist.org/observations/254647576",
+   "https://www.inaturalist.org/observations/263563755"
+  ],
+  "reviewed": true,
+  "tail": [
+   64,
+   56,
+   48
+  ],
+  "throat": [
+   144,
+   96,
+   32
+  ],
+  "wing": [
+   128,
+   136,
+   128
+  ]
+ },
  "Pteroptochos megapodius": {
   "accent": [
    224,
@@ -303,6 +1407,7 @@
    128
   ],
   "accentWhere": "bigote",
+  "annotation": "manual",
   "back": [
    80,
    72,
@@ -379,6 +1484,7 @@
    48
   ],
   "accentWhere": "ala y cola",
+  "annotation": "manual",
   "back": [
    88,
    72,
@@ -454,6 +1560,91 @@
    56
   ]
  },
+ "Sephanoides sephaniodes": {
+  "accent": [
+   168,
+   232,
+   112
+  ],
+  "accentWhere": "frente",
+  "annotation": "auto (qwen3-vl-plus)",
+  "back": [
+   48,
+   104,
+   48
+  ],
+  "back_dark": [
+   48,
+   96,
+   72
+  ],
+  "beak": [
+   152,
+   128,
+   128
+  ],
+  "belly": [
+   152,
+   176,
+   160
+  ],
+  "edited": [
+   "accent",
+   "back",
+   "back_dark",
+   "belly",
+   "flank",
+   "tail",
+   "wing"
+  ],
+  "eye": [
+   56,
+   56,
+   72
+  ],
+  "flank": [
+   48,
+   96,
+   64
+  ],
+  "head": [
+   64,
+   56,
+   64
+  ],
+  "legs": [
+   72,
+   64,
+   48
+  ],
+  "manual": [
+   "accent"
+  ],
+  "pattern": {},
+  "photos": [
+   "https://www.inaturalist.org/observations/200387039",
+   "https://www.inaturalist.org/observations/222782074",
+   "https://www.inaturalist.org/observations/64664496",
+   "https://www.inaturalist.org/observations/219623114",
+   "https://www.inaturalist.org/observations/28155688"
+  ],
+  "reviewed": true,
+  "tail": [
+   96,
+   120,
+   96
+  ],
+  "throat": [
+   120,
+   120,
+   104
+  ],
+  "wing": [
+   72,
+   112,
+   128
+  ]
+ },
  "Sturnella loyca": {
   "accent": [
    224,
@@ -461,6 +1652,7 @@
    24
   ],
   "accentWhere": "pecho",
+  "annotation": "manual",
   "back": [
    24,
    24,
@@ -533,6 +1725,7 @@
  },
  "Troglodytes musculus": {
   "accentWhere": null,
+  "annotation": "manual",
   "back": [
    120,
    104,
@@ -605,6 +1798,7 @@
  },
  "Turdus falcklandii": {
   "accentWhere": null,
+  "annotation": "manual",
   "back": [
    128,
    120,
@@ -681,6 +1875,7 @@
    16
   ],
   "accentWhere": "pecho",
+  "annotation": "manual",
   "back": [
    56,
    48,
@@ -745,6 +1940,7 @@
  },
  "Zenaida auriculata": {
   "accentWhere": null,
+  "annotation": "manual",
   "back": [
    144,
    136,
@@ -820,6 +2016,7 @@
    32
   ],
   "accentWhere": "collar",
+  "annotation": "manual",
   "back": [
    144,
    128,

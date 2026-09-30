@@ -49,3 +49,16 @@ Agrega una línea numerada por entrada, con tu nombre entre paréntesis.
    (`python_scripts/imagenes_revisadas.json`); la ficha muestra la licencia real de cada foto (algunas CC BY-NC). (Joaquín)
 14. Mezclador: pasa de una sección entre la barra y el mapa a un dock inferior que se abre con el botón **Mezcla**; pistas en una línea,
    "+ Añadir a la mezcla" en la ficha, "Mezclar lo que se ve" y carga de `sounds.json`/`images.json` solo al abrirlo. (Joaquín)
+15. Paletas asistidas por IA: `python_scripts/enrich/annotate_zones.py` le pide a un modelo de visión (Qwen3-VL, Alibaba Model
+   Studio; clave `QWEN_KEY` en `.env`) la vista de cada foto y un punto por zona del cuerpo; `extract_palette.py --source auto`
+   muestrea los colores reales en esos puntos (5 fotos, mediana). Validado contra las 12 paletas manuales del MVP: ΔE mediana
+   16,5 (63 % de zonas < 20). Sirve como borrador para regiones nuevas; la revisión humana sigue siendo obligatoria. (Joaquín)
+16. Región de Valparaíso para el mundo 3D: especies destacadas por región y escena en `enrich/featured.json` (`--region CODE` en
+   los scripts de enrich; `habitat.scenes` y `morphology.family` en `index.json`). 16 especies nuevas con fotos (iNaturalist) y paletas
+   automáticas (Qwen3-VL) con correcciones manuales; terreno de 4 escenas (`terrain-CL-VS.json`: Montemar, desembocadura del
+   Aconcagua, La Campana y cerros de Valparaíso) y vegetación en `enrich/props_vs.json`. `index.json` guarda hasta 3 fotos de
+   referencia por especie (la lista completa sigue en `enrich/images.json`). (Joaquín)
+17. Datos del mundo 3D por región: la paleta, las fotos de referencia y la escena de las especies destacadas pasan de `index.json`
+   a `region-<CODE>.json → featured` (se cargan solo al entrar a la región), así `index.json` no crece con cada región nueva
+   (+27 % sobre el original). Revisión editable de paletas en `python_scripts/enrich/review_palettes.py` (servidor local con selector
+   de color por zona; decisiones en `enrich/palette_review.json`). Las 28 paletas de RM y Valparaíso están aprobadas. (Joaquín)

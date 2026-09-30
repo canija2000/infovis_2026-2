@@ -144,6 +144,7 @@ def morphology(row: dict, elton: dict | None, mass_ref: float, src: str) -> dict
             "hwi": rnd(raw["hwi"] / 100) if raw["hwi"] is not None else None,
         },
         "scale": rnd((raw["mass"] / mass_ref) ** (1 / 3)) if raw["mass"] else None,
+        "family": row.get("Family2") or row.get("Family3"),
         "lifestyle": row.get("Primary.Lifestyle"),
         "trophicNiche": row.get("Trophic.Niche"),
         "migration": MIGRATION.get((row.get("Migration") or "").split(".")[0]),
@@ -216,6 +217,7 @@ def main() -> None:
             "density": {"1": "denso", "2": "semiabierto", "3": "abierto"}.get((row.get("Habitat.Density") or "")[:1]),
             "biomes": hmap.get(habitat, []),
             "rm": MVP_RM.get(sci),
+            "scenes": {code: sp[sci] for code, sp in c.featured().items() if sci in sp},
             "source": "AVONET" + (" + revisión manual (RM)" if sci in MVP_RM else ""),
         }
 

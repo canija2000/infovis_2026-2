@@ -44,10 +44,18 @@ def load_index() -> dict:
     return json.loads((GAME_DIR / "index.json").read_text(encoding="utf-8"))
 
 
+def featured() -> dict[str, dict[str, str]]:
+    """enrich/featured.json: {región: {sciName: escena}} (especies destacadas del mundo 3D)."""
+    path = ENRICH_DIR / "featured.json"
+    data = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+    return {k: v for k, v in data.items() if not k.startswith("_")}
+
+
 def species_args(parser: argparse.ArgumentParser) -> None:
     g = parser.add_mutually_exclusive_group()
     g.add_argument("--species", nargs="+", metavar="SCINAME", help="nombres científicos (entre comillas)")
     g.add_argument("--mvp", action="store_true", help="las 12 especies del MVP de la RM")
+    g.add_argument("--region", nargs="+", metavar="CODE", help="especies destacadas de la región (enrich/featured.json)")
 
 
 def selected_species(args, index: dict) -> list[str]:
@@ -55,6 +63,9 @@ def selected_species(args, index: dict) -> list[str]:
     known = [s["sciName"] for s in index["species"]]
     if args.mvp:
         wanted = MVP
+    elif getattr(args, "region", None):
+        feat = featured()
+        wanted = list(dict.fromkeys(s for code in args.region for s in feat.get(code, {})))
     elif args.species:
         wanted = args.species
     else:
@@ -88,6 +99,11 @@ def fetch(url: str, *, binary: bool = False, cache: bool = True, retries: int = 
             break
         except urllib.error.HTTPError as e:
             if e.code in (429, 500, 502, 503, 504) and attempt < retries - 1:
+                time.sleep(5 * (attempt + 1))
+                continue
+            raise
+        except (urllib.error.URLError, ConnectionError, TimeoutError):
+            if attempt < retries - 1:  # cortes de red transitorios
                 time.sleep(5 * (attempt + 1))
                 continue
             raise

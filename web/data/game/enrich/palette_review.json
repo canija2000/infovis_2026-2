@@ -1,0 +1,246 @@
+{
+ "Anairetes parulus": {
+  "accentWhere": null,
+  "approved": true,
+  "colors": {
+   "belly": [
+    240,
+    224,
+    136
+   ]
+  },
+  "pattern": {
+   "belly": "streaked",
+   "flank": "streaked"
+  }
+ },
+ "Anas georgica": {
+  "accentWhere": null,
+  "approved": true,
+  "colors": {},
+  "pattern": {}
+ },
+ "Callipepla californica": {
+  "accentWhere": "bigote",
+  "approved": true,
+  "colors": {},
+  "pattern": {}
+ },
+ "Cathartes aura": {
+  "accentWhere": null,
+  "approved": true,
+  "colors": {
+   "legs": [
+    160,
+    104,
+    88
+   ]
+  },
+  "pattern": {}
+ },
+ "Columba livia": {
+  "accentWhere": null,
+  "approved": true,
+  "colors": {
+   "belly": [
+    152,
+    136,
+    168
+   ],
+   "legs": [
+    176,
+    144,
+    48
+   ],
+   "throat": [
+    96,
+    176,
+    160
+   ]
+  },
+  "pattern": {
+   "wing": "barred"
+  }
+ },
+ "Columbina picui": {
+  "accentWhere": null,
+  "approved": true,
+  "colors": {},
+  "pattern": {
+   "wing": "barred"
+  }
+ },
+ "Egretta thula": {
+  "accentWhere": null,
+  "approved": true,
+  "colors": {
+   "beak": [
+    64,
+    64,
+    32
+   ],
+   "flank": [
+    200,
+    200,
+    208
+   ],
+   "legs": [
+    144,
+    120,
+    72
+   ],
+   "tail": [
+    200,
+    200,
+    208
+   ],
+   "wing": [
+    208,
+    208,
+    208
+   ]
+  },
+  "pattern": {}
+ },
+ "Haematopus palliatus": {
+  "accentWhere": null,
+  "approved": true,
+  "colors": {
+   "beak": [
+    224,
+    88,
+    88
+   ],
+   "eye": [
+    72,
+    32,
+    32
+   ],
+   "head": [
+    72,
+    72,
+    96
+   ],
+   "legs": [
+    208,
+    168,
+    168
+   ]
+  },
+  "pattern": {}
+ },
+ "Himantopus mexicanus": {
+  "accentWhere": null,
+  "approved": true,
+  "colors": {},
+  "pattern": {}
+ },
+ "Larus dominicanus": {
+  "accentWhere": null,
+  "approved": true,
+  "colors": {},
+  "pattern": {
+   "wing": "barred"
+  }
+ },
+ "Leucophaeus modestus": {
+  "accentWhere": null,
+  "approved": true,
+  "colors": {},
+  "pattern": {}
+ },
+ "Patagona gigas": {
+  "accentWhere": null,
+  "approved": true,
+  "colors": {},
+  "pattern": {}
+ },
+ "Pelecanus thagus": {
+  "accentWhere": null,
+  "approved": true,
+  "colors": {
+   "beak": [
+    136,
+    64,
+    16
+   ]
+  },
+  "pattern": {
+   "flank": "barred",
+   "wing": "barred"
+  }
+ },
+ "Phalacrocorax brasilianus": {
+  "accentWhere": null,
+  "approved": true,
+  "colors": {
+   "beak": [
+    168,
+    128,
+    80
+   ]
+  },
+  "pattern": {}
+ },
+ "Phytotoma rara": {
+  "accentWhere": "pecho",
+  "approved": true,
+  "colors": {},
+  "pattern": {
+   "back": "streaked",
+   "flank": "streaked"
+  }
+ },
+ "Sephanoides sephaniodes": {
+  "accentWhere": "frente",
+  "approved": true,
+  "colors": {
+   "accent": [
+    168,
+    232,
+    112
+   ],
+   "back": [
+    48,
+    104,
+    48
+   ],
+   "back_dark": [
+    48,
+    96,
+    72
+   ],
+   "belly": [
+    152,
+    176,
+    160
+   ],
+   "flank": [
+    48,
+    96,
+    64
+   ],
+   "tail": [
+    96,
+    120,
+    96
+   ],
+   "wing": [
+    72,
+    112,
+    128
+   ]
+  },
+  "pattern": {}
+ },
+ "Zonotrichia capensis": {
+  "accentWhere": "collar",
+  "approved": true,
+  "colors": {},
+  "pattern": {
+   "back": "streaked",
+   "head": "striped",
+   "wing": "streaked"
+  }
+ }
+}

@@ -1,0 +1,40 @@
+{
+ "_nota": "Especies destacadas por región y escena del mundo 3D (sciName → escena). Deciden qué especies reciben fotos de referencia y paleta, y en qué 'cuarto' aparecen (habitat.scenes en index.json). Elegidas por frecuencia, lift y hábitat; revisadas con el usuario.",
+ "CL-RM": {
+  "Turdus falcklandii": "ciudad",
+  "Zonotrichia capensis": "ciudad",
+  "Troglodytes musculus": "ciudad",
+  "Zenaida auriculata": "ciudad",
+  "Pteroptochos megapodius": "matorral",
+  "Mimus thenca": "matorral",
+  "Scelorchilus albicollis": "matorral",
+  "Diuca diuca": "matorral",
+  "Vanellus chilensis": "rio",
+  "Sturnella loyca": "rio",
+  "Oreotrochilus leucopleurus": "cordillera",
+  "Muscisaxicola frontalis": "cordillera"
+ },
+ "CL-VS": {
+  "Pelecanus thagus": "costa",
+  "Larus dominicanus": "costa",
+  "Haematopus palliatus": "costa",
+  "Leucophaeus modestus": "costa",
+  "Phalacrocorax brasilianus": "humedal",
+  "Egretta thula": "humedal",
+  "Himantopus mexicanus": "humedal",
+  "Anas georgica": "humedal",
+  "Phytotoma rara": "matorral",
+  "Patagona gigas": "matorral",
+  "Callipepla californica": "matorral",
+  "Anairetes parulus": "matorral",
+  "Mimus thenca": "matorral",
+  "Diuca diuca": "matorral",
+  "Troglodytes musculus": "matorral",
+  "Cathartes aura": "ciudad",
+  "Columbina picui": "ciudad",
+  "Sephanoides sephaniodes": "ciudad",
+  "Columba livia": "ciudad",
+  "Zonotrichia capensis": "ciudad",
+  "Zenaida auriculata": "ciudad"
+ }
+}
