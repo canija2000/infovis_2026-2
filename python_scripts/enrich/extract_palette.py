@@ -28,6 +28,7 @@ import numpy as np
 from PIL import Image, ImageDraw
 
 import common as c
+from review_palettes import REVIEW, apply_review
 
 ZONES = ["back", "back_dark", "belly", "flank", "head", "throat", "wing", "tail", "beak", "legs", "eye", "accent"]
 # Patrones y dónde va el acento: revisión visual de las fotos (texturas del prototipo: barred/streaked/plain).
@@ -162,6 +163,8 @@ def main() -> None:
     manifest = json.loads((c.REFS_DIR / "manifest.json").read_text(encoding="utf-8"))
     photos = {p["id"]: p for e in manifest.values() for p in e["photos"]}
     out_path = c.ROOT / args.out if args.out else c.ENRICH_DIR / "palette.json"
+    # decisiones de la revisión humana (review_palettes.py): se aplican siempre sobre lo extraído
+    review = json.loads(REVIEW.read_text(encoding="utf-8")) if REVIEW.exists() and not args.out else {}
     palette = json.loads(out_path.read_text(encoding="utf-8")) if out_path.exists() else {}
     marked_dir = c.REFS_DIR / "palettes"
     marked_dir.mkdir(exist_ok=True)
@@ -213,6 +216,8 @@ def main() -> None:
             "photos": [photos[pid]["page"] for pid in pids],
             "reviewed": bool(prev.get("reviewed")) and all(prev.get(z) == entry.get(z) for z in ZONES),
         }
+        if sci in review:
+            palette[sci] = apply_review(palette[sci], review[sci])
 
         sw = "".join(
             f'<div class="sw"><span style="background:rgb({",".join(map(str, palette[sci][z]))})"></span>{z}'
