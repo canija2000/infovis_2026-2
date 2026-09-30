@@ -18,9 +18,12 @@
    40
   ],
   "belly": [
-   208,
-   208,
-   192
+   240,
+   224,
+   136
+  ],
+  "edited": [
+   "belly"
   ],
   "eye": [
    232,
@@ -59,7 +62,7 @@
    "https://www.inaturalist.org/observations/183999733",
    "https://www.inaturalist.org/observations/288089383"
   ],
-  "reviewed": false,
+  "reviewed": true,
   "tail": [
    96,
    96,
@@ -125,7 +128,7 @@
    "https://www.inaturalist.org/observations/178984315",
    "https://www.inaturalist.org/observations/206635950"
   ],
-  "reviewed": false,
+  "reviewed": true,
   "tail": [
    104,
    96,
@@ -201,7 +204,7 @@
    "https://www.inaturalist.org/observations/192386270",
    "https://www.inaturalist.org/observations/191497786"
   ],
-  "reviewed": false,
+  "reviewed": true,
   "tail": [
    32,
    24,
@@ -241,6 +244,9 @@
    32,
    40
   ],
+  "edited": [
+   "legs"
+  ],
   "eye": [
    24,
    24,
@@ -257,9 +263,9 @@
    56
   ],
   "legs": [
-   200,
-   176,
-   168
+   160,
+   104,
+   88
   ],
   "manual": [
    "beak",
@@ -272,7 +278,7 @@
    "https://www.inaturalist.org/observations/294433789",
    "https://www.inaturalist.org/observations/141124442"
   ],
-  "reviewed": false,
+  "reviewed": true,
   "tail": [
    64,
    48,
@@ -308,9 +314,14 @@
    176
   ],
   "belly": [
-   128,
-   120,
-   136
+   152,
+   136,
+   168
+  ],
+  "edited": [
+   "belly",
+   "legs",
+   "throat"
   ],
   "eye": [
    176,
@@ -328,9 +339,9 @@
    176
   ],
   "legs": [
-   80,
-   88,
-   88
+   176,
+   144,
+   48
   ],
   "manual": [],
   "pattern": {
@@ -343,16 +354,16 @@
    "https://www.inaturalist.org/observations/340105229",
    "https://www.inaturalist.org/observations/343694304"
   ],
-  "reviewed": false,
+  "reviewed": true,
   "tail": [
    64,
    72,
    80
   ],
   "throat": [
-   112,
-   136,
-   144
+   96,
+   176,
+   160
   ],
   "wing": [
    80,
@@ -413,7 +424,7 @@
    "https://www.inaturalist.org/observations/185348500",
    "https://www.inaturalist.org/observations/146802781"
   ],
-  "reviewed": false,
+  "reviewed": true,
   "tail": [
    64,
    56,
@@ -520,14 +531,21 @@
    128
   ],
   "beak": [
-   96,
-   96,
-   88
+   64,
+   64,
+   32
   ],
   "belly": [
    128,
    144,
    160
+  ],
+  "edited": [
+   "beak",
+   "flank",
+   "legs",
+   "tail",
+   "wing"
   ],
   "eye": [
    136,
@@ -535,9 +553,9 @@
    128
   ],
   "flank": [
-   160,
-   160,
-   168
+   200,
+   200,
+   208
   ],
   "head": [
    160,
@@ -545,9 +563,9 @@
    152
   ],
   "legs": [
-   88,
-   88,
-   104
+   144,
+   120,
+   72
   ],
   "manual": [],
   "pattern": {},
@@ -558,11 +576,11 @@
    "https://www.inaturalist.org/observations/123726559",
    "https://www.inaturalist.org/observations/88213410"
   ],
-  "reviewed": false,
+  "reviewed": true,
   "tail": [
-   136,
-   136,
-   144
+   200,
+   200,
+   208
   ],
   "throat": [
    160,
@@ -570,9 +588,9 @@
    160
   ],
   "wing": [
-   160,
-   160,
-   168
+   208,
+   208,
+   208
   ]
  },
  "Haematopus palliatus": {
@@ -589,19 +607,25 @@
    96
   ],
   "beak": [
-   192,
-   128,
-   128
+   224,
+   88,
+   88
   ],
   "belly": [
    184,
    192,
    192
   ],
+  "edited": [
+   "beak",
+   "eye",
+   "head",
+   "legs"
+  ],
   "eye": [
-   56,
-   48,
-   48
+   72,
+   32,
+   32
   ],
   "flank": [
    64,
@@ -609,14 +633,14 @@
    64
   ],
   "head": [
-   48,
-   48,
-   56
+   72,
+   72,
+   96
   ],
   "legs": [
-   184,
-   176,
-   176
+   208,
+   168,
+   168
   ],
   "manual": [],
   "pattern": {},
@@ -624,7 +648,7 @@
    "https://www.inaturalist.org/observations/340263450",
    "https://www.inaturalist.org/observations/199513975"
   ],
-  "reviewed": false,
+  "reviewed": true,
   "tail": [
    64,
    56,
@@ -695,7 +719,7 @@
    "https://www.inaturalist.org/observations/375947694",
    "https://www.inaturalist.org/observations/244709533"
   ],
-  "reviewed": false,
+  "reviewed": true,
   "tail": [
    24,
    24,
@@ -772,7 +796,7 @@
    "https://www.inaturalist.org/observations/260218175",
    "https://www.inaturalist.org/observations/260218433"
   ],
-  "reviewed": false,
+  "reviewed": true,
   "tail": [
    96,
    64,
@@ -838,7 +862,7 @@
    "https://www.inaturalist.org/observations/358442224",
    "https://www.inaturalist.org/observations/306660643"
   ],
-  "reviewed": false,
+  "reviewed": true,
   "tail": [
    72,
    88,
@@ -1132,7 +1156,7 @@
    "https://www.inaturalist.org/observations/400105869",
    "https://www.inaturalist.org/observations/135018901"
   ],
-  "reviewed": false,
+  "reviewed": true,
   "tail": [
    40,
    48,
@@ -1163,14 +1187,17 @@
    32
   ],
   "beak": [
-   112,
-   96,
-   72
+   136,
+   64,
+   16
   ],
   "belly": [
    72,
    72,
    80
+  ],
+  "edited": [
+   "beak"
   ],
   "eye": [
    88,
@@ -1204,7 +1231,7 @@
    "https://www.inaturalist.org/observations/227635057",
    "https://www.inaturalist.org/observations/337015116"
   ],
-  "reviewed": false,
+  "reviewed": true,
   "tail": [
    16,
    16,
@@ -1235,14 +1262,17 @@
    48
   ],
   "beak": [
-   120,
-   88,
-   88
+   168,
+   128,
+   80
   ],
   "belly": [
    64,
    56,
    64
+  ],
+  "edited": [
+   "beak"
   ],
   "eye": [
    40,
@@ -1273,7 +1303,7 @@
    "https://www.inaturalist.org/observations/286892675",
    "https://www.inaturalist.org/observations/394471641"
   ],
-  "reviewed": false,
+  "reviewed": true,
   "tail": [
    40,
    32,
@@ -1353,7 +1383,7 @@
    "https://www.inaturalist.org/observations/254647576",
    "https://www.inaturalist.org/observations/263563755"
   ],
-  "reviewed": false,
+  "reviewed": true,
   "tail": [
    64,
    56,
@@ -1532,21 +1562,21 @@
  },
  "Sephanoides sephaniodes": {
   "accent": [
-   208,
-   48,
-   40
+   168,
+   232,
+   112
   ],
   "accentWhere": "frente",
   "annotation": "auto (qwen3-vl-plus)",
   "back": [
-   64,
-   64,
-   72
+   48,
+   104,
+   48
   ],
   "back_dark": [
-   40,
-   40,
-   48
+   48,
+   96,
+   72
   ],
   "beak": [
    152,
@@ -1554,9 +1584,18 @@
    128
   ],
   "belly": [
-   56,
-   56,
-   56
+   152,
+   176,
+   160
+  ],
+  "edited": [
+   "accent",
+   "back",
+   "back_dark",
+   "belly",
+   "flank",
+   "tail",
+   "wing"
   ],
   "eye": [
    56,
@@ -1564,9 +1603,9 @@
    72
   ],
   "flank": [
-   56,
-   56,
-   56
+   48,
+   96,
+   64
   ],
   "head": [
    64,
@@ -1589,11 +1628,11 @@
    "https://www.inaturalist.org/observations/219623114",
    "https://www.inaturalist.org/observations/28155688"
   ],
-  "reviewed": false,
+  "reviewed": true,
   "tail": [
-   56,
-   56,
-   64
+   96,
+   120,
+   96
   ],
   "throat": [
    120,
@@ -1601,9 +1640,9 @@
    104
   ],
   "wing": [
+   72,
    112,
-   96,
-   88
+   128
   ]
  },
  "Sturnella loyca": {

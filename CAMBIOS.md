@@ -58,3 +58,7 @@ Agrega una línea numerada por entrada, con tu nombre entre paréntesis.
    automáticas (Qwen3-VL) con correcciones manuales; terreno de 4 escenas (`terrain-CL-VS.json`: Montemar, desembocadura del
    Aconcagua, La Campana y cerros de Valparaíso) y vegetación en `enrich/props_vs.json`. `index.json` guarda hasta 3 fotos de
    referencia por especie (la lista completa sigue en `enrich/images.json`). (Joaquín)
+17. Datos del mundo 3D por región: la paleta, las fotos de referencia y la escena de las especies destacadas pasan de `index.json`
+   a `region-<CODE>.json → featured` (se cargan solo al entrar a la región), así `index.json` no crece con cada región nueva
+   (+27 % sobre el original). Revisión editable de paletas en `python_scripts/enrich/review_palettes.py` (servidor local con selector
+   de color por zona; decisiones en `enrich/palette_review.json`). Las 28 paletas de RM y Valparaíso están aprobadas. (Joaquín)
