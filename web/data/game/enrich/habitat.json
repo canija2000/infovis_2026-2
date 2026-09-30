@@ -385,7 +385,9 @@
   ],
   "density": "semiabierto",
   "rm": null,
-  "scenes": {},
+  "scenes": {
+   "CL-MA": "bosque"
+  },
   "source": "AVONET"
  },
  "Aphrodroma brevirostris": {
@@ -962,7 +964,9 @@
   ],
   "density": "semiabierto",
   "rm": null,
-  "scenes": {},
+  "scenes": {
+   "CL-MA": "bosque"
+  },
   "source": "AVONET"
  },
  "Caracara plancus": {
@@ -1185,7 +1189,9 @@
   ],
   "density": "abierto",
   "rm": null,
-  "scenes": {},
+  "scenes": {
+   "CL-MA": "estepa"
+  },
   "source": "AVONET"
  },
  "Chloephaga poliocephala": {
@@ -1548,7 +1554,9 @@
   ],
   "density": "abierto",
   "rm": null,
-  "scenes": {},
+  "scenes": {
+   "CL-MA": "fiordo"
+  },
   "source": "AVONET"
  },
  "Coturnix japonica": {
@@ -1650,7 +1658,9 @@
   ],
   "density": "abierto",
   "rm": null,
-  "scenes": {},
+  "scenes": {
+   "CL-MA": "fiordo"
+  },
   "source": "AVONET"
  },
  "Cygnus olor": {
@@ -1851,7 +1861,9 @@
   ],
   "density": "semiabierto",
   "rm": null,
-  "scenes": {},
+  "scenes": {
+   "CL-MA": "bosque"
+  },
   "source": "AVONET"
  },
  "Enicognathus leptorhynchus": {
@@ -2357,7 +2369,9 @@
   ],
   "density": "abierto",
   "rm": null,
-  "scenes": {},
+  "scenes": {
+   "CL-MA": "costa"
+  },
   "source": "AVONET"
  },
  "Haematopus palliatus": {
@@ -2617,6 +2631,7 @@
   "density": "abierto",
   "rm": null,
   "scenes": {
+   "CL-MA": "costa",
    "CL-VS": "costa"
   },
   "source": "AVONET"
@@ -2698,7 +2713,9 @@
   ],
   "density": "abierto",
   "rm": null,
-  "scenes": {},
+  "scenes": {
+   "CL-MA": "costa"
+  },
   "source": "AVONET"
  },
  "Leucocarbo bougainvilliorum": {
@@ -2826,7 +2843,9 @@
   ],
   "density": "abierto",
   "rm": null,
-  "scenes": {},
+  "scenes": {
+   "CL-MA": "fiordo"
+  },
   "source": "AVONET"
  },
  "Machetornis rixosa": {
@@ -4129,7 +4148,9 @@
   ],
   "density": "abierto",
   "rm": null,
-  "scenes": {},
+  "scenes": {
+   "CL-MA": "estepa"
+  },
   "source": "AVONET"
  },
  "Phrygilus atriceps": {
@@ -4161,7 +4182,9 @@
   ],
   "density": "semiabierto",
   "rm": null,
-  "scenes": {},
+  "scenes": {
+   "CL-MA": "bosque"
+  },
   "source": "AVONET"
  },
  "Phytotoma rara": {
@@ -4842,7 +4865,9 @@
   ],
   "density": "abierto",
   "rm": null,
-  "scenes": {},
+  "scenes": {
+   "CL-MA": "estepa"
+  },
   "source": "AVONET"
  },
  "Rhodopis vesper": {
@@ -5242,7 +5267,9 @@
   ],
   "density": "abierto",
   "rm": null,
-  "scenes": {},
+  "scenes": {
+   "CL-MA": "costa"
+  },
   "source": "AVONET"
  },
  "Spinus atratus": {
@@ -5363,7 +5390,9 @@
   ],
   "density": "abierto",
   "rm": null,
-  "scenes": {},
+  "scenes": {
+   "CL-MA": "costa"
+  },
   "source": "AVONET"
  },
  "Stercorarius longicaudus": {
@@ -5532,6 +5561,7 @@
   "density": "abierto",
   "rm": "rio",
   "scenes": {
+   "CL-MA": "estepa",
    "CL-RM": "rio"
   },
   "source": "AVONET + revisión manual (RM)"
@@ -5691,7 +5721,9 @@
   ],
   "density": "abierto",
   "rm": null,
-  "scenes": {},
+  "scenes": {
+   "CL-MA": "fiordo"
+  },
   "source": "AVONET"
  },
  "Tachyeres pteneres": {
@@ -6036,6 +6068,7 @@
   "density": "semiabierto",
   "rm": "ciudad",
   "scenes": {
+   "CL-MA": "bosque",
    "CL-RM": "ciudad"
   },
   "source": "AVONET + revisión manual (RM)"
@@ -6177,6 +6210,7 @@
   "density": "abierto",
   "rm": "rio",
   "scenes": {
+   "CL-MA": "estepa",
    "CL-RM": "rio"
   },
   "source": "AVONET + revisión manual (RM)"
@@ -6235,7 +6269,9 @@
   ],
   "density": "abierto",
   "rm": null,
-  "scenes": {},
+  "scenes": {
+   "CL-MA": "estepa"
+  },
   "source": "AVONET"
  },
  "Xema sabini": {
