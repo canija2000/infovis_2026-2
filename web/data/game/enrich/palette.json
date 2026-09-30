@@ -211,7 +211,7 @@
    "https://www.inaturalist.org/observations/262609084",
    "https://www.inaturalist.org/observations/245152547"
   ],
-  "reviewed": false,
+  "reviewed": true,
   "tail": [
    72,
    56,
@@ -327,6 +327,9 @@
    32,
    40
   ],
+  "edited": [
+   "head"
+  ],
   "eye": [
    72,
    48,
@@ -338,9 +341,9 @@
    40
   ],
   "head": [
-   80,
+   200,
    40,
-   48
+   40
   ],
   "legs": [
    40,
@@ -353,7 +356,7 @@
    "https://www.inaturalist.org/observations/118930985",
    "https://www.inaturalist.org/observations/332232553"
   ],
-  "reviewed": false,
+  "reviewed": true,
   "tail": [
    48,
    48,
@@ -467,6 +470,10 @@
    220,
    208
   ],
+  "edited": [
+   "head",
+   "legs"
+  ],
   "eye": [
    216,
    208,
@@ -479,13 +486,13 @@
   ],
   "head": [
    216,
-   212,
-   200
+   208,
+   160
   ],
   "legs": [
-   104,
-   120,
-   72
+   232,
+   208,
+   96
   ],
   "manual": [
    "back",
@@ -500,7 +507,7 @@
    "https://www.inaturalist.org/observations/252768974",
    "https://www.inaturalist.org/observations/195922329"
   ],
-  "reviewed": false,
+  "reviewed": true,
   "tail": [
    40,
    40,
@@ -677,14 +684,18 @@
    168
   ],
   "beak": [
-   208,
-   88,
-   96
+   216,
+   48,
+   64
   ],
   "belly": [
    232,
    224,
    224
+  ],
+  "edited": [
+   "beak",
+   "legs"
   ],
   "eye": [
    200,
@@ -702,9 +713,9 @@
    208
   ],
   "legs": [
-   232,
-   150,
-   150
+   192,
+   104,
+   104
   ],
   "manual": [
    "legs"
@@ -717,7 +728,7 @@
    "https://www.inaturalist.org/observations/34659533",
    "https://www.inaturalist.org/observations/36316482"
   ],
-  "reviewed": false,
+  "reviewed": true,
   "tail": [
    184,
    184,
@@ -793,7 +804,7 @@
    "https://www.inaturalist.org/observations/188646181",
    "https://www.inaturalist.org/observations/259291002"
   ],
-  "reviewed": false,
+  "reviewed": true,
   "tail": [
    208,
    200,
@@ -1022,7 +1033,7 @@
    "https://www.inaturalist.org/observations/195441815",
    "https://www.inaturalist.org/observations/326138318"
   ],
-  "reviewed": false,
+  "reviewed": true,
   "tail": [
    120,
    40,
@@ -1093,7 +1104,7 @@
    "https://www.inaturalist.org/observations/195848632",
    "https://www.inaturalist.org/observations/252768946"
   ],
-  "reviewed": false,
+  "reviewed": true,
   "tail": [
    32,
    32,
@@ -1390,7 +1401,7 @@
    "https://www.inaturalist.org/observations/249682423",
    "https://www.inaturalist.org/observations/20141519"
   ],
-  "reviewed": false,
+  "reviewed": true,
   "tail": [
    72,
    64,
@@ -1523,7 +1534,7 @@
    "https://www.inaturalist.org/observations/192190420",
    "https://www.inaturalist.org/observations/91235472"
   ],
-  "reviewed": false,
+  "reviewed": true,
   "tail": [
    56,
    48,
@@ -1985,9 +1996,9 @@
   "accentWhere": null,
   "annotation": "auto (qwen3-vl-plus)",
   "back": [
-   160,
-   152,
-   160
+   248,
+   216,
+   208
   ],
   "back_dark": [
    112,
@@ -1995,14 +2006,23 @@
    112
   ],
   "beak": [
-   128,
-   128,
-   128
+   112,
+   72,
+   72
   ],
   "belly": [
-   160,
-   128,
-   112
+   248,
+   200,
+   208
+  ],
+  "edited": [
+   "back",
+   "beak",
+   "belly",
+   "flank",
+   "head",
+   "legs",
+   "tail"
   ],
   "eye": [
    160,
@@ -2010,19 +2030,19 @@
    136
   ],
   "flank": [
-   168,
-   144,
-   128
+   248,
+   224,
+   200
   ],
   "head": [
-   168,
-   152,
-   152
+   248,
+   224,
+   224
   ],
   "legs": [
-   112,
-   104,
-   112
+   248,
+   192,
+   160
   ],
   "manual": [],
   "pattern": {},
@@ -2030,11 +2050,11 @@
    "https://www.inaturalist.org/observations/124335908",
    "https://www.inaturalist.org/observations/332917963"
   ],
-  "reviewed": false,
+  "reviewed": true,
   "tail": [
-   168,
-   128,
-   120
+   248,
+   176,
+   168
   ],
   "throat": [
    176,
@@ -2061,18 +2081,23 @@
    24
   ],
   "beak": [
-   72,
-   64,
-   56
+   232,
+   208,
+   192
   ],
   "belly": [
    184,
    144,
    24
   ],
+  "edited": [
+   "beak",
+   "eye",
+   "wing"
+  ],
   "eye": [
-   16,
-   16,
+   104,
+   24,
    24
   ],
   "flank": [
@@ -2101,7 +2126,7 @@
    "https://www.inaturalist.org/observations/332359210",
    "https://www.inaturalist.org/observations/140618461"
   ],
-  "reviewed": false,
+  "reviewed": true,
   "tail": [
    56,
    72,
@@ -2113,9 +2138,9 @@
    120
   ],
   "wing": [
-   32,
-   32,
-   40
+   80,
+   80,
+   168
   ]
  },
  "Phytotoma rara": {
@@ -2289,14 +2314,17 @@
    80
   ],
   "beak": [
-   120,
-   120,
-   120
+   168,
+   160,
+   128
   ],
   "belly": [
    120,
    120,
    120
+  ],
+  "edited": [
+   "beak"
   ],
   "eye": [
    104,
@@ -2330,7 +2358,7 @@
    "https://www.inaturalist.org/observations/206434133",
    "https://www.inaturalist.org/observations/205590675"
   ],
-  "reviewed": false,
+  "reviewed": true,
   "tail": [
    104,
    104,
@@ -2575,7 +2603,7 @@
    "https://www.inaturalist.org/observations/108872766",
    "https://www.inaturalist.org/observations/71988394"
   ],
-  "reviewed": false,
+  "reviewed": true,
   "tail": [
    120,
    112,
@@ -2645,7 +2673,7 @@
    "https://www.inaturalist.org/observations/98603366",
    "https://www.inaturalist.org/observations/206773347"
   ],
-  "reviewed": false,
+  "reviewed": true,
   "tail": [
    48,
    48,
@@ -2794,7 +2822,7 @@
    "https://www.inaturalist.org/observations/190526843",
    "https://www.inaturalist.org/observations/256467595"
   ],
-  "reviewed": false,
+  "reviewed": true,
   "tail": [
    104,
    104,
@@ -3089,7 +3117,7 @@
    "https://www.inaturalist.org/observations/261921542",
    "https://www.inaturalist.org/observations/331849161"
   ],
-  "reviewed": false,
+  "reviewed": true,
   "tail": [
    24,
    32,
