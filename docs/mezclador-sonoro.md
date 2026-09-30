@@ -7,22 +7,31 @@ silencio general afecta a las dos.
 
 ## Uso en la web
 
-1. Pulsa **Buscar especies**. Se abre una grilla con las especies que tienen una
-   grabación disponible. Cada tarjeta muestra el nombre común, su clase
-   estacional y la primera foto (`images[0]`) de esa especie en
-   `web/data/images.json`. Si la foto remota falla, aparece su inicial.
-2. Escribe un nombre común o científico para filtrar. La búsqueda ignora tildes,
-   guiones y diferencias entre mayúsculas y minúsculas. Los filtros **Todas**,
-   **Residentes**, **De verano** y **De invierno** se pueden combinar con el texto.
-   Usan la clase de `web/data/species.json`; la región seleccionada en el mapa
-   no cambia esa clasificación del mezclador.
-3. Pulsa una tarjeta para añadir el ave directamente. Una marca indica que ya
-   está en la mezcla; pulsarla otra vez no crea una segunda pista. Cada pista
-   muestra sus créditos, enlace de licencia, control de volumen de 0 a 100 % y
-   botón **Quitar**.
-4. Pulsa **Reproducir mezcla** para empezar y **Pausar mezcla** para detenerla.
-   Se pueden añadir y quitar especies mientras suena. Al quitar una pista se
-   cancelan su reproducción y sus esperas pendientes.
+El mezclador vive en un **dock inferior** fijo, fuera del flujo de la página, para que
+no desplace el mapa ni el calendario. Se abre con el botón **Mezcla** de la barra de
+controles (junto a ▶ y al silencio); el número a su lado indica cuántas especies hay en
+la mezcla. El índice de cantos y las fotos se descargan recién la primera vez que se
+abre el dock o se añade un ave.
+
+Hay tres formas de añadir especies:
+
+1. **+ Especies** abre una grilla con las especies que tienen grabación. Cada tarjeta
+   muestra el nombre común, su clase estacional y la primera foto (`images[0]`) de
+   `web/data/images.json`; si la foto remota falla, aparece su inicial. El buscador
+   ignora tildes, guiones y mayúsculas, y los filtros **Todas**, **Residentes**,
+   **De verano** y **De invierno** se combinan con el texto. Usan la clase de
+   `web/data/species.json`, no la de la región seleccionada.
+2. **+ Añadir a la mezcla** en la ficha de una especie (se abre con un clic en una fila
+   del calendario o desde el buscador de la barra).
+3. **Mezclar lo que se ve** añade las 6 especies de la pestaña activa del calendario más
+   registradas en el mes y la región seleccionados.
+
+Una especie ya incluida no se duplica. Cada pista ocupa una línea con el nombre, un
+enlace a la grabación (`XC…`, con el autor en el título), el enlace **CC** a su
+licencia, la marca **orig.** si es audio sin limpiar, su volumen de 0 a 100 % y ✕ para
+quitarla. El botón ▶ del dock reproduce o pausa la mezcla. **▾** (o Escape) minimiza el
+dock sin detener la mezcla; mientras suena, el icono del botón **Mezcla** se tiñe de
+verde. Con la ficha de especie abierta, el dock se corre para no quedar debajo de ella.
 
 El selector ofrece 231 especies con canto. Las fotos se sirven desde los
 proveedores originales, por lo que una imagen puede no estar disponible aunque
@@ -30,7 +39,7 @@ el canto sí lo esté.
 
 ## Modos de reproducción
 
-La casilla **Sincronizar cantos** está desmarcada inicialmente.
+La casilla **Sincronizar** está desmarcada inicialmente.
 
 | Modo | Comportamiento |
 | --- | --- |
@@ -52,10 +61,10 @@ para mantener el mismo punto de partida.
 | `web/audio/clips.json` | Ruta del clip original, ruta `mixer` cuando existe, fuente, autor y licencia. |
 | `web/data/sounds.json` | Asocia esas rutas y créditos con el ID de especie para la web. |
 | `web/audio/mixer/XC*.mp3` | Archivos con reducción de sonido ambiente para el mezclador. |
-| `web/app.js` | Selector, filtros, volúmenes y programación de las pistas con Web Audio. |
+| `web/app.js` | Dock, selector, filtros, volúmenes y programación de las pistas con Web Audio. |
 | `web/sonify.js` | Sonificación mensual existente; no usa las pistas nuevas del mezclador. |
 
-El navegador carga `sounds.json` e `images.json` para preparar el selector. Los
+Al abrir el dock, el navegador carga `sounds.json` e `images.json` para preparar el selector. Los
 MP3 de las especies se descargan y decodifican al reproducirlas. Cada pista
 tiene su propio control de ganancia y todas pasan por un compresor antes de la
 salida. La ficha de especie sigue usando el clip `src`; el mezclador prefiere
