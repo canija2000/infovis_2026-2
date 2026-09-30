@@ -982,8 +982,8 @@
       license.href = photo.license;
       license.target = "_blank";
       license.rel = "noopener noreferrer";
-      license.textContent = "CC BY";
-      caption.append(source, " · ", license, " · GBIF");
+      license.textContent = photo.licenseCode || "CC BY";
+      caption.append(source, " · ", license, " · ", photo.provider || "GBIF");
       figure.append(img, caption);
       gallery.append(figure);
       return figure;
