@@ -6,6 +6,7 @@
    40
   ],
   "accentWhere": "subcaudales",
+  "annotation": "manual",
   "back": [
    88,
    80,
@@ -76,6 +77,7 @@
  },
  "Mimus thenca": {
   "accentWhere": null,
+  "annotation": "manual",
   "back": [
    104,
    72,
@@ -153,6 +155,7 @@
    32
   ],
   "accentWhere": "frente",
+  "annotation": "manual",
   "back": [
    176,
    160,
@@ -228,6 +231,7 @@
    56
   ],
   "accentWhere": "gorguera",
+  "annotation": "manual",
   "back": [
    136,
    136,
@@ -303,6 +307,7 @@
    128
   ],
   "accentWhere": "bigote",
+  "annotation": "manual",
   "back": [
    80,
    72,
@@ -379,6 +384,7 @@
    48
   ],
   "accentWhere": "ala y cola",
+  "annotation": "manual",
   "back": [
    88,
    72,
@@ -461,6 +467,7 @@
    24
   ],
   "accentWhere": "pecho",
+  "annotation": "manual",
   "back": [
    24,
    24,
@@ -533,6 +540,7 @@
  },
  "Troglodytes musculus": {
   "accentWhere": null,
+  "annotation": "manual",
   "back": [
    120,
    104,
@@ -605,6 +613,7 @@
  },
  "Turdus falcklandii": {
   "accentWhere": null,
+  "annotation": "manual",
   "back": [
    128,
    120,
@@ -681,6 +690,7 @@
    16
   ],
   "accentWhere": "pecho",
+  "annotation": "manual",
   "back": [
    56,
    48,
@@ -745,6 +755,7 @@
  },
  "Zenaida auriculata": {
   "accentWhere": null,
+  "annotation": "manual",
   "back": [
    144,
    136,
@@ -820,6 +831,7 @@
    32
   ],
   "accentWhere": "collar",
+  "annotation": "manual",
   "back": [
    144,
    128,

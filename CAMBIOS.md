@@ -49,3 +49,7 @@ Agrega una línea numerada por entrada, con tu nombre entre paréntesis.
    (`python_scripts/imagenes_revisadas.json`); la ficha muestra la licencia real de cada foto (algunas CC BY-NC). (Joaquín)
 14. Mezclador: pasa de una sección entre la barra y el mapa a un dock inferior que se abre con el botón **Mezcla**; pistas en una línea,
    "+ Añadir a la mezcla" en la ficha, "Mezclar lo que se ve" y carga de `sounds.json`/`images.json` solo al abrirlo. (Joaquín)
+15. Paletas asistidas por IA: `python_scripts/enrich/annotate_zones.py` le pide a un modelo de visión (Qwen3-VL, Alibaba Model
+   Studio; clave `QWEN_KEY` en `.env`) la vista de cada foto y un punto por zona del cuerpo; `extract_palette.py --source auto`
+   muestrea los colores reales en esos puntos (5 fotos, mediana). Validado contra las 12 paletas manuales del MVP: ΔE mediana
+   16,5 (63 % de zonas < 20). Sirve como borrador para regiones nuevas; la revisión humana sigue siendo obligatoria. (Joaquín)

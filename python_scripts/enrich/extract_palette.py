@@ -92,30 +92,62 @@ def sample(img: Image.Image, crop: list[float], pt: list[float]) -> tuple[np.nda
     return kmeans_dominant(arr[ys[ok], xs[ok]]), (cx, cy, r)
 
 
+AUTO_MIN_AREA = 0.08  # fracción de la foto que debe ocupar el ave (descarta aves lejanas)
+AUTO_PHOTOS = 5
+
+
+def auto_selection(sci: str, auto: dict) -> list[str]:
+    """Fotos anotadas por el modelo, usables y laterales, con el ave más grande primero."""
+    def area(a):
+        cr = a.get("crop")
+        return (cr[2] - cr[0]) * (cr[3] - cr[1]) / 1e4 if cr else 0
+    ok = [(area(a), pid) for pid, a in auto.items()
+          if a.get("sciName") == sci and a.get("view") == "lateral" and not a.get("discard_reason")
+          and area(a) >= AUTO_MIN_AREA and a.get("zones")]
+    return [pid for _, pid in sorted(ok, reverse=True)[:AUTO_PHOTOS]]
+
+
+def auto_traits(pids: list[str], auto: dict) -> tuple[dict, str | None]:
+    """Patrón por zona y acento por mayoría entre las fotos anotadas."""
+    from collections import Counter
+    pat = Counter((z, v) for pid in pids for z, v in auto[pid].get("pattern", {}).items())
+    pattern = {z: v for (z, v), n in pat.items() if n * 2 > len(pids)}
+    acc = Counter((auto[pid].get("accent_where") or "").lower() for pid in pids if auto[pid].get("accent_where"))
+    where = acc.most_common(1)[0][0] if acc and acc.most_common(1)[0][1] * 2 > len(pids) else None
+    return pattern, where
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     c.species_args(ap)
+    ap.add_argument("--source", choices=["mixed", "auto"], default="mixed",
+                    help="mixed: anotación manual si existe, si no la del modelo; auto: solo la del modelo")
+    ap.add_argument("--out", help="JSON de salida (por defecto enrich/palette.json)")
     args = ap.parse_args()
     index = c.load_index()
     names = {s["sciName"]: s["comName"] for s in index["species"]}
     species = c.selected_species(args, index)
     sel = json.loads((c.REFS_DIR / "palette_selection.json").read_text(encoding="utf-8"))
     zones = json.loads((c.REFS_DIR / "zones.json").read_text(encoding="utf-8"))
+    auto_path = c.REFS_DIR / "zones_auto.json"
+    auto = json.loads(auto_path.read_text(encoding="utf-8")) if auto_path.exists() else {}
     manifest = json.loads((c.REFS_DIR / "manifest.json").read_text(encoding="utf-8"))
     photos = {p["id"]: p for e in manifest.values() for p in e["photos"]}
-    out_path = c.ENRICH_DIR / "palette.json"
+    out_path = c.ROOT / args.out if args.out else c.ENRICH_DIR / "palette.json"
     palette = json.loads(out_path.read_text(encoding="utf-8")) if out_path.exists() else {}
     marked_dir = c.REFS_DIR / "palettes"
     marked_dir.mkdir(exist_ok=True)
 
     sections = []
     for sci in species:
-        if sci not in sel:
+        use_manual = args.source == "mixed" and sci in sel
+        pids = sel[sci] if use_manual else auto_selection(sci, auto)
+        if not pids:
             continue
         per_zone: dict[str, list[np.ndarray]] = {}
         thumbs = []
-        for pid in sel[sci]:
-            ann = zones[pid]
+        for pid in pids:
+            ann = zones[pid] if use_manual else auto[pid]
             img = Image.open(c.REFS_DIR / photos[pid]["file"]).convert("RGB")
             marks = img.copy()
             d = ImageDraw.Draw(marks)
@@ -139,7 +171,7 @@ def main() -> None:
         entry.update(manual)
         for z, v in DEFAULTS.items():
             entry.setdefault(z, v)
-        pattern, accent_where = PATTERN.get(sci, ({}, None))
+        pattern, accent_where = PATTERN[sci] if use_manual and sci in PATTERN else auto_traits(pids, auto)
         if accent_where is None:
             entry.pop("accent", None)
         prev = palette.get(sci, {})
@@ -148,7 +180,8 @@ def main() -> None:
             "pattern": pattern,
             "accentWhere": accent_where,
             "manual": sorted(manual),
-            "photos": [photos[pid]["page"] for pid in sel[sci]],
+            "annotation": "manual" if use_manual else f"auto ({auto[pids[0]].get('model')})",
+            "photos": [photos[pid]["page"] for pid in pids],
             "reviewed": bool(prev.get("reviewed")) and all(prev.get(z) == entry.get(z) for z in ZONES),
         }
 
@@ -160,7 +193,7 @@ def main() -> None:
         sections.append(
             f'<section><h2>{html.escape(names.get(sci, ""))} <i>{sci}</i>'
             f'{" ✔" if palette[sci]["reviewed"] else ""}</h2>'
-            f'<p>patrón: {html.escape(pat)} · acento: {html.escape(accent_where or "—")}</p>'
+            f'<p>patrón: {html.escape(pat)} · acento: {html.escape(accent_where or "—")} · anotación: {palette[sci]["annotation"]}</p>'
             f'<div class="row"><div class="sws">{sw}</div>{imgs}</div></section>')
 
     c.write_json(out_path, palette)
