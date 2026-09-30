@@ -80,7 +80,8 @@ def page(species: list[str]) -> str:
             "".join(f'<option value="{p}"{" selected" if e.get("pattern", {}).get(z, "") == p else ""}>{PATTERN_ES[p]}</option>' for p in PATTERNS) +
             "</select></label>" for z in PATTERN_ZONES)
         imgs = "".join(
-            f'<a href="{html.escape(u)}" target="_blank"><img src="/refs/palettes/{photo_by_page.get(u, "")}.jpg" loading="lazy" onerror="this.remove()"></a>'
+            f'<figure><img class="ph" data-id="{photo_by_page.get(u, "")}" src="/refs/palettes/{photo_by_page.get(u, "")}_clean.jpg" loading="lazy" onerror="this.src=this.src.replace(\'_clean\',\'\')">'
+            f'<a href="{html.escape(u)}" target="_blank" title="Ver en iNaturalist">iNat ↗</a></figure>'
             for u in e.get("photos", []))
         src = e.get("annotation", "manual")
         cards.append(f'''<section class="card{' ok' if e.get("reviewed") else ''}" data-sci="{html.escape(sci)}">
@@ -112,12 +113,17 @@ button.approve{{background:#1d3a2f;border-color:#288665}} .card.ok button.approv
 .z input{{width:64px;height:40px;border:0;padding:0;background:none;cursor:pointer}}
 .side{{display:grid;gap:6px;align-content:start;font-size:13px}} .pats{{display:grid;gap:3px}} .p{{display:flex;justify-content:space-between;gap:6px;color:#bbc}}
 select{{font:inherit;font-size:13px;background:#232838;color:#e8eaf0;border:1px solid #444;border-radius:4px}}
-.imgs{{display:flex;gap:6px;flex-wrap:wrap;align-items:flex-start}} .imgs img{{height:190px;border-radius:4px;border:1px solid #333}}
+.imgs{{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-start}} figure{{margin:0;position:relative}}
+.imgs img{{height:230px;border-radius:4px;border:1px solid #333;cursor:zoom-in;display:block}}
+figure a{{position:absolute;right:4px;bottom:4px;font-size:11px;background:#000a;color:#9cf;padding:1px 5px;border-radius:3px;text-decoration:none}}
+#zoom{{position:fixed;inset:0;background:#000d;display:none;place-items:center;z-index:9;cursor:zoom-out}} #zoom img{{max-width:94vw;max-height:92vh}}
 </style>
 <div class="top"><h1>Revisión de paletas</h1><span id="count">{n_ok}/{len(species)} aprobadas</span>
 <label><input type="checkbox" id="pending"> mostrar solo pendientes</label>
+<label><input type="checkbox" id="points"> mostrar puntos de muestreo</label>
 <span style="color:#99a;font-size:13px">Cada cambio se guarda solo. Los colores se redondean a 5 bits por canal, igual que en el juego.</span></div>
 <main>{"".join(cards)}</main>
+<div id="zoom"><img alt=""></div>
 <script>
 async function save(card, extra) {{
   const colors = {{}};
@@ -146,6 +152,12 @@ document.querySelectorAll('.card').forEach(card => {{
 const pend = document.getElementById('pending');
 function filter() {{ document.querySelectorAll('.card').forEach(c => c.classList.toggle('hide', pend.checked && c.classList.contains('ok'))); }}
 pend.onchange = filter;
+// fotos limpias por defecto; con el interruptor se ven los puntos donde se tomó cada color
+const pts = document.getElementById('points');
+pts.onchange = () => document.querySelectorAll('img.ph').forEach(i => {{ i.src = '/refs/palettes/' + i.dataset.id + (pts.checked ? '' : '_clean') + '.jpg'; }});
+const zoom = document.getElementById('zoom');
+document.querySelectorAll('img.ph').forEach(i => i.onclick = () => {{ zoom.querySelector('img').src = i.src; zoom.style.display = 'grid'; }});
+zoom.onclick = () => {{ zoom.style.display = 'none'; }};
 </script></html>'''
 
 

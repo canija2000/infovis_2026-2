@@ -203,10 +203,14 @@ def main() -> None:
                 d.text((cx + r + 2, cy - r), zone, fill=(255, 255, 0))
             w, h = img.size
             cr = ann["crop"]
-            marks = marks.crop((int(cr[0] * w / 100), int(cr[1] * h / 100), int(cr[2] * w / 100), int(cr[3] * h / 100)))
+            box = (int(cr[0] * w / 100), int(cr[1] * h / 100), int(cr[2] * w / 100), int(cr[3] * h / 100))
+            marks = marks.crop(box)
             marks.thumbnail((420, 420))
             name = f"{pid}.jpg"
             marks.save(marked_dir / name, quality=85)
+            clean = img.crop(box)  # versión sin marcas, más grande, para revisar colores a ojo
+            clean.thumbnail((900, 900))
+            clean.save(marked_dir / f"{pid}_clean.jpg", quality=90)
             thumbs.append((name, photos[pid]))
 
         entry = {z: quant(np.median(np.array(v), axis=0)) for z, v in per_zone.items()}
