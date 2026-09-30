@@ -8,6 +8,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Accipiter chilensis": {
@@ -19,6 +20,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Actitis macularius": {
@@ -30,6 +32,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Aeronautes andecolus": {
@@ -40,6 +43,7 @@
   ],
   "density": "denso",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Agapornis fischeri": {
@@ -51,6 +55,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Agapornis personatus": {
@@ -61,6 +66,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Agapornis roseicollis": {
@@ -71,6 +77,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Agelasticus thilius": {
@@ -82,6 +89,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Agriornis andicola": {
@@ -92,6 +100,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Agriornis lividus": {
@@ -102,6 +111,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Agriornis micropterus": {
@@ -112,6 +122,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Agriornis montanus": {
@@ -122,6 +133,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Aix galericulata": {
@@ -131,6 +143,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Aix sponsa": {
@@ -142,6 +155,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Alopochelidon fucata": {
@@ -153,6 +167,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Amazona aestiva": {
@@ -163,6 +178,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Anairetes fernandezianus": {
@@ -172,6 +188,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Anairetes flavirostris": {
@@ -182,6 +199,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Anairetes parulus": {
@@ -192,6 +210,9 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {
+   "CL-VS": "matorral"
+  },
   "source": "AVONET"
  },
  "Anairetes reguloides": {
@@ -202,6 +223,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Anas bahamensis": {
@@ -213,6 +235,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Anas flavirostris": {
@@ -224,6 +247,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Anas georgica": {
@@ -235,6 +259,9 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {
+   "CL-VS": "humedal"
+  },
   "source": "AVONET"
  },
  "Anas platyrhynchos": {
@@ -246,6 +273,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Anous albivitta": {
@@ -256,6 +284,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Anous minutus": {
@@ -266,6 +295,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Anous stolidus": {
@@ -276,6 +306,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Anser anser": {
@@ -287,6 +318,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Anser cygnoides": {
@@ -298,6 +330,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Anthus correndera": {
@@ -309,6 +342,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Anthus hellmayri": {
@@ -320,6 +354,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Anthus peruvianus": {
@@ -330,6 +365,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Aphrastura masafuerae": {
@@ -339,6 +375,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Aphrastura spinicauda": {
@@ -348,6 +385,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Aphrodroma brevirostris": {
@@ -358,6 +396,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Aptenodytes patagonicus": {
@@ -368,6 +407,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Ara ararauna": {
@@ -377,6 +417,7 @@
   ],
   "density": "denso",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Ara severus": {
@@ -386,6 +427,7 @@
   ],
   "density": "denso",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Aramus guarauna": {
@@ -397,6 +439,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Aratinga acuticaudata": {
@@ -407,6 +450,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Aratinga erythrogenys": {
@@ -418,6 +462,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Aratinga mitrata": {
@@ -427,6 +472,7 @@
   ],
   "density": "denso",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Ardea alba": {
@@ -438,6 +484,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Ardea cocoi": {
@@ -449,6 +496,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Arenaria interpres": {
@@ -460,6 +508,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Asio flammeus": {
@@ -471,6 +520,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Asthenes anthoides": {
@@ -482,6 +532,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Asthenes dorbignyi": {
@@ -492,6 +543,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Asthenes humicola": {
@@ -502,6 +554,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Asthenes modesta": {
@@ -513,6 +566,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Asthenes pudibunda": {
@@ -523,6 +577,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Asthenes pyrrholeuca": {
@@ -533,6 +588,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Athene cunicularia": {
@@ -544,6 +600,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Attagis gayi": {
@@ -555,6 +612,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Attagis malouinus": {
@@ -566,6 +624,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Aythya fuligula": {
@@ -577,6 +636,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Bartramia longicauda": {
@@ -588,6 +648,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Branta leucopsis": {
@@ -599,6 +660,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Bubo magellanicus": {
@@ -608,6 +670,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Bubo virginianus": {
@@ -617,6 +680,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Bubulcus ibis": {
@@ -628,6 +692,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Buteo albigula": {
@@ -637,6 +702,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Buteo poecilochrous": {
@@ -647,6 +713,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Buteo polyosoma": {
@@ -657,6 +724,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Buteo swainsoni": {
@@ -668,6 +736,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Buteo ventralis": {
@@ -677,6 +746,7 @@
   ],
   "density": "denso",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Buteogallus urubitinga": {
@@ -688,6 +758,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Butorides striata": {
@@ -699,6 +770,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Cairina moschata": {
@@ -710,6 +782,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Calidris alba": {
@@ -721,6 +794,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Calidris bairdii": {
@@ -732,6 +806,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Calidris canutus": {
@@ -743,6 +818,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Calidris ferruginea": {
@@ -754,6 +830,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Calidris fuscicollis": {
@@ -765,6 +842,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Calidris himantopus": {
@@ -776,6 +854,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Calidris mauri": {
@@ -786,6 +865,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Calidris melanotos": {
@@ -797,6 +877,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Calidris minutilla": {
@@ -808,6 +889,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Calidris pusilla": {
@@ -819,6 +901,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Calidris subruficollis": {
@@ -830,6 +913,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Calidris virgata": {
@@ -841,6 +925,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Callipepla californica": {
@@ -851,6 +936,9 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {
+   "CL-VS": "matorral"
+  },
   "source": "AVONET"
  },
  "Callonetta leucophrys": {
@@ -862,6 +950,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Campephilus magellanicus": {
@@ -873,6 +962,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Caracara plancus": {
@@ -883,6 +973,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Casiornis rufus": {
@@ -894,6 +985,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Catamenia analis": {
@@ -904,6 +996,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Cathartes aura": {
@@ -915,6 +1008,9 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {
+   "CL-VS": "ciudad"
+  },
   "source": "AVONET"
  },
  "Catharus ustulatus": {
@@ -924,6 +1020,7 @@
   ],
   "density": "denso",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Chaetura pelagica": {
@@ -935,6 +1032,7 @@
   ],
   "density": "denso",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Charadrius alticola": {
@@ -946,6 +1044,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Charadrius collaris": {
@@ -957,6 +1056,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Charadrius falklandicus": {
@@ -968,6 +1068,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Charadrius modestus": {
@@ -979,6 +1080,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Charadrius nivosus": {
@@ -990,6 +1092,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Charadrius semipalmatus": {
@@ -1001,6 +1104,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Charadrius vociferus": {
@@ -1012,6 +1116,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Chauna torquata": {
@@ -1023,6 +1128,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Chilia melanura": {
@@ -1033,6 +1139,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Chionis albus": {
@@ -1043,6 +1150,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Chloephaga hybrida": {
@@ -1053,6 +1161,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Chloephaga melanoptera": {
@@ -1064,6 +1173,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Chloephaga picta": {
@@ -1075,6 +1185,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Chloephaga poliocephala": {
@@ -1086,6 +1197,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Chloephaga rubidiceps": {
@@ -1097,6 +1209,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Chordeiles acutipennis": {
@@ -1107,6 +1220,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Chordeiles nacunda": {
@@ -1118,6 +1232,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Chroicocephalus cirrocephalus": {
@@ -1129,6 +1244,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Chroicocephalus maculipennis": {
@@ -1140,6 +1256,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Chroicocephalus serranus": {
@@ -1151,6 +1268,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Chrysomus ruficapillus": {
@@ -1162,6 +1280,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Ciconia maguari": {
@@ -1173,6 +1292,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Cinclodes antarcticus": {
@@ -1184,6 +1304,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Cinclodes atacamensis": {
@@ -1195,6 +1316,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Cinclodes fuscus": {
@@ -1206,6 +1328,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Cinclodes nigrofumosus": {
@@ -1217,6 +1340,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Cinclodes oustaleti": {
@@ -1227,6 +1351,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Cinclodes patagonicus": {
@@ -1238,6 +1363,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Circus cinereus": {
@@ -1249,6 +1375,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Cistothorus platensis": {
@@ -1260,6 +1387,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Coccyzus americanus": {
@@ -1269,6 +1397,7 @@
   ],
   "density": "denso",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Colaptes melanochloros": {
@@ -1278,6 +1407,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Colaptes pitius": {
@@ -1289,6 +1419,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Colaptes rupicola": {
@@ -1300,6 +1431,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Colibri coruscans": {
@@ -1311,6 +1443,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Colorhamphus parvirostris": {
@@ -1320,6 +1453,7 @@
   ],
   "density": "denso",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Columba livia": {
@@ -1331,6 +1465,9 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {
+   "CL-VS": "ciudad"
+  },
   "source": "AVONET"
  },
  "Columbina cruziana": {
@@ -1342,6 +1479,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Columbina picui": {
@@ -1353,6 +1491,9 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {
+   "CL-VS": "ciudad"
+  },
   "source": "AVONET"
  },
  "Conirostrum binghami": {
@@ -1362,6 +1503,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Conirostrum cinereum": {
@@ -1372,6 +1514,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Conirostrum tamarugense": {
@@ -1381,6 +1524,7 @@
   ],
   "density": "denso",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Coragyps atratus": {
@@ -1392,6 +1536,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Coscoroba coscoroba": {
@@ -1403,6 +1548,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Coturnix japonica": {
@@ -1414,6 +1560,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Creagrus furcatus": {
@@ -1424,6 +1571,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Crotophaga ani": {
@@ -1435,6 +1583,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Crotophaga sulcirostris": {
@@ -1446,6 +1595,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Curaeus curaeus": {
@@ -1455,6 +1605,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Cyanocorax chrysops": {
@@ -1464,6 +1615,7 @@
   ],
   "density": "denso",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Cyanoliseus patagonus": {
@@ -1474,6 +1626,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Cygnus atratus": {
@@ -1485,6 +1638,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Cygnus melancoryphus": {
@@ -1496,6 +1650,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Cygnus olor": {
@@ -1507,6 +1662,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Daption capense": {
@@ -1517,6 +1673,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Dendrocygna autumnalis": {
@@ -1528,6 +1685,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Dendrocygna viduata": {
@@ -1539,6 +1697,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Diglossa brunneiventris": {
@@ -1549,6 +1708,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Diomedea epomophora": {
@@ -1556,6 +1716,7 @@
   "biomes": [],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Diomedea exulans": {
@@ -1566,6 +1727,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Diomedea sanfordi": {
@@ -1573,6 +1735,7 @@
   "biomes": [],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Diuca diuca": {
@@ -1583,6 +1746,10 @@
   ],
   "density": "semiabierto",
   "rm": "matorral",
+  "scenes": {
+   "CL-RM": "matorral",
+   "CL-VS": "matorral"
+  },
   "source": "AVONET + revisión manual (RM)"
  },
  "Dolichonyx oryzivorus": {
@@ -1594,6 +1761,7 @@
   ],
   "density": "denso",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Egretta caerulea": {
@@ -1605,6 +1773,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Egretta thula": {
@@ -1616,6 +1785,9 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {
+   "CL-VS": "humedal"
+  },
   "source": "AVONET"
  },
  "Egretta tricolor": {
@@ -1627,6 +1799,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Elaenia albiceps": {
@@ -1636,6 +1809,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Elaenia chilensis": {
@@ -1645,6 +1819,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Elanoides forficatus": {
@@ -1654,6 +1829,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Elanus leucurus": {
@@ -1665,6 +1841,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Enicognathus ferrugineus": {
@@ -1674,6 +1851,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Enicognathus leptorhynchus": {
@@ -1683,6 +1861,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Eremobius phoenicurus": {
@@ -1693,6 +1872,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Eudromia elegans": {
@@ -1703,6 +1883,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Eudyptes chrysocome": {
@@ -1713,6 +1894,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Eudyptes chrysolophus": {
@@ -1723,6 +1905,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Eugralla paradoxa": {
@@ -1732,6 +1915,7 @@
   ],
   "density": "denso",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Eulidia yarrellii": {
@@ -1742,6 +1926,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Falco femoralis": {
@@ -1753,6 +1938,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Falco peregrinus": {
@@ -1764,6 +1950,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Falco sparverius": {
@@ -1775,6 +1962,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Fregata magnificens": {
@@ -1785,6 +1973,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Fregata minor": {
@@ -1795,6 +1984,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Fregetta grallaria": {
@@ -1805,6 +1995,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Fulica ardesiaca": {
@@ -1816,6 +2007,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Fulica armillata": {
@@ -1827,6 +2019,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Fulica cornuta": {
@@ -1838,6 +2031,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Fulica gigantea": {
@@ -1849,6 +2043,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Fulica leucoptera": {
@@ -1860,6 +2055,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Fulica rufifrons": {
@@ -1871,6 +2067,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Fulmarus glacialoides": {
@@ -1881,6 +2078,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Gallinago andina": {
@@ -1892,6 +2090,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Gallinago magellanica": {
@@ -1903,6 +2102,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Gallinago paraguaiae": {
@@ -1914,6 +2114,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Gallinago stricklandii": {
@@ -1925,6 +2126,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Gallinula chloropus": {
@@ -1936,6 +2138,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Gallinula melanops": {
@@ -1947,6 +2150,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Gallus gallus": {
@@ -1956,6 +2160,7 @@
   ],
   "density": "denso",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Gelochelidon nilotica": {
@@ -1967,6 +2172,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Geositta antarctica": {
@@ -1978,6 +2184,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Geositta cunicularia": {
@@ -1989,6 +2196,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Geositta isabellina": {
@@ -2000,6 +2208,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Geositta maritima": {
@@ -2010,6 +2219,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Geositta punensis": {
@@ -2021,6 +2231,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Geositta rufipennis": {
@@ -2032,6 +2243,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Geospizopsis plebejus": {
@@ -2042,6 +2254,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Geospizopsis unicolor": {
@@ -2053,6 +2266,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Geothlypis velata": {
@@ -2063,6 +2277,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Geranoaetus melanoleucus": {
@@ -2073,6 +2288,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Glaucidium nana": {
@@ -2083,6 +2299,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Glaucidium peruanum": {
@@ -2093,6 +2310,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Guira guira": {
@@ -2104,6 +2322,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Gygis alba": {
@@ -2114,6 +2333,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Haematopus ater": {
@@ -2125,6 +2345,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Haematopus leucopodus": {
@@ -2136,6 +2357,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Haematopus palliatus": {
@@ -2147,6 +2369,9 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {
+   "CL-VS": "costa"
+  },
   "source": "AVONET"
  },
  "Halobaena caerulea": {
@@ -2157,6 +2382,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Haplochelidon andecola": {
@@ -2168,6 +2394,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Heteronetta atricapilla": {
@@ -2179,6 +2406,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Himantopus melanurus": {
@@ -2190,6 +2418,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Himantopus mexicanus": {
@@ -2201,6 +2430,9 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {
+   "CL-VS": "humedal"
+  },
   "source": "AVONET"
  },
  "Hirundinea ferruginea": {
@@ -2212,6 +2444,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Hirundo rustica": {
@@ -2223,6 +2456,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Hydropsalis torquata": {
@@ -2234,6 +2468,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Hymenops perspicillatus": {
@@ -2245,6 +2480,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Icterus cayanensis": {
@@ -2254,6 +2490,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Icterus galbula": {
@@ -2263,6 +2500,7 @@
   ],
   "density": "denso",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Ictinia mississippiensis": {
@@ -2274,6 +2512,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Idiopsar dorsalis": {
@@ -2285,6 +2524,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Idiopsar erythronotus": {
@@ -2296,6 +2536,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Idiopsar speculifer": {
@@ -2307,6 +2548,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Ixobrychus involucris": {
@@ -2318,6 +2560,7 @@
   ],
   "density": "denso",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Jabiru mycteria": {
@@ -2329,6 +2572,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Knipolegus aterrimus": {
@@ -2339,6 +2583,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Larosterna inca": {
@@ -2349,6 +2594,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Larus belcheri": {
@@ -2359,6 +2605,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Larus dominicanus": {
@@ -2369,6 +2616,9 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {
+   "CL-VS": "costa"
+  },
   "source": "AVONET"
  },
  "Laterallus jamaicensis": {
@@ -2380,6 +2630,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Leptasthenura aegithaloides": {
@@ -2390,6 +2641,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Leptasthenura striata": {
@@ -2400,6 +2652,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Lessonia oreas": {
@@ -2411,6 +2664,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Lessonia rufa": {
@@ -2422,6 +2676,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Leucocarbo albiventer": {
@@ -2432,6 +2687,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Leucocarbo atriceps": {
@@ -2442,6 +2698,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Leucocarbo bougainvilliorum": {
@@ -2452,6 +2709,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Leucochloris albicollis": {
@@ -2461,6 +2719,7 @@
   ],
   "density": "denso",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Leucophaeus atricilla": {
@@ -2471,6 +2730,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Leucophaeus modestus": {
@@ -2481,6 +2741,9 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {
+   "CL-VS": "costa"
+  },
   "source": "AVONET"
  },
  "Leucophaeus pipixcan": {
@@ -2492,6 +2755,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Leucophaeus scoresbii": {
@@ -2502,6 +2766,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Limnodromus griseus": {
@@ -2513,6 +2778,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Limosa fedoa": {
@@ -2524,6 +2790,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Limosa haemastica": {
@@ -2535,6 +2802,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Limosa lapponica": {
@@ -2546,6 +2814,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Lophonetta specularioides": {
@@ -2557,6 +2826,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Machetornis rixosa": {
@@ -2568,6 +2838,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Macronectes giganteus": {
@@ -2578,6 +2849,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Macronectes halli": {
@@ -2588,6 +2860,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Mareca sibilatrix": {
@@ -2599,6 +2872,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Megaceryle torquata": {
@@ -2610,6 +2884,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Megarynchus pitangua": {
@@ -2621,6 +2896,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Melanodera melanodera": {
@@ -2632,6 +2908,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Melanodera xanthogramma": {
@@ -2643,6 +2920,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Meleagris gallopavo": {
@@ -2652,6 +2930,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Melopsittacus undulatus": {
@@ -2663,6 +2942,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Merganetta armata": {
@@ -2674,6 +2954,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Metriopelia aymara": {
@@ -2685,6 +2966,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Metriopelia ceciliae": {
@@ -2695,6 +2977,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Metriopelia melanoptera": {
@@ -2705,6 +2988,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Microspingus torquatus": {
@@ -2715,6 +2999,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Milvago chimango": {
@@ -2726,6 +3011,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Mimus dorsalis": {
@@ -2736,6 +3022,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Mimus patagonicus": {
@@ -2746,6 +3033,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Mimus saturninus": {
@@ -2756,6 +3044,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Mimus thenca": {
@@ -2766,6 +3055,10 @@
   ],
   "density": "semiabierto",
   "rm": "matorral",
+  "scenes": {
+   "CL-RM": "matorral",
+   "CL-VS": "matorral"
+  },
   "source": "AVONET + revisión manual (RM)"
  },
  "Mimus triurus": {
@@ -2776,6 +3069,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Molothrus bonariensis": {
@@ -2787,6 +3081,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Molothrus rufoaxillaris": {
@@ -2798,6 +3093,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Motacilla alba": {
@@ -2809,6 +3105,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Muscigralla brevicauda": {
@@ -2819,6 +3116,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Muscisaxicola albifrons": {
@@ -2830,6 +3128,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Muscisaxicola albilora": {
@@ -2841,6 +3140,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Muscisaxicola capistratus": {
@@ -2852,6 +3152,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Muscisaxicola cinereus": {
@@ -2863,6 +3164,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Muscisaxicola flavinucha": {
@@ -2874,6 +3176,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Muscisaxicola frontalis": {
@@ -2885,6 +3188,9 @@
   ],
   "density": "abierto",
   "rm": "cordillera",
+  "scenes": {
+   "CL-RM": "cordillera"
+  },
   "source": "AVONET + revisión manual (RM)"
  },
  "Muscisaxicola juninensis": {
@@ -2896,6 +3202,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Muscisaxicola maclovianus": {
@@ -2907,6 +3214,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Muscisaxicola maculirostris": {
@@ -2917,6 +3225,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Muscisaxicola rufivertex": {
@@ -2928,6 +3237,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Mycteria americana": {
@@ -2939,6 +3249,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Myiodynastes luteiventris": {
@@ -2950,6 +3261,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Myiodynastes maculatus": {
@@ -2959,6 +3271,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Myiopagis viridicata": {
@@ -2968,6 +3281,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Myiophobus fasciatus": {
@@ -2978,6 +3292,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Myiopsitta monachus": {
@@ -2989,6 +3304,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Myiotheretes striaticollis": {
@@ -2999,6 +3315,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Neoxolmis rufiventris": {
@@ -3010,6 +3327,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Netta peposaca": {
@@ -3021,6 +3339,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Netta rufina": {
@@ -3032,6 +3351,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Nothoprocta ornata": {
@@ -3043,6 +3363,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Nothoprocta pentlandii": {
@@ -3053,6 +3374,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Nothoprocta perdicaria": {
@@ -3063,6 +3385,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Notiochelidon cyanoleuca": {
@@ -3074,6 +3397,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Numenius hudsonicus": {
@@ -3085,6 +3409,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Numenius phaeopus": {
@@ -3096,6 +3421,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Numenius tahitiensis": {
@@ -3107,6 +3433,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Numida meleagris": {
@@ -3118,6 +3445,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Nyctanassa violacea": {
@@ -3129,6 +3457,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Nycticorax nycticorax": {
@@ -3140,6 +3469,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Nycticryphes semicollaris": {
@@ -3151,6 +3481,7 @@
   ],
   "density": "denso",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Nymphicus hollandicus": {
@@ -3162,6 +3493,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Oceanites gracilis": {
@@ -3172,6 +3504,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Oceanites oceanicus": {
@@ -3182,6 +3515,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Oceanites pincoyae": {
@@ -3189,6 +3523,7 @@
   "biomes": [],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Oceanodroma hornbyi": {
@@ -3199,6 +3534,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Oceanodroma markhami": {
@@ -3209,6 +3545,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Oceanodroma tethys": {
@@ -3219,6 +3556,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Ochthoeca leucophrys": {
@@ -3229,6 +3567,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Ochthoeca oenanthoides": {
@@ -3239,6 +3578,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Onychoprion fuscatus": {
@@ -3249,6 +3589,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Oreopholus ruficollis": {
@@ -3260,6 +3601,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Oreotrochilus estella": {
@@ -3271,6 +3613,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Oreotrochilus leucopleurus": {
@@ -3282,6 +3625,9 @@
   ],
   "density": "abierto",
   "rm": "cordillera",
+  "scenes": {
+   "CL-RM": "cordillera"
+  },
   "source": "AVONET + revisión manual (RM)"
  },
  "Oxyura ferruginea": {
@@ -3293,6 +3639,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Oxyura jamaicensis": {
@@ -3304,6 +3651,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Oxyura vittata": {
@@ -3315,6 +3663,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Pachyptila belcheri": {
@@ -3325,6 +3674,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Pachyptila desolata": {
@@ -3335,6 +3685,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Pachyptila vittata": {
@@ -3345,6 +3696,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Pandion haliaetus": {
@@ -3355,6 +3707,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Parabuteo unicinctus": {
@@ -3365,6 +3718,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Pardirallus sanguinolentus": {
@@ -3376,6 +3730,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Paroaria coronata": {
@@ -3386,6 +3741,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Passer domesticus": {
@@ -3397,6 +3753,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Patagioenas araucana": {
@@ -3406,6 +3763,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Patagioenas fasciata": {
@@ -3415,6 +3773,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Patagioenas maculosa": {
@@ -3426,6 +3785,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Patagioenas picazuro": {
@@ -3435,6 +3795,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Patagona gigas": {
@@ -3445,6 +3806,9 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {
+   "CL-VS": "matorral"
+  },
   "source": "AVONET"
  },
  "Pavo cristatus": {
@@ -3454,6 +3818,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Pelecanoides garnotii": {
@@ -3464,6 +3829,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Pelecanoides magellani": {
@@ -3474,6 +3840,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Pelecanoides urinatrix": {
@@ -3484,6 +3851,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Pelecanus occidentalis": {
@@ -3494,6 +3862,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Pelecanus thagus": {
@@ -3504,6 +3873,9 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {
+   "CL-VS": "costa"
+  },
   "source": "AVONET"
  },
  "Petrochelidon pyrrhonota": {
@@ -3515,6 +3887,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Phaethon aethereus": {
@@ -3525,6 +3898,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Phaethon lepturus": {
@@ -3535,6 +3909,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Phaethon rubricauda": {
@@ -3545,6 +3920,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Phalacrocorax brasilianus": {
@@ -3556,6 +3932,9 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {
+   "CL-VS": "humedal"
+  },
   "source": "AVONET"
  },
  "Phalacrocorax gaimardi": {
@@ -3566,6 +3945,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Phalacrocorax magellanicus": {
@@ -3576,6 +3956,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Phalaropus fulicarius": {
@@ -3586,6 +3967,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Phalaropus lobatus": {
@@ -3597,6 +3979,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Phalaropus tricolor": {
@@ -3608,6 +3991,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Phalcoboenus albogularis": {
@@ -3619,6 +4003,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Phalcoboenus megalopterus": {
@@ -3630,6 +4015,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Phasianus colchicus": {
@@ -3641,6 +4027,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Phegornis mitchellii": {
@@ -3652,6 +4039,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Pheucticus aureoventris": {
@@ -3661,6 +4049,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Pheucticus chrysogaster": {
@@ -3670,6 +4059,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Phleocryptes melanops": {
@@ -3681,6 +4071,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Phoebastria irrorata": {
@@ -3691,6 +4082,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Phoebetria palpebrata": {
@@ -3701,6 +4093,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Phoenicoparrus andinus": {
@@ -3712,6 +4105,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Phoenicoparrus jamesi": {
@@ -3723,6 +4117,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Phoenicopterus chilensis": {
@@ -3734,6 +4129,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Phrygilus atriceps": {
@@ -3744,6 +4140,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Phrygilus gayi": {
@@ -3754,6 +4151,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Phrygilus patagonicus": {
@@ -3763,6 +4161,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Phytotoma rara": {
@@ -3773,6 +4172,9 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {
+   "CL-VS": "matorral"
+  },
   "source": "AVONET"
  },
  "Phytotoma rutila": {
@@ -3783,6 +4185,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Piranga ludoviciana": {
@@ -3792,6 +4195,7 @@
   ],
   "density": "denso",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Pitangus sulphuratus": {
@@ -3803,6 +4207,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Platalea ajaja": {
@@ -3814,6 +4219,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Platycercus elegans": {
@@ -3823,6 +4229,7 @@
   ],
   "density": "denso",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Platycercus eximius": {
@@ -3834,6 +4241,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Plegadis chihi": {
@@ -3845,6 +4253,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Plegadis ridgwayi": {
@@ -3856,6 +4265,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Pluvialis dominica": {
@@ -3867,6 +4277,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Pluvialis squatarola": {
@@ -3878,6 +4289,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Pluvianellus socialis": {
@@ -3889,6 +4301,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Podiceps gallardoi": {
@@ -3900,6 +4313,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Podiceps major": {
@@ -3911,6 +4325,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Podiceps occipitalis": {
@@ -3922,6 +4337,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Podilymbus podiceps": {
@@ -3933,6 +4349,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Polioxolmis rufipennis": {
@@ -3942,6 +4359,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Porphyrio martinica": {
@@ -3953,6 +4371,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Porphyrospiza alaudina": {
@@ -3963,6 +4382,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Porzana spiloptera": {
@@ -3974,6 +4394,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Procellaria aequinoctialis": {
@@ -3984,6 +4405,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Procellaria westlandica": {
@@ -3994,6 +4416,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Progne chalybea": {
@@ -4004,6 +4427,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Progne elegans": {
@@ -4015,6 +4439,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Progne murphyi": {
@@ -4026,6 +4451,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Progne tapera": {
@@ -4037,6 +4463,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Psephotus haematonotus": {
@@ -4048,6 +4475,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Pseudocolopteryx citreola": {
@@ -4059,6 +4487,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Psilopsiagon aurifrons": {
@@ -4069,6 +4498,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Psittacula krameri": {
@@ -4078,6 +4508,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Pterodroma alba": {
@@ -4088,6 +4519,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Pterodroma atrata": {
@@ -4098,6 +4530,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Pterodroma defilippiana": {
@@ -4108,6 +4541,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Pterodroma externa": {
@@ -4118,6 +4552,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Pterodroma heraldica": {
@@ -4128,6 +4563,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Pterodroma longirostris": {
@@ -4138,6 +4574,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Pterodroma mollis": {
@@ -4148,6 +4585,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Pterodroma neglecta": {
@@ -4158,6 +4596,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Pterodroma nigripennis": {
@@ -4168,6 +4607,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Pterodroma ultima": {
@@ -4178,6 +4618,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Pteroptochos castaneus": {
@@ -4187,6 +4628,7 @@
   ],
   "density": "denso",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Pteroptochos megapodius": {
@@ -4197,6 +4639,9 @@
   ],
   "density": "semiabierto",
   "rm": "matorral",
+  "scenes": {
+   "CL-RM": "matorral"
+  },
   "source": "AVONET + revisión manual (RM)"
  },
  "Pteroptochos tarnii": {
@@ -4206,6 +4651,7 @@
   ],
   "density": "denso",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Puffinus assimilis": {
@@ -4216,6 +4662,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Puffinus bulleri": {
@@ -4226,6 +4673,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Puffinus creatopus": {
@@ -4236,6 +4684,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Puffinus gravis": {
@@ -4246,6 +4695,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Puffinus griseus": {
@@ -4256,6 +4706,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Puffinus nativitatis": {
@@ -4266,6 +4717,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Puffinus puffinus": {
@@ -4276,6 +4728,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Pygarrhichas albogularis": {
@@ -4285,6 +4738,7 @@
   ],
   "density": "denso",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Pygoscelis antarcticus": {
@@ -4295,6 +4749,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Pygoscelis papua": {
@@ -4305,6 +4760,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Pyrocephalus obscurus": {
@@ -4316,6 +4772,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Pyrocephalus rubinus": {
@@ -4327,6 +4784,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Quiscalus mexicanus": {
@@ -4338,6 +4796,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Rallus antarcticus": {
@@ -4349,6 +4808,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Rauenia bonariensis": {
@@ -4358,6 +4818,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Recurvirostra andina": {
@@ -4369,6 +4830,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Rhea pennata": {
@@ -4380,6 +4842,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Rhodopis vesper": {
@@ -4390,6 +4853,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Rhopospina fruticeti": {
@@ -4400,6 +4864,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Riparia riparia": {
@@ -4411,6 +4876,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Rollandia rolland": {
@@ -4422,6 +4888,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Rupornis magnirostris": {
@@ -4431,6 +4898,7 @@
   ],
   "density": "denso",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Rynchops niger": {
@@ -4442,6 +4910,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Saltator aurantiirostris": {
@@ -4453,6 +4922,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Sarkidiornis sylvicola": {
@@ -4464,6 +4934,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Scelorchilus albicollis": {
@@ -4474,6 +4945,9 @@
   ],
   "density": "semiabierto",
   "rm": "matorral",
+  "scenes": {
+   "CL-RM": "matorral"
+  },
   "source": "AVONET + revisión manual (RM)"
  },
  "Scelorchilus rubecula": {
@@ -4483,6 +4957,7 @@
   ],
   "density": "denso",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Scytalopus fuscus": {
@@ -4492,6 +4967,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Scytalopus magellanicus": {
@@ -4501,6 +4977,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Sephanoides fernandensis": {
@@ -4510,6 +4987,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Sephanoides sephaniodes": {
@@ -4521,6 +4999,9 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {
+   "CL-VS": "ciudad"
+  },
   "source": "AVONET"
  },
  "Serinus canaria": {
@@ -4532,6 +5013,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Setophaga pitiayumi": {
@@ -4541,6 +5023,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Setophaga ruticilla": {
@@ -4550,6 +5033,7 @@
   ],
   "density": "denso",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Setophaga striata": {
@@ -4559,6 +5043,7 @@
   ],
   "density": "denso",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Sicalis auriventris": {
@@ -4569,6 +5054,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Sicalis flaveola": {
@@ -4579,6 +5065,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Sicalis lebruni": {
@@ -4590,6 +5077,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Sicalis lutea": {
@@ -4601,6 +5089,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Sicalis luteola": {
@@ -4612,6 +5101,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Sicalis olivascens": {
@@ -4622,6 +5112,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Sicalis raimondii": {
@@ -4633,6 +5124,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Sicalis uropigyalis": {
@@ -4644,6 +5136,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Spatula clypeata": {
@@ -4655,6 +5148,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Spatula cyanoptera": {
@@ -4666,6 +5160,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Spatula discors": {
@@ -4677,6 +5172,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Spatula platalea": {
@@ -4688,6 +5184,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Spatula puna": {
@@ -4699,6 +5196,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Spatula versicolor": {
@@ -4710,6 +5208,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Speculanas specularis": {
@@ -4721,6 +5220,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Spheniscus humboldti": {
@@ -4731,6 +5231,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Spheniscus magellanicus": {
@@ -4741,6 +5242,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Spinus atratus": {
@@ -4752,6 +5254,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Spinus barbatus": {
@@ -4761,6 +5264,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Spinus crassirostris": {
@@ -4771,6 +5275,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Spinus magellanicus": {
@@ -4781,6 +5286,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Spinus uropygialis": {
@@ -4791,6 +5297,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Spiza americana": {
@@ -4802,6 +5309,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Sporophila caerulescens": {
@@ -4812,6 +5320,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Sporophila telasco": {
@@ -4822,6 +5331,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Steatornis caripensis": {
@@ -4831,6 +5341,7 @@
   ],
   "density": "denso",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Stercorarius antarcticus": {
@@ -4841,6 +5352,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Stercorarius chilensis": {
@@ -4851,6 +5363,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Stercorarius longicaudus": {
@@ -4861,6 +5374,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Stercorarius maccormicki": {
@@ -4871,6 +5385,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Stercorarius parasiticus": {
@@ -4881,6 +5396,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Stercorarius pomarinus": {
@@ -4891,6 +5407,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Sterna hirundinacea": {
@@ -4901,6 +5418,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Sterna hirundo": {
@@ -4911,6 +5429,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Sterna paradisaea": {
@@ -4922,6 +5441,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Sterna trudeaui": {
@@ -4933,6 +5453,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Sternula antillarum": {
@@ -4943,6 +5464,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Sternula lorata": {
@@ -4954,6 +5476,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Streptopelia roseogrisea": {
@@ -4964,6 +5487,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Streptoprocne zonaris": {
@@ -4973,6 +5497,7 @@
   ],
   "density": "denso",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Strix rufipes": {
@@ -4982,6 +5507,7 @@
   ],
   "density": "denso",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Sturnella bellicosa": {
@@ -4993,6 +5519,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Sturnella loyca": {
@@ -5004,6 +5531,9 @@
   ],
   "density": "abierto",
   "rm": "rio",
+  "scenes": {
+   "CL-RM": "rio"
+  },
   "source": "AVONET + revisión manual (RM)"
  },
  "Sturnella superciliaris": {
@@ -5015,6 +5545,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Sturnus vulgaris": {
@@ -5026,6 +5557,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Sula dactylatra": {
@@ -5036,6 +5568,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Sula granti": {
@@ -5046,6 +5579,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Sula nebouxii": {
@@ -5056,6 +5590,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Sula sula": {
@@ -5066,6 +5601,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Sula variegata": {
@@ -5076,6 +5612,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Sylviorthorhynchus desmursii": {
@@ -5085,6 +5622,7 @@
   ],
   "density": "denso",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Systellura decussata": {
@@ -5095,6 +5633,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Systellura longirostris": {
@@ -5105,6 +5644,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Tachuris rubrigastra": {
@@ -5116,6 +5656,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Tachycineta leucopyga": {
@@ -5127,6 +5668,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Tachyeres leucocephalus": {
@@ -5138,6 +5680,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Tachyeres patachonicus": {
@@ -5148,6 +5691,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Tachyeres pteneres": {
@@ -5158,6 +5702,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Taeniopygia guttata": {
@@ -5169,6 +5714,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Tersina viridis": {
@@ -5178,6 +5724,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Thalassarche bulleri": {
@@ -5188,6 +5735,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Thalassarche cauta": {
@@ -5195,6 +5743,7 @@
   "biomes": [],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Thalassarche chrysostoma": {
@@ -5205,6 +5754,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Thalassarche eremita": {
@@ -5212,6 +5762,7 @@
   "biomes": [],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Thalassarche melanophris": {
@@ -5222,6 +5773,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Thalassarche salvini": {
@@ -5229,6 +5781,7 @@
   "biomes": [],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Thalasseus acuflavidus": {
@@ -5239,6 +5792,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Thalasseus elegans": {
@@ -5250,6 +5804,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Thalasseus maximus": {
@@ -5260,6 +5815,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Thalasseus sandvicensis": {
@@ -5270,6 +5826,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Thaumastura cora": {
@@ -5280,6 +5837,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Theristicus caudatus": {
@@ -5291,6 +5849,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Theristicus melanopis": {
@@ -5302,6 +5861,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Thinocorus orbignyianus": {
@@ -5313,6 +5873,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Thinocorus rumicivorus": {
@@ -5324,6 +5885,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Thraupis sayaca": {
@@ -5333,6 +5895,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Tinamotis ingoufi": {
@@ -5344,6 +5907,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Tinamotis pentlandii": {
@@ -5355,6 +5919,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Tringa flavipes": {
@@ -5366,6 +5931,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Tringa incana": {
@@ -5377,6 +5943,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Tringa melanoleuca": {
@@ -5388,6 +5955,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Tringa semipalmata": {
@@ -5399,6 +5967,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Tringa solitaria": {
@@ -5410,6 +5979,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Troglodytes aedon": {
@@ -5420,6 +5990,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Troglodytes musculus": {
@@ -5430,6 +6001,10 @@
   ],
   "density": "abierto",
   "rm": "ciudad",
+  "scenes": {
+   "CL-RM": "ciudad",
+   "CL-VS": "matorral"
+  },
   "source": "AVONET + revisión manual (RM)"
  },
  "Turdus amaurochalinus": {
@@ -5439,6 +6014,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Turdus chiguanco": {
@@ -5449,6 +6025,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Turdus falcklandii": {
@@ -5458,6 +6035,9 @@
   ],
   "density": "semiabierto",
   "rm": "ciudad",
+  "scenes": {
+   "CL-RM": "ciudad"
+  },
   "source": "AVONET + revisión manual (RM)"
  },
  "Tyrannus melancholicus": {
@@ -5469,6 +6049,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Tyrannus savana": {
@@ -5480,6 +6061,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Tyrannus tyrannus": {
@@ -5491,6 +6073,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Tyto alba": {
@@ -5502,6 +6085,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Tyto furcata": {
@@ -5513,6 +6097,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Upucerthia albigula": {
@@ -5523,6 +6108,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Upucerthia dumetaria": {
@@ -5533,6 +6119,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Upucerthia jelskii": {
@@ -5544,6 +6131,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Upucerthia ruficaudus": {
@@ -5554,6 +6142,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Upucerthia saturatior": {
@@ -5563,6 +6152,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Upucerthia validirostris": {
@@ -5574,6 +6164,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Vanellus chilensis": {
@@ -5585,6 +6176,9 @@
   ],
   "density": "abierto",
   "rm": "rio",
+  "scenes": {
+   "CL-RM": "rio"
+  },
   "source": "AVONET + revisión manual (RM)"
  },
  "Vanellus resplendens": {
@@ -5596,6 +6190,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Veniliornis lignarius": {
@@ -5606,6 +6201,7 @@
   ],
   "density": "denso",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Vireo olivaceus": {
@@ -5615,6 +6211,7 @@
   ],
   "density": "denso",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Volatinia jacarina": {
@@ -5626,6 +6223,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Vultur gryphus": {
@@ -5637,6 +6235,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Xema sabini": {
@@ -5647,6 +6246,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Xenospingus concolor": {
@@ -5657,6 +6257,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Xolmis coronatus": {
@@ -5667,6 +6268,7 @@
   ],
   "density": "abierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Xolmis pyrope": {
@@ -5676,6 +6278,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Zenaida auriculata": {
@@ -5687,6 +6290,10 @@
   ],
   "density": "abierto",
   "rm": "ciudad",
+  "scenes": {
+   "CL-RM": "ciudad",
+   "CL-VS": "ciudad"
+  },
   "source": "AVONET + revisión manual (RM)"
  },
  "Zenaida meloda": {
@@ -5697,6 +6304,7 @@
   ],
   "density": "semiabierto",
   "rm": null,
+  "scenes": {},
   "source": "AVONET"
  },
  "Zonotrichia capensis": {
@@ -5707,6 +6315,10 @@
   ],
   "density": "abierto",
   "rm": "ciudad",
+  "scenes": {
+   "CL-RM": "ciudad",
+   "CL-VS": "ciudad"
+  },
   "source": "AVONET + revisión manual (RM)"
  }
 }

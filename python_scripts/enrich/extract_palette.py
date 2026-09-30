@@ -61,7 +61,17 @@ MANUAL = {
     "Sturnella loyca": {"beak": [168, 160, 160], "legs": [96, 88, 88], "accent": [224, 64, 24]},
     "Oreotrochilus leucopleurus": {"beak": [24, 24, 24], "legs": [40, 36, 36], "eye": [16, 16, 16]},
     "Muscisaxicola frontalis": {"beak": [32, 32, 32], "legs": [40, 40, 40], "accent": [32, 32, 32]},
+    # Valparaíso (paletas automáticas de Qwen3-VL; se corrigen rasgos finos y zonas tomadas del cielo)
+    "Cathartes aura": {"head": [184, 64, 56], "beak": [224, 216, 200], "legs": [200, 176, 168]},
+    "Himantopus mexicanus": {"legs": [232, 120, 140], "beak": [24, 24, 24], "head": [40, 40, 40]},
+    "Larus dominicanus": {"belly": [232, 232, 232], "flank": [224, 224, 224], "throat": [240, 240, 240], "beak": [232, 200, 64], "legs": [208, 200, 120]},
+    "Sephanoides sephaniodes": {"accent": [208, 48, 40]},
+    "Phytotoma rara": {"eye": [200, 40, 32], "accent": [168, 72, 40]},
+    "Anairetes parulus": {"belly": [208, 208, 192], "back": [104, 104, 96], "head": [40, 40, 40], "eye": [232, 216, 96]},
+    "Callipepla californica": {"throat": [24, 24, 24], "accent": [232, 232, 232]},
 }
+# Dónde va el acento cuando el modelo no lo detecta (palabras que entiende bird.js).
+ACCENT_FIX = {"Sephanoides sephaniodes": "frente", "Phytotoma rara": "pecho", "Callipepla californica": "bigote"}
 DEFAULTS = {"eye": [16, 16, 16], "beak": [40, 32, 28], "legs": [72, 64, 56]}
 
 
@@ -114,7 +124,25 @@ def auto_traits(pids: list[str], auto: dict) -> tuple[dict, str | None]:
     pattern = {z: v for (z, v), n in pat.items() if n * 2 > len(pids)}
     acc = Counter((auto[pid].get("accent_where") or "").lower() for pid in pids if auto[pid].get("accent_where"))
     where = acc.most_common(1)[0][0] if acc and acc.most_common(1)[0][1] * 2 > len(pids) else None
-    return pattern, where
+    return pattern, accent_keyword(where)
+
+
+# El juego entiende estos lugares para el acento (ver bird.js); el modelo responde en texto libre.
+ACCENT_WORDS = [("subcaudales", ("subcaud", "vent", "undertail", "infracaudal")),
+                ("gorguera", ("gorguera", "garganta", "throat", "gorget")),
+                ("pecho", ("pecho", "breast", "chest", "vientre", "belly")),
+                ("collar", ("collar", "nuca", "nape", "cuello", "neck")),
+                ("frente", ("frente", "forehead", "corona", "crown", "capuch", "cap")),
+                ("bigote", ("bigote", "mejilla", "cheek", "cara", "face", "ceja", "brow")),
+                ("ala y cola", ("ala", "wing", "cola", "tail", "espejo", "speculum"))]
+
+
+def accent_keyword(text: str | None) -> str | None:
+    t = (text or "").lower()
+    for key, words in ACCENT_WORDS:
+        if any(w in t for w in words):
+            return key
+    return None
 
 
 def main() -> None:
@@ -172,6 +200,7 @@ def main() -> None:
         for z, v in DEFAULTS.items():
             entry.setdefault(z, v)
         pattern, accent_where = PATTERN[sci] if use_manual and sci in PATTERN else auto_traits(pids, auto)
+        accent_where = ACCENT_FIX.get(sci, accent_where)
         if accent_where is None:
             entry.pop("accent", None)
         prev = palette.get(sci, {})

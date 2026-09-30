@@ -103,6 +103,7 @@ def compact_morphology(m: dict | None) -> dict | None:
     p = m["prop"]
     st = m.get("stratum")
     return {
+        "family": m.get("family"),
         "prop": [None if p[k] is None else round(p[k], 2) for k in ("beak", "beakDepth", "tarsus", "tail", "hwi")],
         "scale": m["scale"],
         "mass": m["raw"]["mass"],
@@ -118,6 +119,8 @@ def compact_habitat(h: dict | None) -> dict | None:
     out = {"avonet": h.get("avonet"), "biomes": h.get("biomes", [])}
     if h.get("rm"):
         out["rm"] = h["rm"]
+    if h.get("scenes"):
+        out["scenes"] = h["scenes"]  # {región: escena} para las especies destacadas del mundo 3D
     return out
 
 
@@ -221,7 +224,8 @@ def main() -> None:
                 "morphology": compact_morphology(enrich["morphology"].get(sci)),
                 "palette": compact_palette(enrich["palette"].get(sci)),
                 # Fotos de referencia con licencia (solo metadatos) o, si no hay, la búsqueda GBIF.
-                "images": enrich["images"].get(sci) or gbif_images_url(sci),
+                # (hasta 3 en el índice; la lista completa queda en enrich/images.json)
+                "images": (enrich["images"].get(sci) or [])[:3] or gbif_images_url(sci),
             }
         )
 

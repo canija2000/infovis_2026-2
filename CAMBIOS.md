@@ -53,3 +53,8 @@ Agrega una línea numerada por entrada, con tu nombre entre paréntesis.
    Studio; clave `QWEN_KEY` en `.env`) la vista de cada foto y un punto por zona del cuerpo; `extract_palette.py --source auto`
    muestrea los colores reales en esos puntos (5 fotos, mediana). Validado contra las 12 paletas manuales del MVP: ΔE mediana
    16,5 (63 % de zonas < 20). Sirve como borrador para regiones nuevas; la revisión humana sigue siendo obligatoria. (Joaquín)
+16. Región de Valparaíso para el mundo 3D: especies destacadas por región y escena en `enrich/featured.json` (`--region CODE` en
+   los scripts de enrich; `habitat.scenes` y `morphology.family` en `index.json`). 16 especies nuevas con fotos (iNaturalist) y paletas
+   automáticas (Qwen3-VL) con correcciones manuales; terreno de 4 escenas (`terrain-CL-VS.json`: Montemar, desembocadura del
+   Aconcagua, La Campana y cerros de Valparaíso) y vegetación en `enrich/props_vs.json`. `index.json` guarda hasta 3 fotos de
+   referencia por especie (la lista completa sigue en `enrich/images.json`). (Joaquín)
