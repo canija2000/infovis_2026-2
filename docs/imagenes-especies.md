@@ -30,6 +30,9 @@ solicita ese JSON al abrir una ficha, carga primero una foto y permite expandir
 la galería hasta un máximo de ocho. Las imágenes se sirven desde sus proveedores,
 no desde el repositorio.
 
+`python_scripts/imagenes_revisadas.json` reemplaza la galería de las especies
+cuya foto principal no servía (ver «Galerías revisadas a mano» más abajo).
+
 `python_scripts/build_web_data.py` conserva las fotos publicadas y vuelve a
 asociarlas por nombre científico si cambian los IDs de `species.json`. Ese build
 no consulta GBIF ni ejecuta el detector. Cuando se incorporen especies nuevas o
@@ -94,6 +97,28 @@ El script ordena todas las candidatas puntuadas de cada especie y escribe solo
 las primeras ocho en `web/data/images.json`. Las puntuaciones y
 las miniaturas quedan en la caché local, fuera del sitio publicado.
 
+## Galerías revisadas a mano
+
+El detector solo verifica que haya un ave en la foto, así que no distingue un
+ave viva de una muerta, de una piel de museo o de un escaneo. El 30 de
+septiembre de 2026 se revisaron a ojo las fotos principales de las 539 especies
+con foto: 17 mostraban aves muertas o pieles de museo y 6 eran páginas de
+libretas de campo.
+
+Para esas 23 especies, `python_scripts/imagenes_revisadas.json` define una
+galería de tres fotos revisadas a mano, tomada del catálogo
+`imagenes_aves_chile`. `ordenar_imagenes_web.py` aplica esas galerías al
+publicar, de modo que regenerar `images.json` no devuelve las fotos
+descartadas. Las fotos de «Mostrar más» del resto de las especies no se
+revisaron a mano.
+
+Estas fotos no siguen la regla de solo CC BY de la etapa 1: hay fotos CC0,
+CC BY, CC BY-SA, CC BY-NC y CC BY-NC-SA, y algunas vienen directamente de
+iNaturalist o Wikimedia Commons en lugar de GBIF. Cada entrada guarda su
+licencia (`licenseCode`) y su proveedor (`provider`), y la ficha los muestra
+en el pie de foto. Las licencias NC permiten el uso en este sitio porque no es
+comercial; si el proyecto pasara a uso comercial, habría que reemplazarlas.
+
 ## Regeneración y revisión
 
 Desde la raíz del repositorio:
@@ -143,4 +168,6 @@ parecidas de una misma ocurrencia, y no garantiza diversidad de ángulos, sexo o
 edad. La búsqueda paginada favorece registros que GBIF devuelve primero. Como
 las fotos publicadas siguen alojadas fuera del proyecto, una URL puede dejar de
 funcionar después de generar el índice. La ficha muestra el autor enlazado a
-la ocurrencia y un enlace a la licencia CC BY de cada imagen.
+la ocurrencia y un enlace a la licencia de cada imagen: CC BY en la selección
+automática, o la indicada en `imagenes_revisadas.json` para las galerías
+revisadas.

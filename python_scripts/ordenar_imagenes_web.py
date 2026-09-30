@@ -27,6 +27,7 @@ from urllib.request import Request, urlopen
 PROJECT_DIR = Path(__file__).resolve().parents[1]
 DATA_DIR = PROJECT_DIR / "web" / "data"
 IMAGE_INDEX = DATA_DIR / "images.json"
+REVIEWED_INDEX = PROJECT_DIR / "python_scripts" / "imagenes_revisadas.json"
 CACHE_DIR = PROJECT_DIR / "cache_images"
 CANDIDATE_INDEX = CACHE_DIR / "candidates.json"
 PHOTO_DIR = CACHE_DIR / "photos"
@@ -124,6 +125,14 @@ def save_scores(scores: dict) -> None:
     pending.replace(SCORES_PATH)
 
 
+def reviewed_images() -> dict:
+    """Galerías revisadas a mano que reemplazan la selección del detector."""
+    if not REVIEWED_INDEX.exists():
+        return {}
+    reviewed = json.loads(REVIEWED_INDEX.read_text(encoding="utf-8"))
+    return {row["sciName"]: row["images"] for row in reviewed["species"]}
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--species", help="Procesa una especie por nombre científico")
@@ -181,6 +190,9 @@ def main() -> None:
             for photo in ordered[:MAX_WEB_IMAGES]:
                 result = scores.get(photo["url"], {})
                 print(f"{result.get('score', 0):5.1f}  área {result.get('area', 0):.3f}  {photo['author']}  {photo['url']}")
+    for name, photos in reviewed_images().items():
+        if name in by_name:
+            by_name[name]["images"] = photos
     if not args.dry_run:
         species = json.loads((DATA_DIR / "species.json").read_text(encoding="utf-8"))
         payload = {"source": candidates["source"], "species": [
