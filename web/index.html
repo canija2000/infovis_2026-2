@@ -17,7 +17,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Changa+One:ital@0;1&family=Shrikhand&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Pixelify+Sans:wght@400..700&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=mixer-4">
+  <link rel="stylesheet" href="styles.css?v=mixer-dock-1">
 </head>
 
 <body>
@@ -47,6 +47,14 @@
           <path class="cross" d="M13 7.5l5 5M18 7.5l-5 5" />
         </svg>
       </button>
+      <button id="mixer-open" class="ghost mixer-open" type="button" aria-expanded="false" aria-controls="mixer"
+        title="Mezclar cantos de varias especies">
+        <svg viewBox="0 0 20 20" aria-hidden="true">
+          <path d="M5 3v14M10 3v14M15 3v14" />
+          <path class="knob" d="M3.5 12h3M8.5 6h3M13.5 10h3" />
+        </svg>
+        Mezcla <span id="mixer-count" class="mixer-count" hidden></span>
+      </button>
     </div>
     <div class="tool month-tool">
       <label for="month" class="tool-label">Mes <strong id="month-label">enero</strong></label>
@@ -59,41 +67,6 @@
       <datalist id="species-list"></datalist>
     </div>
   </nav>
-
-  <section class="mixer" aria-labelledby="mixer-title">
-    <div class="mixer-head">
-      <div>
-        <h2 id="mixer-title">Mezclador de cantos</h2>
-        <p>Elige aves para escuchar sus cantos juntos y ajusta el volumen de cada una.</p>
-      </div>
-      <button id="mixer-play" class="play" type="button" aria-pressed="false" disabled>Reproducir mezcla</button>
-    </div>
-    <label class="mixer-sync" for="mixer-sync">
-      <input id="mixer-sync" type="checkbox">
-      <span>Sincronizar cantos <small>Todos comienzan juntos; desmarcado, cada ave espera un tiempo aleatorio.</small></span>
-    </label>
-    <div class="mixer-picker">
-      <button id="mixer-search-toggle" class="ghost" type="button" aria-expanded="false"
-        aria-controls="mixer-catalog" disabled>Buscar especies ▾</button>
-      <span>Selecciona una imagen para añadir el ave a la mezcla.</span>
-    </div>
-    <div id="mixer-catalog" class="mixer-catalog" hidden>
-      <div class="mixer-catalog-controls">
-        <label for="mixer-query">Buscar por nombre</label>
-        <input id="mixer-query" type="search" placeholder="Nombre común o científico…" autocomplete="off">
-        <div id="mixer-filters" class="mixer-filters" role="group" aria-label="Filtrar por estacionariedad">
-          <button type="button" data-class="all" aria-pressed="true">Todas</button>
-          <button type="button" data-class="residente" aria-pressed="false">Residentes</button>
-          <button type="button" data-class="visitante_estival" aria-pressed="false">De verano</button>
-          <button type="button" data-class="visitante_invernal" aria-pressed="false">De invierno</button>
-        </div>
-      </div>
-      <p id="mixer-result-count" class="mixer-result-count" role="status" aria-live="polite"></p>
-      <div id="mixer-grid" class="mixer-grid" aria-label="Especies con canto"></div>
-    </div>
-    <p id="mixer-status" class="mixer-status" role="status" aria-live="polite">Cargando especies con grabación…</p>
-    <ul id="mixer-tracks" class="mixer-tracks" aria-label="Especies en la mezcla"></ul>
-  </section>
 
   <main class="layout">
     <section class="map-col" aria-labelledby="map-title">
@@ -230,11 +203,48 @@
       Creative Commons en cada grabación. Proyecto del curso Visualización de Información 2026-2.</p>
   </footer>
 
+  <section id="mixer" class="mixer-dock" aria-labelledby="mixer-title" hidden>
+    <div class="mixer-bar">
+      <h2 id="mixer-title">Mezcla de cantos</h2>
+      <button id="mixer-play" class="play icon-btn" type="button" aria-pressed="false" aria-label="Reproducir mezcla"
+        title="Reproducir mezcla" disabled>
+        <svg viewBox="0 0 16 16" aria-hidden="true">
+          <path id="mixer-play-icon" d="M4.5 2.5v11l9-5.5z" />
+        </svg>
+      </button>
+      <label class="mixer-sync" for="mixer-sync"
+        title="Todos comienzan juntos; desmarcado, cada ave espera un tiempo aleatorio.">
+        <input id="mixer-sync" type="checkbox"> Sincronizar
+      </label>
+      <button id="mixer-search-toggle" class="ghost small" type="button" aria-expanded="false"
+        aria-controls="mixer-catalog">+ Especies</button>
+      <button id="mixer-scene" class="ghost small" type="button">Mezclar lo que se ve</button>
+      <p id="mixer-status" class="mixer-status" role="status" aria-live="polite"></p>
+      <button id="mixer-close" class="ghost icon-btn mixer-close" type="button" aria-label="Minimizar mezclador"
+        title="Minimizar (la mezcla sigue sonando)">▾</button>
+    </div>
+    <div id="mixer-catalog" class="mixer-catalog" hidden>
+      <div class="mixer-catalog-controls">
+        <input id="mixer-query" type="search" placeholder="Buscar por nombre común o científico…" autocomplete="off"
+          aria-label="Buscar especie por nombre">
+        <div id="mixer-filters" class="mixer-filters" role="group" aria-label="Filtrar por estacionariedad">
+          <button type="button" data-class="all" aria-pressed="true">Todas</button>
+          <button type="button" data-class="residente" aria-pressed="false">Residentes</button>
+          <button type="button" data-class="visitante_estival" aria-pressed="false">De verano</button>
+          <button type="button" data-class="visitante_invernal" aria-pressed="false">De invierno</button>
+        </div>
+        <p id="mixer-result-count" class="mixer-result-count" role="status" aria-live="polite"></p>
+      </div>
+      <div id="mixer-grid" class="mixer-grid" aria-label="Especies con canto"></div>
+    </div>
+    <ul id="mixer-tracks" class="mixer-tracks" aria-label="Especies en la mezcla"></ul>
+  </section>
+
   <div id="tooltip" class="tooltip" role="tooltip" hidden></div>
 
   <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
   <script src="sonify.js"></script>
-  <script src="app.js?v=mixer-4"></script>
+  <script src="app.js?v=mixer-dock-1"></script>
 </body>
 
 </html>

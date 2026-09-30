@@ -355,6 +355,7 @@
 
   function renderCalendar() {
     document.getElementById("scope-name").textContent = scopeName(state.scope);
+    updateSceneButton();
     const order = tabOrder();
     const color = classScale[state.tab];
     const { rows: list, total } = selectRows();
@@ -606,9 +607,17 @@
   }
   function updateMixerControls() {
     const button = document.getElementById("mixer-play");
+    const label = mixerPlaying ? "Pausar mezcla" : "Reproducir mezcla";
     button.disabled = !mixerTracks.size;
-    button.textContent = mixerPlaying ? "Pausar mezcla" : "Reproducir mezcla";
     button.setAttribute("aria-pressed", String(mixerPlaying));
+    button.setAttribute("aria-label", label);
+    button.title = label;
+    document.getElementById("mixer-play-icon")
+      .setAttribute("d", mixerPlaying ? "M4 2.5h3v11H4zM9 2.5h3v11H9z" : "M4.5 2.5v11l9-5.5z");
+    const count = document.getElementById("mixer-count");
+    count.hidden = !mixerTracks.size;
+    count.textContent = mixerTracks.size;
+    document.getElementById("mixer-open").classList.toggle("playing", mixerPlaying);
   }
   function ensureMixerContext() {
     if (mixerContext) return mixerContext;
@@ -720,13 +729,13 @@
       : "Mezcla en pausa.");
     updateMixerControls();
   }
-  function addMixerTrack(sid) {
+  function addMixerTrack(sid, announce = true) {
     if (mixerTracks.has(sid)) {
-      setMixerStatus(`${D.species[sid].comName} ya está en la mezcla.`);
-      return;
+      if (announce) setMixerStatus(`${D.species[sid].comName} ya está en la mezcla.`);
+      return false;
     }
     const recording = soundEntry(sid)?.recordings[0];
-    if (!recording) return;
+    if (!recording) return false;
     const species = D.species[sid];
     const track = { sid, url: recording.mixer || recording.src, volume: 0.5, buffer: null, loading: null, gain: null, source: null, timer: null };
     mixerTracks.set(sid, track);
@@ -735,33 +744,34 @@
 
     const item = document.createElement("li");
     item.className = "mixer-track";
-    const identity = document.createElement("div");
+    const identity = document.createElement("span");
     identity.className = "mixer-identity";
     const name = document.createElement("strong");
     name.textContent = species.comName;
+    name.title = `${species.comName} (${species.sciName})`;
     const credit = document.createElement("a");
     credit.href = recording.url;
     credit.target = "_blank";
     credit.rel = "noopener noreferrer";
-    credit.textContent = `XC${recording.id} · ${recording.recordist || "autor s/i"}`;
+    credit.textContent = `XC${recording.id}`;
+    credit.title = `Grabación de ${recording.recordist || "autor s/i"} en Xeno-canto`;
     const license = document.createElement("a");
     license.href = recording.license;
     license.target = "_blank";
     license.rel = "noopener noreferrer";
-    license.textContent = "Licencia de la grabación";
+    license.textContent = "CC";
+    license.title = "Licencia de la grabación";
     identity.append(name, credit, license);
     if (!recording.mixer) {
       const original = document.createElement("span");
       original.className = "mixer-original";
-      original.textContent = "Grabación original · puede incluir sonido ambiente";
+      original.textContent = "orig.";
+      original.title = "Grabación original: su licencia no permite limpiarla, puede incluir sonido ambiente";
       identity.append(original);
     }
-    const volumeLabel = document.createElement("label");
-    volumeLabel.textContent = "Volumen ";
-    volumeLabel.htmlFor = `mixer-volume-${sid}`;
     const volume = document.createElement("input");
     volume.type = "range";
-    volume.id = volumeLabel.htmlFor;
+    volume.id = `mixer-volume-${sid}`;
     volume.min = "0";
     volume.max = "100";
     volume.value = "50";
@@ -774,13 +784,11 @@
       if (track.gain) track.gain.gain.setTargetAtTime(state.muted ? 0 : track.volume, mixerContext.currentTime, 0.015);
       value.textContent = `${volume.value} %`;
     });
-    const controls = document.createElement("div");
-    controls.className = "mixer-volume";
-    controls.append(volumeLabel, volume, value);
     const remove = document.createElement("button");
     remove.type = "button";
-    remove.className = "ghost small";
-    remove.textContent = "Quitar";
+    remove.className = "mixer-remove";
+    remove.textContent = "✕";
+    remove.title = "Quitar de la mezcla";
     remove.setAttribute("aria-label", `Quitar ${species.comName} de la mezcla`);
     remove.addEventListener("click", () => {
       stopMixerTrack(track);
@@ -793,9 +801,10 @@
         mixerGeneration++;
       }
       updateMixerControls();
-      setMixerStatus(mixerTracks.size ? `${mixerTracks.size} especies en la mezcla.` : "Añade una especie para empezar.");
+      updatePanelMixButton();
+      setMixerStatus(mixerTracks.size ? `${mixerTracks.size} especies en la mezcla.` : MIXER_EMPTY);
     });
-    item.append(identity, controls, remove);
+    item.append(identity, volume, value, remove);
     document.getElementById("mixer-tracks").append(item);
     if (mixerPlaying) {
       if (document.getElementById("mixer-sync").checked) restartMixer();
@@ -812,7 +821,9 @@
       }
     }
     updateMixerControls();
-    setMixerStatus(`${mixerTracks.size} especies en la mezcla.`);
+    updatePanelMixButton();
+    if (announce) setMixerStatus(`${mixerTracks.size} especies en la mezcla.`);
+    return true;
   }
   function filterMixerCatalog() {
     const query = normalizeMixerName(document.getElementById("mixer-query").value.trim());
@@ -876,19 +887,95 @@
     grid.replaceChildren(fragment);
     filterMixerCatalog();
   }
-  async function setupMixer() {
+  const MIXER_EMPTY = "Añade especies con «+ Especies», desde la ficha de un ave o con «Mezclar lo que se ve».";
+  const MIXER_SCENE_SIZE = 6;
+  let mixerReady = null;
+  // Los datos del mezclador (índice de cantos y fotos) se piden recién al abrirlo o al añadir un ave.
+  function ensureMixerData() {
+    if (!mixerReady) {
+      setMixerStatus("Cargando especies con grabación…");
+      mixerReady = (async () => {
+        await loadSounds();
+        const available = sounds.species.filter((entry) => entry.recordings.length)
+          .sort((a, b) => D.species[a.sid].comName.localeCompare(D.species[b.sid].comName, "es"));
+        try { await loadImages(); }
+        catch (err) { console.warn("No se pudieron cargar las imágenes del mezclador", err); }
+        renderMixerCatalog(available);
+        document.getElementById("mixer-search-toggle").disabled = !available.length;
+        if (!mixerTracks.size) setMixerStatus(available.length ? MIXER_EMPTY : "No hay grabaciones disponibles.");
+        return available;
+      })().catch((err) => {
+        mixerReady = null;
+        setMixerStatus("No se pudieron cargar los cantos. Intenta de nuevo.");
+        throw err;
+      });
+    }
+    return mixerReady;
+  }
+  function setMixerOpen(open) {
+    const dock = document.getElementById("mixer");
+    dock.hidden = !open;
+    document.body.classList.toggle("with-mixer", open);
+    const button = document.getElementById("mixer-open");
+    button.setAttribute("aria-expanded", String(open));
+    if (open) ensureMixerData().catch(() => {});
+    else if (dock.contains(document.activeElement)) button.focus();
+  }
+  function setMixerCatalogOpen(open) {
     const toggle = document.getElementById("mixer-search-toggle");
-    const catalog = document.getElementById("mixer-catalog");
+    document.getElementById("mixer-catalog").hidden = !open;
+    toggle.setAttribute("aria-expanded", String(open));
+    toggle.textContent = open ? "Cerrar búsqueda" : "+ Especies";
+    if (open) document.getElementById("mixer-query").focus();
+  }
+  async function addToMixer(sids) {
+    setMixerOpen(true);
+    try { await ensureMixerData(); }
+    catch (_) { return; }
+    const added = sids.filter((sid) => addMixerTrack(sid, sids.length === 1));
+    if (sids.length > 1) {
+      setMixerStatus(added.length ? `Se añadieron ${added.length} especies · ${mixerTracks.size} en la mezcla.`
+        : "Esas especies ya estaban en la mezcla.");
+    }
+  }
+  // Las especies de la pestaña visible más registradas en el mes y la región seleccionados.
+  function sceneSpecies() {
+    const withSong = new Set(sounds.species.filter((entry) => entry.recordings.length).map((entry) => entry.sid));
+    return (D.byScope.get(state.scope) || [])
+      .filter((r) => r.cls === state.tab && r.freq[state.month] > 0 && withSong.has(r.sid))
+      .sort((a, b) => b.freq[state.month] - a.freq[state.month])
+      .slice(0, MIXER_SCENE_SIZE)
+      .map((r) => r.sid);
+  }
+  function updateSceneButton() {
+    const button = document.getElementById("mixer-scene");
+    button.title = `Añade las ${MIXER_SCENE_SIZE} ${CLASS_LABEL[state.tab].toLowerCase()} más registradas en ` +
+      `${MONTHS[state.month]} · ${scopeName(state.scope)}`;
+  }
+  function updatePanelMixButton() {
+    const button = document.getElementById("p-mix");
+    if (!button) return;
+    const inMix = mixerTracks.has(Number(button.dataset.sid));
+    button.textContent = inMix ? "✓ En la mezcla" : "+ Añadir a la mezcla";
+    button.disabled = inMix;
+  }
+  function setupMixer() {
     document.getElementById("mixer-play").addEventListener("click", toggleMixer);
     document.getElementById("mixer-sync").addEventListener("change", (event) => {
       if (mixerPlaying) restartMixer();
       setMixerStatus(event.target.checked ? "Cantos sincronizados: comenzarán juntos." : "Cantos desincronizados: cada ave espera entre repeticiones.");
     });
-    toggle.addEventListener("click", () => {
-      catalog.hidden = !catalog.hidden;
-      toggle.setAttribute("aria-expanded", String(!catalog.hidden));
-      toggle.textContent = catalog.hidden ? "Buscar especies ▾" : "Cerrar búsqueda ▴";
-      if (!catalog.hidden) document.getElementById("mixer-query").focus();
+    const dock = document.getElementById("mixer");
+    document.getElementById("mixer-open").addEventListener("click", () => setMixerOpen(dock.hidden));
+    document.getElementById("mixer-close").addEventListener("click", () => setMixerOpen(false));
+    const catalog = document.getElementById("mixer-catalog");
+    document.getElementById("mixer-search-toggle").addEventListener("click", () => setMixerCatalogOpen(catalog.hidden));
+    document.getElementById("mixer-scene").addEventListener("click", async () => {
+      try { await ensureMixerData(); }
+      catch (_) { return; }
+      const sids = sceneSpecies();
+      if (sids.length) addToMixer(sids);
+      else setMixerStatus("No hay especies con canto para este mes y región en la pestaña actual.");
     });
     document.getElementById("mixer-query").addEventListener("input", filterMixerCatalog);
     document.getElementById("mixer-filters").addEventListener("click", (event) => {
@@ -900,26 +987,19 @@
       });
       filterMixerCatalog();
     });
-    catalog.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") {
-        catalog.hidden = true;
-        toggle.setAttribute("aria-expanded", "false");
-        toggle.textContent = "Buscar especies ▾";
-        toggle.focus();
-      }
+    dock.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape") return;
+      event.stopPropagation();
+      if (!catalog.hidden) {
+        setMixerCatalogOpen(false);
+        document.getElementById("mixer-search-toggle").focus();
+      } else setMixerOpen(false);
     });
-    try {
-      await loadSounds();
-      const available = sounds.species.filter((entry) => entry.recordings.length)
-        .sort((a, b) => D.species[a.sid].comName.localeCompare(D.species[b.sid].comName, "es"));
-      try { await loadImages(); }
-      catch (err) { console.warn("No se pudieron cargar las imágenes del mezclador", err); }
-      renderMixerCatalog(available);
-      toggle.disabled = !available.length;
-      setMixerStatus(available.length ? `${available.length} especies con canto disponibles. Algunas conservan el audio original por su licencia.` : "No hay grabaciones disponibles.");
-    } catch (err) {
-      setMixerStatus("No se pudieron cargar los cantos. Recarga la página para intentar de nuevo.");
-    }
+    // El alto del dock define el espacio libre al final de la página.
+    new ResizeObserver(([entry]) => {
+      document.body.style.setProperty("--mixer-h", `${Math.ceil(entry.borderBoxSize?.[0]?.blockSize ?? dock.offsetHeight)}px`);
+    }).observe(dock);
+    updateSceneButton();
   }
 
   async function renderSound(sid) {
@@ -940,11 +1020,15 @@
         `con un tono sintético. <a href="${entry.searchUrl}" target="_blank" rel="noopener">Escuchar en Xeno-canto ↗</a></p>`;
       return;
     }
-    box.innerHTML = `<h3>Canto${name}</h3>` + entry.recordings.map((r) =>
+    box.innerHTML = `<h3>Canto${name}</h3>` +
+      `<button id="p-mix" class="ghost small mix-add" type="button" data-sid="${sid}">+ Añadir a la mezcla</button>` +
+      entry.recordings.map((r) =>
       `<figure class="rec"><audio controls preload="none" src="${r.src}"></audio>` +
       `<figcaption><a href="${r.url}" target="_blank" rel="noopener">XC${r.id}</a> · ${r.recordist || "autor s/i"}` +
       ` · ${r.type || ""} · ${r.country || ""} · <a href="${r.license}" target="_blank" rel="noopener">licencia</a>` +
       `<br><span class="muted">Clip de 6 s (el tramo con más canto) de la grabación original.</span></figcaption></figure>`).join("");
+    document.getElementById("p-mix").addEventListener("click", () => addToMixer([sid]));
+    updatePanelMixButton();
   }
 
   async function renderImages(sid) {
@@ -982,8 +1066,8 @@
       license.href = photo.license;
       license.target = "_blank";
       license.rel = "noopener noreferrer";
-      license.textContent = "CC BY";
-      caption.append(source, " · ", license, " · GBIF");
+      license.textContent = photo.licenseCode || "CC BY";
+      caption.append(source, " · ", license, " · ", photo.provider || "GBIF");
       figure.append(img, caption);
       gallery.append(figure);
       return figure;
@@ -1105,6 +1189,7 @@
     });
     d3.selectAll("text.mon").classed("current", (d) => d === m);
     d3.selectAll("#p-radial text.mlab").classed("current", (d) => d === m);
+    updateSceneButton();
   }
 
   function selectScope(id) {

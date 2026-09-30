@@ -1,0 +1,672 @@
+{
+  "descripcion": "Fotos revisadas a mano que reemplazan la selección automática de estas especies. Provienen del catálogo imagenes_aves_chile (30-09-2026); la foto principal original mostraba un ave muerta, una piel de museo o una libreta de campo.",
+  "species": [
+    {
+      "sciName": "Columbina picui",
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/597002523/medium.jpg",
+          "author": "Álvaro Parra Valdivia",
+          "license": "http://creativecommons.org/licenses/by/4.0/",
+          "licenseCode": "CC BY",
+          "source": "https://www.gbif.org/occurrence/5909290998",
+          "provider": "GBIF"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/261110125/medium.jpeg",
+          "author": "Alfonso Benítez-Mora",
+          "license": "http://creativecommons.org/licenses/by/4.0/",
+          "licenseCode": "CC BY",
+          "source": "https://www.gbif.org/occurrence/4067646980",
+          "provider": "GBIF"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/547687704/medium.jpg",
+          "author": "Álvaro Parra Valdivia",
+          "license": "http://creativecommons.org/licenses/by/4.0/",
+          "licenseCode": "CC BY",
+          "source": "https://www.gbif.org/occurrence/5282145181",
+          "provider": "GBIF"
+        }
+      ]
+    },
+    {
+      "sciName": "Tyto furcata",
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/103695544/medium.jpg",
+          "author": "Andria E. Hernandez",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/photos/103695544",
+          "provider": "iNaturalist"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/291500786/medium.jpeg",
+          "author": "Ricardo Arredondo T.",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/photos/291500786",
+          "provider": "iNaturalist"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/104891989/medium.jpg",
+          "author": "EfraFlores",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/photos/104891989",
+          "provider": "iNaturalist"
+        }
+      ]
+    },
+    {
+      "sciName": "Catamenia analis",
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/470262616/medium.jpg",
+          "author": "capacoscar",
+          "license": "http://creativecommons.org/licenses/by/4.0/",
+          "licenseCode": "CC BY",
+          "source": "https://www.gbif.org/occurrence/5069979277",
+          "provider": "GBIF"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/116531837/medium.jpg",
+          "author": "Jan Ebr & Ivana Ebrová",
+          "license": "http://creativecommons.org/licenses/by/4.0/",
+          "licenseCode": "CC BY",
+          "source": "https://www.gbif.org/occurrence/3070661688",
+          "provider": "GBIF"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/116531513/medium.jpg",
+          "author": "Jan Ebr & Ivana Ebrová",
+          "license": "http://creativecommons.org/licenses/by/4.0/",
+          "licenseCode": "CC BY",
+          "source": "https://www.gbif.org/occurrence/3067982532",
+          "provider": "GBIF"
+        }
+      ]
+    },
+    {
+      "sciName": "Milvago chimango",
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/101982726/medium.jpg",
+          "author": "Fernando Sessegolo",
+          "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+          "licenseCode": "CC0",
+          "source": "https://www.inaturalist.org/photos/101982726",
+          "provider": "iNaturalist"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/240521909/medium.jpeg",
+          "author": "graciela_gplp",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/photos/240521909",
+          "provider": "iNaturalist"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/1582285/medium.jpg",
+          "author": "Cláudio Dias Timm",
+          "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+          "licenseCode": "CC BY-NC-SA",
+          "source": "https://www.inaturalist.org/photos/1582285",
+          "provider": "iNaturalist"
+        }
+      ]
+    },
+    {
+      "sciName": "Oceanodroma markhami",
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/443579132/medium.jpeg",
+          "author": "Charlotte Kirchner",
+          "license": "http://creativecommons.org/licenses/by/4.0/",
+          "licenseCode": "CC BY",
+          "source": "https://www.gbif.org/occurrence/4973969927",
+          "provider": "GBIF"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/266935636/medium.jpg",
+          "author": "Ken Chamberlain",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/photos/266935636",
+          "provider": "iNaturalist"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/446611935/medium.jpeg",
+          "author": "dougiewainwright",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/photos/446611935",
+          "provider": "iNaturalist"
+        }
+      ]
+    },
+    {
+      "sciName": "Rallus antarcticus",
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/439245864/medium.jpg",
+          "author": "Simón Pla García",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/observations/246084039",
+          "provider": "iNaturalist"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/439245907/medium.jpg",
+          "author": "Simón Pla García",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/observations/246084039",
+          "provider": "iNaturalist"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/589601715/medium.jpg",
+          "author": "John Sterling",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/observations/325627141",
+          "provider": "iNaturalist"
+        }
+      ]
+    },
+    {
+      "sciName": "Stercorarius parasiticus",
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/187669/medium.jpg",
+          "author": "BJ Stacey",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/photos/187669",
+          "provider": "iNaturalist"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/276059/medium.jpg",
+          "author": "BJ Stacey",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/photos/276059",
+          "provider": "iNaturalist"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/208289/medium.jpg",
+          "author": "Greg Lasley",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/photos/208289",
+          "provider": "iNaturalist"
+        }
+      ]
+    },
+    {
+      "sciName": "Sephanoides fernandensis",
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/573605333/medium.jpg",
+          "author": "vocepics",
+          "license": "http://creativecommons.org/licenses/by/4.0/",
+          "licenseCode": "CC BY",
+          "source": "https://www.gbif.org/occurrence/5838248507",
+          "provider": "GBIF"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/368445634/medium.jpg",
+          "author": "Flavien Saboureau",
+          "license": "http://creativecommons.org/licenses/by/4.0/",
+          "licenseCode": "CC BY",
+          "source": "https://www.gbif.org/occurrence/4852950225",
+          "provider": "GBIF"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/573605337/medium.jpg",
+          "author": "vocepics",
+          "license": "http://creativecommons.org/licenses/by/4.0/",
+          "licenseCode": "CC BY",
+          "source": "https://www.gbif.org/occurrence/5838248507",
+          "provider": "GBIF"
+        }
+      ]
+    },
+    {
+      "sciName": "Oceanodroma hornbyi",
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/8006186/medium.jpg",
+          "author": "Gunnar Engblom",
+          "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+          "licenseCode": "CC BY-NC-SA",
+          "source": "https://www.inaturalist.org/photos/8006186",
+          "provider": "iNaturalist"
+        },
+        {
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0b/Hydrobates_hornbyi_2.jpg/1280px-Hydrobates_hornbyi_2.jpg",
+          "author": "David F. Belmonte",
+          "license": "https://creativecommons.org/licenses/by/4.0",
+          "licenseCode": "CC BY",
+          "source": "https://commons.wikimedia.org/wiki/File:Hydrobates_hornbyi_2.jpg",
+          "provider": "Wikimedia Commons"
+        },
+        {
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/98/Oceanodroma_hornbyi_%28ringed_storm-petrel%29.jpg/1280px-Oceanodroma_hornbyi_%28ringed_storm-petrel%29.jpg",
+          "author": "James St. John",
+          "license": "https://creativecommons.org/licenses/by/2.0",
+          "licenseCode": "CC BY",
+          "source": "https://commons.wikimedia.org/wiki/File:Oceanodroma_hornbyi_(ringed_storm-petrel).jpg",
+          "provider": "Wikimedia Commons"
+        }
+      ]
+    },
+    {
+      "sciName": "Puffinus assimilis",
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/209179893/medium.jpeg",
+          "author": "nathan_lightbourne",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/photos/209179893",
+          "provider": "iNaturalist"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/6358576/medium.jpg",
+          "author": "Oscar Thomas",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/photos/6358576",
+          "provider": "iNaturalist"
+        },
+        {
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/50/Little_Shearwater_%28Puffinus_assimilis%29_01.jpg/1280px-Little_Shearwater_%28Puffinus_assimilis%29_01.jpg",
+          "author": "Christopher Stephens",
+          "license": "https://creativecommons.org/licenses/by-sa/4.0",
+          "licenseCode": "CC BY-SA",
+          "source": "https://commons.wikimedia.org/wiki/File:Little_Shearwater_(Puffinus_assimilis)_01.jpg",
+          "provider": "Wikimedia Commons"
+        }
+      ]
+    },
+    {
+      "sciName": "Puffinus puffinus",
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/111005655/medium.jpeg",
+          "author": "Andrew Thompson",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/photos/111005655",
+          "provider": "iNaturalist"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/21065724/medium.jpg",
+          "author": "James J. Bond",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/photos/21065724",
+          "provider": "iNaturalist"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/268791/medium.jpg",
+          "author": "BJ Stacey",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/photos/268791",
+          "provider": "iNaturalist"
+        }
+      ]
+    },
+    {
+      "sciName": "Oceanodroma tethys",
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/313053787/medium.jpg",
+          "author": "guyincognito",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/photos/313053787",
+          "provider": "iNaturalist"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/313053775/medium.jpg",
+          "author": "guyincognito",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/photos/313053775",
+          "provider": "iNaturalist"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/5381377/medium.jpg",
+          "author": "Gordon Karre",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/photos/5381377",
+          "provider": "iNaturalist"
+        }
+      ]
+    },
+    {
+      "sciName": "Fregetta grallaria",
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/177089890/medium.jpeg",
+          "author": "Marie Tarrant",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/photos/177089890",
+          "provider": "iNaturalist"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/370259190/medium.jpg",
+          "author": "Monica Knipler",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/observations/209226277",
+          "provider": "iNaturalist"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/617535412/medium.jpg",
+          "author": "IanLJones",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/observations/339462553",
+          "provider": "iNaturalist"
+        }
+      ]
+    },
+    {
+      "sciName": "Pachyptila belcheri",
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/22674766/medium.jpg",
+          "author": "Oscar Thomas",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/photos/22674766",
+          "provider": "iNaturalist"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/22674860/medium.jpg",
+          "author": "Oscar Thomas",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/photos/22674860",
+          "provider": "iNaturalist"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/22674861/medium.jpg",
+          "author": "Oscar Thomas",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/photos/22674861",
+          "provider": "iNaturalist"
+        }
+      ]
+    },
+    {
+      "sciName": "Halobaena caerulea",
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/462521763/medium.jpeg",
+          "author": "Charlotte Kirchner",
+          "license": "http://creativecommons.org/licenses/by/4.0/",
+          "licenseCode": "CC BY",
+          "source": "https://www.gbif.org/occurrence/5036923976",
+          "provider": "GBIF"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/671462301/medium.jpg",
+          "author": "Ben Ackerley",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/photos/671462301",
+          "provider": "iNaturalist"
+        },
+        {
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/77/Blue_Petrel_%2827760780331%29.jpg/1280px-Blue_Petrel_%2827760780331%29.jpg",
+          "author": "Ed Dunens",
+          "license": "https://creativecommons.org/licenses/by/2.0",
+          "licenseCode": "CC BY",
+          "source": "https://commons.wikimedia.org/wiki/File:Blue_Petrel_(27760780331).jpg",
+          "provider": "Wikimedia Commons"
+        }
+      ]
+    },
+    {
+      "sciName": "Charadrius falklandicus",
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/260322054/medium.jpeg",
+          "author": "steve b",
+          "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+          "licenseCode": "CC0",
+          "source": "https://www.inaturalist.org/photos/260322054",
+          "provider": "iNaturalist"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/78359406/medium.jpeg",
+          "author": "Carlos Schmidtutz",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/photos/78359406",
+          "provider": "iNaturalist"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/216725/medium.jpg",
+          "author": "Greg Lasley",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/photos/216725",
+          "provider": "iNaturalist"
+        }
+      ]
+    },
+    {
+      "sciName": "Pachyptila vittata",
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/2255051/medium.jpg",
+          "author": "Peter de Lange",
+          "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+          "licenseCode": "CC0",
+          "source": "https://www.inaturalist.org/photos/2255051",
+          "provider": "iNaturalist"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/1494223/medium.JPG",
+          "author": "matt-walters",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/photos/1494223",
+          "provider": "iNaturalist"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/20990885/medium.jpg",
+          "author": "Oscar Thomas",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/photos/20990885",
+          "provider": "iNaturalist"
+        }
+      ]
+    },
+    {
+      "sciName": "Pyrocephalus obscurus",
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/234371388/medium.jpg",
+          "author": "Ken-ichi Ueda",
+          "license": "https://creativecommons.org/licenses/by/4.0/",
+          "licenseCode": "CC BY",
+          "source": "https://www.inaturalist.org/photos/234371388",
+          "provider": "iNaturalist"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/97234766/medium.jpeg",
+          "author": "James Bailey",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/photos/97234766",
+          "provider": "iNaturalist"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/255088514/medium.jpeg",
+          "author": "photogo",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/photos/255088514",
+          "provider": "iNaturalist"
+        }
+      ]
+    },
+    {
+      "sciName": "Accipiter bicolor",
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/51741886/medium.jpg",
+          "author": "RAP",
+          "license": "https://creativecommons.org/licenses/by/4.0/",
+          "licenseCode": "CC BY",
+          "source": "https://www.inaturalist.org/photos/51741886",
+          "provider": "iNaturalist"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/254463944/medium.jpg",
+          "author": "El Chivizcoyo",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/photos/254463944",
+          "provider": "iNaturalist"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/465356736/medium.jpg",
+          "author": "adrian_chahin",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/photos/465356736",
+          "provider": "iNaturalist"
+        }
+      ]
+    },
+    {
+      "sciName": "Aphrodroma brevirostris",
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/455026649/medium.jpeg",
+          "author": "Алексей Логинов",
+          "license": "http://creativecommons.org/licenses/by/4.0/",
+          "licenseCode": "CC BY",
+          "source": "https://www.gbif.org/occurrence/4994170739",
+          "provider": "GBIF"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/455026638/medium.jpeg",
+          "author": "Алексей Логинов",
+          "license": "http://creativecommons.org/licenses/by/4.0/",
+          "licenseCode": "CC BY",
+          "source": "https://www.gbif.org/occurrence/4994170739",
+          "provider": "GBIF"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/455026627/medium.jpeg",
+          "author": "Алексей Логинов",
+          "license": "http://creativecommons.org/licenses/by/4.0/",
+          "licenseCode": "CC BY",
+          "source": "https://www.gbif.org/occurrence/4994170739",
+          "provider": "GBIF"
+        }
+      ]
+    },
+    {
+      "sciName": "Charadrius collaris",
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/23635/medium.jpg",
+          "author": "Cláudio Dias Timm",
+          "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "licenseCode": "CC BY-SA",
+          "source": "https://www.inaturalist.org/photos/23635",
+          "provider": "iNaturalist"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/314949949/medium.jpeg",
+          "author": "santimarquez",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/photos/314949949",
+          "provider": "iNaturalist"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/206082386/medium.jpg",
+          "author": "eduardovieira17",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/photos/206082386",
+          "provider": "iNaturalist"
+        }
+      ]
+    },
+    {
+      "sciName": "Charadrius nivosus",
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/227950/medium.jpg",
+          "author": "Mike Baird",
+          "license": "https://creativecommons.org/licenses/by/4.0/",
+          "licenseCode": "CC BY",
+          "source": "https://www.inaturalist.org/photos/227950",
+          "provider": "iNaturalist"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/122227778/medium.jpeg",
+          "author": "🐦‍⬛ Randolph (Randy) King 🐦‍⬛",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/observations/74760673",
+          "provider": "iNaturalist"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/117534408/medium.jpeg",
+          "author": "Bridget Spencer",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/observations/72122149",
+          "provider": "iNaturalist"
+        }
+      ]
+    },
+    {
+      "sciName": "Tyto alba",
+      "images": [
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/165796939/medium.jpg",
+          "author": "caroline legg",
+          "license": "https://creativecommons.org/licenses/by/4.0/",
+          "licenseCode": "CC BY",
+          "source": "https://www.inaturalist.org/photos/165796939",
+          "provider": "iNaturalist"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/165796951/medium.jpg",
+          "author": "Jon Nelson",
+          "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+          "licenseCode": "CC BY-NC-SA",
+          "source": "https://www.inaturalist.org/photos/165796951",
+          "provider": "iNaturalist"
+        },
+        {
+          "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/163607771/medium.jpg",
+          "author": "Wade Tregaskis",
+          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+          "licenseCode": "CC BY-NC",
+          "source": "https://www.inaturalist.org/photos/163607771",
+          "provider": "iNaturalist"
+        }
+      ]
+    }
+  ]
+}
