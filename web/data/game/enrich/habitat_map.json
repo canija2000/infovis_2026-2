@@ -1,0 +1,56 @@
+{
+ "Coastal": [
+  "costa",
+  "fiordo",
+  "humedal"
+ ],
+ "Desert": [
+  "desierto",
+  "altiplano"
+ ],
+ "Forest": [
+  "bosque"
+ ],
+ "Grassland": [
+  "pradera",
+  "estepa",
+  "altiplano"
+ ],
+ "Human Modified": [
+  "ciudad",
+  "valle",
+  "pradera"
+ ],
+ "Marine": [
+  "costa",
+  "fiordo"
+ ],
+ "Riverine": [
+  "rio",
+  "humedal",
+  "lago"
+ ],
+ "Rock": [
+  "cordillera",
+  "altiplano",
+  "costa"
+ ],
+ "Savanna": [
+  "valle",
+  "pradera"
+ ],
+ "Shrubland": [
+  "matorral",
+  "valle"
+ ],
+ "Wetland": [
+  "humedal",
+  "lago",
+  "rio"
+ ],
+ "Woodland": [
+  "bosque",
+  "matorral",
+  "valle"
+ ]
+}
