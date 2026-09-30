@@ -38,3 +38,9 @@ Agrega una línea numerada por entrada, con tu nombre entre paréntesis.
 8. Resumen del enriquecimiento del mundo 3D (rama `enrich-referencias`): fotos de referencia con licencia, morfología y
    hábitat de las 551 especies (AVONET + EltonTraits), paletas por zona de las 12 aves del MVP, terreno de 4 mini-escenas
    de la RM y `build_game_data.py` integrando todo en `web/data/game/` sin publicar las fotos. (Joaquín)
+9. Agregar imagen/es al perfil de cada especie. (Matías)
+
+
+10.  [Idea tentativa]
+ Agregar sonidos de *background* al recorrido sonoro, para potenciar la distinción entre las distintas estaciones (ej: sonido de viento en otoño y lluvia en invierno). Aunque es importante que no ensucie la experiencia. (Matías)
+11. Agregar opciones/botones para que el usuario pueda reproducir sonidos de manera personalizada. Por ej: podría seleccionar varios pájaros de la región de Magallanes y otras especies poco frecuentes en el mismo mix. Además podrían haber mixes predeterminados para centrarse en un ambiente solo de pájaros sedentarios, otro solo de pájaros nómadas, u otro mix interesante. (Matías)

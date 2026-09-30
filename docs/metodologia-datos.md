@@ -1,5 +1,9 @@
 # Metodología de datos — Ruta A (vía GBIF)
 
+La obtención y selección de fotografías para las fichas se documenta por
+separado en [imagenes-especies.md](imagenes-especies.md). No interviene en las
+métricas de presencia descritas aquí.
+
 ## 1. Contexto y decisión
 
 El plan original (ruta A) contemplaba descargar observaciones históricas de

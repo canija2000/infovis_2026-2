@@ -17,7 +17,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Changa+One:ital@0;1&family=Shrikhand&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Pixelify+Sans:wght@400..700&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=mixer-4">
 </head>
 
 <body>
@@ -59,6 +59,41 @@
       <datalist id="species-list"></datalist>
     </div>
   </nav>
+
+  <section class="mixer" aria-labelledby="mixer-title">
+    <div class="mixer-head">
+      <div>
+        <h2 id="mixer-title">Mezclador de cantos</h2>
+        <p>Elige aves para escuchar sus cantos juntos y ajusta el volumen de cada una.</p>
+      </div>
+      <button id="mixer-play" class="play" type="button" aria-pressed="false" disabled>Reproducir mezcla</button>
+    </div>
+    <label class="mixer-sync" for="mixer-sync">
+      <input id="mixer-sync" type="checkbox">
+      <span>Sincronizar cantos <small>Todos comienzan juntos; desmarcado, cada ave espera un tiempo aleatorio.</small></span>
+    </label>
+    <div class="mixer-picker">
+      <button id="mixer-search-toggle" class="ghost" type="button" aria-expanded="false"
+        aria-controls="mixer-catalog" disabled>Buscar especies ▾</button>
+      <span>Selecciona una imagen para añadir el ave a la mezcla.</span>
+    </div>
+    <div id="mixer-catalog" class="mixer-catalog" hidden>
+      <div class="mixer-catalog-controls">
+        <label for="mixer-query">Buscar por nombre</label>
+        <input id="mixer-query" type="search" placeholder="Nombre común o científico…" autocomplete="off">
+        <div id="mixer-filters" class="mixer-filters" role="group" aria-label="Filtrar por estacionariedad">
+          <button type="button" data-class="all" aria-pressed="true">Todas</button>
+          <button type="button" data-class="residente" aria-pressed="false">Residentes</button>
+          <button type="button" data-class="visitante_estival" aria-pressed="false">De verano</button>
+          <button type="button" data-class="visitante_invernal" aria-pressed="false">De invierno</button>
+        </div>
+      </div>
+      <p id="mixer-result-count" class="mixer-result-count" role="status" aria-live="polite"></p>
+      <div id="mixer-grid" class="mixer-grid" aria-label="Especies con canto"></div>
+    </div>
+    <p id="mixer-status" class="mixer-status" role="status" aria-live="polite">Cargando especies con grabación…</p>
+    <ul id="mixer-tracks" class="mixer-tracks" aria-label="Especies en la mezcla"></ul>
+  </section>
 
   <main class="layout">
     <section class="map-col" aria-labelledby="map-title">
@@ -161,6 +196,7 @@
     </div>
     <dl class="facts" id="p-facts"></dl>
     <div id="p-sound" class="sound-box"></div>
+    <section id="p-images" class="images-box" aria-label="Fotografías de la especie"></section>
   </aside>
 
   <section class="sound-legend" aria-labelledby="sl-title">
@@ -198,7 +234,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
   <script src="sonify.js"></script>
-  <script src="app.js"></script>
+  <script src="app.js?v=mixer-4"></script>
 </body>
 
 </html>

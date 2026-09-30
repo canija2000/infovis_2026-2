@@ -48,6 +48,9 @@
 
   let D = null; // datos cargados
   let sounds = null;
+  let soundsPromise = null;
+  let images = null;
+  let imagesPromise = null;
 
   // ---------------------------------------------------------------- colores
   const dark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -470,6 +473,7 @@
     renderRadial(row);
     renderSpeciesMap(sid);
     renderSound(sid);
+    renderImages(sid);
     renderCalendar();
   }
 
@@ -557,14 +561,366 @@
   }
 
   async function loadSounds() {
-    if (!sounds) sounds = await fetch("data/sounds.json").then((r) => r.json());
+    if (!sounds) {
+      if (!soundsPromise) soundsPromise = fetch("data/sounds.json?v=mixer-3")
+        .then((r) => {
+          if (!r.ok) throw new Error(`sounds.json: ${r.status}`);
+          return r.json();
+        })
+        .catch((err) => { soundsPromise = null; throw err; });
+      sounds = await soundsPromise;
+    }
     return sounds;
+  }
+  async function loadImages() {
+    if (!images) {
+      if (!imagesPromise) imagesPromise = fetch("data/images.json")
+        .then((r) => {
+          if (!r.ok) throw new Error(`images.json: ${r.status}`);
+          return r.json();
+        })
+        .catch((err) => { imagesPromise = null; throw err; });
+      images = await imagesPromise;
+    }
+    return images;
   }
   const soundEntry = (sid) => sounds && sounds.species.find((x) => x.sid === sid);
   const grainOf = (sid) => {
     const e = soundEntry(sid);
     return e && e.recordings.length ? e.recordings[0].grain : null;
   };
+
+  // Mezcla independiente de la sonificación mensual: cada pista conserva su volumen.
+  const mixerTracks = new Map();
+  const mixerCards = new Map();
+  let mixerPlaying = false;
+  let mixerContext = null;
+  let mixerOutput = null;
+  let mixerGeneration = 0;
+  const MIXER_SYNC_SECONDS = 6;
+  let mixerClass = "all";
+  const normalizeMixerName = (value) => value.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .toLocaleLowerCase("es").replace(/[^a-z0-9]+/g, " ").trim();
+  function setMixerStatus(message) {
+    document.getElementById("mixer-status").textContent = message;
+  }
+  function updateMixerControls() {
+    const button = document.getElementById("mixer-play");
+    button.disabled = !mixerTracks.size;
+    button.textContent = mixerPlaying ? "Pausar mezcla" : "Reproducir mezcla";
+    button.setAttribute("aria-pressed", String(mixerPlaying));
+  }
+  function ensureMixerContext() {
+    if (mixerContext) return mixerContext;
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContext) return null;
+    mixerContext = new AudioContext();
+    const compressor = mixerContext.createDynamicsCompressor();
+    compressor.threshold.value = -16;
+    compressor.ratio.value = 4;
+    mixerOutput = mixerContext.createGain();
+    mixerOutput.gain.value = 0.8;
+    mixerOutput.connect(compressor).connect(mixerContext.destination);
+    return mixerContext;
+  }
+  async function loadMixerTrack(track) {
+    if (track.buffer) return;
+    if (!track.loading) {
+      track.loading = (async () => {
+        const response = await fetch(track.url);
+        if (!response.ok) throw new Error(`${track.url}: ${response.status}`);
+        const data = await response.arrayBuffer();
+        track.buffer = await mixerContext.decodeAudioData(data);
+        if (mixerTracks.get(track.sid) !== track) return;
+        track.gain = mixerContext.createGain();
+        track.gain.gain.value = state.muted ? 0 : track.volume;
+        track.gain.connect(mixerOutput);
+      })().catch((err) => { track.loading = null; throw err; });
+    }
+    await track.loading;
+  }
+  function stopMixerTrack(track) {
+    clearTimeout(track.timer);
+    track.timer = null;
+    if (track.source) {
+      const source = track.source;
+      track.source = null;
+      source.onended = null;
+      source.stop();
+      source.disconnect();
+    }
+  }
+  function mixerDelay() {
+    return 200 + Math.random() * 5000;
+  }
+  function scheduleMixerTrack(track, delay) {
+    clearTimeout(track.timer);
+    track.timer = setTimeout(() => {
+      track.timer = null;
+      if (mixerPlaying && !document.getElementById("mixer-sync").checked && mixerTracks.get(track.sid) === track) {
+        startMixerTrack(track, mixerContext.currentTime + 0.01, false);
+      }
+    }, delay);
+  }
+  function startMixerTrack(track, at, loop) {
+    const source = mixerContext.createBufferSource();
+    if (loop && !track.syncBuffer) {
+      const original = track.buffer;
+      const length = Math.round(MIXER_SYNC_SECONDS * original.sampleRate);
+      track.syncBuffer = mixerContext.createBuffer(original.numberOfChannels, length, original.sampleRate);
+      for (let channel = 0; channel < original.numberOfChannels; channel++) {
+        track.syncBuffer.getChannelData(channel).set(original.getChannelData(channel).subarray(0, length));
+      }
+    }
+    source.buffer = loop ? track.syncBuffer : track.buffer;
+    source.loop = loop;
+    source.connect(track.gain);
+    track.source = source;
+    if (!loop) {
+      source.onended = () => {
+        source.disconnect();
+        if (track.source !== source) return;
+        track.source = null;
+        if (mixerPlaying && mixerTracks.get(track.sid) === track) scheduleMixerTrack(track, mixerDelay());
+      };
+    }
+    source.start(at);
+  }
+  async function restartMixer() {
+    const generation = ++mixerGeneration;
+    for (const track of mixerTracks.values()) stopMixerTrack(track);
+    if (!mixerPlaying) return;
+    const context = ensureMixerContext();
+    if (!context) {
+      mixerPlaying = false;
+      updateMixerControls();
+      setMixerStatus("Este navegador no admite reproducción de audio.");
+      return;
+    }
+    try { await context.resume(); }
+    catch (err) { console.warn("No se pudo activar el mezclador", err); }
+    const tracks = [...mixerTracks.values()];
+    const results = await Promise.allSettled(tracks.map(loadMixerTrack));
+    if (generation !== mixerGeneration || !mixerPlaying) return;
+    const ready = tracks.filter((track, i) => results[i].status === "fulfilled" && mixerTracks.get(track.sid) === track);
+    if (document.getElementById("mixer-sync").checked) {
+      const start = context.currentTime + 0.08;
+      ready.forEach((track) => startMixerTrack(track, start, true));
+    } else {
+      ready.forEach((track) => scheduleMixerTrack(track, mixerDelay()));
+    }
+    if (ready.length < tracks.length) setMixerStatus("Algunos cantos no se pudieron cargar.");
+  }
+  function toggleMixer() {
+    if (!mixerTracks.size) return;
+    mixerPlaying = !mixerPlaying;
+    restartMixer();
+    setMixerStatus(mixerPlaying
+      ? (document.getElementById("mixer-sync").checked ? "Los cantos comenzarán juntos." : "Cada ave cantará tras una breve espera aleatoria.")
+      : "Mezcla en pausa.");
+    updateMixerControls();
+  }
+  function addMixerTrack(sid) {
+    if (mixerTracks.has(sid)) {
+      setMixerStatus(`${D.species[sid].comName} ya está en la mezcla.`);
+      return;
+    }
+    const recording = soundEntry(sid)?.recordings[0];
+    if (!recording) return;
+    const species = D.species[sid];
+    const track = { sid, url: recording.mixer || recording.src, volume: 0.5, buffer: null, loading: null, gain: null, source: null, timer: null };
+    mixerTracks.set(sid, track);
+    const card = mixerCards.get(sid)?.element;
+    if (card) card.setAttribute("aria-pressed", "true");
+
+    const item = document.createElement("li");
+    item.className = "mixer-track";
+    const identity = document.createElement("div");
+    identity.className = "mixer-identity";
+    const name = document.createElement("strong");
+    name.textContent = species.comName;
+    const credit = document.createElement("a");
+    credit.href = recording.url;
+    credit.target = "_blank";
+    credit.rel = "noopener noreferrer";
+    credit.textContent = `XC${recording.id} · ${recording.recordist || "autor s/i"}`;
+    const license = document.createElement("a");
+    license.href = recording.license;
+    license.target = "_blank";
+    license.rel = "noopener noreferrer";
+    license.textContent = "Licencia de la grabación";
+    identity.append(name, credit, license);
+    if (!recording.mixer) {
+      const original = document.createElement("span");
+      original.className = "mixer-original";
+      original.textContent = "Grabación original · puede incluir sonido ambiente";
+      identity.append(original);
+    }
+    const volumeLabel = document.createElement("label");
+    volumeLabel.textContent = "Volumen ";
+    volumeLabel.htmlFor = `mixer-volume-${sid}`;
+    const volume = document.createElement("input");
+    volume.type = "range";
+    volume.id = volumeLabel.htmlFor;
+    volume.min = "0";
+    volume.max = "100";
+    volume.value = "50";
+    volume.setAttribute("aria-label", `Volumen de ${species.comName}`);
+    const value = document.createElement("output");
+    value.htmlFor = volume.id;
+    value.textContent = "50 %";
+    volume.addEventListener("input", () => {
+      track.volume = Number(volume.value) / 100;
+      if (track.gain) track.gain.gain.setTargetAtTime(state.muted ? 0 : track.volume, mixerContext.currentTime, 0.015);
+      value.textContent = `${volume.value} %`;
+    });
+    const controls = document.createElement("div");
+    controls.className = "mixer-volume";
+    controls.append(volumeLabel, volume, value);
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.className = "ghost small";
+    remove.textContent = "Quitar";
+    remove.setAttribute("aria-label", `Quitar ${species.comName} de la mezcla`);
+    remove.addEventListener("click", () => {
+      stopMixerTrack(track);
+      if (track.gain) track.gain.disconnect();
+      mixerTracks.delete(sid);
+      if (card) card.setAttribute("aria-pressed", "false");
+      item.remove();
+      if (!mixerTracks.size) {
+        mixerPlaying = false;
+        mixerGeneration++;
+      }
+      updateMixerControls();
+      setMixerStatus(mixerTracks.size ? `${mixerTracks.size} especies en la mezcla.` : "Añade una especie para empezar.");
+    });
+    item.append(identity, controls, remove);
+    document.getElementById("mixer-tracks").append(item);
+    if (mixerPlaying) {
+      if (document.getElementById("mixer-sync").checked) restartMixer();
+      else {
+        const generation = mixerGeneration;
+        loadMixerTrack(track).then(() => {
+          if (generation === mixerGeneration && mixerPlaying && mixerTracks.get(sid) === track) {
+            scheduleMixerTrack(track, mixerDelay());
+          }
+        }).catch((err) => {
+          console.warn("No se pudo cargar el canto", err);
+          setMixerStatus(`No se pudo cargar ${species.comName}.`);
+        });
+      }
+    }
+    updateMixerControls();
+    setMixerStatus(`${mixerTracks.size} especies en la mezcla.`);
+  }
+  function filterMixerCatalog() {
+    const query = normalizeMixerName(document.getElementById("mixer-query").value.trim());
+    let visible = 0;
+    for (const { element, search, cls } of mixerCards.values()) {
+      element.hidden = (mixerClass !== "all" && cls !== mixerClass) || !search.includes(query);
+      if (!element.hidden) visible++;
+    }
+    document.getElementById("mixer-result-count").textContent =
+      `${visible} ${visible === 1 ? "especie disponible" : "especies disponibles"}`;
+  }
+  function renderMixerCatalog(available) {
+    const imageBySid = new Map((images?.species || []).map((entry) => [entry.sid, entry.images[0]]));
+    const grid = document.getElementById("mixer-grid");
+    const fragment = document.createDocumentFragment();
+    mixerCards.clear();
+    for (const entry of available) {
+      const species = D.species[entry.sid];
+      const card = document.createElement("button");
+      card.type = "button";
+      card.className = "mixer-card";
+      card.dataset.class = species.class;
+      card.setAttribute("aria-pressed", String(mixerTracks.has(entry.sid)));
+      card.title = `Añadir ${species.comName} a la mezcla`;
+      const photo = document.createElement("span");
+      photo.className = "mixer-card-photo";
+      const fallback = document.createElement("span");
+      fallback.textContent = species.comName[0];
+      photo.append(fallback);
+      const firstImage = imageBySid.get(entry.sid);
+      if (firstImage?.url) {
+        const img = document.createElement("img");
+        img.src = firstImage.url;
+        img.alt = "";
+        img.loading = "lazy";
+        img.decoding = "async";
+        img.addEventListener("error", () => img.remove());
+        photo.append(img);
+      }
+      const info = document.createElement("span");
+      info.className = "mixer-card-info";
+      const name = document.createElement("strong");
+      name.textContent = species.comName;
+      const cls = document.createElement("small");
+      cls.textContent = { residente: "Residente", visitante_estival: "De verano", visitante_invernal: "De invierno" }[species.class] +
+        (entry.recordings[0].mixer ? "" : " · audio original");
+      info.append(name, cls);
+      const selected = document.createElement("span");
+      selected.className = "mixer-card-selected";
+      selected.textContent = "✓";
+      selected.setAttribute("aria-hidden", "true");
+      card.append(photo, info, selected);
+      card.addEventListener("click", () => addMixerTrack(entry.sid));
+      fragment.append(card);
+      mixerCards.set(entry.sid, {
+        element: card,
+        search: normalizeMixerName(`${species.comName} ${species.sciName}`),
+        cls: species.class,
+      });
+    }
+    grid.replaceChildren(fragment);
+    filterMixerCatalog();
+  }
+  async function setupMixer() {
+    const toggle = document.getElementById("mixer-search-toggle");
+    const catalog = document.getElementById("mixer-catalog");
+    document.getElementById("mixer-play").addEventListener("click", toggleMixer);
+    document.getElementById("mixer-sync").addEventListener("change", (event) => {
+      if (mixerPlaying) restartMixer();
+      setMixerStatus(event.target.checked ? "Cantos sincronizados: comenzarán juntos." : "Cantos desincronizados: cada ave espera entre repeticiones.");
+    });
+    toggle.addEventListener("click", () => {
+      catalog.hidden = !catalog.hidden;
+      toggle.setAttribute("aria-expanded", String(!catalog.hidden));
+      toggle.textContent = catalog.hidden ? "Buscar especies ▾" : "Cerrar búsqueda ▴";
+      if (!catalog.hidden) document.getElementById("mixer-query").focus();
+    });
+    document.getElementById("mixer-query").addEventListener("input", filterMixerCatalog);
+    document.getElementById("mixer-filters").addEventListener("click", (event) => {
+      const button = event.target.closest("button[data-class]");
+      if (!button) return;
+      mixerClass = button.dataset.class;
+      document.querySelectorAll("#mixer-filters button").forEach((item) => {
+        item.setAttribute("aria-pressed", String(item === button));
+      });
+      filterMixerCatalog();
+    });
+    catalog.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        catalog.hidden = true;
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.textContent = "Buscar especies ▾";
+        toggle.focus();
+      }
+    });
+    try {
+      await loadSounds();
+      const available = sounds.species.filter((entry) => entry.recordings.length)
+        .sort((a, b) => D.species[a.sid].comName.localeCompare(D.species[b.sid].comName, "es"));
+      try { await loadImages(); }
+      catch (err) { console.warn("No se pudieron cargar las imágenes del mezclador", err); }
+      renderMixerCatalog(available);
+      toggle.disabled = !available.length;
+      setMixerStatus(available.length ? `${available.length} especies con canto disponibles. Algunas conservan el audio original por su licencia.` : "No hay grabaciones disponibles.");
+    } catch (err) {
+      setMixerStatus("No se pudieron cargar los cantos. Recarga la página para intentar de nuevo.");
+    }
+  }
 
   async function renderSound(sid) {
     const box = document.getElementById("p-sound");
@@ -589,6 +945,64 @@
       `<figcaption><a href="${r.url}" target="_blank" rel="noopener">XC${r.id}</a> · ${r.recordist || "autor s/i"}` +
       ` · ${r.type || ""} · ${r.country || ""} · <a href="${r.license}" target="_blank" rel="noopener">licencia</a>` +
       `<br><span class="muted">Clip de 6 s (el tramo con más canto) de la grabación original.</span></figcaption></figure>`).join("");
+  }
+
+  async function renderImages(sid) {
+    const box = document.getElementById("p-images");
+    box.replaceChildren();
+    try {
+      await loadImages();
+    } catch (_) {
+      if (state.species === sid) box.textContent = "No se pudieron cargar las fotografías.";
+      return;
+    }
+    if (state.species !== sid) return;
+    const photos = (images.species.find((entry) => entry.sid === sid)?.images || []).slice(0, 8);
+    if (!photos.length) return;
+
+    const title = document.createElement("h3");
+    title.textContent = "Fotografías";
+    const gallery = document.createElement("div");
+    gallery.className = "image-gallery";
+    const figures = photos.map((photo, index) => {
+      const figure = document.createElement("figure");
+      figure.hidden = index > 0;
+      const img = document.createElement("img");
+      img.src = photo.url;
+      img.alt = `${D.species[sid].comName}, fotografía ${index + 1}`;
+      img.loading = "lazy";
+      img.decoding = "async";
+      const caption = document.createElement("figcaption");
+      const source = document.createElement("a");
+      source.href = photo.source;
+      source.target = "_blank";
+      source.rel = "noopener noreferrer";
+      source.textContent = photo.author;
+      const license = document.createElement("a");
+      license.href = photo.license;
+      license.target = "_blank";
+      license.rel = "noopener noreferrer";
+      license.textContent = "CC BY";
+      caption.append(source, " · ", license, " · GBIF");
+      figure.append(img, caption);
+      gallery.append(figure);
+      return figure;
+    });
+    box.append(title, gallery);
+    if (photos.length > 1) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "image-more ghost";
+      button.textContent = `Mostrar más (${photos.length - 1})`;
+      button.setAttribute("aria-expanded", "false");
+      button.addEventListener("click", () => {
+        const expanded = button.getAttribute("aria-expanded") !== "true";
+        figures.slice(1).forEach((figure) => { figure.hidden = !expanded; });
+        button.setAttribute("aria-expanded", String(expanded));
+        button.textContent = expanded ? "Mostrar menos" : `Mostrar más (${photos.length - 1})`;
+      });
+      box.append(button);
+    }
   }
 
   // ---------------------------------------------------------------- sonificación
@@ -716,6 +1130,9 @@
     document.getElementById("mute").addEventListener("click", (e) => {
       state.muted = !state.muted;
       Sonifier.setMuted(state.muted);
+      for (const track of mixerTracks.values()) {
+        if (track.gain) track.gain.gain.setTargetAtTime(state.muted ? 0 : track.volume, mixerContext.currentTime, 0.015);
+      }
       e.currentTarget.setAttribute("aria-pressed", String(state.muted));
       e.currentTarget.setAttribute("aria-label", state.muted ? "Activar sonido" : "Silenciar");
       e.currentTarget.title = state.muted ? "Activar sonido" : "Silenciar";
@@ -723,7 +1140,7 @@
     document.getElementById("reset").addEventListener("click", () => selectScope(0));
     document.getElementById("panel-close").addEventListener("click", closeSpecies);
     document.addEventListener("keydown", (e) => {
-      if (e.target.closest("input, textarea, button, audio")) return;
+      if (e.target.closest("input, select, textarea, button, audio")) return;
       if (e.code === "Space") {
         e.preventDefault();
         togglePlay();
@@ -751,6 +1168,7 @@
     .then(() => {
       renderSummary();
       setupControls();
+      setupMixer();
       setupSearch();
       renderLegend(document.getElementById("grid-legend"), deviation, {
         label: "Visitantes vs. promedio anual de la región", ticks: deviation.domain(), width: 320,

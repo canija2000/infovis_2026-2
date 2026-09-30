@@ -38,3 +38,5 @@ python_scripts/enrich/cache/
 python_scripts/enrich/__pycache__/
 python_scripts/enrich/.venv/
 refs/
+cache_images/
+:memory:.ses
