@@ -15,6 +15,12 @@ lo habitual en la región; negativo = más de invierno. Comparar con la región
 (y no con el país) evita que un desierto o un humedal parezcan «más
 visitados» solo por su hábitat. La escala satura en el percentil 95 de |ola|.
 
+Además, para «Una región de cerca», web/data/grid_region/<código>.json desde
+gbif/staging/grid-0.05.json (celdas de ~5 km): por celda y mes, especie-días de
+residentes, visitantes de verano y de invierno. La web dibuja 1 punto cada
+`perDot` especie-días (número redondo elegido para que el mes más observado de
+la región tenga ~DOTS_TARGET puntos).
+
 Uso (desde la raíz del repo):
     python3 python_scripts/build_grid_data.py
 """
@@ -26,6 +32,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "gbif" / "staging" / "grid-0.2.json"
 OUT = ROOT / "web" / "data" / "grid_month.json"
+SRC_FINE = ROOT / "gbif" / "staging" / "grid-0.05.json"
+OUT_REGION = ROOT / "web" / "data" / "grid_region"
+META = ROOT / "web" / "data" / "meta.json"
+DOTS_TARGET = 1200
 MIN_DAYS = 50
 MIN_YEARS = 3
 
@@ -79,5 +89,46 @@ def main() -> None:
           f"por mes {[len(m) for m in by_month]} · saturación ±{sat}")
 
 
+def nice(x: float) -> int:
+    """Redondea hacia arriba a 1, 2 o 5 × 10^n."""
+    p = 1
+    while True:
+        for f in (1, 2, 5):
+            if f * p >= x:
+                return f * p
+        p *= 10
+
+
+def build_regions() -> None:
+    g = json.loads(SRC_FINE.read_text())
+    res = g["res"]
+    codes = {r["id"]: r["code"] for r in json.loads(META.read_text(encoding="utf-8"))["regions"]}
+    OUT_REGION.mkdir(exist_ok=True)
+    by_region = defaultdict(list)
+    for ix, iy, rid, months, _ in g["cells"]:
+        by_region[rid].append((ix, iy, months))
+    for rid, cells in sorted(by_region.items()):
+        out_cells, by_month = [], [[] for _ in range(12)]
+        for ci, (ix, iy, months) in enumerate(sorted(cells)):
+            # esquina suroeste de la celda; la web reparte los puntos dentro de ella
+            out_cells.append([round(ix * res, 2), round(iy * res, 2)])
+            for m in range(12):
+                r, e, i = months[m][0], months[m][1], months[m][2]
+                if r + e + i:
+                    by_month[m].append([ci, r, e, i])
+        peak = max(sum(sum(row[1:]) for row in rows) for rows in by_month)
+        per_dot = nice(peak / DOTS_TARGET)
+        payload = {
+            "code": codes[rid], "res": res, "years": g["years"], "perDot": per_dot,
+            "layout": "months[m] = [celda, especie-días residentes, verano, invierno]",
+            "cells": out_cells, "months": by_month,
+        }
+        out = OUT_REGION / f"{codes[rid]}.json"
+        out.write_text(json.dumps(payload, separators=(",", ":")), encoding="utf-8")
+        print(f"{out.relative_to(ROOT)}: {out.stat().st_size / 1024:.0f} KB · {len(out_cells)} celdas · 1 punto = {per_dot}")
+
+
 if __name__ == "__main__":
     main()
+    if SRC_FINE.exists():
+        build_regions()

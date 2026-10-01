@@ -217,77 +217,157 @@
   }
 
   // ---------------------------------------------------------------- C · mapas por mes
-  // Un punto por celda de 0,2° (~22 km) con datos suficientes ese mes (grid_month.json, de las descargas GBIF).
-  // Color = ola: (proporción de visitantes de verano − la de su región en el año) − (lo mismo para invierno).
-  // Naranja = el mes trae más visitantes de verano de lo habitual allí; azul = más de invierno.
-  // Tamaño = especie-días registrados (dónde se observa más), para no esconder el sesgo de esfuerzo.
-  const maps = {};
-  const CONTINENT_WEST = -76; // longitud: deja fuera las islas oceánicas
+  // Dos franjas de 12 mapas (jul → jun), cuatro a la vista y el resto con scroll horizontal:
+  //   C1 · Chile: un interruptor alterna entre
+  //        «zonas»   un punto por celda de 0,2° (~22 km) con datos suficientes (grid_month.json);
+  //                  color = ola: (prop. de visitantes de verano − la de su región en el año) − (ídem invierno);
+  //                  tamaño = especie-días registrados (dónde se observa más, sin esconder el sesgo de esfuerzo).
+  //        «regiones» una región = un color: nivel de la ola de verano − la de invierno, cada uno relativo
+  //                  al rango anual de la región (region_month.json).
+  //   C2 · Una región de cerca: Chile en horizontal como selector; mapas de puntos por clase
+  //        (1 punto ≈ k especie-días, repartidos al azar dentro de su celda de 0,05°; grid_region/<código>.json).
+  const CONTINENT_WEST = -76; // longitud: deja fuera Juan Fernández, Desventuradas y Rapa Nui
+  const CHILE_FRAME = { type: "MultiPoint", coordinates: [[-75.8, -17.4], [-66.3, -56]] };
+  const strips = []; // { id, cards } de cada franja, para marcar el mes y seguirlo
+  const maps = { mode: "zones", region: 7 }; // por defecto: Metropolitana
+  const getJSON = (f) => fetch(`data/${f}`).then((r) => {
+    if (!r.ok) throw new Error(`${f}: ${r.status}`);
+    return r.json();
+  });
+
+  // Quita del contorno las islas oceánicas (polígonos al oeste de CONTINENT_WEST).
+  function continental(feature) {
+    const g = feature.geometry;
+    const keep = (poly) => d3.max(poly[0], (p) => p[0]) > CONTINENT_WEST;
+    const polys = g.type === "Polygon" ? [g.coordinates] : g.coordinates;
+    return { ...feature, geometry: { type: "MultiPolygon", coordinates: polys.filter(keep) } };
+  }
+
   async function loadMaps() {
-    const get = (f) => fetch(`data/${f}`).then((r) => {
-      if (!r.ok) throw new Error(`${f}: ${r.status}`);
-      return r.json();
-    });
-    const [meta, grid, geo] = await Promise.all([get("meta.json"), get("grid_month.json?v=1"), get("regions.min.geojson")]);
+    const [meta, grid, regionMonth, geo] = await Promise.all([
+      getJSON("meta.json"), getJSON("grid_month.json?v=1"), getJSON("region_month.json"), getJSON("regions.min.geojson"),
+    ]);
     const names = new Map(meta.regions.map((r) => [r.id, r.name]));
+    const codes = new Map(meta.regions.map((r) => [r.id, r.code]));
     const months = grid.months.map((rows) => rows
       .filter(([cell]) => grid.cells[cell][0] > CONTINENT_WEST)
       .map(([cell, total, res, est, inv, wave]) => ({ cell: grid.cells[cell], total, res, est, inv, wave: wave / 1000 }))
       .sort((a, b) => b.total - a.total)); // los grandes abajo, los chicos encima
-    Object.assign(maps, { geo, grid, months, names });
+    // Modo regiones: nivel de cada ola relativo al rango anual de la región.
+    const level = (series) => {
+      const [lo, hi] = d3.extent(series);
+      return series.map((v) => (hi > lo ? (v - lo) / (hi - lo) : 0));
+    };
+    const regionWave = new Map();
+    for (const f of geo.features) {
+      const rows = regionMonth.scopes[String(f.properties.id)];
+      if (!rows) continue;
+      const summer = level(rows.map((x) => x[2]));
+      const winter = level(rows.map((x) => x[3]));
+      regionWave.set(f.properties.id, {
+        index: summer.map((v, m) => v - winter[m]), rows, low: d3.mean(rows, (x) => x[5]) < 400,
+      });
+    }
+    const land = { type: "FeatureCollection", features: geo.features.map(continental) };
+    Object.assign(maps, { geo, land, grid, months, regionWave, names, codes, regionCache: new Map() });
   }
 
-  function drawMaps() {
-    if (!maps.geo) return;
-    const host = document.getElementById("maps");
+  // Tarjetas de una franja: una por mes en orden austral; `draw(svg, m, w, h)` dibuja cada mapa.
+  function buildStrip(id, cardW, h, draw, label) {
+    const host = document.getElementById(id);
     host.innerHTML = "";
-    // Divergente: azul (invierno) ↔ gris ↔ naranja (verano), los mismos tonos de las clases.
-    const sat = maps.grid.saturation;
-    const color = d3.scaleDiverging(d3.interpolateRgbBasis([css("--c2"), css("--ink-3"), css("--c1")]))
-      .domain([-sat, 0, sat]).clamp(true);
-    const cardW = Math.max(130, Math.floor(host.clientWidth / (host.clientWidth < 560 ? 2 : 4)));
     const w = cardW - 16;
-    const h = Math.min(Math.round(w * 3.4), 640);
-    // Encuadre de Chile continental (sin Juan Fernández ni Rapa Nui, que achicarían el resto).
-    const projection = d3.geoMercator().fitSize([w, h], { type: "MultiPoint", coordinates: [[-75.8, -17.4], [-66.3, -56]] });
-    const path = d3.geoPath(projection);
-    const maxTotal = d3.max(maps.months, (rows) => d3.max(rows, (d) => d.total));
-    const k = Math.min(1.25, h / 520);
-    const radius = d3.scaleSqrt().domain([maps.grid.minDays, maxTotal]).range([1.3 * k, 4.2 * k]).clamp(true);
-    const outline = path(maps.geo);
-
     const cards = d3.select(host).selectAll("div.map-card").data(AUSTRAL).join("div")
       .attr("class", "map-card")
       .style("width", `${cardW}px`)
       .on("click", (event, m) => setMonth(m));
     cards.append("h3").text((m) => MONTHS[m]);
-    const svg = cards.append("svg").attr("viewBox", `0 0 ${w} ${h}`).attr("width", w).attr("height", h)
-      .attr("role", "img").attr("aria-label", (m) => `Mapa de ${MONTHS[m]}: un punto por zona de unos 22 km con registros`);
-    svg.append("clipPath").attr("id", (m) => `clip-${m}`).append("rect").attr("width", w).attr("height", h);
-    svg.append("path").attr("class", "land").attr("d", outline).attr("clip-path", (m) => `url(#clip-${m})`);
-    svg.append("g").selectAll("circle").data((m) => maps.months[m].map((d) => ({ ...d, m }))).join("circle")
-      .attr("class", "cell")
-      .attr("cx", (d) => projection([d.cell[0], d.cell[1]])[0])
-      .attr("cy", (d) => projection([d.cell[0], d.cell[1]])[1])
-      .attr("r", (d) => radius(d.total))
-      .attr("fill", (d) => color(d.wave))
-      .on("pointermove", (event, d) => {
-        const v = d.wave;
-        const verdict = v > 0.03 ? "más visitantes de verano que lo habitual en la región"
-          : v < -0.03 ? "más visitantes de invierno que lo habitual en la región" : "cerca de lo habitual en la región";
-        const share = (x) => `${Math.round((100 * x) / d.total)} %`;
-        showTip(event, `<b>${maps.names.get(d.cell[2])}</b> · ${MONTHS[d.m]}<br>` +
-          `Zona de ~22 km · ${d.total.toLocaleString("es-CL")} especie-días<br>` +
-          `<span class="tt-row"><i class="sw c0"></i>Residentes <b>${share(d.res)}</b></span>` +
-          `<span class="tt-row"><i class="sw c1"></i>Visitantes de verano <b>${share(d.est)}</b></span>` +
-          `<span class="tt-row"><i class="sw c2"></i>Visitantes de invierno <b>${share(d.inv)}</b></span>` +
-          `<i>${verdict}</i>`);
-      })
-      .on("pointerleave", hideTip);
-    cards.append("p").attr("class", "map-n").text((m) => `${maps.months[m].length} zonas`);
-    maps.cards = cards;
-    drawMapsLegend(color, sat, radius);
+    cards.append("svg").attr("viewBox", `0 0 ${w} ${h}`).attr("width", w).attr("height", h)
+      .attr("role", "img").attr("aria-label", (m) => `${label} · ${MONTHS[m]}`)
+      .each(function (m) { draw(d3.select(this), m, w, h); });
+    const strip = strips.find((s) => s.id === id) || strips[strips.push({ id }) - 1];
+    strip.cards = cards;
+    return cards;
+  }
+  const cardWidth = (host, min = 130) => Math.max(min, Math.floor(host.clientWidth / (host.clientWidth < 560 ? 2 : 4)));
+
+  // ------------------------------ C1 · Chile (zonas | regiones)
+  function drawMaps() {
+    if (!maps.geo) return;
+    const host = document.getElementById("maps");
+    const cardW = cardWidth(host);
+    const w = cardW - 16;
+    const h = Math.min(Math.round(w * 3.4), 640);
+    const projection = d3.geoMercator().fitSize([w, h], CHILE_FRAME);
+    const path = d3.geoPath(projection);
+    const zones = maps.mode === "zones";
+    let color;
+    let radius = null;
+    if (zones) {
+      const sat = maps.grid.saturation;
+      color = d3.scaleDiverging(d3.interpolateRgbBasis([css("--c2"), css("--ink-3"), css("--c1")])).domain([-sat, 0, sat]).clamp(true);
+      const k = Math.min(1.25, h / 520);
+      const maxTotal = d3.max(maps.months, (rows) => d3.max(rows, (d) => d.total));
+      radius = d3.scaleSqrt().domain([maps.grid.minDays, maxTotal]).range([1.3 * k, 4.2 * k]).clamp(true);
+    } else {
+      color = d3.scaleDiverging(d3.interpolateRgbBasis([css("--c2"), css("--empty"), css("--c1")])).domain([-1, 0, 1]);
+    }
+    const cards = buildStrip("maps", cardW, h, (svg, m) => {
+      if (zones) {
+        svg.append("path").attr("class", "land").attr("d", path(maps.land));
+        svg.append("g").selectAll("circle").data(maps.months[m]).join("circle")
+          .attr("class", "cell")
+          .attr("cx", (d) => projection([d.cell[0], d.cell[1]])[0])
+          .attr("cy", (d) => projection([d.cell[0], d.cell[1]])[1])
+          .attr("r", (d) => radius(d.total))
+          .attr("fill", (d) => color(d.wave))
+          .on("pointermove", (event, d) => zoneTip(event, d, m))
+          .on("pointerleave", hideTip);
+      } else {
+        svg.selectAll("path").data(maps.land.features).join("path")
+          .attr("class", (f) => `region${maps.regionWave.get(f.properties.id)?.low ? " low" : ""}`)
+          .attr("d", path)
+          .attr("fill", (f) => {
+            const r = maps.regionWave.get(f.properties.id);
+            return r ? color(r.index[m]) : "none";
+          })
+          .on("pointermove", (event, f) => regionTip(event, f.properties.id, m))
+          .on("pointerleave", hideTip);
+      }
+    }, "Mapa de Chile");
+    cards.append("p").attr("class", "map-n").text((m) => (zones ? `${maps.months[m].length} zonas` : ""));
+    drawMapsLegend(color, zones ? maps.grid.saturation : 1, radius);
+    document.getElementById("maps-note").textContent = zones
+      ? "Zonas con ≥ 50 especie-días en el mes y registros en ≥ 3 de los 8 años (GBIF 2017–2024). Sin punto: no hay datos suficientes ese mes, no que no haya aves."
+      : "Contorno punteado: región con pocos registros (< 400 días-especie al mes), valores inestables.";
+    document.getElementById("maps-lede").textContent = zones
+      ? "Un punto por zona de unos 22 km donde se observan aves. Naranja: ese mes llegan más visitantes de verano de lo habitual en su región; azul, más de invierno. El tamaño indica cuánto se observa allí."
+      : "Una región, un color. Cada región comparada con su propio año: naranja, el mes en que más pesan sus visitantes de verano; azul, los de invierno.";
     updateMaps(false);
+  }
+
+  function zoneTip(event, d, m) {
+    const v = d.wave;
+    const verdict = v > 0.03 ? "más visitantes de verano que lo habitual en la región"
+      : v < -0.03 ? "más visitantes de invierno que lo habitual en la región" : "cerca de lo habitual en la región";
+    const share = (x) => `${Math.round((100 * x) / d.total)} %`;
+    showTip(event, `<b>${maps.names.get(d.cell[2])}</b> · ${MONTHS[m]}<br>` +
+      `Zona de ~22 km · ${d.total.toLocaleString("es-CL")} especie-días<br>` +
+      `<span class="tt-row"><i class="sw c0"></i>Residentes <b>${share(d.res)}</b></span>` +
+      `<span class="tt-row"><i class="sw c1"></i>Visitantes de verano <b>${share(d.est)}</b></span>` +
+      `<span class="tt-row"><i class="sw c2"></i>Visitantes de invierno <b>${share(d.inv)}</b></span>` +
+      `<i>${verdict}</i>`);
+  }
+  function regionTip(event, id, m) {
+    const r = maps.regionWave.get(id);
+    if (!r) return;
+    const [, , est, inv] = r.rows[m];
+    const v = r.index[m];
+    const verdict = v > 0.25 ? "domina la ola de verano" : v < -0.25 ? "domina la ola de invierno" : "entre olas";
+    showTip(event, `<b>${maps.names.get(id)}</b> · ${MONTHS[m]}<br>` +
+      `<span class="tt-row"><i class="sw c1"></i>Visitantes de verano <b>${est}</b> especies</span>` +
+      `<span class="tt-row"><i class="sw c2"></i>Visitantes de invierno <b>${inv}</b> especies</span>` +
+      `<i>${verdict}</i>${r.low ? "<br><i>pocos registros: valor inestable</i>" : ""}`);
   }
 
   function drawMapsLegend(color, sat, radius) {
@@ -295,17 +375,16 @@
     host.selectAll("*").remove();
     const w = 220;
     const svg = host.append("svg").attr("viewBox", `0 0 ${w} 34`).attr("width", w).attr("height", 34);
-    const id = "maps-grad";
-    const grad = svg.append("defs").append("linearGradient").attr("id", id);
+    const grad = svg.append("defs").append("linearGradient").attr("id", "maps-grad");
     d3.range(0, 1.01, 0.1).forEach((t) => grad.append("stop").attr("offset", `${t * 100}%`).attr("stop-color", color((t * 2 - 1) * sat)));
-    svg.append("rect").attr("x", 0).attr("y", 2).attr("width", w).attr("height", 10).attr("rx", 2).attr("fill", `url(#${id})`);
-    [["invierno", 0, "start"], ["como siempre", w / 2, "middle"], ["verano", w, "end"]].forEach(([t, x, anchor]) =>
+    svg.append("rect").attr("x", 0).attr("y", 2).attr("width", w).attr("height", 10).attr("rx", 2).attr("fill", "url(#maps-grad)");
+    [["invierno", 0, "start"], [radius ? "como siempre" : "entre olas", w / 2, "middle"], ["verano", w, "end"]].forEach(([t, x, anchor]) =>
       svg.append("text").attr("x", x).attr("y", 28).attr("text-anchor", anchor).text(t));
+    if (!radius) return;
     // Tamaño: especie-días registrados.
-    const sizes = [100, 1000, 10000];
     const g = host.append("svg").attr("viewBox", "0 0 210 34").attr("width", 210).attr("height", 34).append("g");
     let x = 0;
-    sizes.forEach((v) => {
+    [100, 1000, 10000].forEach((v) => {
       const r = radius(v);
       g.append("circle").attr("class", "size-key").attr("cx", x + r).attr("cy", 7).attr("r", r);
       g.append("text").attr("x", x + 2 * r + 4).attr("y", 11).text(v.toLocaleString("es-CL"));
@@ -314,31 +393,188 @@
     g.append("text").attr("x", 0).attr("y", 28).text("especie-días registrados");
   }
 
+  function initMapsMode() {
+    const buttons = d3.selectAll("#maps-mode button");
+    const sync = () => buttons.attr("aria-pressed", function () { return String(this.dataset.mode === maps.mode); });
+    buttons.on("click", function () {
+      maps.mode = this.dataset.mode;
+      sync();
+      drawMaps();
+    });
+    sync();
+  }
+
+  // ------------------------------ C2 · una región de cerca
+  // Selector: Chile acostado (norte a la izquierda), una región por clic.
+  function drawRegionPicker() {
+    if (!maps.geo) return;
+    const host = document.getElementById("region-picker");
+    host.innerHTML = "";
+    const w = host.clientWidth;
+    // Girar 90°: el norte queda a la izquierda y el país se lee de norte a sur. Se ajusta al ancho y el alto
+    // sigue a la forma, con tope.
+    const projection = d3.geoMercator().angle(90).fitWidth(w, maps.land);
+    const path = d3.geoPath(projection);
+    const h = Math.min(Math.ceil(path.bounds(maps.land)[1][1]) + 14, w < 560 ? 90 : 170);
+    projection.fitExtent([[0, 0], [w, h - 14]], maps.land);
+    const [[x0], [x1]] = path.bounds(maps.land);
+    const svg = d3.select(host).append("svg").attr("viewBox", `0 0 ${w} ${h}`).attr("width", w).attr("height", h)
+      .attr("role", "group").attr("aria-label", "Elegir región");
+    svg.selectAll("path").data(maps.land.features).join("path")
+      .attr("class", "pick")
+      .attr("d", path)
+      .attr("tabindex", 0)
+      .attr("role", "button")
+      .attr("aria-label", (f) => maps.names.get(f.properties.id))
+      .on("click", (event, f) => selectRegion(f.properties.id))
+      .on("keydown", (event, f) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          selectRegion(f.properties.id);
+        }
+      })
+      .on("pointermove", (event, f) => showTip(event, `<b>${maps.names.get(f.properties.id)}</b>`))
+      .on("pointerleave", hideTip);
+    svg.append("text").attr("class", "pick-dir").attr("x", x0).attr("y", h - 2).text("← norte");
+    svg.append("text").attr("class", "pick-dir").attr("x", x1).attr("y", h - 2).attr("text-anchor", "end").text("sur →");
+    maps.picker = svg;
+    // Lista desplegable equivalente (teclado, lectores de pantalla y pantallas chicas).
+    const select = d3.select("#region-select");
+    select.selectAll("option").data(maps.land.features).join("option")
+      .attr("value", (f) => f.properties.id)
+      .text((f) => maps.names.get(f.properties.id));
+    select.on("change", function () { selectRegion(+this.value); });
+    updatePicker();
+  }
+  function updatePicker() {
+    if (!maps.picker) return;
+    maps.picker.selectAll("path.pick").classed("selected", (f) => f.properties.id === maps.region)
+      .attr("aria-pressed", (f) => String(f.properties.id === maps.region));
+    document.getElementById("region-select").value = String(maps.region);
+    document.getElementById("region-name").textContent = maps.names.get(maps.region);
+  }
+  async function selectRegion(id) {
+    maps.region = id;
+    updatePicker();
+    await drawRegionMaps();
+  }
+
+  async function loadRegion(id) {
+    if (!maps.regionCache.has(id)) {
+      maps.regionCache.set(id, getJSON(`grid_region/${maps.codes.get(id)}.json?v=1`).catch((err) => {
+        maps.regionCache.delete(id);
+        throw err;
+      }));
+    }
+    return maps.regionCache.get(id);
+  }
+
+  // Puntos de una celda: n por clase, en posiciones al azar dentro de la celda pero fijas para esa celda y
+  // clase (el k-ésimo punto cae siempre en el mismo lugar), así de un mes a otro solo aparecen o desaparecen.
+  function cellDots(cell, ci, counts, perDot, res) {
+    const dots = [];
+    counts.forEach((days, cls) => {
+      const rand = seeded(ci * 7919 + cls * 104729);
+      const exact = days / perDot;
+      const n = Math.floor(exact) + (seeded(ci * 31 + cls)() < exact % 1 ? 1 : 0);
+      for (let k = 0; k < n; k++) dots.push({ cls, lon: cell[0] + rand() * res, lat: cell[1] + rand() * res });
+    });
+    return dots;
+  }
+
+  async function drawRegionMaps() {
+    const id = maps.region;
+    const host = document.getElementById("region-maps");
+    let data;
+    try {
+      data = await loadRegion(id);
+    } catch (err) {
+      console.error(err);
+      host.textContent = "No se pudieron cargar los datos de la región.";
+      return;
+    }
+    if (id !== maps.region) return; // llegó tarde: ya se eligió otra
+    const feature = maps.land.features.find((f) => f.properties.id === id);
+    const cardW = cardWidth(host, 150);
+    const w = cardW - 16;
+    const projection = d3.geoMercator().fitWidth(w, feature);
+    const path = d3.geoPath(projection);
+    const [[, y0], [, y1]] = path.bounds(feature);
+    // Alto según la forma de la región, con tope (Chile tiene regiones muy alargadas).
+    const h = Math.min(Math.ceil(y1 - y0) + 2, 460);
+    projection.fitSize([w, h], feature);
+    const r = Math.max(1.1, Math.min(2, w / 150));
+    const classes = [0, 1, 2];
+    const cards = buildStrip("region-maps", cardW, h, (svg, m) => {
+      svg.append("path").attr("class", "land").attr("d", path(feature));
+      const dots = data.months[m].flatMap(([ci, ...counts]) => cellDots(data.cells[ci], ci, counts, data.perDot, data.res));
+      // Residentes abajo; visitantes encima (son menos y no deben quedar tapados).
+      dots.sort((a, b) => a.cls - b.cls);
+      svg.append("g").selectAll("circle").data(dots).join("circle")
+        .attr("class", (d) => `dot-r c${d.cls}`)
+        .attr("cx", (d) => projection([d.lon, d.lat])[0])
+        .attr("cy", (d) => projection([d.lon, d.lat])[1])
+        .attr("r", r);
+    }, `Mapa de ${maps.names.get(id)}`);
+    // Bajo cada mapa: qué parte de lo registrado son visitantes.
+    cards.append("p").attr("class", "map-n").html((m) => {
+      const sums = classes.map((c) => d3.sum(data.months[m], (row) => row[c + 1]));
+      const total = d3.sum(sums);
+      if (!total) return "sin datos";
+      const p = (x) => `${Math.round((100 * x) / total)} %`;
+      return `<span class="t1">${p(sums[1])} verano</span> · <span class="t2">${p(sums[2])} invierno</span>`;
+    });
+    applyResidentToggle();
+    document.getElementById("region-scale").textContent =
+      `1 punto ≈ ${data.perDot.toLocaleString("es-CL")} especie-días · celdas de ~5 km`;
+    updateMaps(false);
+  }
+
+  // Ocultar residentes: deja ver dónde están los nómadas (con residentes, los tapan en zonas muy observadas).
+  function applyResidentToggle() {
+    const hide = document.getElementById("hide-residents").checked;
+    d3.select("#region-maps").classed("no-residents", hide);
+  }
+
+  // ------------------------------ comunes a las dos franjas
   function updateMaps(follow) {
-    if (!maps.cards) return;
-    maps.cards.classed("current", (m) => m === state.month);
-    if (!follow) return;
-    // Si el mes actual no está a la vista, se desplaza la franja (no la página).
-    const strip = document.getElementById("maps");
-    const card = maps.cards.filter((m) => m === state.month).node();
-    if (!card) return;
-    const w = card.offsetWidth;
-    const left = AUSTRAL.indexOf(state.month) * w;
-    if (left < strip.scrollLeft || left + w > strip.scrollLeft + strip.clientWidth) {
-      const perPage = Math.max(1, Math.round(strip.clientWidth / w));
-      strip.scrollTo({ left: Math.floor(AUSTRAL.indexOf(state.month) / perPage) * perPage * w, behavior: "smooth" });
+    for (const { id, cards } of strips) {
+      if (!cards) continue;
+      cards.classed("current", (m) => m === state.month);
+      if (!follow) continue;
+      // Si el mes actual no está a la vista, se desplaza la franja (no la página).
+      const strip = document.getElementById(id);
+      const card = cards.filter((m) => m === state.month).node();
+      if (!card) continue;
+      const w = card.offsetWidth;
+      const i = AUSTRAL.indexOf(state.month);
+      if (i * w < strip.scrollLeft || (i + 1) * w > strip.scrollLeft + strip.clientWidth) {
+        const perPage = Math.max(1, Math.round(strip.clientWidth / w));
+        strip.scrollTo({ left: Math.floor(i / perPage) * perPage * w, behavior: "smooth" });
+      }
     }
   }
 
-  function initMapsNav() {
-    const strip = document.getElementById("maps");
+  function initStripNav(id) {
+    const strip = document.getElementById(id);
     const page = (dir) => {
       const card = strip.querySelector(".map-card");
       const w = card ? card.offsetWidth : strip.clientWidth / 4;
       strip.scrollBy({ left: dir * Math.round(strip.clientWidth / w) * w, behavior: "smooth" });
     };
-    document.getElementById("maps-prev").addEventListener("click", () => page(-1));
-    document.getElementById("maps-next").addEventListener("click", () => page(1));
+    document.querySelectorAll(`[data-strip="${id}"]`).forEach((b) =>
+      b.addEventListener("click", () => page(b.dataset.dir === "prev" ? -1 : 1)));
+  }
+  function initMapsNav() {
+    initStripNav("maps");
+    initStripNav("region-maps");
+    initMapsMode();
+    document.getElementById("hide-residents").addEventListener("change", applyResidentToggle);
+  }
+  function drawAllMaps() {
+    drawMaps();
+    drawRegionPicker();
+    drawRegionMaps();
   }
 
   // ---------------------------------------------------------------- tabla (vista accesible)
@@ -425,7 +661,7 @@
     drawMonths();
     drawTable();
     initMapsNav();
-    loadMaps().then(drawMaps).catch((err) => {
+    loadMaps().then(drawAllMaps).catch((err) => {
       console.error(err);
       document.getElementById("maps").textContent = "No se pudieron cargar los mapas.";
     });
@@ -441,7 +677,7 @@
       lastWidth = innerWidth;
       drawPulse();
       drawFlock();
-      drawMaps();
+      drawAllMaps();
     });
   }).catch((err) => {
     console.error(err);

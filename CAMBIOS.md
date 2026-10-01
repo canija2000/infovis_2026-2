@@ -81,3 +81,7 @@ Agrega una línea numerada por entrada, con tu nombre entre paréntesis.
    `python_scripts/build_grid_data.py` deja solo celdas con ≥ 50 especie-días y registros en ≥ 3 años, y calcula la
    ola = (prop. visitantes de verano − la de su región en el año) − (lo mismo para invierno). La portada dibuja un
    punto por celda (color = ola, tamaño = especie-días); reemplaza el coroplético regional de la entrada 20. (Joaquín)
+22. Portada: los mapas de Chile tienen un interruptor «Zonas ~22 km | Regiones» (los dos enfoques conviven en el
+   mismo espacio). Nueva vista «Una región de cerca»: Chile en horizontal como selector (norte a la izquierda) y los
+   12 meses de la región como mapa de puntos por clase (verde residentes, naranja verano, azul invierno), celdas de
+   ~5 km, 4 meses a la vez con scroll, opción de ocultar residentes. Datos por región en `web/data/grid_region/`. (Joaquín)
