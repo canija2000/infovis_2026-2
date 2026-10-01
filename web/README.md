@@ -4,7 +4,10 @@ Sitio estático sin build step, en dos páginas enlazadas por la barra superior 
 
 - `index.html` · **Visualización** (portada): titular + «el pulso del año» (áreas apiladas de especies
   presentes por mes y clase) + «un punto, una especie» (residentes quietas; visitantes que entran y salen
-  del país). Un mes compartido (botones, clic en el gráfico o ▶) mueve ambas vistas y el sonido:
+  del país) + «la ola recorre todo el país» (un mapa por mes, cuatro a la vista y scroll horizontal; cada
+  región coloreada por su ola de verano menos la de invierno, ambas relativas a su propio año; usa
+  `region_month.json` y `regions.min.geojson`). Un mes compartido (botones, clic en un gráfico o ▶) mueve
+  las vistas y el sonido:
   residentes = colchón; visitantes = cantos de especies presentes ese mes, 1 por cada 12 especies.
   Código en `inicio.js` e `inicio.css`; datos en `data/overview.json`
   (`python3 python_scripts/build_overview_data.py`).

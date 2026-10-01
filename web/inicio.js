@@ -49,6 +49,7 @@
   const present = (s, m) => ((s.mask >> m) & 1) === 1;
 
   // ---------------------------------------------------------------- A · pulso
+  const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
   const pulse = {};
   function drawPulse() {
     const host = document.getElementById("pulse");
@@ -215,6 +216,123 @@
     document.getElementById("flock-month").textContent = MONTHS[m];
   }
 
+  // ---------------------------------------------------------------- C · mapas por mes
+  // Índice de ola por región y mes: nivel de verano − nivel de invierno, cada uno relativo al rango anual
+  // de esa clase en esa región (0 = su mes más bajo, 1 = el más alto). −1 = domina la ola de invierno,
+  // +1 = la de verano. Comparar cada región consigo misma evita que las regiones con pocos registros
+  // parezcan «más visitadas». Datos: region_month.json y regions.min.geojson (los mismos de Explorar).
+  const EFFORT_LOW = 400;
+  const maps = {};
+  async function loadMaps() {
+    const get = (f) => fetch(`data/${f}`).then((r) => {
+      if (!r.ok) throw new Error(`${f}: ${r.status}`);
+      return r.json();
+    });
+    const [meta, regionMonth, geo] = await Promise.all([get("meta.json"), get("region_month.json"), get("regions.min.geojson")]);
+    const level = (series) => {
+      const [lo, hi] = d3.extent(series);
+      return series.map((v) => (hi > lo ? (v - lo) / (hi - lo) : 0));
+    };
+    const wave = new Map();
+    for (const f of geo.features) {
+      const rows = regionMonth.scopes[String(f.properties.id)];
+      if (!rows) continue;
+      const summer = level(rows.map((x) => x[2]));
+      const winter = level(rows.map((x) => x[3]));
+      wave.set(f.properties.id, {
+        index: summer.map((v, m) => v - winter[m]),
+        rows,
+        low: d3.mean(rows, (x) => x[5]) < EFFORT_LOW,
+      });
+    }
+    const names = new Map(meta.regions.map((r) => [r.id, r.name]));
+    Object.assign(maps, { geo, wave, names });
+  }
+
+  function drawMaps() {
+    if (!maps.geo) return;
+    const host = document.getElementById("maps");
+    host.innerHTML = "";
+    // Divergente: azul (invierno) ↔ gris neutro ↔ naranja (verano), los mismos tonos de las clases.
+    const color = d3.scaleDiverging(d3.interpolateRgbBasis([css("--c2"), css("--empty"), css("--c1")])).domain([-1, 0, 1]);
+    maps.color = color;
+    const cardW = Math.max(130, Math.floor(host.clientWidth / (host.clientWidth < 560 ? 2 : 4)));
+    const w = cardW - 16;
+    const h = Math.min(Math.round(w * 3.2), 520);
+    const projection = d3.geoMercator().fitSize([w, h], maps.geo);
+    const path = d3.geoPath(projection);
+
+    const cards = d3.select(host).selectAll("div.map-card").data(AUSTRAL).join("div")
+      .attr("class", "map-card")
+      .style("width", `${cardW}px`)
+      .on("click", (event, m) => setMonth(m));
+    cards.append("h3").text((m) => MONTHS[m]);
+    const svg = cards.append("svg").attr("viewBox", `0 0 ${w} ${h}`).attr("width", w).attr("height", h)
+      .attr("role", "img").attr("aria-label", (m) => `Mapa de ${MONTHS[m]}`);
+    svg.selectAll("path").data((m) => maps.geo.features.map((f) => ({ f, m }))).join("path")
+      .attr("class", (d) => `region${maps.wave.get(d.f.properties.id)?.low ? " low" : ""}`)
+      .attr("d", (d) => path(d.f))
+      .attr("fill", (d) => {
+        const r = maps.wave.get(d.f.properties.id);
+        return r ? color(r.index[d.m]) : "none";
+      })
+      .on("pointermove", (event, d) => {
+        const r = maps.wave.get(d.f.properties.id);
+        if (!r) return;
+        const [, , est, inv] = r.rows[d.m];
+        const v = r.index[d.m];
+        const verdict = v > 0.25 ? "domina la ola de verano" : v < -0.25 ? "domina la ola de invierno" : "entre olas";
+        showTip(event, `<b>${maps.names.get(d.f.properties.id)}</b> · ${MONTHS[d.m]}<br>` +
+          `<span class="tt-row"><i class="sw c1"></i>Visitantes de verano <b>${est}</b></span>` +
+          `<span class="tt-row"><i class="sw c2"></i>Visitantes de invierno <b>${inv}</b></span>` +
+          `<i>${verdict}</i>${r.low ? "<br><i>pocos registros: valor inestable</i>" : ""}`);
+      })
+      .on("pointerleave", hideTip);
+    maps.cards = cards;
+    drawMapsLegend(color);
+    updateMaps(false);
+  }
+
+  function drawMapsLegend(color) {
+    const host = d3.select("#maps-legend");
+    host.selectAll("*").remove();
+    const w = 220;
+    const svg = host.append("svg").attr("viewBox", `0 0 ${w} 34`).attr("width", w).attr("height", 34);
+    const id = "maps-grad";
+    const grad = svg.append("defs").append("linearGradient").attr("id", id);
+    d3.range(0, 1.01, 0.1).forEach((t) => grad.append("stop").attr("offset", `${t * 100}%`).attr("stop-color", color(t * 2 - 1)));
+    svg.append("rect").attr("x", 0).attr("y", 2).attr("width", w).attr("height", 10).attr("rx", 2).attr("fill", `url(#${id})`);
+    [["invierno", 0, "start"], ["entre olas", w / 2, "middle"], ["verano", w, "end"]].forEach(([t, x, anchor]) =>
+      svg.append("text").attr("x", x).attr("y", 28).attr("text-anchor", anchor).text(t));
+  }
+
+  function updateMaps(follow) {
+    if (!maps.cards) return;
+    maps.cards.classed("current", (m) => m === state.month);
+    if (!follow) return;
+    // Si el mes actual no está a la vista, se desplaza la franja (no la página).
+    const strip = document.getElementById("maps");
+    const card = maps.cards.filter((m) => m === state.month).node();
+    if (!card) return;
+    const w = card.offsetWidth;
+    const left = AUSTRAL.indexOf(state.month) * w;
+    if (left < strip.scrollLeft || left + w > strip.scrollLeft + strip.clientWidth) {
+      const perPage = Math.max(1, Math.round(strip.clientWidth / w));
+      strip.scrollTo({ left: Math.floor(AUSTRAL.indexOf(state.month) / perPage) * perPage * w, behavior: "smooth" });
+    }
+  }
+
+  function initMapsNav() {
+    const strip = document.getElementById("maps");
+    const page = (dir) => {
+      const card = strip.querySelector(".map-card");
+      const w = card ? card.offsetWidth : strip.clientWidth / 4;
+      strip.scrollBy({ left: dir * Math.round(strip.clientWidth / w) * w, behavior: "smooth" });
+    };
+    document.getElementById("maps-prev").addEventListener("click", () => page(-1));
+    document.getElementById("maps-next").addEventListener("click", () => page(1));
+  }
+
   // ---------------------------------------------------------------- tabla (vista accesible)
   function drawTable() {
     const rows = AUSTRAL.map((m) => `<tr><th scope="row">${MONTHS[m]}</th>${D.months[m].map((v) => `<td>${v}</td>`).join("")}</tr>`).join("");
@@ -240,6 +358,7 @@
     updatePulse();
     updateFlock(true);
     updateMonths();
+    updateMaps(true);
   }
 
   // ---------------------------------------------------------------- sonido
@@ -297,6 +416,11 @@
     drawFlock();
     drawMonths();
     drawTable();
+    initMapsNav();
+    loadMaps().then(drawMaps).catch((err) => {
+      console.error(err);
+      document.getElementById("maps").textContent = "No se pudieron cargar los mapas.";
+    });
     document.getElementById("play").addEventListener("click", togglePlay);
     document.addEventListener("keydown", (event) => {
       if (event.code !== "Space" || event.target.closest("button, input, a, summary")) return;
@@ -309,6 +433,7 @@
       lastWidth = innerWidth;
       drawPulse();
       drawFlock();
+      drawMaps();
     });
   }).catch((err) => {
     console.error(err);
