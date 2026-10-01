@@ -4,9 +4,6 @@
   padding-top: 28px;
   padding-bottom: 4px;
 }
-.inicio .hero h1 {
-  font-size: clamp(30px, 4.6vw, 52px);
-}
 .claim {
   max-width: 34ch;
   margin: 18px 0 0;
