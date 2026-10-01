@@ -22,10 +22,14 @@ GBIF (11 descargas anuales, Aves, Chile)
   sus datos intermedios y tablas de nombres viven en `gbif/`. Ver
   [`docs/metodologia-datos.md`](docs/metodologia-datos.md) (fuente, DOIs,
   limpieza, métrica y, en §10, año típico y clasificación estacional).
+- `python_scripts/build_overview_data.py`: deriva `web/data/overview.json` (~20 KB) para la portada
+  a partir de los archivos que ya genera `build_web_data.py`. Correrlo después de ese script.
 - `python_scripts/build_web_data.py`: genera los archivos livianos de la web (~0,86 MB de
   carga inicial). Solo usa la biblioteca estándar y su salida es determinista.
 - `gbif/synonyms_xc.json`: nombres científicos GBIF → Xeno-canto (IOC).
-- `web/`: frontend estático. `app.js` contiene las vistas y la interacción;
+- `web/`: frontend estático en dos páginas enlazadas. `index.html` (Visualización) es la portada:
+  una sola idea a primera vista (`inicio.js`, `inicio.css`, datos en `data/overview.json`).
+  `explorar.html` (Explorar) es el atlas completo: `app.js` contiene sus vistas y la interacción;
   `sonify.js`, la sonificación.
 - `python_scripts/preparar_audio_web.py`: elige, descarga (Xeno-canto, `cnt:chile`) y recorta los
   cantos que publica la web en `web/audio/` (clips + `clips.json`).
