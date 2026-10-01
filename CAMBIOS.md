@@ -76,3 +76,8 @@ Agrega una línea numerada por entrada, con tu nombre entre paréntesis.
    anual de la región. Muestra que el cambio de estación es nacional, no un frente norte → sur. Con coordenadas de GBIF
    (descargas fuera del repo) se podría bajar a una grilla de celdas. Arreglo: los enlaces de navegación usaban la clase
    `.tab` de las pestañas del calendario y heredaban su estilo; ahora `.site-tab`. (Joaquín)
+21. Mapas por mes con puntos en grilla: se volvieron a bajar las 11 descargas GBIF por DOI y
+   `python_scripts/gbif/grid_aggregate.py` cuenta especie-días por celda de 0,2° (~22 km) × mes × clase (2017–2024).
+   `python_scripts/build_grid_data.py` deja solo celdas con ≥ 50 especie-días y registros en ≥ 3 años, y calcula la
+   ola = (prop. visitantes de verano − la de su región en el año) − (lo mismo para invierno). La portada dibuja un
+   punto por celda (color = ola, tamaño = especie-días); reemplaza el coroplético regional de la entrada 20. (Joaquín)

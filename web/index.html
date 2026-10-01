@@ -17,8 +17,8 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Changa+One:ital@0;1&family=Shrikhand&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Pixelify+Sans:wght@400..700&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=inicio-4">
-  <link rel="stylesheet" href="inicio.css?v=inicio-4">
+  <link rel="stylesheet" href="styles.css?v=inicio-5">
+  <link rel="stylesheet" href="inicio.css?v=inicio-5">
 </head>
 
 <body class="inicio">
@@ -77,8 +77,8 @@
     <figure class="months-maps" aria-labelledby="maps-title">
       <figcaption>
         <h2 id="maps-title">La ola recorre todo el país</h2>
-        <p>Un mapa por mes. Cada región comparada con su propio año: naranja, el mes en que más pesan sus
-          visitantes de verano; azul, los de invierno.</p>
+        <p>Un punto por zona de unos 22 km donde se observan aves. Naranja: ese mes llegan más visitantes de verano
+          de lo habitual en su región; azul, más de invierno. El tamaño indica cuánto se observa allí.</p>
         <div class="maps-head">
           <div id="maps-legend" class="maps-legend"></div>
           <div class="maps-nav">
@@ -88,8 +88,8 @@
         </div>
       </figcaption>
       <div id="maps" class="maps-strip" tabindex="0" aria-label="Mapas de julio a junio; desplazar en horizontal"></div>
-      <p class="maps-note">Contorno punteado: región con pocos registros (&lt; 400 días-especie al mes), valores
-        inestables.</p>
+      <p class="maps-note">Zonas con ≥ 50 especie-días en el mes y registros en ≥ 3 de los 8 años (GBIF 2017–2024).
+        Sin punto: no hay datos suficientes ese mes, no que no haya aves.</p>
     </figure>
 
     <details class="table-view">
@@ -111,7 +111,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
   <script src="sonify.js"></script>
-  <script src="inicio.js?v=inicio-4"></script>
+  <script src="inicio.js?v=inicio-5"></script>
 </body>
 
 </html>
