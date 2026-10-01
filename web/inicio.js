@@ -2,7 +2,8 @@
  * Una sola idea, sin necesidad de interactuar:
  *   A · El pulso del año: especies presentes en Chile por mes, apiladas por clase (año austral jul → jun).
  *   B · Un punto, una especie: las residentes quedan quietas; las visitantes entran y salen del país.
- * El mes (botones, clic en A o ▶) manda en ambas vistas y en el sonido.
+ * El mes (botones o clic en un gráfico) manda en todas las vistas. El loop sonoro (loop.js) recorre el año
+ * y mueve el mes; si el usuario elige un mes, el loop salta a él.
  * Datos: data/overview.json (python_scripts/build_overview_data.py).
  */
 (() => {
@@ -456,6 +457,7 @@
   async function selectRegion(id) {
     maps.region = id;
     updatePicker();
+    onRegionChange(id);
     await drawRegionMaps();
   }
 
@@ -597,19 +599,31 @@
   function updateMonths() {
     d3.select("#months").selectAll("button").attr("aria-pressed", (m) => String(m === state.month));
   }
-  function setMonth(m) {
+  // fromLoop: el cambio viene del loop sonoro; si no, lo eligió el usuario y el loop salta a ese mes.
+  function setMonth(m, fromLoop = false) {
     state.month = m;
+    if (!fromLoop) {
+      SoundLoop.jump(m);
+      updateNowPlaying(m);
+    }
     updatePulse();
     updateFlock(true);
     updateMonths();
     updateMaps(true);
   }
 
-  // ---------------------------------------------------------------- sonido
-  // Un mes = un compás (sonify.js). Residentes = colchón estable; visitantes = cantos de especies presentes ese mes.
-  // Cantidad de cantos ∝ especies visitantes presentes (1 canto por cada 12 especies, mínimo 1): la ola se oye
-  // como densidad. Verano a la izquierda, invierno a la derecha.
-  const PER_HIT = 12;
+  // ---------------------------------------------------------------- sonido: loop del año
+  // El año suena en bucle (loop.js): cada mes son 4 compases de 3 s. En cada compás suenan fragmentos de cantos
+  // reales de las especies presentes ese mes en el ámbito elegido (Chile o la región de «Una región de cerca»);
+  // cuanto más extendida está una especie ese mes, más copias de su canto (1 a 4). Datos: data/loop.json.
+  // Arranca solo al cargar la página; el navegador lo deja sonar desde el primer clic o tecla.
+  const PLAY_D = "M4.5 2.5v11l9-5.5z";
+  const PAUSE_D = "M4 2.5h3v11H4zM9 2.5h3v11H9z";
+  const sound = { data: null, scope: 0, paused: false, muted: false };
+  try {
+    sound.muted = localStorage.getItem("loop-muted") === "1";
+  } catch (err) { /* sin almacenamiento: queda con sonido */ }
+
   function seeded(seed) {
     let t = seed + 0x6d2b79f5;
     return () => {
@@ -618,40 +632,119 @@
       return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
     };
   }
-  let barCount = 0;
-  function barFor(m) {
-    const rand = seeded(m * 101 + barCount++);
+  const voicesFor = (m) => (sound.data.scopes[String(sound.scope)] || sound.data.scopes["0"])[m];
+  const clipsFor = (m) => voicesFor(m).map(([sid]) => sound.data.species[sid].clip);
+
+  function planBar(m, b) {
+    const voices = voicesFor(m);
+    const total = d3.sum(voices, (v) => v[1]) || 1;
     const hits = [];
-    [[1, -0.4], [2, 0.4]].forEach(([cls, pan]) => {
-      const here = D.species.filter((s) => s.cls === cls && present(s, m) && s.grain);
-      const count = D.months[m][cls];
-      const n = Math.min(here.length, Math.max(1, Math.round(count / PER_HIT)));
-      d3.shuffle(here, rand);
-      for (let k = 0; k < n; k++) {
-        const at = (k + 0.15 + rand() * 0.6) / n;
-        hits.push({ at: Math.min(0.92, at), sample: here[k].grain, rate: 1 + (rand() - 0.5) * 0.12, gain: cls === 1 ? 0.22 : 0.28, pan });
+    voices.forEach(([sid, copies], vi) => {
+      for (let k = 0; k < copies; k++) {
+        const seed = (((m * 8 + b) * 32 + vi) * 8 + k) * 31 + sid;
+        hits.push({ url: sound.data.species[sid].clip, gain: 0.6 / Math.sqrt(total), pan: (seeded(seed)() * 2 - 1) * 0.7, seed: seed * 7 + 3 });
       }
     });
-    return { tick: true, pad: { freqs: [110, 165], gain: 0.06 * (D.months[m][0] / 214) }, hits };
+    if (b === 0) SoundLoop.load(clipsFor((m + 1) % 12)); // precarga el mes siguiente
+    return { tick: b === 0, hits };
   }
-  async function togglePlay() {
-    const btn = document.getElementById("play");
-    const icon = document.getElementById("play-icon");
-    if (Sonifier.playing) {
-      Sonifier.stop();
-      btn.setAttribute("aria-pressed", "false");
-      btn.setAttribute("aria-label", "Escuchar el año");
-      icon.setAttribute("d", "M4.5 2.5v11l9-5.5z");
+  function onBar(m, b) {
+    if (m !== state.month) setMonth(m, true);
+    d3.selectAll("#bars i").classed("on", (d, i) => i === b);
+    updateNowPlaying(m);
+  }
+  function updateNowPlaying(m = state.month) {
+    if (!sound.data) return;
+    const names = voicesFor(m).map(([sid, copies]) => {
+      const sp = sound.data.species[sid];
+      return `<span class="v c${sp.cls}">${sp.name}${copies > 1 ? ` <b>×${copies}</b>` : ""}</span>`;
+    });
+    document.getElementById("now-playing").innerHTML = names.join(" ");
+  }
+
+  async function initSound() {
+    try {
+      sound.data = await fetch("data/loop.json?v=1").then((r) => {
+        if (!r.ok) throw new Error(`loop.json: ${r.status}`);
+        return r.json();
+      });
+    } catch (err) {
+      console.error(err);
       return;
     }
-    const urls = D.species.filter((s) => s.cls && s.grain).map((s) => s.grain);
-    btn.setAttribute("aria-busy", "true");
-    const ok = await Sonifier.start(state.month, barFor, (m) => setMonth(m), urls);
-    btn.removeAttribute("aria-busy");
-    if (!ok) return;
-    btn.setAttribute("aria-pressed", "true");
-    btn.setAttribute("aria-label", "Pausar");
-    icon.setAttribute("d", "M4 2.5h3v11H4zM9 2.5h3v11H9z");
+    SoundLoop.configure(sound.data);
+    SoundLoop.setMuted(sound.muted);
+    syncSoundButtons();
+    updateNowPlaying();
+    await SoundLoop.load(clipsFor(state.month));
+    SoundLoop.start(state.month, planBar, onBar);
+    // Sin gesto del usuario el navegador mantiene el audio suspendido: el loop arranca con el primer clic o tecla.
+    if (!SoundLoop.unlocked) {
+      const hint = document.getElementById("sound-hint");
+      hint.hidden = false;
+      const unlock = async () => {
+        if (await SoundLoop.unlock()) {
+          hint.hidden = true;
+          removeEventListener("pointerdown", unlock, true);
+          removeEventListener("keydown", unlock, true);
+        }
+      };
+      addEventListener("pointerdown", unlock, true);
+      addEventListener("keydown", unlock, true);
+    }
+  }
+
+  function togglePause() {
+    if (!sound.data) return;
+    sound.paused = !sound.paused;
+    if (sound.paused) SoundLoop.stop();
+    else SoundLoop.start(state.month, planBar, onBar);
+    syncSoundButtons();
+  }
+  function toggleMute() {
+    sound.muted = !sound.muted;
+    SoundLoop.setMuted(sound.muted);
+    try {
+      localStorage.setItem("loop-muted", sound.muted ? "1" : "0");
+    } catch (err) { /* sin almacenamiento */ }
+    syncSoundButtons();
+  }
+  function syncSoundButtons() {
+    const play = document.getElementById("play");
+    play.setAttribute("aria-pressed", String(!sound.paused));
+    play.setAttribute("aria-label", sound.paused ? "Reanudar el año" : "Pausar el año");
+    play.title = `${sound.paused ? "Reanudar" : "Pausar"} (barra espaciadora)`;
+    document.getElementById("play-icon").setAttribute("d", sound.paused ? PLAY_D : PAUSE_D);
+    const mute = document.getElementById("mute");
+    mute.setAttribute("aria-pressed", String(sound.muted));
+    mute.setAttribute("aria-label", sound.muted ? "Activar sonido" : "Silenciar");
+    mute.title = sound.muted ? "Activar sonido" : "Silenciar";
+    d3.selectAll("#sound-scope button").attr("aria-pressed", function () {
+      return String((this.dataset.scope === "region") === (sound.scope !== 0));
+    });
+  }
+  function setSoundScope(scope) {
+    sound.scope = scope;
+    if (sound.data) SoundLoop.load(clipsFor(state.month));
+    syncSoundButtons();
+    updateNowPlaying();
+  }
+  function initSoundControls() {
+    document.getElementById("play").addEventListener("click", togglePause);
+    document.getElementById("mute").addEventListener("click", toggleMute);
+    d3.selectAll("#sound-scope button").on("click", function () {
+      setSoundScope(this.dataset.scope === "region" ? maps.region : 0);
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.code !== "Space" || event.target.closest("button, input, select, a, summary, [role=button]")) return;
+      event.preventDefault();
+      togglePause();
+    });
+  }
+  // La región elegida en «Una región de cerca» también es la del sonido cuando el ámbito es «región».
+  function onRegionChange(id) {
+    document.getElementById("sound-region-name").textContent = maps.names.get(id);
+    if (sound.scope !== 0) setSoundScope(id);
   }
 
   // ---------------------------------------------------------------- inicio
@@ -665,12 +758,8 @@
       console.error(err);
       document.getElementById("maps").textContent = "No se pudieron cargar los mapas.";
     });
-    document.getElementById("play").addEventListener("click", togglePlay);
-    document.addEventListener("keydown", (event) => {
-      if (event.code !== "Space" || event.target.closest("button, input, a, summary")) return;
-      event.preventDefault();
-      togglePlay();
-    });
+    initSoundControls();
+    initSound();
     let lastWidth = innerWidth;
     addEventListener("resize", () => {
       if (innerWidth === lastWidth) return;

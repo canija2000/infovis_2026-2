@@ -9,7 +9,12 @@ Sitio estático sin build step, en dos páginas enlazadas por la barra superior 
   región, tamaño = especie-días; usa `grid_month.json` y `regions.min.geojson`). Un interruptor la cambia a
   «Regiones» (un color por región, desde `region_month.json`). Debajo, «Una región de cerca»: Chile en
   horizontal como selector y los 12 meses de la región elegida como mapa de puntos por clase
-  (1 punto ≈ k especie-días, celdas de 0,05°; `data/grid_region/<código>.json`, cargado al elegirla). Un mes compartido (botones, clic en un gráfico o ▶) mueve
+  (1 punto ≈ k especie-días, celdas de 0,05°; `data/grid_region/<código>.json`, cargado al elegirla).
+- Sonido de la portada: `loop.js`, un loop del año que arranca solo (o con el primer gesto, si el navegador
+  lo bloquea). Cada mes = 4 compases de 3 s; en cada compás suenan cantos de las especies presentes en Chile o
+  en la región elegida, con 1 a 4 copias según qué tan extendida está la especie (`data/loop.json`,
+  `python3 python_scripts/build_loop_data.py`). Pausa, silencio (recordado en `localStorage`) y nota «Cómo se
+  compone el sonido» al final. Explorar sigue usando `sonify.js`. Un mes compartido (botones, clic en un gráfico o ▶) mueve
   las vistas y el sonido:
   residentes = colchón; visitantes = cantos de especies presentes ese mes, 1 por cada 12 especies.
   Código en `inicio.js` e `inicio.css`; datos en `data/overview.json`

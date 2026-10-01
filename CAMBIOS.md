@@ -85,3 +85,10 @@ Agrega una línea numerada por entrada, con tu nombre entre paréntesis.
    mismo espacio). Nueva vista «Una región de cerca»: Chile en horizontal como selector (norte a la izquierda) y los
    12 meses de la región como mapa de puntos por clase (verde residentes, naranja verano, azul invierno), celdas de
    ~5 km, 4 meses a la vez con scroll, opción de ocultar residentes. Datos por región en `web/data/grid_region/`. (Joaquín)
+23. Loop sonoro de la portada (`web/loop.js`): el año suena en bucle desde que se abre la página (con el primer
+   clic si el navegador bloquea el audio). Cada mes = 4 compases de 3 s (12 s; año = 2 min 24 s). En cada compás
+   suenan cantos de las 6 especies más extendidas del mes + las 3 visitantes más extendidas, en Chile o en la
+   región elegida; cada una con 1 a 4 copias según sus lugar-días (celdas de ~5 km × fechas, GBIF 2017–2024).
+   La frecuencia de detección no servía: se satura en las especies comunes. Pausa, silencio recordado e
+   indicador de compás; nota «Cómo se compone el sonido» al final. Reemplaza la sonificación anterior de la
+   portada (Explorar mantiene `sonify.js`). (Joaquín)

@@ -17,8 +17,8 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Changa+One:ital@0;1&family=Shrikhand&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Pixelify+Sans:wght@400..700&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=inicio-7">
-  <link rel="stylesheet" href="inicio.css?v=inicio-7">
+  <link rel="stylesheet" href="styles.css?v=inicio-8">
+  <link rel="stylesheet" href="inicio.css?v=inicio-8">
 </head>
 
 <body class="inicio">
@@ -54,14 +54,31 @@
 
     <!-- Controles comunes: el mes manda en ambas vistas -->
     <div class="player">
-      <button id="play" class="play icon-btn" type="button" aria-pressed="false" aria-label="Escuchar el año"
-        title="Escuchar el año (barra espaciadora)">
-        <svg viewBox="0 0 16 16" aria-hidden="true">
-          <path id="play-icon" d="M4.5 2.5v11l9-5.5z" />
-        </svg>
-      </button>
-      <span class="player-label">Escuchar el año</span>
+      <div class="player-controls">
+        <button id="play" class="play icon-btn" type="button" aria-pressed="true" aria-label="Pausar el año"
+          title="Pausar (barra espaciadora)">
+          <svg viewBox="0 0 16 16" aria-hidden="true">
+            <path id="play-icon" d="M4 2.5h3v11H4zM9 2.5h3v11H9z" />
+          </svg>
+        </button>
+        <button id="mute" class="ghost icon-btn" type="button" aria-pressed="false" aria-label="Silenciar"
+          title="Silenciar">
+          <svg viewBox="0 0 20 20" aria-hidden="true">
+            <path class="speaker" d="M3 7.5h3l4-3.5v12l-4-3.5H3z" />
+            <path class="waves" d="M13 7a4 4 0 0 1 0 6M15.5 4.5a7.5 7.5 0 0 1 0 11" />
+            <path class="cross" d="M13 7.5l5 5M18 7.5l-5 5" />
+          </svg>
+        </button>
+        <div class="bars" id="bars" title="Compás del mes (4 × 3 s)" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        <div id="sound-scope" class="seg" role="group" aria-label="Qué se escucha">
+          <button type="button" data-scope="chile">Chile</button>
+          <button type="button" data-scope="region"><span id="sound-region-name">Metropolitana</span></button>
+        </div>
+      </div>
       <div class="months" id="months" role="group" aria-label="Mes"></div>
+      <p class="now-playing"><span class="np-label">Suenan:</span> <span id="now-playing"></span></p>
+      <p id="sound-hint" class="sound-hint" hidden>El año ya está sonando: haz clic en cualquier parte para escucharlo
+        (el navegador no deja reproducir audio sin un gesto). <a href="#como-suena">Cómo se compone</a></p>
     </div>
 
     <!-- B · Puntos que viajan -->
@@ -133,6 +150,27 @@
     </details>
   </main>
 
+  <section id="como-suena" class="como-suena" aria-labelledby="cs-title">
+    <h2 id="cs-title">Cómo se compone el sonido</h2>
+    <p>La página reproduce el año como una pieza en bucle. Cada mes dura <b>4 compases de 3 segundos</b>
+      (12 s), y el año completo, 2 min 24 s; al terminar, vuelve a empezar. Un golpe grave y suave marca el inicio
+      de cada mes.</p>
+    <ul>
+      <li><b>Qué suena:</b> fragmentos de cantos reales (Xeno-canto) de las especies presentes ese mes en Chile, o
+        en la región elegida en «Una región de cerca». Se eligen las 6 especies más extendidas del mes y, además,
+        las 3 visitantes más extendidas, para que la ola de verano y la de invierno se oigan.</li>
+      <li><b>Cuántas veces:</b> cuanto más extendida está una especie ese mes, más copias de su canto suenan en cada
+        compás, de 1 a 4. «Extendida» = en cuántos lugares (celdas de ~5 km) y días se registró, promedio
+        2017–2024 (GBIF). Si la diuca está en todas partes, no suena una diuca: suenan cuatro.</li>
+      <li><b>Cuándo y dónde:</b> cada copia entra en un momento al azar del compás y en una posición al azar entre
+        izquierda y derecha; el azar tiene semilla fija, así que cada vuelta del año suena igual.</li>
+      <li><b>Arranque:</b> el año empieza a sonar solo al abrir la página. Los navegadores no dejan reproducir audio
+        sin un gesto, así que si lo bloquean, comienza con el primer clic o tecla.</li>
+      <li><b>Controles:</b> <b>❚❚</b> pausa el año (y deja de avanzar el mes); el parlante silencia sin detenerlo
+        (se recuerda para la próxima visita). Elegir un mes salta a ese mes.</li>
+    </ul>
+  </section>
+
   <footer class="inicio-foot">
     <p><a class="go" href="explorar.html">Explorar por región y especie →</a></p>
     <p class="muted">Año típico 2017–2024 a partir de ~6,5 millones de registros de GBIF. Una especie está
@@ -145,8 +183,8 @@
   <div id="tooltip" class="tooltip" role="tooltip" hidden></div>
 
   <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
-  <script src="sonify.js"></script>
-  <script src="inicio.js?v=inicio-7"></script>
+  <script src="loop.js?v=1"></script>
+  <script src="inicio.js?v=inicio-8"></script>
 </body>
 
 </html>
