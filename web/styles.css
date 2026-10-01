@@ -1440,7 +1440,7 @@ details.how p {
   padding: 0;
   list-style: none;
 }
-.site-nav a.tab {
+.site-nav a.site-tab {
   display: inline-block;
   padding: 4px 12px;
   border: 1px solid var(--rule);
@@ -1448,11 +1448,11 @@ details.how p {
   color: var(--ink-2);
   text-decoration: none;
 }
-.site-nav a.tab:hover {
+.site-nav a.site-tab:hover {
   border-color: var(--ink-3);
   color: var(--ink);
 }
-.site-nav a.tab[aria-current="page"] {
+.site-nav a.site-tab[aria-current="page"] {
   background: var(--accent);
   border-color: var(--accent);
   color: var(--bg);
