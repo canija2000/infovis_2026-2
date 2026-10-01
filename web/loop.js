@@ -1,6 +1,7 @@
 // Loop sonoro de la portada (Web Audio API, sin dependencias).
 // El año suena como una pieza en bucle: cada mes son `barsPerMonth` compases de `barSeconds` segundos.
-// En cada compás, la página entrega la lista de cantos a tocar (plan): { hits: [{ url, gain, pan, seed }], tick }.
+// En cada compás, la página entrega la lista de cantos a tocar (plan): { hits: [{ url, gain, pan, seed, win }], tick }.
+// `win`: inicios (s) de los mejores tramos del clip; cada copia toca uno de ellos.
 // Cada «hit» es un fragmento de la grabación de una especie que entra en un momento al azar del compás;
 // una especie con 4 copias suena 4 veces en el mismo compás.
 // Los navegadores no dejan sonar audio sin un gesto del usuario: el AudioContext se crea al cargar, pero
@@ -64,12 +65,15 @@ const SoundLoop = (() => {
     };
   }
 
-  function hit(time, { url, gain, pan, seed }) {
+  function hit(time, { url, gain, pan, seed, win }) {
     const buffer = buffers.get(url);
     if (!buffer) return; // aún cargando: ese compás suena sin esta copia
     const rand = seeded(seed);
     const len = Math.min(SEGMENT, buffer.duration);
-    const offset = rand() * Math.max(0, buffer.duration - len);
+    // Desde uno de los mejores tramos del clip (análisis previo), no desde un punto al azar:
+    // así no suena un pedazo de puro fondo entre dos cantos.
+    const pick = win && win.length ? win[Math.floor(rand() * win.length)] : rand() * Math.max(0, buffer.duration - len);
+    const offset = Math.min(pick, Math.max(0, buffer.duration - len));
     const at = time + rand() * Math.max(0.05, barSeconds - len * 0.6);
     const src = ctx.createBufferSource();
     src.buffer = buffer;

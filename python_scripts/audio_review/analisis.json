@@ -1,0 +1,7901 @@
+{
+ "0": {
+  "name": "Chincol",
+  "sci": "Zonotrichia capensis",
+  "cls": 0,
+  "xc": "1028948",
+  "url": "https://xeno-canto.org/1028948",
+  "recordist": "Francisco Rivas Fuenzalida",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC1028948.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 54.2,
+   "activity": 36.6,
+   "rumble": -52.0,
+   "windows": [
+    1.95,
+    3.95
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC1028948.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 67.2,
+   "activity": 45.9,
+   "rumble": -71.5,
+   "windows": [
+    1.95,
+    3.95
+   ]
+  },
+  "scopes": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   10,
+   11,
+   12,
+   14,
+   15,
+   16
+  ],
+  "maxCopies": 4
+ },
+ "1": {
+  "name": "Zorzal patagónico",
+  "sci": "Turdus falcklandii",
+  "cls": 0,
+  "xc": "1176003",
+  "url": "https://xeno-canto.org/1176003",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC1176003.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 23.7,
+   "activity": 21.0,
+   "rumble": -42.1,
+   "windows": [
+    0.56,
+    3.58
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC1176003.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 34.4,
+   "activity": 35.0,
+   "rumble": -65.1,
+   "windows": [
+    0.56,
+    3.67
+   ]
+  },
+  "scopes": [
+   0,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16
+  ],
+  "maxCopies": 4
+ },
+ "2": {
+  "name": "Chercán común",
+  "sci": "Troglodytes musculus",
+  "cls": 0,
+  "xc": "1165887",
+  "url": "https://xeno-canto.org/1165887",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC1165887.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 37.4,
+   "activity": 47.1,
+   "rumble": -45.0,
+   "windows": [
+    0.0,
+    3.83
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC1165887.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 48.8,
+   "activity": 57.2,
+   "rumble": -67.7,
+   "windows": [
+    0.0,
+    3.83
+   ]
+  },
+  "scopes": [
+   0,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14,
+   15
+  ],
+  "maxCopies": 4
+ },
+ "3": {
+  "name": "Queltehue común",
+  "sci": "Vanellus chilensis",
+  "cls": 0,
+  "xc": "60001",
+  "url": "https://xeno-canto.org/60001",
+  "recordist": "Alvaro Jaramillo",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC60001.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 42.9,
+   "activity": 65.4,
+   "rumble": -111.0,
+   "windows": [
+    0.02,
+    2.02
+   ]
+  },
+  "scopes": [
+   0,
+   5,
+   6,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16
+  ],
+  "maxCopies": 4
+ },
+ "4": {
+  "name": "Gorrión",
+  "sci": "Passer domesticus",
+  "cls": 0,
+  "xc": "116041",
+  "url": "https://xeno-canto.org/116041",
+  "recordist": "Andrew Spencer",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
+  "src": {
+   "path": "audio/XC116041.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 48.6,
+   "activity": 25.3,
+   "rumble": -81.9,
+   "windows": [
+    0.74,
+    3.32
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC116041.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 58.5,
+   "activity": 37.0,
+   "rumble": -98.5,
+   "windows": [
+    0.65,
+    3.32
+   ]
+  },
+  "scopes": [
+   0,
+   2,
+   3,
+   4,
+   5,
+   8,
+   9,
+   10,
+   11,
+   12,
+   14
+  ],
+  "maxCopies": 4
+ },
+ "5": {
+  "name": "Gaviota dominicana",
+  "sci": "Larus dominicanus",
+  "cls": 0,
+  "xc": "1169250",
+  "url": "https://xeno-canto.org/1169250",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC1169250.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 18.5,
+   "activity": 12.1,
+   "rumble": -65.4,
+   "windows": [
+    0.46,
+    3.53
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC1169250.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 30.1,
+   "activity": 24.5,
+   "rumble": -86.3,
+   "windows": [
+    0.46,
+    3.48
+   ]
+  },
+  "scopes": [
+   0,
+   4,
+   5,
+   6,
+   11,
+   14,
+   15,
+   16
+  ],
+  "maxCopies": 4
+ },
+ "6": {
+  "name": "Golondrina chilena",
+  "sci": "Tachycineta leucopyga",
+  "cls": 0,
+  "xc": "116040",
+  "url": "https://xeno-canto.org/116040",
+  "recordist": "Andrew Spencer",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
+  "src": {
+   "path": "audio/XC116040.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 33.0,
+   "activity": 45.1,
+   "rumble": -51.1,
+   "windows": [
+    1.0,
+    3.65
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC116040.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 40.1,
+   "activity": 54.1,
+   "rumble": -73.5,
+   "windows": [
+    1.0,
+    3.65
+   ]
+  },
+  "scopes": [
+   0,
+   4,
+   5,
+   6,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16
+  ],
+  "maxCopies": 4
+ },
+ "7": {
+  "name": "Cormorán Neotropical",
+  "sci": "Phalacrocorax brasilianus",
+  "cls": 0,
+  "xc": "1169256",
+  "url": "https://xeno-canto.org/1169256",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC1169256.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 14.2,
+   "activity": 14.0,
+   "rumble": -30.6,
+   "windows": [
+    1.07,
+    3.07
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC1169256.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 25.7,
+   "activity": 39.7,
+   "rumble": -49.5,
+   "windows": [
+    1.07,
+    3.07
+   ]
+  },
+  "scopes": [
+   2,
+   4,
+   6,
+   11,
+   16
+  ],
+  "maxCopies": 4
+ },
+ "8": {
+  "name": "Paloma doméstica",
+  "sci": "Columba livia",
+  "cls": 0,
+  "xc": "663912",
+  "url": "https://xeno-canto.org/663912",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC663912.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 19.3,
+   "activity": 19.5,
+   "rumble": -21.6,
+   "windows": [
+    0.09,
+    3.72
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC663912.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 31.2,
+   "activity": 26.8,
+   "rumble": -40.4,
+   "windows": [
+    0.09,
+    3.72
+   ]
+  },
+  "scopes": [
+   3,
+   6,
+   7,
+   11
+  ],
+  "maxCopies": 4
+ },
+ "9": {
+  "name": "Loica",
+  "sci": "Sturnella loyca",
+  "cls": 0,
+  "xc": "1169312",
+  "url": "https://xeno-canto.org/1169312",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC1169312.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 30.4,
+   "activity": 43.6,
+   "rumble": -50.1,
+   "windows": [
+    0.79,
+    2.79
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC1169312.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 42.7,
+   "activity": 55.3,
+   "rumble": -79.1,
+   "windows": [
+    0.79,
+    2.79
+   ]
+  },
+  "scopes": [
+   8,
+   10,
+   16
+  ],
+  "maxCopies": 4
+ },
+ "10": {
+  "name": "Tordo",
+  "sci": "Curaeus curaeus",
+  "cls": 0,
+  "xc": "1077896",
+  "url": "https://xeno-canto.org/1077896",
+  "recordist": "Meena Haribal",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC1077896.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 21.7,
+   "activity": 24.5,
+   "rumble": -57.8,
+   "windows": [
+    0.23,
+    3.34
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC1077896.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 31.0,
+   "activity": 38.5,
+   "rumble": -79.7,
+   "windows": [
+    0.23,
+    3.34
+   ]
+  },
+  "scopes": [
+   7,
+   8,
+   15
+  ],
+  "maxCopies": 4
+ },
+ "11": {
+  "name": "Cachudito común",
+  "sci": "Anairetes parulus",
+  "cls": 0,
+  "xc": "929415",
+  "url": "https://xeno-canto.org/929415",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC929415.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 24.8,
+   "activity": 47.5,
+   "rumble": -59.9,
+   "windows": [
+    0.23,
+    2.86
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC929415.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 33.4,
+   "activity": 60.7,
+   "rumble": -85.2,
+   "windows": [
+    1.02,
+    3.81
+   ]
+  },
+  "scopes": [
+   0,
+   4,
+   8,
+   9,
+   10,
+   12,
+   15
+  ],
+  "maxCopies": 4
+ },
+ "12": {
+  "name": "Tórtola",
+  "sci": "Zenaida auriculata",
+  "cls": 0,
+  "xc": "17314",
+  "url": "https://xeno-canto.org/17314",
+  "recordist": "Doug Knapp",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC17314.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 20.5,
+   "activity": 38.9,
+   "rumble": -19.8,
+   "windows": [
+    0.3,
+    2.3
+   ]
+  },
+  "scopes": [
+   2,
+   3,
+   7,
+   8,
+   9,
+   10
+  ],
+  "maxCopies": 4
+ },
+ "13": {
+  "name": "Jote de cabeza colorada",
+  "sci": "Cathartes aura",
+  "cls": 0,
+  "xc": "520288",
+  "url": "https://xeno-canto.org/520288",
+  "recordist": "Cristian Pinto",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC520288.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 24.5,
+   "activity": 49.0,
+   "rumble": -31.7,
+   "windows": [
+    0.05,
+    3.92
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC520288.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 40.9,
+   "activity": 67.3,
+   "rumble": -47.4,
+   "windows": [
+    0.05,
+    3.92
+   ]
+  },
+  "scopes": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   9,
+   11
+  ],
+  "maxCopies": 4
+ },
+ "14": {
+  "name": "Jilguero austral",
+  "sci": "Spinus barbatus",
+  "cls": 0,
+  "xc": "1169317",
+  "url": "https://xeno-canto.org/1169317",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC1169317.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 38.5,
+   "activity": 72.8,
+   "rumble": -82.8,
+   "windows": [
+    1.16,
+    3.16
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC1169317.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 49.4,
+   "activity": 75.9,
+   "rumble": -94.2,
+   "windows": [
+    1.09,
+    3.09
+   ]
+  },
+  "scopes": [
+   9,
+   10,
+   12,
+   16
+  ],
+  "maxCopies": 3
+ },
+ "15": {
+  "name": "Diucón",
+  "sci": "Xolmis pyrope",
+  "cls": 0,
+  "xc": "727241",
+  "url": "https://xeno-canto.org/727241",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC727241.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 23.8,
+   "activity": 17.1,
+   "rumble": -39.1,
+   "windows": [
+    0.58,
+    3.92
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC727241.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 35.0,
+   "activity": 31.5,
+   "rumble": -63.7,
+   "windows": [
+    0.58,
+    3.95
+   ]
+  },
+  "scopes": [
+   6,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14,
+   15
+  ],
+  "maxCopies": 4
+ },
+ "16": {
+  "name": "Picaflor chico",
+  "sci": "Sephanoides sephaniodes",
+  "cls": 2,
+  "xc": "665427",
+  "url": "https://xeno-canto.org/665427",
+  "recordist": "Andre Vielma",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC665427.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 34.5,
+   "activity": 65.0,
+   "rumble": -26.8,
+   "windows": [
+    1.37,
+    3.39
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC665427.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 41.8,
+   "activity": 66.5,
+   "rumble": -46.3,
+   "windows": [
+    1.37,
+    3.39
+   ]
+  },
+  "scopes": [
+   0,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14,
+   15
+  ],
+  "maxCopies": 4
+ },
+ "17": {
+  "name": "Tenca chilena",
+  "sci": "Mimus thenca",
+  "cls": 0,
+  "xc": "946747",
+  "url": "https://xeno-canto.org/946747",
+  "recordist": "José Dellacasa Bravo",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC946747.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 35.2,
+   "activity": 17.1,
+   "rumble": -38.6,
+   "windows": [
+    0.0,
+    3.97
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC946747.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 47.0,
+   "activity": 38.5,
+   "rumble": -65.8,
+   "windows": [
+    0.0,
+    3.76
+   ]
+  },
+  "scopes": [
+   5,
+   6
+  ],
+  "maxCopies": 4
+ },
+ "18": {
+  "name": "Pato jergón grande",
+  "sci": "Anas georgica",
+  "cls": 0,
+  "xc": "718708",
+  "url": "https://xeno-canto.org/718708",
+  "recordist": "Ignacio Escobar",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC718708.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 28.4,
+   "activity": 45.1,
+   "rumble": -39.1,
+   "windows": [
+    0.37,
+    3.97
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC718708.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 41.0,
+   "activity": 55.6,
+   "rumble": -57.3,
+   "windows": [
+    0.37,
+    3.97
+   ]
+  },
+  "scopes": [
+   10,
+   15
+  ],
+  "maxCopies": 3
+ },
+ "19": {
+  "name": "Pato jergón chico",
+  "sci": "Anas flavirostris",
+  "cls": 0,
+  "xc": "925408",
+  "url": "https://xeno-canto.org/925408",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC925408.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 15.1,
+   "activity": 19.1,
+   "rumble": -78.0,
+   "windows": [
+    0.37,
+    3.83
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC925408.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 25.5,
+   "activity": 37.7,
+   "rumble": -99.1,
+   "windows": [
+    0.37,
+    3.83
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "20": {
+  "name": "Diuca común",
+  "sci": "Diuca diuca",
+  "cls": 0,
+  "xc": "1048335",
+  "url": "https://xeno-canto.org/1048335",
+  "recordist": "Heraldo V. Norambuena",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC1048335.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 30.9,
+   "activity": 28.0,
+   "rumble": -31.2,
+   "windows": [
+    0.0,
+    3.97
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC1048335.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 40.3,
+   "activity": 39.7,
+   "rumble": -58.8,
+   "windows": [
+    0.0,
+    3.97
+   ]
+  },
+  "scopes": [
+   4,
+   5,
+   8
+  ],
+  "maxCopies": 4
+ },
+ "21": {
+  "name": "Jote de cabeza negra",
+  "sci": "Coragyps atratus",
+  "cls": 0,
+  "xc": "428767",
+  "url": "https://xeno-canto.org/428767",
+  "recordist": "Francisco Rivas Fuenzalida",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC428767.mp3",
+   "seconds": 2.69,
+   "band": "media",
+   "contrast": 21.3,
+   "activity": 43.9,
+   "rumble": -15.7,
+   "windows": [
+    0.26
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC428767.mp3",
+   "seconds": 2.69,
+   "band": "media",
+   "contrast": 36.0,
+   "activity": 73.7,
+   "rumble": -24.7,
+   "windows": [
+    0.28
+   ]
+  },
+  "scopes": [
+   12,
+   13,
+   14
+  ],
+  "maxCopies": 4
+ },
+ "22": {
+  "name": "Tijeral común",
+  "sci": "Leptasthenura aegithaloides",
+  "cls": 0,
+  "xc": "1032502",
+  "url": "https://xeno-canto.org/1032502",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC1032502.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 16.0,
+   "activity": 29.6,
+   "rumble": -85.2,
+   "windows": [
+    0.72,
+    2.93
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC1032502.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 23.6,
+   "activity": 45.5,
+   "rumble": -98.9,
+   "windows": [
+    0.65,
+    2.93
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "23": {
+  "name": "Garza chica",
+  "sci": "Egretta thula",
+  "cls": 0,
+  "xc": "45684",
+  "url": "https://xeno-canto.org/45684",
+  "recordist": "Bernabe Lopez-Lanus",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
+  "src": {
+   "path": "audio/XC45684.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 28.5,
+   "activity": 41.6,
+   "rumble": -45.0,
+   "windows": [
+    1.07,
+    3.07
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC45684.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 40.7,
+   "activity": 51.8,
+   "rumble": -68.9,
+   "windows": [
+    1.07,
+    3.07
+   ]
+  },
+  "scopes": [
+   10
+  ],
+  "maxCopies": 2
+ },
+ "25": {
+  "name": "Cernícalo",
+  "sci": "Falco sparverius",
+  "cls": 0,
+  "xc": "1103884",
+  "url": "https://xeno-canto.org/1103884",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC1103884.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 32.3,
+   "activity": 52.5,
+   "rumble": -80.9,
+   "windows": [
+    1.9,
+    3.9
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC1103884.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 41.8,
+   "activity": 65.0,
+   "rumble": -101.6,
+   "windows": [
+    1.9,
+    3.9
+   ]
+  },
+  "scopes": [
+   2,
+   10,
+   16
+  ],
+  "maxCopies": 3
+ },
+ "26": {
+  "name": "Garza grande",
+  "sci": "Ardea alba",
+  "cls": 0,
+  "xc": "711449",
+  "url": "https://xeno-canto.org/711449",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC711449.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 23.6,
+   "activity": 53.3,
+   "rumble": -63.3,
+   "windows": [
+    0.05,
+    2.25
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC711449.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 33.5,
+   "activity": 61.9,
+   "rumble": -85.4,
+   "windows": [
+    0.05,
+    2.25
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "27": {
+  "name": "Rayadito",
+  "sci": "Aphrastura spinicauda",
+  "cls": 0,
+  "xc": "1077644",
+  "url": "https://xeno-canto.org/1077644",
+  "recordist": "Meena Haribal",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC1077644.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 11.8,
+   "activity": 7.4,
+   "rumble": -44.1,
+   "windows": [
+    0.16,
+    2.83
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC1077644.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 21.2,
+   "activity": 16.0,
+   "rumble": -59.9,
+   "windows": [
+    0.16,
+    2.81
+   ]
+  },
+  "scopes": [
+   12,
+   15,
+   16
+  ],
+  "maxCopies": 4
+ },
+ "28": {
+  "name": "Fío-fío",
+  "sci": "Elaenia albiceps",
+  "cls": 1,
+  "xc": "771764",
+  "url": "https://xeno-canto.org/771764",
+  "recordist": "Jorge Martini",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC771764.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 32.2,
+   "activity": 51.4,
+   "rumble": -44.1,
+   "windows": [
+    0.0,
+    3.55
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC771764.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 40.3,
+   "activity": 62.3,
+   "rumble": -65.4,
+   "windows": [
+    0.39,
+    3.58
+   ]
+  },
+  "scopes": [
+   0,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16
+  ],
+  "maxCopies": 4
+ },
+ "29": {
+  "name": "Bandurria común",
+  "sci": "Theristicus melanopis",
+  "cls": 0,
+  "xc": "59997",
+  "url": "https://xeno-canto.org/59997",
+  "recordist": "Alvaro Jaramillo",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC59997.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 36.2,
+   "activity": 34.6,
+   "rumble": -101.3,
+   "windows": [
+    1.6,
+    3.69
+   ]
+  },
+  "scopes": [
+   12,
+   13,
+   14,
+   15
+  ],
+  "maxCopies": 4
+ },
+ "30": {
+  "name": "Chirihue común",
+  "sci": "Sicalis luteola",
+  "cls": 0,
+  "xc": "817128",
+  "url": "https://xeno-canto.org/817128",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC817128.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 21.6,
+   "activity": 44.7,
+   "rumble": -110.9,
+   "windows": [
+    0.0,
+    2.0
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC817128.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 33.6,
+   "activity": 60.3,
+   "rumble": -112.5,
+   "windows": [
+    0.0,
+    2.0
+   ]
+  },
+  "scopes": [
+   4,
+   8,
+   13
+  ],
+  "maxCopies": 3
+ },
+ "31": {
+  "name": "Aguilucho",
+  "sci": "Buteo polyosoma",
+  "cls": 0,
+  "xc": "59988",
+  "url": "https://xeno-canto.org/59988",
+  "recordist": "Alvaro Jaramillo",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC59988.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 18.4,
+   "activity": 22.6,
+   "rumble": -81.5,
+   "windows": [
+    0.14,
+    2.14
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "32": {
+  "name": "Gaviota cáhuil",
+  "sci": "Chroicocephalus maculipennis",
+  "cls": 0,
+  "xc": "59983",
+  "url": "https://xeno-canto.org/59983",
+  "recordist": "Alvaro Jaramillo",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC59983.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 39.3,
+   "activity": 48.2,
+   "rumble": -108.0,
+   "windows": [
+    0.0,
+    2.6
+   ]
+  },
+  "scopes": [
+   13
+  ],
+  "maxCopies": 4
+ },
+ "33": {
+  "name": "Pato real",
+  "sci": "Mareca sibilatrix",
+  "cls": 0,
+  "xc": "859340",
+  "url": "https://xeno-canto.org/859340",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC859340.mp3",
+   "seconds": 5.99,
+   "band": "media",
+   "contrast": 35.2,
+   "activity": 38.1,
+   "rumble": -51.8,
+   "windows": [
+    0.39,
+    2.39
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC859340.mp3",
+   "seconds": 5.99,
+   "band": "media",
+   "contrast": 51.4,
+   "activity": 68.1,
+   "rumble": -69.7,
+   "windows": [
+    0.39,
+    2.41
+   ]
+  },
+  "scopes": [
+   15,
+   16
+  ],
+  "maxCopies": 2
+ },
+ "34": {
+  "name": "Rara",
+  "sci": "Phytotoma rara",
+  "cls": 0,
+  "xc": "1032462",
+  "url": "https://xeno-canto.org/1032462",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC1032462.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 21.7,
+   "activity": 22.2,
+   "rumble": -90.6,
+   "windows": [
+    1.53,
+    3.74
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC1032462.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 32.8,
+   "activity": 39.7,
+   "rumble": -106.8,
+   "windows": [
+    1.53,
+    3.72
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "35": {
+  "name": "Trile",
+  "sci": "Agelasticus thilius",
+  "cls": 0,
+  "xc": "845419",
+  "url": "https://xeno-canto.org/845419",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC845419.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 23.9,
+   "activity": 21.4,
+   "rumble": -68.6,
+   "windows": [
+    0.46,
+    2.46
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC845419.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 33.8,
+   "activity": 33.5,
+   "rumble": -92.1,
+   "windows": [
+    0.46,
+    2.46
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "36": {
+  "name": "Pilpil",
+  "sci": "Numenius phaeopus",
+  "cls": 0,
+  "xc": "52545",
+  "url": "https://xeno-canto.org/52545",
+  "recordist": "Bernabe Lopez-Lanus",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
+  "src": {
+   "path": "audio/XC52545.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 27.5,
+   "activity": 39.7,
+   "rumble": -84.2,
+   "windows": [
+    0.67,
+    3.07
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC52545.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 37.9,
+   "activity": 47.5,
+   "rumble": -99.4,
+   "windows": [
+    0.67,
+    3.09
+   ]
+  },
+  "scopes": [
+   4,
+   12
+  ],
+  "maxCopies": 3
+ },
+ "37": {
+  "name": "Mirlo común",
+  "sci": "Molothrus bonariensis",
+  "cls": 0,
+  "xc": "677161",
+  "url": "https://xeno-canto.org/677161",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC677161.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 23.8,
+   "activity": 54.9,
+   "rumble": -119.5,
+   "windows": [
+    1.6,
+    3.6
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC677161.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 33.0,
+   "activity": 62.3,
+   "rumble": -19.6,
+   "windows": [
+    0.35,
+    2.79
+   ]
+  },
+  "scopes": [
+   8,
+   9,
+   12
+  ],
+  "maxCopies": 3
+ },
+ "38": {
+  "name": "Pilpilén común",
+  "sci": "Haematopus palliatus",
+  "cls": 0,
+  "xc": "60034",
+  "url": "https://xeno-canto.org/60034",
+  "recordist": "Alvaro Jaramillo",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC60034.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 23.1,
+   "activity": 54.5,
+   "rumble": -97.5,
+   "windows": [
+    0.6,
+    2.69
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "39": {
+  "name": "Tortolita cuyana",
+  "sci": "Columbina picui",
+  "cls": 0,
+  "xc": "390472",
+  "url": "https://xeno-canto.org/390472",
+  "recordist": "Cristian Pinto",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC390472.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 32.0,
+   "activity": 50.2,
+   "rumble": -70.1,
+   "windows": [
+    0.65,
+    2.86
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC390472.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 45.5,
+   "activity": 58.0,
+   "rumble": -83.0,
+   "windows": [
+    0.0,
+    2.07
+   ]
+  },
+  "scopes": [
+   8,
+   10
+  ],
+  "maxCopies": 4
+ },
+ "40": {
+  "name": "Golondrina de dorso negro",
+  "sci": "Notiochelidon cyanoleuca",
+  "cls": 1,
+  "xc": "940548",
+  "url": "https://xeno-canto.org/940548",
+  "recordist": "José Dellacasa Bravo",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC940548.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 18.2,
+   "activity": 31.9,
+   "rumble": -41.4,
+   "windows": [
+    0.93,
+    3.11
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC940548.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 28.4,
+   "activity": 49.8,
+   "rumble": -68.4,
+   "windows": [
+    0.93,
+    3.11
+   ]
+  },
+  "scopes": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   9,
+   11,
+   12,
+   14
+  ],
+  "maxCopies": 3
+ },
+ "41": {
+  "name": "Huairavo común",
+  "sci": "Nycticorax nycticorax",
+  "cls": 0,
+  "xc": "588334",
+  "url": "https://xeno-canto.org/588334",
+  "recordist": "Gabriel Morales",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC588334.mp3",
+   "seconds": 5.33,
+   "band": "aguda",
+   "contrast": 25.4,
+   "activity": 9.2,
+   "rumble": -35.0,
+   "windows": [
+    1.58
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC588334.mp3",
+   "seconds": 5.33,
+   "band": "aguda",
+   "contrast": 35.7,
+   "activity": 14.0,
+   "rumble": -62.8,
+   "windows": [
+    1.6
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "42": {
+  "name": "Churrete patagónico",
+  "sci": "Cinclodes patagonicus",
+  "cls": 0,
+  "xc": "884328",
+  "url": "https://xeno-canto.org/884328",
+  "recordist": "Noelia Ludcinda",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC884328.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 20.0,
+   "activity": 51.0,
+   "rumble": -63.5,
+   "windows": [
+    0.02,
+    3.48
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC884328.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 31.2,
+   "activity": 66.5,
+   "rumble": -81.6,
+   "windows": [
+    0.02,
+    3.62
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "43": {
+  "name": "Pitío austral",
+  "sci": "Colaptes pitius",
+  "cls": 0,
+  "xc": "617690",
+  "url": "https://xeno-canto.org/617690",
+  "recordist": "Ignacio Escobar",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC617690.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 13.2,
+   "activity": 17.1,
+   "rumble": -84.2,
+   "windows": [
+    0.19,
+    3.78
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC617690.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 22.4,
+   "activity": 35.4,
+   "rumble": -112.8,
+   "windows": [
+    0.16,
+    3.92
+   ]
+  },
+  "scopes": [
+   15
+  ],
+  "maxCopies": 3
+ },
+ "44": {
+  "name": "Paloma de alas blancas",
+  "sci": "Zenaida meloda",
+  "cls": 0,
+  "xc": "857154",
+  "url": "https://xeno-canto.org/857154",
+  "recordist": "Barry Edmonston",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC857154.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 17.6,
+   "activity": 29.2,
+   "rumble": -49.8,
+   "windows": [
+    0.23,
+    2.65
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC857154.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 28.0,
+   "activity": 36.2,
+   "rumble": -66.5,
+   "windows": [
+    0.23,
+    2.67
+   ]
+  },
+  "scopes": [
+   1,
+   2,
+   3,
+   4,
+   5
+  ],
+  "maxCopies": 4
+ },
+ "45": {
+  "name": "Peuco",
+  "sci": "Parabuteo unicinctus",
+  "cls": 0,
+  "xc": "682294",
+  "url": "https://xeno-canto.org/682294",
+  "recordist": "Kevin Arriagada Stange",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC682294.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 47.5,
+   "activity": 46.3,
+   "rumble": -41.7,
+   "windows": [
+    0.0,
+    2.11
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC682294.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 62.1,
+   "activity": 54.1,
+   "rumble": -55.0,
+   "windows": [
+    0.0,
+    2.11
+   ]
+  },
+  "scopes": [
+   4,
+   12
+  ],
+  "maxCopies": 2
+ },
+ "46": {
+  "name": "Codorniz",
+  "sci": "Callipepla californica",
+  "cls": 0,
+  "xc": "1169315",
+  "url": "https://xeno-canto.org/1169315",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC1169315.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 16.5,
+   "activity": 16.7,
+   "rumble": -47.9,
+   "windows": [
+    0.0,
+    3.95
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC1169315.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 27.8,
+   "activity": 31.9,
+   "rumble": -72.7,
+   "windows": [
+    0.0,
+    3.95
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "47": {
+  "name": "Torcaza",
+  "sci": "Patagioenas araucana",
+  "cls": 0,
+  "xc": "450035",
+  "url": "https://xeno-canto.org/450035",
+  "recordist": "Peter Boesman",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+  "src": {
+   "path": "audio/XC450035.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 28.8,
+   "activity": 34.2,
+   "rumble": -40.5,
+   "windows": [
+    1.65,
+    3.65
+   ]
+  },
+  "scopes": [
+   7,
+   10
+  ],
+  "maxCopies": 2
+ },
+ "48": {
+  "name": "Carpinterito",
+  "sci": "Veniliornis lignarius",
+  "cls": 0,
+  "xc": "879630",
+  "url": "https://xeno-canto.org/879630",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC879630.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 36.8,
+   "activity": 39.3,
+   "rumble": -112.5,
+   "windows": [
+    1.09,
+    3.09
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC879630.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 51.5,
+   "activity": 46.7,
+   "rumble": -116.0,
+   "windows": [
+    1.09,
+    3.09
+   ]
+  },
+  "scopes": [
+   10
+  ],
+  "maxCopies": 1
+ },
+ "49": {
+  "name": "Huala",
+  "sci": "Podiceps major",
+  "cls": 0,
+  "xc": "859339",
+  "url": "https://xeno-canto.org/859339",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC859339.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 32.4,
+   "activity": 16.0,
+   "rumble": -55.1,
+   "windows": [
+    1.88,
+    3.88
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC859339.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 45.6,
+   "activity": 64.2,
+   "rumble": -74.6,
+   "windows": [
+    1.88,
+    3.88
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "50": {
+  "name": "Pelícano de Humboldt",
+  "sci": "Pelecanus thagus",
+  "cls": 0,
+  "xc": "387659",
+  "url": "https://xeno-canto.org/387659",
+  "recordist": "Dries Van de Loock",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC387659.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 31.6,
+   "activity": 46.7,
+   "rumble": -37.5,
+   "windows": [
+    1.25,
+    3.51
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC387659.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 44.4,
+   "activity": 57.6,
+   "rumble": -57.0,
+   "windows": [
+    1.25,
+    3.48
+   ]
+  },
+  "scopes": [
+   2
+  ],
+  "maxCopies": 4
+ },
+ "51": {
+  "name": "Cisne de cuello negro",
+  "sci": "Cygnus melancoryphus",
+  "cls": 0,
+  "xc": "845397",
+  "url": "https://xeno-canto.org/845397",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC845397.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 33.0,
+   "activity": 24.9,
+   "rumble": -38.8,
+   "windows": [
+    0.0,
+    3.97
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC845397.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 45.7,
+   "activity": 42.0,
+   "rumble": -60.7,
+   "windows": [
+    0.0,
+    3.97
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "52": {
+  "name": "Colegial austral",
+  "sci": "Lessonia rufa",
+  "cls": 0,
+  "xc": "90646",
+  "url": "https://xeno-canto.org/90646",
+  "recordist": "Andrew Spencer",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC90646.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 15.2,
+   "activity": 12.8,
+   "rumble": -23.9,
+   "windows": [
+    0.6,
+    2.6
+   ]
+  },
+  "scopes": [
+   15,
+   16
+  ],
+  "maxCopies": 3
+ },
+ "53": {
+  "name": "Pato colorado",
+  "sci": "Spatula cyanoptera",
+  "cls": 0,
+  "xc": "1142644",
+  "url": "https://xeno-canto.org/1142644",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC1142644.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 13.4,
+   "activity": 6.2,
+   "rumble": -25.9,
+   "windows": [
+    0.81,
+    2.86
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC1142644.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 23.6,
+   "activity": 9.3,
+   "rumble": -44.1,
+   "windows": [
+    0.86,
+    2.86
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "54": {
+  "name": "Pimpollo común",
+  "sci": "Rollandia rolland",
+  "cls": 0,
+  "xc": "51142",
+  "url": "https://xeno-canto.org/51142",
+  "recordist": "Bernabe Lopez-Lanus",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
+  "src": {
+   "path": "audio/XC51142.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 17.0,
+   "activity": 8.2,
+   "rumble": -22.9,
+   "windows": [
+    0.14,
+    3.6
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC51142.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 26.9,
+   "activity": 10.1,
+   "rumble": -41.5,
+   "windows": [
+    0.14,
+    3.65
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "55": {
+  "name": "Churrete acanelado",
+  "sci": "Cinclodes fuscus",
+  "cls": 0,
+  "xc": "856415",
+  "url": "https://xeno-canto.org/856415",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC856415.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 22.3,
+   "activity": 24.9,
+   "rumble": -76.2,
+   "windows": [
+    0.02,
+    2.02
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC856415.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 32.4,
+   "activity": 40.5,
+   "rumble": -99.8,
+   "windows": [
+    0.02,
+    2.02
+   ]
+  },
+  "scopes": [
+   5,
+   6,
+   8,
+   11
+  ],
+  "maxCopies": 2
+ },
+ "56": {
+  "name": "Cometocino patagónico",
+  "sci": "Phrygilus patagonicus",
+  "cls": 0,
+  "xc": "508099",
+  "url": "https://xeno-canto.org/508099",
+  "recordist": "Étienne Leroy",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC508099.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 34.6,
+   "activity": 45.9,
+   "rumble": -39.1,
+   "windows": [
+    0.53,
+    3.85
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC508099.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 42.1,
+   "activity": 56.4,
+   "rumble": -61.9,
+   "windows": [
+    0.53,
+    3.85
+   ]
+  },
+  "scopes": [
+   13,
+   15
+  ],
+  "maxCopies": 4
+ },
+ "57": {
+  "name": "Traro",
+  "sci": "Caracara plancus",
+  "cls": 0,
+  "xc": "569823",
+  "url": "https://xeno-canto.org/569823",
+  "recordist": "Natacha Francisca",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC569823.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 35.4,
+   "activity": 27.6,
+   "rumble": -49.1,
+   "windows": [
+    0.0,
+    3.97
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC569823.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 48.5,
+   "activity": 43.6,
+   "rumble": -71.7,
+   "windows": [
+    0.0,
+    3.95
+   ]
+  },
+  "scopes": [
+   15,
+   16
+  ],
+  "maxCopies": 4
+ },
+ "58": {
+  "name": "Cisne coscoroba",
+  "sci": "Coscoroba coscoroba",
+  "cls": 0,
+  "xc": "845394",
+  "url": "https://xeno-canto.org/845394",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC845394.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 41.0,
+   "activity": 27.2,
+   "rumble": -55.1,
+   "windows": [
+    0.19,
+    3.81
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC845394.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 54.4,
+   "activity": 36.6,
+   "rumble": -76.7,
+   "windows": [
+    0.16,
+    3.83
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "60": {
+  "name": "Perrito",
+  "sci": "Himantopus mexicanus",
+  "cls": 0,
+  "xc": "1077962",
+  "url": "https://xeno-canto.org/1077962",
+  "recordist": "Meena Haribal",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC1077962.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 31.5,
+   "activity": 38.1,
+   "rumble": -50.8,
+   "windows": [
+    0.02,
+    2.3
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC1077962.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 42.2,
+   "activity": 50.6,
+   "rumble": -73.6,
+   "windows": [
+    0.02,
+    2.3
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "61": {
+  "name": "Cometocino de Gay",
+  "sci": "Phrygilus gayi",
+  "cls": 0,
+  "xc": "1077897",
+  "url": "https://xeno-canto.org/1077897",
+  "recordist": "Meena Haribal",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC1077897.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 32.7,
+   "activity": 31.9,
+   "rumble": -54.9,
+   "windows": [
+    0.44,
+    2.51
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC1077897.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 44.2,
+   "activity": 42.4,
+   "rumble": -78.7,
+   "windows": [
+    0.44,
+    2.51
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "62": {
+  "name": "Garza cuca",
+  "sci": "Ardea cocoi",
+  "cls": 0,
+  "xc": "1176819",
+  "url": "https://xeno-canto.org/1176819",
+  "recordist": "Faustino Hollmann",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC1176819.mp3",
+   "seconds": 4.95,
+   "band": "grave",
+   "contrast": 24.9,
+   "activity": 14.6,
+   "rumble": -15.8,
+   "windows": [
+    0.09,
+    2.11
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC1176819.mp3",
+   "seconds": 4.95,
+   "band": "grave",
+   "contrast": 36.0,
+   "activity": 23.1,
+   "rumble": -39.4,
+   "windows": [
+    0.37,
+    2.39
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "63": {
+  "name": "Chuncho austral",
+  "sci": "Glaucidium nana",
+  "cls": 0,
+  "xc": "1154276",
+  "url": "https://xeno-canto.org/1154276",
+  "recordist": "José Dellacasa Bravo",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC1154276.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 15.1,
+   "activity": 19.1,
+   "rumble": -21.5,
+   "windows": [
+    1.32,
+    3.51
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC1154276.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 23.4,
+   "activity": 33.5,
+   "rumble": -46.3,
+   "windows": [
+    0.51,
+    2.69
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "65": {
+  "name": "Gaviota garuma",
+  "sci": "Leucophaeus modestus",
+  "cls": 0,
+  "xc": "871857",
+  "url": "https://xeno-canto.org/871857",
+  "recordist": "Scott Olmstead",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC871857.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 37.1,
+   "activity": 19.8,
+   "rumble": -39.4,
+   "windows": [
+    0.09,
+    3.9
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC871857.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 50.0,
+   "activity": 43.2,
+   "rumble": -61.8,
+   "windows": [
+    0.09,
+    3.92
+   ]
+  },
+  "scopes": [
+   2,
+   9
+  ],
+  "maxCopies": 3
+ },
+ "66": {
+  "name": "Chucao",
+  "sci": "Scelorchilus rubecula",
+  "cls": 0,
+  "xc": "992829",
+  "url": "https://xeno-canto.org/992829",
+  "recordist": "Juan Machuca Montero",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC992829.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 20.1,
+   "activity": 20.2,
+   "rumble": -20.7,
+   "windows": [
+    0.05,
+    3.13
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC992829.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 27.9,
+   "activity": 39.3,
+   "rumble": -43.7,
+   "windows": [
+    0.02,
+    3.13
+   ]
+  },
+  "scopes": [
+   11,
+   12,
+   13,
+   14,
+   15
+  ],
+  "maxCopies": 4
+ },
+ "67": {
+  "name": "Tagua de frente roja",
+  "sci": "Fulica rufifrons",
+  "cls": 0,
+  "xc": "16342",
+  "url": "https://xeno-canto.org/16342",
+  "recordist": "Doug Knapp",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC16342.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 19.3,
+   "activity": 32.7,
+   "rumble": -29.8,
+   "windows": [
+    0.6,
+    2.74
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "68": {
+  "name": "Yal común",
+  "sci": "Rhopospina fruticeti",
+  "cls": 0,
+  "xc": "774838",
+  "url": "https://xeno-canto.org/774838",
+  "recordist": "GABRIEL LEITE",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC774838.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 29.2,
+   "activity": 44.7,
+   "rumble": -35.2,
+   "windows": [
+    0.21,
+    3.97
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC774838.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 41.3,
+   "activity": 52.5,
+   "rumble": -56.9,
+   "windows": [
+    0.19,
+    3.97
+   ]
+  },
+  "scopes": [
+   2,
+   4,
+   5,
+   8,
+   9
+  ],
+  "maxCopies": 2
+ },
+ "69": {
+  "name": "Trabajador",
+  "sci": "Phleocryptes melanops",
+  "cls": 0,
+  "xc": "824975",
+  "url": "https://xeno-canto.org/824975",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC824975.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 35.7,
+   "activity": 40.9,
+   "rumble": -63.1,
+   "windows": [
+    0.14,
+    3.95
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC824975.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 43.6,
+   "activity": 54.1,
+   "rumble": -77.0,
+   "windows": [
+    0.12,
+    3.97
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "70": {
+  "name": "Garceta Bueyera",
+  "sci": "Bubulcus ibis",
+  "cls": 0,
+  "xc": "449846",
+  "url": "https://xeno-canto.org/449846",
+  "recordist": "Peter Boesman",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+  "src": {
+   "path": "audio/XC449846.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 15.1,
+   "activity": 23.0,
+   "rumble": -62.7,
+   "windows": [
+    1.97,
+    3.97
+   ]
+  },
+  "scopes": [
+   2,
+   14
+  ],
+  "maxCopies": 2
+ },
+ "71": {
+  "name": "Viudita",
+  "sci": "Colorhamphus parvirostris",
+  "cls": 2,
+  "xc": "1036790",
+  "url": "https://xeno-canto.org/1036790",
+  "recordist": "Marc Anderson",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+  "src": {
+   "path": "audio/XC1036790.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 20.7,
+   "activity": 16.3,
+   "rumble": -39.5,
+   "windows": [
+    0.14,
+    2.35
+   ]
+  },
+  "scopes": [
+   0,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14
+  ],
+  "maxCopies": 2
+ },
+ "72": {
+  "name": "Picurio",
+  "sci": "Podilymbus podiceps",
+  "cls": 0,
+  "xc": "1027998",
+  "url": "https://xeno-canto.org/1027998",
+  "recordist": "Francisco Rivas Fuenzalida",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC1027998.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 17.2,
+   "activity": 38.1,
+   "rumble": -48.5,
+   "windows": [
+    1.44,
+    3.44
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC1027998.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 21.9,
+   "activity": 52.9,
+   "rumble": -60.7,
+   "windows": [
+    0.93,
+    2.93
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "73": {
+  "name": "Siete colores",
+  "sci": "Tachuris rubrigastra",
+  "cls": 0,
+  "xc": "824972",
+  "url": "https://xeno-canto.org/824972",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC824972.mp3",
+   "seconds": 5.52,
+   "band": "media",
+   "contrast": 49.5,
+   "activity": 59.3,
+   "rumble": -91.0,
+   "windows": [
+    1.79
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC824972.mp3",
+   "seconds": 5.52,
+   "band": "media",
+   "contrast": 62.5,
+   "activity": 70.3,
+   "rumble": -103.7,
+   "windows": [
+    1.79
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "74": {
+  "name": "Piquero de Humboldt",
+  "sci": "Sula variegata",
+  "cls": 0,
+  "xc": "727034",
+  "url": "https://xeno-canto.org/727034",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC727034.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 17.4,
+   "activity": 7.8,
+   "rumble": -5.2,
+   "windows": [
+    0.19,
+    2.25
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC727034.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 28.0,
+   "activity": 10.9,
+   "rumble": -30.6,
+   "windows": [
+    0.21,
+    3.58
+   ]
+  },
+  "scopes": [
+   14
+  ],
+  "maxCopies": 1
+ },
+ "75": {
+  "name": "Pitotoy grande",
+  "sci": "Tringa melanoleuca",
+  "cls": 1,
+  "xc": "612347",
+  "url": "https://xeno-canto.org/612347",
+  "recordist": "Ignacio Escobar",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC612347.mp3",
+   "seconds": 5.28,
+   "band": "media",
+   "contrast": 39.2,
+   "activity": 36.7,
+   "rumble": -33.2,
+   "windows": [
+    0.33,
+    2.97
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC612347.mp3",
+   "seconds": 5.28,
+   "band": "media",
+   "contrast": 50.7,
+   "activity": 54.0,
+   "rumble": -52.7,
+   "windows": [
+    0.33,
+    2.97
+   ]
+  },
+  "scopes": [
+   3,
+   4,
+   5,
+   6
+  ],
+  "maxCopies": 2
+ },
+ "76": {
+  "name": "Blanquillo",
+  "sci": "Podiceps occipitalis",
+  "cls": 0,
+  "xc": "774906",
+  "url": "https://xeno-canto.org/774906",
+  "recordist": "GABRIEL LEITE",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC774906.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 24.4,
+   "activity": 56.8,
+   "rumble": -40.0,
+   "windows": [
+    0.02,
+    3.3
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC774906.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 35.4,
+   "activity": 68.5,
+   "rumble": -60.0,
+   "windows": [
+    0.02,
+    3.3
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "77": {
+  "name": "Bailarín chico común",
+  "sci": "Anthus correndera",
+  "cls": 0,
+  "xc": "1078301",
+  "url": "https://xeno-canto.org/1078301",
+  "recordist": "Meena Haribal",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC1078301.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 28.5,
+   "activity": 37.4,
+   "rumble": -60.4,
+   "windows": [
+    1.97,
+    3.97
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC1078301.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 36.3,
+   "activity": 53.3,
+   "rumble": -80.3,
+   "windows": [
+    1.97,
+    3.97
+   ]
+  },
+  "scopes": [
+   14
+  ],
+  "maxCopies": 1
+ },
+ "78": {
+  "name": "Águila",
+  "sci": "Geranoaetus melanoleucus",
+  "cls": 0,
+  "xc": "569827",
+  "url": "https://xeno-canto.org/569827",
+  "recordist": "Natacha Francisca",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC569827.mp3",
+   "seconds": 3.97,
+   "band": "media",
+   "contrast": 38.6,
+   "activity": 67.1,
+   "rumble": -49.2,
+   "windows": [
+    0.37
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC569827.mp3",
+   "seconds": 3.97,
+   "band": "media",
+   "contrast": 54.5,
+   "activity": 72.4,
+   "rumble": -68.1,
+   "windows": [
+    0.37
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "79": {
+  "name": "Cóndor",
+  "sci": "Vultur gryphus",
+  "cls": 0,
+  "xc": "53865",
+  "url": "https://xeno-canto.org/53865",
+  "recordist": "Guillermo Egli",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC53865.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 20.9,
+   "activity": 31.5,
+   "rumble": -35.9,
+   "windows": [
+    0.23,
+    2.23
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "80": {
+  "name": "Cachaña",
+  "sci": "Enicognathus ferrugineus",
+  "cls": 0,
+  "xc": "617460",
+  "url": "https://xeno-canto.org/617460",
+  "recordist": "Ignacio Escobar",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC617460.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 19.6,
+   "activity": 38.9,
+   "rumble": -84.2,
+   "windows": [
+    0.39,
+    3.65
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC617460.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 27.9,
+   "activity": 57.2,
+   "rumble": -94.7,
+   "windows": [
+    0.39,
+    3.62
+   ]
+  },
+  "scopes": [
+   9,
+   15
+  ],
+  "maxCopies": 3
+ },
+ "81": {
+  "name": "Pitotoy chico",
+  "sci": "Tringa flavipes",
+  "cls": 1,
+  "xc": "458982",
+  "url": "https://xeno-canto.org/458982",
+  "recordist": "Cristian Pinto",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC458982.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 31.6,
+   "activity": 49.8,
+   "rumble": -115.0,
+   "windows": [
+    1.28,
+    3.65
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC458982.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 38.4,
+   "activity": 57.2,
+   "rumble": -111.7,
+   "windows": [
+    1.28,
+    3.65
+   ]
+  },
+  "scopes": [
+   0,
+   1,
+   3,
+   4,
+   5,
+   6,
+   8,
+   12
+  ],
+  "maxCopies": 2
+ },
+ "82": {
+  "name": "Bailarín",
+  "sci": "Elanus leucurus",
+  "cls": 0,
+  "xc": "45578",
+  "url": "https://xeno-canto.org/45578",
+  "recordist": "Daniel González Amat",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC45578.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 83.7,
+   "activity": 71.6,
+   "rumble": -16.0,
+   "windows": [
+    1.16,
+    3.16
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "83": {
+  "name": "Pato cuchara",
+  "sci": "Spatula platalea",
+  "cls": 0,
+  "xc": "51957",
+  "url": "https://xeno-canto.org/51957",
+  "recordist": "Bernabe Lopez-Lanus",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
+  "src": {
+   "path": "audio/XC51957.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 14.9,
+   "activity": 12.1,
+   "rumble": -58.0,
+   "windows": [
+    1.35,
+    3.39
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC51957.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 22.5,
+   "activity": 30.0,
+   "rumble": -73.3,
+   "windows": [
+    1.35,
+    3.39
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "85": {
+  "name": "Pilpilén negro",
+  "sci": "Haematopus ater",
+  "cls": 0,
+  "xc": "520159",
+  "url": "https://xeno-canto.org/520159",
+  "recordist": "Cristian Pinto",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC520159.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 21.0,
+   "activity": 26.1,
+   "rumble": -114.0,
+   "windows": [
+    1.83,
+    3.97
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC520159.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 26.7,
+   "activity": 38.9,
+   "rumble": -111.9,
+   "windows": [
+    1.83,
+    3.97
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "86": {
+  "name": "Playero de Baird",
+  "sci": "Calidris bairdii",
+  "cls": 1,
+  "xc": "474653",
+  "url": "https://xeno-canto.org/474653",
+  "recordist": "Cristian Pinto",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC474653.mp3",
+   "seconds": 5.86,
+   "band": "media",
+   "contrast": 18.1,
+   "activity": 21.9,
+   "rumble": -97.8,
+   "windows": [
+    0.42,
+    2.41
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC474653.mp3",
+   "seconds": 5.86,
+   "band": "grave",
+   "contrast": 27.0,
+   "activity": 46.6,
+   "rumble": -80.3,
+   "windows": [
+    0.33,
+    2.32
+   ]
+  },
+  "scopes": [
+   1,
+   3
+  ],
+  "maxCopies": 4
+ },
+ "87": {
+  "name": "Churrín del sur",
+  "sci": "Scytalopus magellanicus",
+  "cls": 0,
+  "xc": "884174",
+  "url": "https://xeno-canto.org/884174",
+  "recordist": "Alex Toledo",
+  "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "src": {
+   "path": "audio/XC884174.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 46.4,
+   "activity": 57.2,
+   "rumble": -38.2,
+   "windows": [
+    1.42,
+    3.41
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC884174.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 58.4,
+   "activity": 68.1,
+   "rumble": -64.0,
+   "windows": [
+    1.42,
+    3.41
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "89": {
+  "name": "Dormilona tontita",
+  "sci": "Muscisaxicola maclovianus",
+  "cls": 2,
+  "xc": "89722",
+  "url": "https://xeno-canto.org/89722",
+  "recordist": "Andrew Spencer",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC89722.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 40.7,
+   "activity": 33.9,
+   "rumble": -60.8,
+   "windows": [
+    1.32,
+    3.74
+   ]
+  },
+  "scopes": [
+   0,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   14
+  ],
+  "maxCopies": 3
+ },
+ "90": {
+  "name": "Run-run",
+  "sci": "Hymenops perspicillatus",
+  "cls": 1,
+  "xc": "115725",
+  "url": "https://xeno-canto.org/115725",
+  "recordist": "Andrew Spencer",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
+  "src": {
+   "path": "audio/XC115725.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 28.3,
+   "activity": 23.7,
+   "rumble": -61.5,
+   "windows": [
+    0.09,
+    2.18
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC115725.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 38.1,
+   "activity": 42.8,
+   "rumble": -80.0,
+   "windows": [
+    0.14,
+    2.16
+   ]
+  },
+  "scopes": [
+   0,
+   9,
+   11,
+   12,
+   13,
+   14
+  ],
+  "maxCopies": 2
+ },
+ "91": {
+  "name": "Gaviota de Franklin",
+  "sci": "Leucophaeus pipixcan",
+  "cls": 1,
+  "xc": "783436",
+  "url": "https://xeno-canto.org/783436",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC783436.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 21.5,
+   "activity": 47.1,
+   "rumble": -56.2,
+   "windows": [
+    0.49,
+    3.07
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC783436.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 26.8,
+   "activity": 56.0,
+   "rumble": -78.5,
+   "windows": [
+    0.49,
+    3.09
+   ]
+  },
+  "scopes": [
+   0,
+   1,
+   2,
+   5,
+   6,
+   8,
+   9,
+   11,
+   14
+  ],
+  "maxCopies": 2
+ },
+ "92": {
+  "name": "Rayador",
+  "sci": "Rynchops niger",
+  "cls": 0,
+  "xc": "843182",
+  "url": "https://xeno-canto.org/843182",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC843182.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 15.9,
+   "activity": 18.3,
+   "rumble": -53.1,
+   "windows": [
+    1.53,
+    3.58
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC843182.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 23.5,
+   "activity": 48.6,
+   "rumble": -70.6,
+   "windows": [
+    1.51,
+    3.58
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "93": {
+  "name": "Comesebo grande",
+  "sci": "Pygarrhichas albogularis",
+  "cls": 0,
+  "xc": "60204",
+  "url": "https://xeno-canto.org/60204",
+  "recordist": "Alvaro Jaramillo",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC60204.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 34.7,
+   "activity": 59.5,
+   "rumble": -38.4,
+   "windows": [
+    0.09,
+    3.62
+   ]
+  },
+  "scopes": [
+   9
+  ],
+  "maxCopies": 1
+ },
+ "94": {
+  "name": "Chercán de las vegas",
+  "sci": "Cistothorus platensis",
+  "cls": 0,
+  "xc": "1014676",
+  "url": "https://xeno-canto.org/1014676",
+  "recordist": "Eduardo Quintanilla",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC1014676.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 43.1,
+   "activity": 33.1,
+   "rumble": -43.8,
+   "windows": [
+    0.0,
+    3.97
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC1014676.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 54.9,
+   "activity": 35.0,
+   "rumble": -70.5,
+   "windows": [
+    0.0,
+    3.97
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "96": {
+  "name": "Picaflor gigante",
+  "sci": "Patagona gigas",
+  "cls": 1,
+  "xc": "585507",
+  "url": "https://xeno-canto.org/585507",
+  "recordist": "Ignacio Escobar",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC585507.mp3",
+   "seconds": 5.46,
+   "band": "aves",
+   "contrast": 38.5,
+   "activity": 33.3,
+   "rumble": -52.2,
+   "windows": [
+    0.56,
+    2.55
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC585507.mp3",
+   "seconds": 5.46,
+   "band": "aves",
+   "contrast": 51.0,
+   "activity": 55.1,
+   "rumble": -76.6,
+   "windows": [
+    0.56,
+    2.55
+   ]
+  },
+  "scopes": [
+   0,
+   5,
+   6,
+   8
+  ],
+  "maxCopies": 2
+ },
+ "97": {
+  "name": "Colilarga",
+  "sci": "Sylviorthorhynchus desmursii",
+  "cls": 0,
+  "xc": "1007159",
+  "url": "https://xeno-canto.org/1007159",
+  "recordist": "José Dellacasa Bravo",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC1007159.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 16.1,
+   "activity": 30.7,
+   "rumble": -26.7,
+   "windows": [
+    0.02,
+    3.81
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC1007159.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 27.0,
+   "activity": 48.2,
+   "rumble": -48.3,
+   "windows": [
+    0.02,
+    3.81
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "98": {
+  "name": "Perdiz chilena",
+  "sci": "Nothoprocta perdicaria",
+  "cls": 0,
+  "xc": "919539",
+  "url": "https://xeno-canto.org/919539",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC919539.mp3",
+   "seconds": 4.51,
+   "band": "aguda",
+   "contrast": 30.3,
+   "activity": 52.8,
+   "rumble": -49.1,
+   "windows": [
+    1.42
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC919539.mp3",
+   "seconds": 4.51,
+   "band": "aguda",
+   "contrast": 48.0,
+   "activity": 72.0,
+   "rumble": -63.2,
+   "windows": [
+    1.42
+   ]
+  },
+  "scopes": [
+   9,
+   10
+  ],
+  "maxCopies": 2
+ },
+ "100": {
+  "name": "Vari ceniciento",
+  "sci": "Circus cinereus",
+  "cls": 1,
+  "xc": "36158",
+  "url": "https://xeno-canto.org/36158",
+  "recordist": "Fabrice Schmitt",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC36158.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 33.9,
+   "activity": 23.7,
+   "rumble": -36.9,
+   "windows": [
+    0.37,
+    2.67
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "101": {
+  "name": "Picaflor del norte",
+  "sci": "Rhodopis vesper",
+  "cls": 0,
+  "xc": "718696",
+  "url": "https://xeno-canto.org/718696",
+  "recordist": "Ignacio Escobar",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC718696.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 29.8,
+   "activity": 42.4,
+   "rumble": -84.4,
+   "windows": [
+    0.98,
+    3.04
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC718696.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 39.2,
+   "activity": 54.9,
+   "rumble": -105.0,
+   "windows": [
+    0.98,
+    3.04
+   ]
+  },
+  "scopes": [
+   1,
+   4
+  ],
+  "maxCopies": 3
+ },
+ "102": {
+  "name": "Becacina común",
+  "sci": "Gallinago magellanica",
+  "cls": 0,
+  "xc": "449939",
+  "url": "https://xeno-canto.org/449939",
+  "recordist": "Peter Boesman",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+  "src": {
+   "path": "audio/XC449939.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 48.9,
+   "activity": 44.4,
+   "rumble": -73.8,
+   "windows": [
+    1.0,
+    3.6
+   ]
+  },
+  "scopes": [
+   16
+  ],
+  "maxCopies": 2
+ },
+ "103": {
+  "name": "Gaviotín sudamericano",
+  "sci": "Sterna hirundinacea",
+  "cls": 1,
+  "xc": "115832",
+  "url": "https://xeno-canto.org/115832",
+  "recordist": "Andrew Spencer",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
+  "src": {
+   "path": "audio/XC115832.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 40.0,
+   "activity": 73.9,
+   "rumble": -55.4,
+   "windows": [
+    0.86,
+    2.86
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC115832.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 48.7,
+   "activity": 73.9,
+   "rumble": -79.9,
+   "windows": [
+    0.81,
+    2.81
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "104": {
+  "name": "Flamenco chileno",
+  "sci": "Phoenicopterus chilensis",
+  "cls": 0,
+  "xc": "711476",
+  "url": "https://xeno-canto.org/711476",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC711476.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 27.7,
+   "activity": 21.8,
+   "rumble": -15.9,
+   "windows": [
+    0.07,
+    2.55
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC711476.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 40.3,
+   "activity": 36.2,
+   "rumble": -35.3,
+   "windows": [
+    0.09,
+    2.55
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "105": {
+  "name": "Pequén",
+  "sci": "Athene cunicularia",
+  "cls": 0,
+  "xc": "580869",
+  "url": "https://xeno-canto.org/580869",
+  "recordist": "Cristian Pinto",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC580869.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 7.9,
+   "activity": 0.4,
+   "rumble": -69.0,
+   "windows": [
+    0.16,
+    3.92
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC580869.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 16.2,
+   "activity": 16.0,
+   "rumble": -82.5,
+   "windows": [
+    0.19,
+    3.9
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "106": {
+  "name": "Pato juarjual",
+  "sci": "Lophonetta specularioides",
+  "cls": 0,
+  "xc": "498316",
+  "url": "https://xeno-canto.org/498316",
+  "recordist": "Cristian Pinto",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC498316.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 28.7,
+   "activity": 16.3,
+   "rumble": -88.2,
+   "windows": [
+    0.53,
+    2.81
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC498316.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 41.4,
+   "activity": 30.4,
+   "rumble": -109.1,
+   "windows": [
+    0.53,
+    2.81
+   ]
+  },
+  "scopes": [
+   16
+  ],
+  "maxCopies": 3
+ },
+ "107": {
+  "name": "Churrete chico",
+  "sci": "Cinclodes oustaleti",
+  "cls": 0,
+  "xc": "718240",
+  "url": "https://xeno-canto.org/718240",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC718240.mp3",
+   "seconds": 4.11,
+   "band": "aguda",
+   "contrast": 29.6,
+   "activity": 42.0,
+   "rumble": -37.9,
+   "windows": [
+    1.23
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC718240.mp3",
+   "seconds": 4.11,
+   "band": "aguda",
+   "contrast": 43.3,
+   "activity": 64.8,
+   "rumble": -58.5,
+   "windows": [
+    1.21
+   ]
+  },
+  "scopes": [
+   14
+  ],
+  "maxCopies": 1
+ },
+ "108": {
+  "name": "Cotorra",
+  "sci": "Myiopsitta monachus",
+  "cls": 0,
+  "xc": "551605",
+  "url": "https://xeno-canto.org/551605",
+  "recordist": "Cristian Pinto",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC551605.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 26.0,
+   "activity": 16.3,
+   "rumble": -90.5,
+   "windows": [
+    1.58,
+    3.65
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC551605.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 37.6,
+   "activity": 23.3,
+   "rumble": -110.1,
+   "windows": [
+    1.65,
+    3.65
+   ]
+  },
+  "scopes": [
+   7
+  ],
+  "maxCopies": 3
+ },
+ "109": {
+  "name": "Choroy",
+  "sci": "Enicognathus leptorhynchus",
+  "cls": 0,
+  "xc": "952344",
+  "url": "https://xeno-canto.org/952344",
+  "recordist": "José Dellacasa Bravo",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC952344.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 16.8,
+   "activity": 30.0,
+   "rumble": -42.3,
+   "windows": [
+    0.0,
+    3.62
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC952344.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 25.4,
+   "activity": 52.5,
+   "rumble": -66.6,
+   "windows": [
+    0.0,
+    3.62
+   ]
+  },
+  "scopes": [
+   13
+  ],
+  "maxCopies": 2
+ },
+ "111": {
+  "name": "Hued-hued del sur",
+  "sci": "Pteroptochos tarnii",
+  "cls": 0,
+  "xc": "328248",
+  "url": "https://xeno-canto.org/328248",
+  "recordist": "Cristian Pinto",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC328248.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 26.2,
+   "activity": 55.6,
+   "rumble": -61.6,
+   "windows": [
+    1.58,
+    3.58
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC328248.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 30.2,
+   "activity": 60.3,
+   "rumble": -71.6,
+   "windows": [
+    1.58,
+    3.58
+   ]
+  },
+  "scopes": [
+   11,
+   13
+  ],
+  "maxCopies": 2
+ },
+ "112": {
+  "name": "Cuervo de pantano común",
+  "sci": "Plegadis chihi",
+  "cls": 0,
+  "xc": "754985",
+  "url": "https://xeno-canto.org/754985",
+  "recordist": "Guillermo Treboux",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC754985.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 27.4,
+   "activity": 29.2,
+   "rumble": -25.8,
+   "windows": [
+    0.37,
+    3.97
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC754985.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 41.3,
+   "activity": 36.6,
+   "rumble": -50.5,
+   "windows": [
+    0.81,
+    3.97
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "113": {
+  "name": "Lile",
+  "sci": "Phalacrocorax gaimardi",
+  "cls": 0,
+  "xc": "70540",
+  "url": "https://xeno-canto.org/70540",
+  "recordist": "Bernabe Lopez-Lanus",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
+  "src": {
+   "path": "audio/XC70540.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 19.5,
+   "activity": 26.1,
+   "rumble": -15.7,
+   "windows": [
+    1.32,
+    3.76
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC70540.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 30.9,
+   "activity": 41.2,
+   "rumble": -39.8,
+   "windows": [
+    1.28,
+    3.76
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "114": {
+  "name": "Cormorán imperial",
+  "sci": "Leucocarbo atriceps",
+  "cls": 0,
+  "xc": "1068082",
+  "url": "https://xeno-canto.org/1068082",
+  "recordist": "Sebastián Saiter V.",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC1068082.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 18.1,
+   "activity": 37.0,
+   "rumble": -12.2,
+   "windows": [
+    0.02,
+    3.92
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC1068082.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 29.6,
+   "activity": 51.8,
+   "rumble": -33.9,
+   "windows": [
+    0.02,
+    3.92
+   ]
+  },
+  "scopes": [
+   16
+  ],
+  "maxCopies": 3
+ },
+ "115": {
+  "name": "Martín pescador",
+  "sci": "Megaceryle torquata",
+  "cls": 0,
+  "xc": "740935",
+  "url": "https://xeno-canto.org/740935",
+  "recordist": "Heraldo V. Norambuena",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC740935.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 14.3,
+   "activity": 15.2,
+   "rumble": -48.1,
+   "windows": [
+    0.39,
+    2.74
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC740935.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 24.6,
+   "activity": 52.1,
+   "rumble": -64.3,
+   "windows": [
+    0.39,
+    2.74
+   ]
+  },
+  "scopes": [
+   12,
+   15
+  ],
+  "maxCopies": 2
+ },
+ "116": {
+  "name": "Caiquén",
+  "sci": "Chloephaga picta",
+  "cls": 0,
+  "xc": "295875",
+  "url": "https://xeno-canto.org/295875",
+  "recordist": "Ross Gallardy",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC295875.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 23.0,
+   "activity": 30.7,
+   "rumble": -30.1,
+   "windows": [
+    1.39,
+    3.48
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC295875.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 31.8,
+   "activity": 46.3,
+   "rumble": -50.2,
+   "windows": [
+    1.39,
+    3.48
+   ]
+  },
+  "scopes": [
+   15,
+   16
+  ],
+  "maxCopies": 4
+ },
+ "117": {
+  "name": "Yal platero",
+  "sci": "Porphyrospiza alaudina",
+  "cls": 0,
+  "xc": "1002652",
+  "url": "https://xeno-canto.org/1002652",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC1002652.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 36.7,
+   "activity": 14.8,
+   "rumble": -94.6,
+   "windows": [
+    1.65,
+    3.74
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC1002652.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 46.9,
+   "activity": 30.4,
+   "rumble": -107.7,
+   "windows": [
+    1.65,
+    3.74
+   ]
+  },
+  "scopes": [
+   4
+  ],
+  "maxCopies": 2
+ },
+ "118": {
+  "name": "Halcón peregrino",
+  "sci": "Falco peregrinus",
+  "cls": 0,
+  "xc": "48465",
+  "url": "https://xeno-canto.org/48465",
+  "recordist": "Bernabe Lopez-Lanus",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
+  "src": {
+   "path": "audio/XC48465.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 26.2,
+   "activity": 66.5,
+   "rumble": -55.1,
+   "windows": [
+    0.53,
+    2.53
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC48465.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 33.3,
+   "activity": 61.1,
+   "rumble": -87.3,
+   "windows": [
+    1.23,
+    3.3
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "119": {
+  "name": "Canquén común",
+  "sci": "Chloephaga poliocephala",
+  "cls": 1,
+  "xc": "89433",
+  "url": "https://xeno-canto.org/89433",
+  "recordist": "Andrew Spencer",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC89433.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 33.2,
+   "activity": 46.3,
+   "rumble": -35.4,
+   "windows": [
+    0.39,
+    2.39
+   ]
+  },
+  "scopes": [
+   15,
+   16
+  ],
+  "maxCopies": 2
+ },
+ "120": {
+  "name": "Chorlito chileno",
+  "sci": "Charadrius modestus",
+  "cls": 2,
+  "xc": "89298",
+  "url": "https://xeno-canto.org/89298",
+  "recordist": "Andrew Spencer",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC89298.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 51.0,
+   "activity": 44.7,
+   "rumble": -51.2,
+   "windows": [
+    1.58,
+    3.58
+   ]
+  },
+  "scopes": [
+   0,
+   8,
+   9
+  ],
+  "maxCopies": 1
+ },
+ "121": {
+  "name": "Gaviotín elegante",
+  "sci": "Thalasseus elegans",
+  "cls": 1,
+  "xc": "871346",
+  "url": "https://xeno-canto.org/871346",
+  "recordist": "José Dellacasa Bravo",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+  "src": {
+   "path": "audio/XC871346.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 14.9,
+   "activity": 31.1,
+   "rumble": -47.7,
+   "windows": [
+    0.35,
+    2.35
+   ]
+  },
+  "scopes": [
+   1,
+   3
+  ],
+  "maxCopies": 2
+ },
+ "122": {
+  "name": "Gaviota andina",
+  "sci": "Chroicocephalus serranus",
+  "cls": 0,
+  "xc": "59980",
+  "url": "https://xeno-canto.org/59980",
+  "recordist": "Alvaro Jaramillo",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC59980.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 53.8,
+   "activity": 57.2,
+   "rumble": -94.0,
+   "windows": [
+    0.0,
+    3.51
+   ]
+  },
+  "scopes": [
+   1,
+   2,
+   3
+  ],
+  "maxCopies": 4
+ },
+ "123": {
+  "name": "Zarapito de pico recto",
+  "sci": "Limosa haemastica",
+  "cls": 1,
+  "xc": "856368",
+  "url": "https://xeno-canto.org/856368",
+  "recordist": "Barry Edmonston",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC856368.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 17.1,
+   "activity": 28.0,
+   "rumble": -76.6,
+   "windows": [
+    0.07,
+    3.25
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC856368.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 26.4,
+   "activity": 48.6,
+   "rumble": -94.0,
+   "windows": [
+    0.07,
+    3.25
+   ]
+  },
+  "scopes": [
+   14
+  ],
+  "maxCopies": 1
+ },
+ "126": {
+  "name": "Halcón perdiguero",
+  "sci": "Falco femoralis",
+  "cls": 0,
+  "xc": "50944",
+  "url": "https://xeno-canto.org/50944",
+  "recordist": "Bernabe Lopez-Lanus",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
+  "src": {
+   "path": "audio/XC50944.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 5.4,
+   "activity": 0.0,
+   "rumble": -50.4,
+   "windows": [
+    0.12,
+    2.65
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC50944.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 9.5,
+   "activity": 2.3,
+   "rumble": -62.2,
+   "windows": [
+    0.12,
+    2.93
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "127": {
+  "name": "Churrete costero",
+  "sci": "Cinclodes nigrofumosus",
+  "cls": 0,
+  "xc": "520158",
+  "url": "https://xeno-canto.org/520158",
+  "recordist": "Cristian Pinto",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC520158.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 30.6,
+   "activity": 37.0,
+   "rumble": -116.2,
+   "windows": [
+    0.44,
+    2.44
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC520158.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 42.7,
+   "activity": 56.0,
+   "rumble": -113.8,
+   "windows": [
+    0.44,
+    2.44
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "128": {
+  "name": "Playero blanco",
+  "sci": "Calidris alba",
+  "cls": 1,
+  "xc": "933249",
+  "url": "https://xeno-canto.org/933249",
+  "recordist": "Jorge Leitão",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC933249.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 18.9,
+   "activity": 41.6,
+   "rumble": -53.1,
+   "windows": [
+    0.21,
+    2.21
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC933249.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 24.8,
+   "activity": 49.4,
+   "rumble": -72.5,
+   "windows": [
+    0.21,
+    2.21
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "129": {
+  "name": "Quetru volador",
+  "sci": "Tachyeres patachonicus",
+  "cls": 0,
+  "xc": "826383",
+  "url": "https://xeno-canto.org/826383",
+  "recordist": "Eduardo Quintanilla",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC826383.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 53.5,
+   "activity": 29.2,
+   "rumble": -43.7,
+   "windows": [
+    0.21,
+    2.41
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC826383.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 67.5,
+   "activity": 42.8,
+   "rumble": -71.0,
+   "windows": [
+    0.21,
+    2.37
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "130": {
+  "name": "Gaviotín monja",
+  "sci": "Larosterna inca",
+  "cls": 0,
+  "xc": "879636",
+  "url": "https://xeno-canto.org/879636",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC879636.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 11.8,
+   "activity": 10.9,
+   "rumble": -54.1,
+   "windows": [
+    1.07,
+    3.07
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC879636.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 17.7,
+   "activity": 28.8,
+   "rumble": -68.4,
+   "windows": [
+    1.07,
+    3.07
+   ]
+  },
+  "scopes": [
+   1
+  ],
+  "maxCopies": 1
+ },
+ "132": {
+  "name": "Lechuza",
+  "sci": "Tyto furcata",
+  "cls": 0,
+  "xc": "569825",
+  "url": "https://xeno-canto.org/569825",
+  "recordist": "Natacha Francisca",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC569825.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 13.0,
+   "activity": 26.8,
+   "rumble": -60.9,
+   "windows": [
+    0.09,
+    3.9
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC569825.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 19.0,
+   "activity": 44.4,
+   "rumble": -83.4,
+   "windows": [
+    0.09,
+    3.88
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "133": {
+  "name": "Gaviotín piquerito",
+  "sci": "Sterna trudeaui",
+  "cls": 0,
+  "xc": "1078064",
+  "url": "https://xeno-canto.org/1078064",
+  "recordist": "Meena Haribal",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC1078064.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 29.6,
+   "activity": 33.1,
+   "rumble": -43.6,
+   "windows": [
+    1.83,
+    3.95
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC1078064.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 39.2,
+   "activity": 51.4,
+   "rumble": -63.7,
+   "windows": [
+    1.83,
+    3.95
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "134": {
+  "name": "Tucúquere",
+  "sci": "Bubo magellanicus",
+  "cls": 0,
+  "xc": "617498",
+  "url": "https://xeno-canto.org/617498",
+  "recordist": "Ignacio Escobar",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC617498.mp3",
+   "seconds": 0.89,
+   "band": "grave",
+   "contrast": 30.4,
+   "activity": 56.8,
+   "rumble": -43.9,
+   "windows": [
+    0.0
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC617498.mp3",
+   "seconds": 0.89,
+   "band": "media",
+   "contrast": 40.7,
+   "activity": 59.5,
+   "rumble": -47.8,
+   "windows": [
+    0.0
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "135": {
+  "name": "Carpintero negro",
+  "sci": "Campephilus magellanicus",
+  "cls": 1,
+  "xc": "449853",
+  "url": "https://xeno-canto.org/449853",
+  "recordist": "Peter Boesman",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+  "src": {
+   "path": "audio/XC449853.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 33.1,
+   "activity": 39.3,
+   "rumble": -64.8,
+   "windows": [
+    0.0,
+    3.83
+   ]
+  },
+  "scopes": [
+   12
+  ],
+  "maxCopies": 1
+ },
+ "136": {
+  "name": "Tapaculo",
+  "sci": "Scelorchilus albicollis",
+  "cls": 0,
+  "xc": "1028566",
+  "url": "https://xeno-canto.org/1028566",
+  "recordist": "Francisco Rivas Fuenzalida",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC1028566.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 39.1,
+   "activity": 21.4,
+   "rumble": -47.4,
+   "windows": [
+    0.53,
+    3.46
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC1028566.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 52.2,
+   "activity": 27.2,
+   "rumble": -69.0,
+   "windows": [
+    0.53,
+    3.55
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "137": {
+  "name": "Mero grande",
+  "sci": "Agriornis lividus",
+  "cls": 0,
+  "xc": "660101",
+  "url": "https://xeno-canto.org/660101",
+  "recordist": "Cristian Pinto",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC660101.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 14.8,
+   "activity": 37.7,
+   "rumble": -90.7,
+   "windows": [
+    0.16,
+    2.16
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC660101.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 30.0,
+   "activity": 70.0,
+   "rumble": -102.4,
+   "windows": [
+    0.16,
+    2.16
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "138": {
+  "name": "Playero vuelvepiedras",
+  "sci": "Arenaria interpres",
+  "cls": 0,
+  "xc": "1167971",
+  "url": "https://xeno-canto.org/1167971",
+  "recordist": "Stanislas Wroza",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC1167971.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 31.2,
+   "activity": 37.4,
+   "rumble": -67.7,
+   "windows": [
+    0.05,
+    3.74
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC1167971.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 47.1,
+   "activity": 59.5,
+   "rumble": -74.4,
+   "windows": [
+    0.0,
+    3.74
+   ]
+  },
+  "scopes": [
+   2,
+   4
+  ],
+  "maxCopies": 2
+ },
+ "139": {
+  "name": "Minero cordillerano",
+  "sci": "Geositta rufipennis",
+  "cls": 0,
+  "xc": "843125",
+  "url": "https://xeno-canto.org/843125",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC843125.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 25.7,
+   "activity": 62.6,
+   "rumble": -119.1,
+   "windows": [
+    1.46,
+    3.83
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC843125.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 28.5,
+   "activity": 63.4,
+   "rumble": -116.1,
+   "windows": [
+    1.6,
+    3.72
+   ]
+  },
+  "scopes": [
+   7
+  ],
+  "maxCopies": 1
+ },
+ "140": {
+  "name": "Gaviota peruana",
+  "sci": "Larus belcheri",
+  "cls": 0,
+  "xc": "59982",
+  "url": "https://xeno-canto.org/59982",
+  "recordist": "Alvaro Jaramillo",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC59982.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 11.5,
+   "activity": 12.8,
+   "rumble": -81.1,
+   "windows": [
+    1.74,
+    3.74
+   ]
+  },
+  "scopes": [
+   2,
+   3
+  ],
+  "maxCopies": 4
+ },
+ "141": {
+  "name": "Minero común",
+  "sci": "Geositta cunicularia",
+  "cls": 0,
+  "xc": "449948",
+  "url": "https://xeno-canto.org/449948",
+  "recordist": "Peter Boesman",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+  "src": {
+   "path": "audio/XC449948.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 41.0,
+   "activity": 62.6,
+   "rumble": -85.3,
+   "windows": [
+    0.28,
+    2.28
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "142": {
+  "name": "Cauquén guayata",
+  "sci": "Chloephaga melanoptera",
+  "cls": 0,
+  "xc": "857018",
+  "url": "https://xeno-canto.org/857018",
+  "recordist": "Barry Edmonston",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC857018.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 21.9,
+   "activity": 33.5,
+   "rumble": -102.6,
+   "windows": [
+    0.0,
+    3.58
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC857018.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 32.8,
+   "activity": 50.6,
+   "rumble": -111.4,
+   "windows": [
+    0.0,
+    3.58
+   ]
+  },
+  "scopes": [
+   2
+  ],
+  "maxCopies": 2
+ },
+ "144": {
+  "name": "Mero gaucho",
+  "sci": "Agriornis montanus",
+  "cls": 0,
+  "xc": "444647",
+  "url": "https://xeno-canto.org/444647",
+  "recordist": "Cristian Pinto",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC444647.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 36.6,
+   "activity": 7.8,
+   "rumble": -115.7,
+   "windows": [
+    1.63,
+    3.78
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC444647.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 56.9,
+   "activity": 76.7,
+   "rumble": -19.4,
+   "windows": [
+    0.84,
+    3.58
+   ]
+  },
+  "scopes": [
+   3
+  ],
+  "maxCopies": 2
+ },
+ "145": {
+  "name": "Nuco",
+  "sci": "Asio flammeus",
+  "cls": 0,
+  "xc": "48752",
+  "url": "https://xeno-canto.org/48752",
+  "recordist": "Bernabe Lopez-Lanus",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
+  "src": {
+   "path": "audio/XC48752.mp3",
+   "seconds": 4.75,
+   "band": "media",
+   "contrast": 11.3,
+   "activity": 5.4,
+   "rumble": -52.5,
+   "windows": [
+    0.67,
+    2.67
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC48752.mp3",
+   "seconds": 4.75,
+   "band": "media",
+   "contrast": 21.5,
+   "activity": 20.2,
+   "rumble": -77.4,
+   "windows": [
+    0.67,
+    2.67
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "146": {
+  "name": "Pato anteojillo",
+  "sci": "Speculanas specularis",
+  "cls": 0,
+  "xc": "115890",
+  "url": "https://xeno-canto.org/115890",
+  "recordist": "Andrew Spencer",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
+  "src": {
+   "path": "audio/XC115890.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 36.2,
+   "activity": 60.7,
+   "rumble": -63.0,
+   "windows": [
+    0.07,
+    3.92
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC115890.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 47.7,
+   "activity": 65.4,
+   "rumble": -78.3,
+   "windows": [
+    0.07,
+    3.92
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "148": {
+  "name": "Bandurrilla común",
+  "sci": "Upucerthia dumetaria",
+  "cls": 1,
+  "xc": "856868",
+  "url": "https://xeno-canto.org/856868",
+  "recordist": "Barry Edmonston",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC856868.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 34.2,
+   "activity": 20.6,
+   "rumble": -97.9,
+   "windows": [
+    0.53,
+    2.81
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC856868.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 46.0,
+   "activity": 32.7,
+   "rumble": -111.6,
+   "windows": [
+    0.53,
+    2.74
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "150": {
+  "name": "Gallina ciega común",
+  "sci": "Systellura longirostris",
+  "cls": 0,
+  "xc": "946745",
+  "url": "https://xeno-canto.org/946745",
+  "recordist": "José Dellacasa Bravo",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC946745.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 13.7,
+   "activity": 12.5,
+   "rumble": -22.6,
+   "windows": [
+    0.21,
+    3.34
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC946745.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 23.8,
+   "activity": 22.6,
+   "rumble": -48.6,
+   "windows": [
+    0.21,
+    2.21
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "151": {
+  "name": "Tortolita cordillerana",
+  "sci": "Metriopelia melanoptera",
+  "cls": 1,
+  "xc": "596950",
+  "url": "https://xeno-canto.org/596950",
+  "recordist": "Cristian Pinto",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC596950.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 10.1,
+   "activity": 5.4,
+   "rumble": -71.7,
+   "windows": [
+    0.26,
+    2.35
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC596950.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 18.0,
+   "activity": 13.2,
+   "rumble": -91.2,
+   "windows": [
+    0.26,
+    2.35
+   ]
+  },
+  "scopes": [
+   7
+  ],
+  "maxCopies": 1
+ },
+ "152": {
+  "name": "Pájaro plomo",
+  "sci": "Geospizopsis unicolor",
+  "cls": 0,
+  "xc": "403518",
+  "url": "https://xeno-canto.org/403518",
+  "recordist": "Cristian Pinto",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC403518.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 16.9,
+   "activity": 10.1,
+   "rumble": -117.1,
+   "windows": [
+    0.02,
+    3.9
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC403518.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 27.3,
+   "activity": 12.5,
+   "rumble": -111.6,
+   "windows": [
+    0.02,
+    3.9
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "153": {
+  "name": "Pilpilén austral",
+  "sci": "Haematopus leucopodus",
+  "cls": 1,
+  "xc": "60036",
+  "url": "https://xeno-canto.org/60036",
+  "recordist": "Alvaro Jaramillo",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC60036.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 24.9,
+   "activity": 42.4,
+   "rumble": -119.3,
+   "windows": [
+    0.02,
+    2.69
+   ]
+  },
+  "scopes": [
+   16
+  ],
+  "maxCopies": 2
+ },
+ "154": {
+  "name": "Tortolita quiguagua",
+  "sci": "Columbina cruziana",
+  "cls": 0,
+  "xc": "498341",
+  "url": "https://xeno-canto.org/498341",
+  "recordist": "Cristian Pinto",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC498341.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 12.9,
+   "activity": 7.4,
+   "rumble": -86.1,
+   "windows": [
+    0.79,
+    3.67
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC498341.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 22.1,
+   "activity": 17.1,
+   "rumble": -107.3,
+   "windows": [
+    0.79,
+    3.67
+   ]
+  },
+  "scopes": [
+   1,
+   2
+  ],
+  "maxCopies": 3
+ },
+ "155": {
+  "name": "Suri/Ñandú",
+  "sci": "Rhea pennata",
+  "cls": 1,
+  "xc": "90569",
+  "url": "https://xeno-canto.org/90569",
+  "recordist": "Andrew Spencer",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC90569.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 44.0,
+   "activity": 43.6,
+   "rumble": -53.1,
+   "windows": [
+    0.19,
+    3.48
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "156": {
+  "name": "Canastero chico",
+  "sci": "Asthenes modesta",
+  "cls": 0,
+  "xc": "856869",
+  "url": "https://xeno-canto.org/856869",
+  "recordist": "Barry Edmonston",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC856869.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 27.8,
+   "activity": 35.0,
+   "rumble": -96.5,
+   "windows": [
+    0.3,
+    3.97
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC856869.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 39.5,
+   "activity": 52.5,
+   "rumble": -113.1,
+   "windows": [
+    0.3,
+    3.97
+   ]
+  },
+  "scopes": [
+   2
+  ],
+  "maxCopies": 3
+ },
+ "157": {
+  "name": "Gallineta Común",
+  "sci": "Gallinula chloropus",
+  "cls": 0,
+  "xc": "652678",
+  "url": "https://xeno-canto.org/652678",
+  "recordist": "Maarten Sluijter",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC652678.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 37.9,
+   "activity": 32.7,
+   "rumble": -87.3,
+   "windows": [
+    0.0,
+    2.79
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC652678.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 51.7,
+   "activity": 52.1,
+   "rumble": -105.7,
+   "windows": [
+    0.0,
+    2.79
+   ]
+  },
+  "scopes": [
+   3
+  ],
+  "maxCopies": 1
+ },
+ "159": {
+  "name": "Dormilona chica",
+  "sci": "Muscisaxicola maculirostris",
+  "cls": 0,
+  "xc": "696431",
+  "url": "https://xeno-canto.org/696431",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC696431.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 8.8,
+   "activity": 4.3,
+   "rumble": -114.6,
+   "windows": [
+    0.3,
+    3.58
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC696431.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 15.4,
+   "activity": 48.2,
+   "rumble": -41.9,
+   "windows": [
+    0.19,
+    2.74
+   ]
+  },
+  "scopes": [
+   1,
+   2,
+   3
+  ],
+  "maxCopies": 3
+ },
+ "160": {
+  "name": "Petrel gigante antártico",
+  "sci": "Macronectes giganteus",
+  "cls": 0,
+  "xc": "89727",
+  "url": "https://xeno-canto.org/89727",
+  "recordist": "Andrew Spencer",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC89727.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 18.4,
+   "activity": 32.3,
+   "rumble": -17.2,
+   "windows": [
+    1.16,
+    3.32
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "161": {
+  "name": "Pato capuchino",
+  "sci": "Spatula versicolor",
+  "cls": 0,
+  "xc": "52160",
+  "url": "https://xeno-canto.org/52160",
+  "recordist": "Bernabe Lopez-Lanus",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
+  "src": {
+   "path": "audio/XC52160.mp3",
+   "seconds": 5.17,
+   "band": "aguda",
+   "contrast": 11.7,
+   "activity": 10.4,
+   "rumble": -84.8,
+   "windows": [
+    1.11,
+    3.11
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC52160.mp3",
+   "seconds": 5.17,
+   "band": "aguda",
+   "contrast": 18.6,
+   "activity": 31.7,
+   "rumble": -100.4,
+   "windows": [
+    1.09,
+    3.09
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "162": {
+  "name": "Golondrina bermeja",
+  "sci": "Hirundo rustica",
+  "cls": 1,
+  "xc": "1080744",
+  "url": "https://xeno-canto.org/1080744",
+  "recordist": "José Dellacasa Bravo",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC1080744.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 9.8,
+   "activity": 5.1,
+   "rumble": -30.9,
+   "windows": [
+    1.53,
+    3.53
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC1080744.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 14.4,
+   "activity": 18.3,
+   "rumble": -46.6,
+   "windows": [
+    1.76,
+    3.76
+   ]
+  },
+  "scopes": [
+   1,
+   2,
+   3
+  ],
+  "maxCopies": 2
+ },
+ "163": {
+  "name": "Dormilona de nuca rojiza",
+  "sci": "Muscisaxicola rufivertex",
+  "cls": 0,
+  "xc": "18660",
+  "url": "https://xeno-canto.org/18660",
+  "recordist": "Israel Aragon",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC18660.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 13.0,
+   "activity": 5.4,
+   "rumble": -34.1,
+   "windows": [
+    0.16,
+    2.53
+   ]
+  },
+  "scopes": [
+   2
+  ],
+  "maxCopies": 2
+ },
+ "164": {
+  "name": "Dormilona de ceja blanca",
+  "sci": "Muscisaxicola albilora",
+  "cls": 1,
+  "xc": "393552",
+  "url": "https://xeno-canto.org/393552",
+  "recordist": "Cristian Pinto",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC393552.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 9.8,
+   "activity": 5.1,
+   "rumble": -19.2,
+   "windows": [
+    0.65,
+    3.46
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC393552.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 18.6,
+   "activity": 12.8,
+   "rumble": -122.8,
+   "windows": [
+    0.67,
+    3.11
+   ]
+  },
+  "scopes": [
+   7
+  ],
+  "maxCopies": 1
+ },
+ "166": {
+  "name": "Concón",
+  "sci": "Strix rufipes",
+  "cls": 0,
+  "xc": "1028289",
+  "url": "https://xeno-canto.org/1028289",
+  "recordist": "Heraldo V. Norambuena",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC1028289.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 36.7,
+   "activity": 27.2,
+   "rumble": -64.4,
+   "windows": [
+    1.28,
+    3.27
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC1028289.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 50.9,
+   "activity": 47.1,
+   "rumble": -84.3,
+   "windows": [
+    1.28,
+    3.27
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "167": {
+  "name": "Garza azul",
+  "sci": "Egretta caerulea",
+  "cls": 2,
+  "xc": "117949",
+  "url": "https://xeno-canto.org/117949",
+  "recordist": "Mauricio Álvarez Rebolledo (Colección de Sonidos Ambientales - Instituto Humboldt)",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
+  "src": {
+   "path": "audio/XC117949.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 20.6,
+   "activity": 26.5,
+   "rumble": -35.4,
+   "windows": [
+    0.0,
+    3.3
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC117949.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 32.1,
+   "activity": 57.6,
+   "rumble": -49.6,
+   "windows": [
+    0.0,
+    3.3
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "168": {
+  "name": "Pizarrita",
+  "sci": "Xenospingus concolor",
+  "cls": 0,
+  "xc": "90588",
+  "url": "https://xeno-canto.org/90588",
+  "recordist": "Andrew Spencer",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC90588.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 53.5,
+   "activity": 37.7,
+   "rumble": -61.3,
+   "windows": [
+    1.83,
+    3.83
+   ]
+  },
+  "scopes": [
+   1
+  ],
+  "maxCopies": 2
+ },
+ "169": {
+  "name": "Chorlo ártico",
+  "sci": "Pluvialis squatarola",
+  "cls": 0,
+  "xc": "614564",
+  "url": "https://xeno-canto.org/614564",
+  "recordist": "Ignacio Escobar",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC614564.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 22.7,
+   "activity": 20.2,
+   "rumble": -108.1,
+   "windows": [
+    1.16,
+    3.16
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC614564.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 33.6,
+   "activity": 23.0,
+   "rumble": -112.0,
+   "windows": [
+    1.21,
+    3.2
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "170": {
+  "name": "Perdicita chica",
+  "sci": "Thinocorus rumicivorus",
+  "cls": 0,
+  "xc": "450186",
+  "url": "https://xeno-canto.org/450186",
+  "recordist": "Peter Boesman",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+  "src": {
+   "path": "audio/XC450186.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 9.2,
+   "activity": 1.6,
+   "rumble": -32.8,
+   "windows": [
+    0.51,
+    2.51
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "171": {
+  "name": "Albatros de ceja negra",
+  "sci": "Thalassarche melanophris",
+  "cls": 0,
+  "xc": "59837",
+  "url": "https://xeno-canto.org/59837",
+  "recordist": "Alvaro Jaramillo",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC59837.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 9.4,
+   "activity": 2.3,
+   "rumble": -54.7,
+   "windows": [
+    0.42,
+    2.55
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "172": {
+  "name": "Comesebo chico",
+  "sci": "Conirostrum cinereum",
+  "cls": 0,
+  "xc": "73452",
+  "url": "https://xeno-canto.org/73452",
+  "recordist": "Joseph Tobias and Nathalie Seddon",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
+  "src": {
+   "path": "audio/XC73452.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 39.1,
+   "activity": 27.2,
+   "rumble": -33.8,
+   "windows": [
+    0.05,
+    3.92
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC73452.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 50.9,
+   "activity": 35.0,
+   "rumble": -59.1,
+   "windows": [
+    0.05,
+    3.95
+   ]
+  },
+  "scopes": [
+   1
+  ],
+  "maxCopies": 3
+ },
+ "173": {
+  "name": "Pato cortacorrientes",
+  "sci": "Merganetta armata",
+  "cls": 0,
+  "xc": "581872",
+  "url": "https://xeno-canto.org/581872",
+  "recordist": "Cristian Pinto",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC581872.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 8.2,
+   "activity": 0.8,
+   "rumble": -111.8,
+   "windows": [
+    0.74,
+    3.23
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC581872.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 15.3,
+   "activity": 14.0,
+   "rumble": -108.1,
+   "windows": [
+    0.74,
+    3.23
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "174": {
+  "name": "Pollito de mar tricolor",
+  "sci": "Phalaropus tricolor",
+  "cls": 1,
+  "xc": "836128",
+  "url": "https://xeno-canto.org/836128",
+  "recordist": "Aluisio Ribeiro",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC836128.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 31.2,
+   "activity": 45.1,
+   "rumble": -34.2,
+   "windows": [
+    1.02,
+    3.53
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC836128.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 41.2,
+   "activity": 61.1,
+   "rumble": -59.3,
+   "windows": [
+    1.02,
+    3.53
+   ]
+  },
+  "scopes": [
+   1
+  ],
+  "maxCopies": 1
+ },
+ "175": {
+  "name": "Salteador chileno",
+  "sci": "Stercorarius chilensis",
+  "cls": 1,
+  "xc": "1056716",
+  "url": "https://xeno-canto.org/1056716",
+  "recordist": "Sebastián Saiter V.",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC1056716.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 43.5,
+   "activity": 46.3,
+   "rumble": -22.1,
+   "windows": [
+    0.0,
+    2.11
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC1056716.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 56.3,
+   "activity": 54.5,
+   "rumble": -46.4,
+   "windows": [
+    0.0,
+    2.11
+   ]
+  },
+  "scopes": [
+   16
+  ],
+  "maxCopies": 2
+ },
+ "176": {
+  "name": "Pato rinconero",
+  "sci": "Heteronetta atricapilla",
+  "cls": 0,
+  "xc": "492781",
+  "url": "https://xeno-canto.org/492781",
+  "recordist": "Cristian Pinto",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC492781.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 15.8,
+   "activity": 31.1,
+   "rumble": -64.9,
+   "windows": [
+    1.18,
+    3.41
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC492781.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 21.3,
+   "activity": 40.9,
+   "rumble": -77.6,
+   "windows": [
+    1.18,
+    3.41
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "177": {
+  "name": "Perdicita cojón",
+  "sci": "Thinocorus orbignyianus",
+  "cls": 1,
+  "xc": "450183",
+  "url": "https://xeno-canto.org/450183",
+  "recordist": "Peter Boesman",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+  "src": {
+   "path": "audio/XC450183.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 33.2,
+   "activity": 39.3,
+   "rumble": -51.4,
+   "windows": [
+    0.98,
+    3.2
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "179": {
+  "name": "Chirihue dorado",
+  "sci": "Sicalis auriventris",
+  "cls": 1,
+  "xc": "522020",
+  "url": "https://xeno-canto.org/522020",
+  "recordist": "Cristian Pinto",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC522020.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 25.2,
+   "activity": 43.6,
+   "rumble": -117.8,
+   "windows": [
+    1.6,
+    3.6
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC522020.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 39.0,
+   "activity": 55.6,
+   "rumble": -113.1,
+   "windows": [
+    1.6,
+    3.6
+   ]
+  },
+  "scopes": [
+   7
+  ],
+  "maxCopies": 1
+ },
+ "181": {
+  "name": "Pardela gris",
+  "sci": "Puffinus griseus",
+  "cls": 0,
+  "xc": "263617",
+  "url": "https://xeno-canto.org/263617",
+  "recordist": "Victor Raimilla Almonacid",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC263617.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 15.5,
+   "activity": 34.6,
+   "rumble": -14.8,
+   "windows": [
+    0.14,
+    2.21
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC263617.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 23.6,
+   "activity": 49.4,
+   "rumble": -37.7,
+   "windows": [
+    0.14,
+    2.21
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "182": {
+  "name": "Pato de collar",
+  "sci": "Anas platyrhynchos",
+  "cls": 0,
+  "xc": "618581",
+  "url": "https://xeno-canto.org/618581",
+  "recordist": "Jarek Matusiak",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC618581.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 34.5,
+   "activity": 42.0,
+   "rumble": -39.8,
+   "windows": [
+    0.09,
+    3.76
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC618581.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 44.0,
+   "activity": 52.5,
+   "rumble": -63.7,
+   "windows": [
+    0.09,
+    3.76
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "184": {
+  "name": "Chirihue azafrán",
+  "sci": "Sicalis flaveola",
+  "cls": 1,
+  "xc": "942584",
+  "url": "https://xeno-canto.org/942584",
+  "recordist": "José Dellacasa Bravo",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC942584.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 26.0,
+   "activity": 45.9,
+   "rumble": -36.5,
+   "windows": [
+    0.33,
+    2.41
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC942584.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 33.5,
+   "activity": 59.1,
+   "rumble": -61.5,
+   "windows": [
+    0.33,
+    2.41
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "185": {
+  "name": "Pingüino de Humboldt",
+  "sci": "Spheniscus humboldti",
+  "cls": 0,
+  "xc": "520046",
+  "url": "https://xeno-canto.org/520046",
+  "recordist": "Cristian Pinto",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC520046.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 14.1,
+   "activity": 69.6,
+   "rumble": -4.4,
+   "windows": [
+    0.16,
+    3.85
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC520046.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 16.5,
+   "activity": 72.0,
+   "rumble": -13.2,
+   "windows": [
+    0.19,
+    3.85
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "186": {
+  "name": "Bandurrilla de los bosques",
+  "sci": "Upucerthia saturatior",
+  "cls": 2,
+  "xc": "1028293",
+  "url": "https://xeno-canto.org/1028293",
+  "recordist": "Heraldo V. Norambuena",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC1028293.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 40.8,
+   "activity": 38.1,
+   "rumble": -36.5,
+   "windows": [
+    0.0,
+    3.97
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC1028293.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 53.0,
+   "activity": 49.8,
+   "rumble": -54.3,
+   "windows": [
+    0.0,
+    3.97
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "187": {
+  "name": "Canastero del sur",
+  "sci": "Asthenes anthoides",
+  "cls": 0,
+  "xc": "449831",
+  "url": "https://xeno-canto.org/449831",
+  "recordist": "Peter Boesman",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+  "src": {
+   "path": "audio/XC449831.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 49.9,
+   "activity": 49.8,
+   "rumble": -110.0,
+   "windows": [
+    0.12,
+    3.9
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "188": {
+  "name": "Chorlo semipalmado",
+  "sci": "Charadrius semipalmatus",
+  "cls": 0,
+  "xc": "974534",
+  "url": "https://xeno-canto.org/974534",
+  "recordist": "JAYRSON ARAUJO DE OLIVEIRA",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC974534.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 10.3,
+   "activity": 5.4,
+   "rumble": -20.2,
+   "windows": [
+    0.21,
+    2.46
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC974534.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 17.5,
+   "activity": 14.0,
+   "rumble": -40.7,
+   "windows": [
+    0.19,
+    2.46
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "190": {
+  "name": "Dormilona fraile",
+  "sci": "Muscisaxicola flavinucha",
+  "cls": 1,
+  "xc": "403519",
+  "url": "https://xeno-canto.org/403519",
+  "recordist": "Cristian Pinto",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC403519.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 20.5,
+   "activity": 21.8,
+   "rumble": -119.1,
+   "windows": [
+    0.02,
+    3.37
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC403519.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 29.9,
+   "activity": 30.0,
+   "rumble": -113.1,
+   "windows": [
+    0.02,
+    3.39
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "191": {
+  "name": "Parina grande",
+  "sci": "Phoenicoparrus andinus",
+  "cls": 0,
+  "xc": "53869",
+  "url": "https://xeno-canto.org/53869",
+  "recordist": "Guillermo Egli",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC53869.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 21.8,
+   "activity": 9.7,
+   "rumble": -17.0,
+   "windows": [
+    0.79,
+    2.81
+   ]
+  },
+  "scopes": [
+   3
+  ],
+  "maxCopies": 4
+ },
+ "192": {
+  "name": "Pingüino de Magallanes",
+  "sci": "Spheniscus magellanicus",
+  "cls": 1,
+  "xc": "43012",
+  "url": "https://xeno-canto.org/43012",
+  "recordist": "Jacob Socolar",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC43012.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 20.1,
+   "activity": 26.8,
+   "rumble": 4.4,
+   "windows": [
+    0.37,
+    2.37
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "193": {
+  "name": "Jilguero cordillerano",
+  "sci": "Spinus uropygialis",
+  "cls": 1,
+  "xc": "1077724",
+  "url": "https://xeno-canto.org/1077724",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC1077724.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 33.2,
+   "activity": 64.6,
+   "rumble": -50.0,
+   "windows": [
+    0.0,
+    2.04
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC1077724.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 37.2,
+   "activity": 67.7,
+   "rumble": -74.4,
+   "windows": [
+    0.0,
+    2.04
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "195": {
+  "name": "Caranca",
+  "sci": "Chloephaga hybrida",
+  "cls": 0,
+  "xc": "295905",
+  "url": "https://xeno-canto.org/295905",
+  "recordist": "Ross Gallardy",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC295905.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 21.0,
+   "activity": 12.1,
+   "rumble": -17.3,
+   "windows": [
+    0.46,
+    3.78
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC295905.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 30.2,
+   "activity": 30.4,
+   "rumble": -40.2,
+   "windows": [
+    0.46,
+    3.78
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "197": {
+  "name": "Playero grande",
+  "sci": "Tringa semipalmata",
+  "cls": 0,
+  "xc": "1007052",
+  "url": "https://xeno-canto.org/1007052",
+  "recordist": "Ed Pandolfino",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC1007052.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 25.8,
+   "activity": 60.3,
+   "rumble": -58.0,
+   "windows": [
+    0.91,
+    3.13
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC1007052.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 28.4,
+   "activity": 63.0,
+   "rumble": -72.3,
+   "windows": [
+    0.91,
+    3.13
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "198": {
+  "name": "Paloma manchada",
+  "sci": "Patagioenas maculosa",
+  "cls": 0,
+  "xc": "527986",
+  "url": "https://xeno-canto.org/527986",
+  "recordist": "Cristian Pinto",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC527986.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 18.0,
+   "activity": 9.3,
+   "rumble": 0.1,
+   "windows": [
+    0.23,
+    2.62
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC527986.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 28.8,
+   "activity": 17.9,
+   "rumble": -21.4,
+   "windows": [
+    0.28,
+    2.28
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "199": {
+  "name": "Hued-hued castaño",
+  "sci": "Pteroptochos castaneus",
+  "cls": 0,
+  "xc": "545560",
+  "url": "https://xeno-canto.org/545560",
+  "recordist": "Cristian Pinto",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC545560.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 15.2,
+   "activity": 23.7,
+   "rumble": -41.6,
+   "windows": [
+    0.09,
+    2.09
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC545560.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 26.1,
+   "activity": 37.4,
+   "rumble": -62.7,
+   "windows": [
+    0.09,
+    2.09
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "201": {
+  "name": "Cuervo de pantano de la puna",
+  "sci": "Plegadis ridgwayi",
+  "cls": 2,
+  "xc": "59998",
+  "url": "https://xeno-canto.org/59998",
+  "recordist": "Alvaro Jaramillo",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC59998.mp3",
+   "seconds": 3.84,
+   "band": "media",
+   "contrast": 27.7,
+   "activity": 31.1,
+   "rumble": -55.1,
+   "windows": [
+    0.58
+   ]
+  },
+  "scopes": [
+   1
+  ],
+  "maxCopies": 2
+ },
+ "203": {
+  "name": "Picaflor cordillerano",
+  "sci": "Oreotrochilus leucopleurus",
+  "cls": 1,
+  "xc": "719954",
+  "url": "https://xeno-canto.org/719954",
+  "recordist": "Ignacio Escobar",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC719954.mp3",
+   "seconds": 5.86,
+   "band": "aves",
+   "contrast": 18.9,
+   "activity": 25.1,
+   "rumble": -117.4,
+   "windows": [
+    0.79,
+    3.48
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC719954.mp3",
+   "seconds": 5.86,
+   "band": "aves",
+   "contrast": 27.0,
+   "activity": 47.0,
+   "rumble": -113.9,
+   "windows": [
+    1.07,
+    3.46
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "204": {
+  "name": "Saca-tu-real",
+  "sci": "Pyrocephalus rubinus",
+  "cls": 0,
+  "xc": "59967",
+  "url": "https://xeno-canto.org/59967",
+  "recordist": "Alvaro Jaramillo",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC59967.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 9.5,
+   "activity": 4.7,
+   "rumble": -118.1,
+   "windows": [
+    1.6,
+    3.83
+   ]
+  },
+  "scopes": [
+   2
+  ],
+  "maxCopies": 2
+ },
+ "205": {
+  "name": "Petrel plateado austral",
+  "sci": "Fulmarus glacialoides",
+  "cls": 2,
+  "xc": "20681",
+  "url": "https://xeno-canto.org/20681",
+  "recordist": "Santiago Imberti",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC20681.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 24.5,
+   "activity": 45.1,
+   "rumble": -30.4,
+   "windows": [
+    0.26,
+    2.25
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "206": {
+  "name": "Plebeyo",
+  "sci": "Geospizopsis plebejus",
+  "cls": 0,
+  "xc": "609746",
+  "url": "https://xeno-canto.org/609746",
+  "recordist": "Andre Vielma",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC609746.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 20.6,
+   "activity": 13.6,
+   "rumble": -21.1,
+   "windows": [
+    0.35,
+    2.74
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC609746.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 31.2,
+   "activity": 19.5,
+   "rumble": -39.2,
+   "windows": [
+    1.0,
+    3.0
+   ]
+  },
+  "scopes": [
+   2
+  ],
+  "maxCopies": 3
+ },
+ "207": {
+  "name": "Playero semipalmado",
+  "sci": "Calidris pusilla",
+  "cls": 1,
+  "xc": "60081",
+  "url": "https://xeno-canto.org/60081",
+  "recordist": "Alvaro Jaramillo",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC60081.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 11.3,
+   "activity": 10.1,
+   "rumble": -43.8,
+   "windows": [
+    0.16,
+    3.23
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "208": {
+  "name": "Colegial del norte",
+  "sci": "Lessonia oreas",
+  "cls": 0,
+  "xc": "272597",
+  "url": "https://xeno-canto.org/272597",
+  "recordist": "Peter Boesman",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+  "src": {
+   "path": "audio/XC272597.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 19.0,
+   "activity": 15.2,
+   "rumble": -49.7,
+   "windows": [
+    0.16,
+    2.35
+   ]
+  },
+  "scopes": [
+   3
+  ],
+  "maxCopies": 2
+ },
+ "209": {
+  "name": "Canastero de cola larga",
+  "sci": "Asthenes pyrrholeuca",
+  "cls": 1,
+  "xc": "987975",
+  "url": "https://xeno-canto.org/987975",
+  "recordist": "José Dellacasa Bravo",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC987975.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 29.8,
+   "activity": 29.6,
+   "rumble": -27.7,
+   "windows": [
+    0.0,
+    3.97
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC987975.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 43.4,
+   "activity": 35.0,
+   "rumble": -49.6,
+   "windows": [
+    0.0,
+    3.97
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "212": {
+  "name": "Playero de lomo blanco",
+  "sci": "Calidris fuscicollis",
+  "cls": 1,
+  "xc": "90640",
+  "url": "https://xeno-canto.org/90640",
+  "recordist": "Andrew Spencer",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC90640.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 37.5,
+   "activity": 23.0,
+   "rumble": -42.4,
+   "windows": [
+    0.09,
+    2.86
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "213": {
+  "name": "Playero de las rompientes",
+  "sci": "Calidris virgata",
+  "cls": 1,
+  "xc": "243979",
+  "url": "https://xeno-canto.org/243979",
+  "recordist": "Davyd Betchkal",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC243979.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 25.0,
+   "activity": 51.0,
+   "rumble": -95.5,
+   "windows": [
+    0.58,
+    3.25
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC243979.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 30.8,
+   "activity": 64.2,
+   "rumble": -111.5,
+   "windows": [
+    0.39,
+    2.39
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "215": {
+  "name": "Parina chica",
+  "sci": "Phoenicoparrus jamesi",
+  "cls": 0,
+  "xc": "272896",
+  "url": "https://xeno-canto.org/272896",
+  "recordist": "Peter Boesman",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+  "src": {
+   "path": "audio/XC272896.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 34.6,
+   "activity": 61.5,
+   "rumble": -52.3,
+   "windows": [
+    1.97,
+    3.97
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "216": {
+  "name": "Pato negro",
+  "sci": "Netta peposaca",
+  "cls": 0,
+  "xc": "48344",
+  "url": "https://xeno-canto.org/48344",
+  "recordist": "Bernabe Lopez-Lanus",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
+  "src": {
+   "path": "audio/XC48344.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 47.3,
+   "activity": 57.6,
+   "rumble": -47.5,
+   "windows": [
+    0.37,
+    3.97
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC48344.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 59.8,
+   "activity": 66.5,
+   "rumble": -60.0,
+   "windows": [
+    0.37,
+    3.97
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "218": {
+  "name": "Caití",
+  "sci": "Recurvirostra andina",
+  "cls": 0,
+  "xc": "59841",
+  "url": "https://xeno-canto.org/59841",
+  "recordist": "Alvaro Jaramillo",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC59841.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 25.6,
+   "activity": 9.3,
+   "rumble": -92.1,
+   "windows": [
+    0.91,
+    3.97
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "221": {
+  "name": "Aguilucho de cola rojiza",
+  "sci": "Buteo ventralis",
+  "cls": 0,
+  "xc": "565586",
+  "url": "https://xeno-canto.org/565586",
+  "recordist": "Tomás Rivas Fuenzalida",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC565586.mp3",
+   "seconds": 5.27,
+   "band": "aves",
+   "contrast": 40.5,
+   "activity": 18.1,
+   "rumble": -51.4,
+   "windows": [
+    1.97
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC565586.mp3",
+   "seconds": 5.27,
+   "band": "aves",
+   "contrast": 51.4,
+   "activity": 25.7,
+   "rumble": -73.4,
+   "windows": [
+    0.0,
+    2.0
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "225": {
+  "name": "Chorlo dorado",
+  "sci": "Pluvialis dominica",
+  "cls": 1,
+  "xc": "59969",
+  "url": "https://xeno-canto.org/59969",
+  "recordist": "Alvaro Jaramillo",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC59969.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 22.7,
+   "activity": 31.1,
+   "rumble": -91.2,
+   "windows": [
+    0.58,
+    2.58
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "226": {
+  "name": "Minero de la puna",
+  "sci": "Geositta punensis",
+  "cls": 0,
+  "xc": "498662",
+  "url": "https://xeno-canto.org/498662",
+  "recordist": "Cristian Pinto",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC498662.mp3",
+   "seconds": 3.23,
+   "band": "grave",
+   "contrast": 33.8,
+   "activity": 57.2,
+   "rumble": -23.2,
+   "windows": [
+    0.65
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC498662.mp3",
+   "seconds": 3.23,
+   "band": "grave",
+   "contrast": 47.5,
+   "activity": 73.2,
+   "rumble": -20.5,
+   "windows": [
+    0.46
+   ]
+  },
+  "scopes": [
+   2
+  ],
+  "maxCopies": 2
+ },
+ "227": {
+  "name": "Minero chico",
+  "sci": "Geositta maritima",
+  "cls": 0,
+  "xc": "90527",
+  "url": "https://xeno-canto.org/90527",
+  "recordist": "Andrew Spencer",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC90527.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 37.3,
+   "activity": 28.0,
+   "rumble": -49.1,
+   "windows": [
+    1.49,
+    3.48
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "228": {
+  "name": "Zarapito común",
+  "sci": "Numenius hudsonicus",
+  "cls": 1,
+  "xc": "534294",
+  "url": "https://xeno-canto.org/534294",
+  "recordist": "Dante Buzzetti",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC534294.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 31.9,
+   "activity": 49.0,
+   "rumble": -66.2,
+   "windows": [
+    1.56,
+    3.55
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC534294.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 43.6,
+   "activity": 60.3,
+   "rumble": -88.1,
+   "windows": [
+    1.56,
+    3.55
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "229": {
+  "name": "Dormilona de frente negra",
+  "sci": "Muscisaxicola frontalis",
+  "cls": 1,
+  "xc": "36002",
+  "url": "https://xeno-canto.org/36002",
+  "recordist": "Daniel González Amat",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC36002.mp3",
+   "seconds": 5.51,
+   "band": "aves",
+   "contrast": 7.4,
+   "activity": 1.7,
+   "rumble": -37.9,
+   "windows": [
+    1.6
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "232": {
+  "name": "Jilguero negro",
+  "sci": "Spinus atratus",
+  "cls": 1,
+  "xc": "272627",
+  "url": "https://xeno-canto.org/272627",
+  "recordist": "Peter Boesman",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+  "src": {
+   "path": "audio/XC272627.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 40.9,
+   "activity": 67.3,
+   "rumble": -53.5,
+   "windows": [
+    0.26,
+    3.78
+   ]
+  },
+  "scopes": [
+   3
+  ],
+  "maxCopies": 2
+ },
+ "236": {
+  "name": "Gaviotín chico",
+  "sci": "Sternula lorata",
+  "cls": 1,
+  "xc": "306286",
+  "url": "https://xeno-canto.org/306286",
+  "recordist": "sylvia hernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+  "src": {
+   "path": "audio/XC306286.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 22.7,
+   "activity": 22.6,
+   "rumble": -42.9,
+   "windows": [
+    0.37,
+    3.9
+   ]
+  },
+  "scopes": [
+   3
+  ],
+  "maxCopies": 3
+ },
+ "237": {
+  "name": "Bandurrilla de pico recto",
+  "sci": "Upucerthia ruficaudus",
+  "cls": 0,
+  "xc": "90531",
+  "url": "https://xeno-canto.org/90531",
+  "recordist": "Andrew Spencer",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC90531.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 42.4,
+   "activity": 49.0,
+   "rumble": -61.6,
+   "windows": [
+    0.0,
+    2.02
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "240": {
+  "name": "Pardela pata rosada",
+  "sci": "Puffinus creatopus",
+  "cls": 1,
+  "xc": "380095",
+  "url": "https://xeno-canto.org/380095",
+  "recordist": "Fabrice Schmitt",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC380095.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 26.0,
+   "activity": 44.0,
+   "rumble": -42.5,
+   "windows": [
+    1.9,
+    3.9
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC380095.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 37.6,
+   "activity": 55.3,
+   "rumble": -66.7,
+   "windows": [
+    1.9,
+    3.9
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "241": {
+  "name": "Pidencito",
+  "sci": "Laterallus jamaicensis",
+  "cls": 0,
+  "xc": "783433",
+  "url": "https://xeno-canto.org/783433",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC783433.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 25.5,
+   "activity": 35.8,
+   "rumble": -36.0,
+   "windows": [
+    0.07,
+    2.48
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC783433.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 36.1,
+   "activity": 53.3,
+   "rumble": -59.3,
+   "windows": [
+    0.05,
+    2.51
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "244": {
+  "name": "Chirigüe culigualdo",
+  "sci": "Sicalis uropigyalis",
+  "cls": 1,
+  "xc": "95551",
+  "url": "https://xeno-canto.org/95551",
+  "recordist": "Bernabe Lopez-Lanus",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC95551.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 21.5,
+   "activity": 34.2,
+   "rumble": -40.1,
+   "windows": [
+    0.86,
+    3.83
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "246": {
+  "name": "Playero ártico",
+  "sci": "Calidris canutus",
+  "cls": 1,
+  "xc": "559623",
+  "url": "https://xeno-canto.org/559623",
+  "recordist": "Stein Ø. Nilsen",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC559623.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 17.8,
+   "activity": 29.2,
+   "rumble": -62.9,
+   "windows": [
+    0.05,
+    2.97
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC559623.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 25.7,
+   "activity": 35.0,
+   "rumble": -70.3,
+   "windows": [
+    0.02,
+    3.2
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "247": {
+  "name": "Playero enano",
+  "sci": "Calidris minutilla",
+  "cls": 1,
+  "xc": "203721",
+  "url": "https://xeno-canto.org/203721",
+  "recordist": "Andrew Spencer",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC203721.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 42.9,
+   "activity": 68.5,
+   "rumble": -60.7,
+   "windows": [
+    0.81,
+    3.55
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC203721.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 47.7,
+   "activity": 75.1,
+   "rumble": -81.8,
+   "windows": [
+    0.09,
+    2.09
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "252": {
+  "name": "Tortolita de la puna",
+  "sci": "Metriopelia aymara",
+  "cls": 0,
+  "xc": "73825",
+  "url": "https://xeno-canto.org/73825",
+  "recordist": "Joseph Tobias and Nathalie Seddon",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
+  "src": {
+   "path": "audio/XC73825.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 20.6,
+   "activity": 10.5,
+   "rumble": -6.4,
+   "windows": [
+    1.7,
+    3.74
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC73825.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 30.6,
+   "activity": 35.0,
+   "rumble": -31.0,
+   "windows": [
+    1.7,
+    3.74
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "257": {
+  "name": "Comesebo de los tamarugales",
+  "sci": "Conirostrum tamarugense",
+  "cls": 0,
+  "xc": "857153",
+  "url": "https://xeno-canto.org/857153",
+  "recordist": "Barry Edmonston",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC857153.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 50.6,
+   "activity": 35.4,
+   "rumble": -118.6,
+   "windows": [
+    0.02,
+    3.02
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC857153.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 67.0,
+   "activity": 56.0,
+   "rumble": -116.1,
+   "windows": [
+    0.0,
+    3.02
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "258": {
+  "name": "Playero manchado",
+  "sci": "Actitis macularius",
+  "cls": 1,
+  "xc": "559004",
+  "url": "https://xeno-canto.org/559004",
+  "recordist": "Ron Overholtz",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC559004.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 50.2,
+   "activity": 22.2,
+   "rumble": -77.7,
+   "windows": [
+    0.02,
+    2.35
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC559004.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 61.0,
+   "activity": 24.5,
+   "rumble": -92.8,
+   "windows": [
+    0.02,
+    2.35
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "260": {
+  "name": "Tenca de alas blancas",
+  "sci": "Mimus triurus",
+  "cls": 2,
+  "xc": "330975",
+  "url": "https://xeno-canto.org/330975",
+  "recordist": "Cristian Pinto",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC330975.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 29.9,
+   "activity": 54.9,
+   "rumble": -117.7,
+   "windows": [
+    0.0,
+    2.48
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC330975.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 40.2,
+   "activity": 65.8,
+   "rumble": -115.0,
+   "windows": [
+    0.0,
+    2.48
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "263": {
+  "name": "Mero de Tarapacá",
+  "sci": "Agriornis micropterus",
+  "cls": 0,
+  "xc": "64760",
+  "url": "https://xeno-canto.org/64760",
+  "recordist": "Bernabe Lopez-Lanus",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
+  "src": {
+   "path": "audio/XC64760.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 4.1,
+   "activity": 0.0,
+   "rumble": 11.7,
+   "windows": [
+    0.72,
+    2.74
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC64760.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 7.4,
+   "activity": 0.4,
+   "rumble": 1.1,
+   "windows": [
+    1.07,
+    3.2
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "266": {
+  "name": "Golondrina barranquera",
+  "sci": "Riparia riparia",
+  "cls": 1,
+  "xc": "184471",
+  "url": "https://xeno-canto.org/184471",
+  "recordist": "Jarek Matusiak",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC184471.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 30.7,
+   "activity": 61.9,
+   "rumble": -54.6,
+   "windows": [
+    1.02,
+    3.02
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC184471.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 33.6,
+   "activity": 48.6,
+   "rumble": -64.2,
+   "windows": [
+    1.0,
+    3.0
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "268": {
+  "name": "Pitajo gris",
+  "sci": "Ochthoeca leucophrys",
+  "cls": 2,
+  "xc": "90510",
+  "url": "https://xeno-canto.org/90510",
+  "recordist": "Andrew Spencer",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC90510.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 36.7,
+   "activity": 12.1,
+   "rumble": -69.3,
+   "windows": [
+    1.37,
+    3.92
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "269": {
+  "name": "Mirlo de pico corto",
+  "sci": "Molothrus rufoaxillaris",
+  "cls": 1,
+  "xc": "876451",
+  "url": "https://xeno-canto.org/876451",
+  "recordist": "Ignacio Escobar",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC876451.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 35.6,
+   "activity": 32.3,
+   "rumble": -79.0,
+   "windows": [
+    0.77,
+    3.74
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC876451.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 47.9,
+   "activity": 46.7,
+   "rumble": -96.6,
+   "windows": [
+    0.77,
+    3.74
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "276": {
+  "name": "Pato criollo",
+  "sci": "Cairina moschata",
+  "cls": 0,
+  "xc": "619235",
+  "url": "https://xeno-canto.org/619235",
+  "recordist": "JAYRSON ARAUJO DE OLIVEIRA",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC619235.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 33.1,
+   "activity": 47.1,
+   "rumble": -48.9,
+   "windows": [
+    0.91,
+    2.9
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC619235.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 43.4,
+   "activity": 58.8,
+   "rumble": -71.3,
+   "windows": [
+    0.91,
+    2.9
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "279": {
+  "name": "Pájaro amarillo",
+  "sci": "Pseudocolopteryx citreola",
+  "cls": 1,
+  "xc": "521296",
+  "url": "https://xeno-canto.org/521296",
+  "recordist": "Cristian Pinto",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC521296.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 9.0,
+   "activity": 4.7,
+   "rumble": -90.0,
+   "windows": [
+    0.86,
+    2.86
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC521296.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 16.7,
+   "activity": 10.1,
+   "rumble": -107.3,
+   "windows": [
+    0.72,
+    2.72
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "282": {
+  "name": "Faisán de collar",
+  "sci": "Phasianus colchicus",
+  "cls": 2,
+  "xc": "1157852",
+  "url": "https://xeno-canto.org/1157852",
+  "recordist": "Grégoire Chauvot",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC1157852.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 36.3,
+   "activity": 28.4,
+   "rumble": -26.5,
+   "windows": [
+    0.07,
+    3.69
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC1157852.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 46.0,
+   "activity": 27.2,
+   "rumble": -25.3,
+   "windows": [
+    0.07,
+    2.11
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "285": {
+  "name": "Chercán de Norteamérica",
+  "sci": "Troglodytes aedon",
+  "cls": 1,
+  "xc": "1165887",
+  "url": "https://xeno-canto.org/1165887",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC1165887.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 37.4,
+   "activity": 47.1,
+   "rumble": -45.0,
+   "windows": [
+    0.0,
+    3.83
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC1165887.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 48.8,
+   "activity": 57.2,
+   "rumble": -67.7,
+   "windows": [
+    0.0,
+    3.83
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "287": {
+  "name": "Golondrina grande",
+  "sci": "Petrochelidon pyrrhonota",
+  "cls": 1,
+  "xc": "1014908",
+  "url": "https://xeno-canto.org/1014908",
+  "recordist": "Stanislas Wroza",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC1014908.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 30.4,
+   "activity": 71.2,
+   "rumble": -78.5,
+   "windows": [
+    0.02,
+    2.76
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC1014908.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 33.7,
+   "activity": 71.2,
+   "rumble": -87.6,
+   "windows": [
+    0.02,
+    2.76
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "289": {
+  "name": "Negrillo",
+  "sci": "Volatinia jacarina",
+  "cls": 1,
+  "xc": "288278",
+  "url": "https://xeno-canto.org/288278",
+  "recordist": "Fernando Medrano",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC288278.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 38.8,
+   "activity": 37.0,
+   "rumble": -36.9,
+   "windows": [
+    0.12,
+    3.46
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC288278.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 50.0,
+   "activity": 52.9,
+   "rumble": -63.4,
+   "windows": [
+    0.19,
+    3.46
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "295": {
+  "name": "Gaviotín boreal",
+  "sci": "Sterna hirundo",
+  "cls": 1,
+  "xc": "644117",
+  "url": "https://xeno-canto.org/644117",
+  "recordist": "AUDEVARD Aurélien",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC644117.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 48.8,
+   "activity": 66.1,
+   "rumble": -39.9,
+   "windows": [
+    0.02,
+    3.9
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC644117.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 57.7,
+   "activity": 70.4,
+   "rumble": -67.0,
+   "windows": [
+    0.02,
+    3.9
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "296": {
+  "name": "Cachudito de cresta blanca",
+  "sci": "Anairetes reguloides",
+  "cls": 1,
+  "xc": "346420",
+  "url": "https://xeno-canto.org/346420",
+  "recordist": "Fernando Medrano",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC346420.mp3",
+   "seconds": 5.38,
+   "band": "aguda",
+   "contrast": 26.5,
+   "activity": 35.2,
+   "rumble": -106.3,
+   "windows": [
+    0.98,
+    2.97
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC346420.mp3",
+   "seconds": 5.38,
+   "band": "aguda",
+   "contrast": 40.6,
+   "activity": 41.7,
+   "rumble": -114.4,
+   "windows": [
+    0.98,
+    2.97
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "297": {
+  "name": "Ave fragata grande",
+  "sci": "Fregata minor",
+  "cls": 0,
+  "xc": "619639",
+  "url": "https://xeno-canto.org/619639",
+  "recordist": "AUDEVARD Aurélien",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC619639.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 39.7,
+   "activity": 49.4,
+   "rumble": -44.1,
+   "windows": [
+    1.28,
+    3.9
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC619639.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 53.7,
+   "activity": 60.3,
+   "rumble": -68.3,
+   "windows": [
+    1.28,
+    3.9
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "298": {
+  "name": "Playero de patas largas",
+  "sci": "Calidris himantopus",
+  "cls": 1,
+  "xc": "203568",
+  "url": "https://xeno-canto.org/203568",
+  "recordist": "Andrew Spencer",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC203568.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 47.6,
+   "activity": 32.3,
+   "rumble": -72.7,
+   "windows": [
+    0.02,
+    3.97
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC203568.mp3",
+   "seconds": 6.0,
+   "band": "aguda",
+   "contrast": 61.9,
+   "activity": 43.2,
+   "rumble": -91.6,
+   "windows": [
+    0.02,
+    3.3
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "300": {
+  "name": "Atrapamoscas pechirrayado",
+  "sci": "Myiophobus fasciatus",
+  "cls": 2,
+  "xc": "59966",
+  "url": "https://xeno-canto.org/59966",
+  "recordist": "Alvaro Jaramillo",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC59966.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 30.9,
+   "activity": 40.9,
+   "rumble": -121.7,
+   "windows": [
+    0.0,
+    2.0
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "302": {
+  "name": "Pitajo rojizo",
+  "sci": "Ochthoeca oenanthoides",
+  "cls": 2,
+  "xc": "59862",
+  "url": "https://xeno-canto.org/59862",
+  "recordist": "Alvaro Jaramillo",
+  "license": "https://creativecommons.org/licenses/by-nc-nd/2.5/",
+  "src": {
+   "path": "audio/XC59862.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 36.3,
+   "activity": 58.0,
+   "rumble": -103.1,
+   "windows": [
+    0.81,
+    2.86
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "303": {
+  "name": "Paíño de Markham",
+  "sci": "Oceanodroma markhami",
+  "cls": 2,
+  "xc": "855943",
+  "url": "https://xeno-canto.org/855943",
+  "recordist": "Cristian Pinto Fernandez",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC855943.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 62.0,
+   "activity": 38.5,
+   "rumble": -61.1,
+   "windows": [
+    1.6,
+    3.6
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC855943.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 78.4,
+   "activity": 51.0,
+   "rumble": -83.9,
+   "windows": [
+    1.6,
+    3.6
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "304": {
+  "name": "Picaflor azul",
+  "sci": "Colibri coruscans",
+  "cls": 1,
+  "xc": "498655",
+  "url": "https://xeno-canto.org/498655",
+  "recordist": "Cristian Pinto",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC498655.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 10.4,
+   "activity": 5.4,
+   "rumble": -113.5,
+   "windows": [
+    1.0,
+    3.58
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC498655.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 19.0,
+   "activity": 9.7,
+   "rumble": -116.2,
+   "windows": [
+    1.0,
+    3.55
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "307": {
+  "name": "Garza tricolor",
+  "sci": "Egretta tricolor",
+  "cls": 2,
+  "xc": "705371",
+  "url": "https://xeno-canto.org/705371",
+  "recordist": "Paul Driver",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC705371.mp3",
+   "seconds": 6.0,
+   "band": "grave",
+   "contrast": 22.6,
+   "activity": 20.2,
+   "rumble": 0.1,
+   "windows": [
+    0.44,
+    3.58
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC705371.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 35.4,
+   "activity": 42.4,
+   "rumble": -46.1,
+   "windows": [
+    0.44,
+    3.62
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "309": {
+  "name": "Perdicita austral",
+  "sci": "Attagis malouinus",
+  "cls": 1,
+  "xc": "812175",
+  "url": "https://xeno-canto.org/812175",
+  "recordist": "Sebastián Saiter V.",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC812175.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 18.3,
+   "activity": 14.4,
+   "rumble": -7.3,
+   "windows": [
+    1.39,
+    3.39
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC812175.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 30.1,
+   "activity": 21.0,
+   "rumble": -25.6,
+   "windows": [
+    1.39,
+    3.39
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "320": {
+  "name": "Ave del trópico de cola roja",
+  "sci": "Phaethon rubricauda",
+  "cls": 2,
+  "xc": "148671",
+  "url": "https://xeno-canto.org/148671",
+  "recordist": "Johannes Fischer",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
+  "src": {
+   "path": "audio/XC148671.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 36.9,
+   "activity": 43.6,
+   "rumble": -35.4,
+   "windows": [
+    0.44,
+    3.95
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC148671.mp3",
+   "seconds": 6.0,
+   "band": "aves",
+   "contrast": 54.2,
+   "activity": 59.1,
+   "rumble": -51.5,
+   "windows": [
+    0.44,
+    3.95
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ },
+ "325": {
+  "name": "Benteveo",
+  "sci": "Pitangus sulphuratus",
+  "cls": 2,
+  "xc": "861696",
+  "url": "https://xeno-canto.org/861696",
+  "recordist": "Franco Vushurovich",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "src": {
+   "path": "audio/XC861696.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 33.2,
+   "activity": 30.0,
+   "rumble": -24.5,
+   "windows": [
+    0.14,
+    3.65
+   ]
+  },
+  "mixer": {
+   "path": "audio/mixer/XC861696.mp3",
+   "seconds": 6.0,
+   "band": "media",
+   "contrast": 44.7,
+   "activity": 40.9,
+   "rumble": -51.5,
+   "windows": [
+    0.14,
+    3.65
+   ]
+  },
+  "scopes": [],
+  "maxCopies": 0
+ }
+}

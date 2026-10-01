@@ -642,7 +642,8 @@
     voices.forEach(([sid, copies], vi) => {
       for (let k = 0; k < copies; k++) {
         const seed = (((m * 8 + b) * 32 + vi) * 8 + k) * 31 + sid;
-        hits.push({ url: sound.data.species[sid].clip, gain: 0.6 / Math.sqrt(total), pan: (seeded(seed)() * 2 - 1) * 0.7, seed: seed * 7 + 3 });
+        const sp = sound.data.species[sid];
+        hits.push({ url: sp.clip, win: sp.win, gain: 0.6 / Math.sqrt(total), pan: (seeded(seed)() * 2 - 1) * 0.7, seed: seed * 7 + 3 });
       }
     });
     if (b === 0) SoundLoop.load(clipsFor((m + 1) % 12)); // precarga el mes siguiente
@@ -664,7 +665,7 @@
 
   async function initSound() {
     try {
-      sound.data = await fetch("data/loop.json?v=1").then((r) => {
+      sound.data = await fetch("data/loop.json?v=2").then((r) => {
         if (!r.ok) throw new Error(`loop.json: ${r.status}`);
         return r.json();
       });

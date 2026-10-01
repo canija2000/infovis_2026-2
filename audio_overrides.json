@@ -1,3 +1,67 @@
 {
- "Muscisaxicola maclovianus": {"exclude": ["784100"], "nota": "XC784100 era casi solo ruido de ambiente"}
+ "Muscisaxicola maclovianus": {
+  "exclude": [
+   "784100"
+  ],
+  "nota": "XC784100 era casi solo ruido de ambiente"
+ },
+ "Colaptes pitius": {
+  "id": "617690",
+  "start": 0.3,
+  "band": [
+   3000,
+   11000
+  ],
+  "nota": "recortar_audio_banda.py: el tramo anterior tenía 20 dB de contraste en la banda aguda; el nuevo, 27 dB"
+ },
+ "Columba livia": {
+  "id": "663912",
+  "start": 26.1,
+  "band": [
+   250,
+   1000
+  ],
+  "nota": "recortar_audio_banda.py: el tramo anterior tenía 11 dB de contraste en la banda grave; el nuevo, 31 dB"
+ },
+ "Lessonia rufa": {
+  "id": "90646",
+  "start": 4.25,
+  "nota": "recortar_audio_banda.py: el tramo anterior tenía 15 dB de contraste en la banda aves; el nuevo, 24 dB"
+ },
+ "Limosa haemastica": {
+  "id": "856368",
+  "start": 9.68,
+  "band": [
+   3000,
+   11000
+  ],
+  "nota": "recortar_audio_banda.py: el tramo anterior tenía 17 dB de contraste en la banda aguda; el nuevo, 24 dB"
+ },
+ "Muscisaxicola albilora": {
+  "id": "393552",
+  "start": 0.02,
+  "band": [
+   250,
+   1000
+  ],
+  "nota": "recortar_audio_banda.py: el tramo anterior tenía 5 dB de contraste en la banda grave; el nuevo, 17 dB"
+ },
+ "Zenaida auriculata": {
+  "id": "17314",
+  "start": 11.59,
+  "band": [
+   250,
+   1000
+  ],
+  "nota": "recortar_audio_banda.py: el tramo anterior tenía 12 dB de contraste en la banda grave; el nuevo, 31 dB"
+ },
+ "Zenaida meloda": {
+  "id": "857154",
+  "start": 37.63,
+  "band": [
+   250,
+   1000
+  ],
+  "nota": "recortar_audio_banda.py: el tramo anterior tenía 20 dB de contraste en la banda grave; el nuevo, 26 dB"
+ }
 }
