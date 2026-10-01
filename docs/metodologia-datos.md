@@ -241,3 +241,10 @@ Los anillos se reorientan para D3 (exterior horario).
   estación. La escala de color satura en el percentil 95 de |índice| (±0,144).
 - El tamaño del punto es especie-días: muestra dónde se observa más (sesgo de esfuerzo), no dónde hay más aves.
 - Juan Fernández y Rapa Nui quedan fuera del encuadre (Chile continental).
+- Modo «Regiones» (interruptor): un color por región, nivel de la ola de verano − la de invierno, cada uno relativo
+  al rango anual de la región (`region_month.json`), como en la versión anterior.
+- «Una región de cerca»: celdas de 0,05° (~5 km), sin filtro de mínimo. Mapa de densidad de puntos: 1 punto por
+  `perDot` especie-días de cada clase (1, 2 o 5 × 10ⁿ, elegido para que el mes más observado de la región tenga
+  ~1.200 puntos; por eso no se comparan densidades entre regiones). La parte fraccionaria se redondea al azar con
+  semilla fija, y los puntos se ubican al azar dentro de su celda, siempre en la misma posición de un mes a otro.
+  Las residentes se dibujan debajo; «Ocultar residentes» deja ver solo a las visitantes.

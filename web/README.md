@@ -6,7 +6,10 @@ Sitio estático sin build step, en dos páginas enlazadas por la barra superior 
   presentes por mes y clase) + «un punto, una especie» (residentes quietas; visitantes que entran y salen
   del país) + «la ola recorre todo el país» (un mapa por mes, cuatro a la vista y scroll horizontal; un
   punto por zona de 0,2° con datos suficientes, color = ola de verano − ola de invierno respecto de su
-  región, tamaño = especie-días; usa `grid_month.json` y `regions.min.geojson`). Un mes compartido (botones, clic en un gráfico o ▶) mueve
+  región, tamaño = especie-días; usa `grid_month.json` y `regions.min.geojson`). Un interruptor la cambia a
+  «Regiones» (un color por región, desde `region_month.json`). Debajo, «Una región de cerca»: Chile en
+  horizontal como selector y los 12 meses de la región elegida como mapa de puntos por clase
+  (1 punto ≈ k especie-días, celdas de 0,05°; `data/grid_region/<código>.json`, cargado al elegirla). Un mes compartido (botones, clic en un gráfico o ▶) mueve
   las vistas y el sonido:
   residentes = colchón; visitantes = cantos de especies presentes ese mes, 1 por cada 12 especies.
   Código en `inicio.js` e `inicio.css`; datos en `data/overview.json`

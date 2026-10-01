@@ -17,8 +17,8 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Changa+One:ital@0;1&family=Shrikhand&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Pixelify+Sans:wght@400..700&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=inicio-5">
-  <link rel="stylesheet" href="inicio.css?v=inicio-5">
+  <link rel="stylesheet" href="styles.css?v=inicio-7">
+  <link rel="stylesheet" href="inicio.css?v=inicio-7">
 </head>
 
 <body class="inicio">
@@ -73,23 +73,58 @@
       <div id="flock" class="flock-chart"></div>
     </figure>
 
-    <!-- C · La ola en el mapa: un mapa por mes, cuatro a la vez -->
+    <!-- C1 · La ola en el mapa: Chile completo, un mapa por mes, cuatro a la vez -->
     <figure class="months-maps" aria-labelledby="maps-title">
       <figcaption>
-        <h2 id="maps-title">La ola recorre todo el país</h2>
-        <p>Un punto por zona de unos 22 km donde se observan aves. Naranja: ese mes llegan más visitantes de verano
-          de lo habitual en su región; azul, más de invierno. El tamaño indica cuánto se observa allí.</p>
+        <div class="maps-title-row">
+          <h2 id="maps-title">La ola recorre todo el país</h2>
+          <div id="maps-mode" class="seg" role="group" aria-label="Forma del mapa">
+            <button type="button" data-mode="zones">Zonas ~22 km</button>
+            <button type="button" data-mode="regions">Regiones</button>
+          </div>
+        </div>
+        <p id="maps-lede"></p>
         <div class="maps-head">
           <div id="maps-legend" class="maps-legend"></div>
           <div class="maps-nav">
-            <button id="maps-prev" class="ghost small" type="button" aria-controls="maps">← anteriores</button>
-            <button id="maps-next" class="ghost small" type="button" aria-controls="maps">siguientes →</button>
+            <button class="ghost small" type="button" data-strip="maps" data-dir="prev" aria-controls="maps">← anteriores</button>
+            <button class="ghost small" type="button" data-strip="maps" data-dir="next" aria-controls="maps">siguientes →</button>
           </div>
         </div>
       </figcaption>
-      <div id="maps" class="maps-strip" tabindex="0" aria-label="Mapas de julio a junio; desplazar en horizontal"></div>
-      <p class="maps-note">Zonas con ≥ 50 especie-días en el mes y registros en ≥ 3 de los 8 años (GBIF 2017–2024).
-        Sin punto: no hay datos suficientes ese mes, no que no haya aves.</p>
+      <div id="maps" class="maps-strip" tabindex="0" aria-label="Mapas de Chile de julio a junio; desplazar en horizontal"></div>
+      <p id="maps-note" class="maps-note"></p>
+    </figure>
+
+    <!-- C2 · Una región de cerca: selector horizontal + sus 12 meses -->
+    <figure class="region-maps" aria-labelledby="region-title">
+      <figcaption>
+        <h2 id="region-title">Una región de cerca · <span id="region-name">Metropolitana</span></h2>
+        <p>Elige una región en el mapa. Cada punto es un poco de lo que se registró allí ese mes: verde, residentes;
+          naranja, visitantes de verano; azul, de invierno.</p>
+      </figcaption>
+      <div class="picker-row">
+        <div id="region-picker" class="region-picker"></div>
+        <label class="region-select">Región
+          <select id="region-select"></select>
+        </label>
+      </div>
+      <div class="maps-head">
+        <div class="series-legend" aria-hidden="true">
+          <span><i class="sw c0"></i>Residentes</span>
+          <span><i class="sw c1"></i>Visitantes de verano</span>
+          <span><i class="sw c2"></i>Visitantes de invierno</span>
+          <label class="toggle"><input id="hide-residents" type="checkbox"> Ocultar residentes</label>
+        </div>
+        <div class="maps-nav">
+          <button class="ghost small" type="button" data-strip="region-maps" data-dir="prev" aria-controls="region-maps">← anteriores</button>
+          <button class="ghost small" type="button" data-strip="region-maps" data-dir="next" aria-controls="region-maps">siguientes →</button>
+        </div>
+      </div>
+      <div id="region-maps" class="maps-strip" tabindex="0" aria-label="Mapas de la región de julio a junio; desplazar en horizontal"></div>
+      <p class="maps-note"><span id="region-scale"></span>. Los puntos se reparten al azar dentro de su celda: muestran
+        dónde se observa, no la ubicación exacta de cada registro. Bajo cada mapa, la parte de lo registrado que
+        corresponde a visitantes.</p>
     </figure>
 
     <details class="table-view">
@@ -111,7 +146,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
   <script src="sonify.js"></script>
-  <script src="inicio.js?v=inicio-5"></script>
+  <script src="inicio.js?v=inicio-7"></script>
 </body>
 
 </html>

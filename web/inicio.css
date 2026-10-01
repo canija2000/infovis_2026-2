@@ -344,3 +344,122 @@
   font: 12px var(--mono);
   color: var(--ink-3);
 }
+
+/* interruptor de dos opciones (zonas | regiones) */
+.maps-title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+}
+.seg {
+  display: inline-flex;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 2px;
+}
+.seg button {
+  padding: 3px 12px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  font: 12px var(--mono);
+  color: var(--ink-2);
+}
+.seg button[aria-pressed="true"] {
+  background: var(--accent);
+  color: var(--bg);
+}
+.map-card .region {
+  stroke: var(--bg);
+  stroke-width: 0.6px;
+}
+.map-card .region.low {
+  stroke: var(--ink-3);
+  stroke-dasharray: 2 2;
+}
+.map-card .region:hover {
+  stroke: var(--ink);
+  stroke-width: 1.2px;
+  stroke-dasharray: none;
+}
+
+/* ------------------------------------------------------------ C2 · una región */
+.region-maps {
+  margin-top: 40px;
+}
+.picker-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 8px 16px;
+  margin-top: 12px;
+}
+.region-picker {
+  flex: 1 1 480px;
+  min-width: 0;
+}
+.region-picker svg {
+  display: block;
+}
+.pick {
+  fill: var(--empty);
+  stroke: var(--bg);
+  stroke-width: 0.8px;
+  cursor: pointer;
+}
+.pick:hover {
+  fill: var(--ink-3);
+}
+.pick.selected {
+  fill: var(--c0);
+}
+.pick:focus-visible {
+  outline: none;
+  stroke: var(--ink);
+  stroke-width: 1.5px;
+}
+.pick-dir {
+  font: 11px var(--mono);
+  fill: var(--ink-3);
+}
+.region-select {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font: 11px var(--mono);
+  color: var(--ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.region-select select {
+  font: 14px var(--font);
+  padding: 4px 6px;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--ink);
+  text-transform: none;
+}
+.region-maps .maps-head {
+  margin-top: 14px;
+}
+.dot-r.c0 { fill: var(--c0); }
+.dot-r.c1 { fill: var(--c1); }
+.dot-r.c2 { fill: var(--c2); }
+.map-n .t1 { color: var(--c1-ink); }
+.map-n .t2 { color: var(--c2-ink); }
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 8px;
+  color: var(--ink);
+  cursor: pointer;
+}
+.toggle input {
+  accent-color: var(--c0);
+}
+.no-residents .dot-r.c0 {
+  display: none;
+}

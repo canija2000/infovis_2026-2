@@ -26,7 +26,9 @@ GBIF (11 descargas anuales, Aves, Chile)
   a partir de los archivos que ya genera `build_web_data.py`. Correrlo después de ese script.
 - `python_scripts/gbif/grid_aggregate.py` + `python_scripts/build_grid_data.py`: agregan las descargas
   GBIF 2017–2024 en celdas de 0,2° × mes × clase y generan `web/data/grid_month.json` (~130 KB) para los
-  mapas por mes de la portada. Necesitan `shapely` y las descargas en `gbif/downloads/` (se bajan por DOI).
+  mapas por mes de la portada, y con `--res 0.05` también `web/data/grid_region/<código>.json` (vista de una
+  región). Necesitan `shapely` y las descargas en `gbif/downloads/` (se bajan por DOI). Orden:
+  `python3 python_scripts/gbif/grid_aggregate.py --res 0.2 0.05 && python3 python_scripts/build_grid_data.py`.
 - `python_scripts/build_web_data.py`: genera los archivos livianos de la web (~0,86 MB de
   carga inicial). Solo usa la biblioteca estándar y su salida es determinista.
 - `gbif/synonyms_xc.json`: nombres científicos GBIF → Xeno-canto (IOC).
