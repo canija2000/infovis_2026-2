@@ -17,8 +17,8 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Changa+One:ital@0;1&family=Shrikhand&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Pixelify+Sans:wght@400..700&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=inicio-3">
-  <link rel="stylesheet" href="inicio.css?v=inicio-3">
+  <link rel="stylesheet" href="styles.css?v=inicio-4">
+  <link rel="stylesheet" href="inicio.css?v=inicio-4">
 </head>
 
 <body class="inicio">
@@ -73,6 +73,25 @@
       <div id="flock" class="flock-chart"></div>
     </figure>
 
+    <!-- C · La ola en el mapa: un mapa por mes, cuatro a la vez -->
+    <figure class="months-maps" aria-labelledby="maps-title">
+      <figcaption>
+        <h2 id="maps-title">La ola recorre todo el país</h2>
+        <p>Un mapa por mes. Cada región comparada con su propio año: naranja, el mes en que más pesan sus
+          visitantes de verano; azul, los de invierno.</p>
+        <div class="maps-head">
+          <div id="maps-legend" class="maps-legend"></div>
+          <div class="maps-nav">
+            <button id="maps-prev" class="ghost small" type="button" aria-controls="maps">← anteriores</button>
+            <button id="maps-next" class="ghost small" type="button" aria-controls="maps">siguientes →</button>
+          </div>
+        </div>
+      </figcaption>
+      <div id="maps" class="maps-strip" tabindex="0" aria-label="Mapas de julio a junio; desplazar en horizontal"></div>
+      <p class="maps-note">Contorno punteado: región con pocos registros (&lt; 400 días-especie al mes), valores
+        inestables.</p>
+    </figure>
+
     <details class="table-view">
       <summary>Ver los datos en tabla</summary>
       <div id="table"></div>
@@ -92,7 +111,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
   <script src="sonify.js"></script>
-  <script src="inicio.js?v=inicio-3"></script>
+  <script src="inicio.js?v=inicio-4"></script>
 </body>
 
 </html>

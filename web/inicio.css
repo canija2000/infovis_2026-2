@@ -256,3 +256,76 @@
     flex: 1 0 14%;
   }
 }
+
+/* ------------------------------------------------------------ C · mapas por mes */
+.maps-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin-top: 10px;
+}
+.maps-legend svg {
+  display: block;
+}
+.maps-legend text {
+  font: 12px var(--mono);
+  fill: var(--ink-3);
+}
+.maps-nav {
+  display: flex;
+  gap: 6px;
+}
+/* Cuatro meses a la vista; el resto con scroll horizontal (con imán por mapa). */
+.maps-strip {
+  display: flex;
+  margin-top: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  overscroll-behavior-x: contain;
+}
+.map-card {
+  flex: none;
+  padding: 8px 8px 12px;
+  scroll-snap-align: start;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.map-card h3 {
+  margin: 0 0 6px;
+  font: 13px var(--mono);
+  color: var(--ink-3);
+  text-align: center;
+}
+.map-card.current {
+  background: var(--surface);
+  box-shadow: inset 0 0 0 1px var(--rule);
+}
+.map-card.current h3 {
+  color: var(--ink);
+  font-weight: 500;
+}
+.map-card svg {
+  display: block;
+  margin: 0 auto;
+}
+.map-card .region {
+  stroke: var(--bg);
+  stroke-width: 0.6px;
+}
+.map-card .region.low {
+  stroke: var(--ink-3);
+  stroke-dasharray: 2 2;
+}
+.map-card .region:hover {
+  stroke: var(--ink);
+  stroke-width: 1.2px;
+  stroke-dasharray: none;
+}
+.maps-note {
+  margin: 6px 0 0;
+  font: 12px var(--mono);
+  color: var(--ink-3);
+}

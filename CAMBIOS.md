@@ -71,3 +71,8 @@ Agrega una línea numerada por entrada, con tu nombre entre paréntesis.
    y «un punto, una especie» (366 puntos; las visitantes cruzan la frontera mes a mes). Sonido: cantos reales de especies
    presentes, cantidad ∝ visitantes del mes. Ideas pendientes: loop de fondo de 4 compases por mes, general y por región,
    con más copias de un canto cuanto más presente está la especie; pequeños múltiplos por región (propuesta C). (Joaquín)
+20. Portada: mapas por mes («la ola recorre todo el país»), cuatro a la vez con scroll horizontal. Color divergente
+   invierno (azul) ↔ verano (naranja): nivel de la ola de verano − nivel de la de invierno, cada uno relativo al rango
+   anual de la región. Muestra que el cambio de estación es nacional, no un frente norte → sur. Con coordenadas de GBIF
+   (descargas fuera del repo) se podría bajar a una grilla de celdas. Arreglo: los enlaces de navegación usaban la clase
+   `.tab` de las pestañas del calendario y heredaban su estilo; ahora `.site-tab`. (Joaquín)
