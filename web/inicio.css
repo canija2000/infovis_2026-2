@@ -463,3 +463,95 @@
 .no-residents .dot-r.c0 {
   display: none;
 }
+
+/* ------------------------------------------------------------ loop sonoro */
+.player-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.bars {
+  display: flex;
+  gap: 4px;
+}
+.bars i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--rule);
+  transition: background 0.2s;
+}
+.bars i.on {
+  background: var(--ink);
+}
+.now-playing {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: 13px;
+  color: var(--ink-2);
+  line-height: 1.7;
+}
+.now-playing .np-label {
+  font: 11px var(--mono);
+  color: var(--ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.now-playing .v {
+  display: inline-block;
+  margin-right: 10px;
+  white-space: nowrap;
+}
+.now-playing .v::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 5px;
+  border-radius: 50%;
+  vertical-align: 0;
+  background: var(--c0);
+}
+.now-playing .v.c1::before { background: var(--c1); }
+.now-playing .v.c2::before { background: var(--c2); }
+.now-playing .v b {
+  font: 500 12px var(--mono);
+  color: var(--ink);
+}
+.sound-hint {
+  flex-basis: 100%;
+  margin: 0;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: var(--surface);
+  box-shadow: inset 0 0 0 1px var(--rule);
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.sound-hint[hidden] {
+  display: none;
+}
+.como-suena {
+  max-width: 1240px;
+  margin: 24px auto 0;
+  padding: 16px 24px 0;
+  border-top: 1px solid var(--rule);
+  font-size: 15px;
+  color: var(--ink-2);
+}
+.como-suena h2 {
+  font-size: 17px;
+}
+.como-suena p,
+.como-suena ul {
+  max-width: 80ch;
+}
+.como-suena li {
+  margin: 4px 0;
+}
+@media (max-width: 640px) {
+  .como-suena {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
