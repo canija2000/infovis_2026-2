@@ -6,245 +6,88 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Nómadas &amp; sedentarios · Atlas sonoro de aves de Chile</title>
   <meta name="description"
-    content="Calendario interactivo y sonoro de las aves de Chile: especies residentes y visitantes estacionales por región, año típico 2017–2024 (GBIF).">
+    content="214 especies de aves se quedan en Chile todo el año; cada verano llegan cerca de 100 más, y se van. Año típico 2017–2024 (GBIF).">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Barlow+Condensed:ital,wght@1,700&family=Fredoka:wdth,wght@125,700&family=Cormorant+Garamond:ital,wght@1,400&display=swap"
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;600;700&family=Shrikhand&family=Pixelify+Sans:wght@700&display=swap"
     rel="stylesheet">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Changa+One:ital@0;1&family=Shrikhand&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Pixelify+Sans:wght@400..700&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=mixer-dock-1">
+  <link rel="stylesheet" href="styles.css?v=inicio-1">
+  <link rel="stylesheet" href="inicio.css?v=inicio-1">
 </head>
 
-<body>
-  <header class="masthead">
-    <p class="kicker">Atlas sonoro · Aves de Chile · año típico 2017–2024</p>
+<body class="inicio">
+  <nav class="site-nav" aria-label="Secciones">
+    <a class="brand" href="index.html">Atlas sonoro · Aves de Chile</a>
+    <ul>
+      <li><a class="tab" href="index.html" aria-current="page">Visualización</a></li>
+      <li><a class="tab" href="explorar.html">Explorar</a></li>
+    </ul>
+  </nav>
+
+  <header class="masthead hero">
     <h1><span class="travel">Nómadas</span> <span class="amp"> & </span> <span class="stay">sedentarios</span>
       <span class="subtitle">las avifaunas de Chile continental</span>
     </h1>
-    <p class="lede" id="lede">Más de <b>6,5 millones de registros</b> de aves en Chile (GBIF, 2017–2024) muestran dos
-      formas de habitar el país:</p>
-    <ul class="summary" id="summary" aria-live="polite"></ul>
+    <p class="claim" id="claim"><b class="n-stay">214</b> especies de aves se quedan en Chile todo el año.
+      Cada verano llegan <b class="n-summer">~100</b> más, y se van.</p>
   </header>
 
-  <nav class="toolbar" aria-label="Controles">
-    <div class="tool play-tool">
+  <main class="stage">
+    <!-- A · El pulso del año -->
+    <figure class="pulse" aria-labelledby="pulse-title">
+      <figcaption>
+        <h2 id="pulse-title">Especies presentes en Chile, mes a mes</h2>
+        <div class="series-legend" aria-hidden="true">
+          <span><i class="sw c0"></i>Residentes</span>
+          <span><i class="sw c1"></i>Visitantes de verano</span>
+          <span><i class="sw c2"></i>Visitantes de invierno</span>
+        </div>
+      </figcaption>
+      <div id="pulse" class="pulse-chart"></div>
+    </figure>
+
+    <!-- Controles comunes: el mes manda en ambas vistas -->
+    <div class="player">
       <button id="play" class="play icon-btn" type="button" aria-pressed="false" aria-label="Escuchar el año"
         title="Escuchar el año (barra espaciadora)">
         <svg viewBox="0 0 16 16" aria-hidden="true">
           <path id="play-icon" d="M4.5 2.5v11l9-5.5z" />
         </svg>
       </button>
-      <button id="mute" class="ghost icon-btn" type="button" aria-pressed="false" aria-label="Silenciar"
-        title="Silenciar">
-        <svg viewBox="0 0 20 20" aria-hidden="true">
-          <path class="speaker" d="M3 7.5h3l4-3.5v12l-4-3.5H3z" />
-          <path class="waves" d="M13 7a4 4 0 0 1 0 6M15.5 4.5a7.5 7.5 0 0 1 0 11" />
-          <path class="cross" d="M13 7.5l5 5M18 7.5l-5 5" />
-        </svg>
-      </button>
-      <button id="mixer-open" class="ghost mixer-open" type="button" aria-expanded="false" aria-controls="mixer"
-        title="Mezclar cantos de varias especies">
-        <svg viewBox="0 0 20 20" aria-hidden="true">
-          <path d="M5 3v14M10 3v14M15 3v14" />
-          <path class="knob" d="M3.5 12h3M8.5 6h3M13.5 10h3" />
-        </svg>
-        Mezcla <span id="mixer-count" class="mixer-count" hidden></span>
-      </button>
+      <span class="player-label">Escuchar el año</span>
+      <div class="months" id="months" role="group" aria-label="Mes"></div>
     </div>
-    <div class="tool month-tool">
-      <label for="month" class="tool-label">Mes <strong id="month-label">enero</strong></label>
-      <input id="month" type="range" min="0" max="11" step="1" value="6" aria-describedby="month-label">
-      <div class="month-ticks" aria-hidden="true" id="month-ticks"></div>
-    </div>
-    <div class="tool search-tool">
-      <label for="search" class="tool-label">Especie</label>
-      <input id="search" type="search" list="species-list" placeholder="Fío-fío, Tórtola, Calidris…" autocomplete="off">
-      <datalist id="species-list"></datalist>
-    </div>
-  </nav>
 
-  <main class="layout">
-    <section class="map-col" aria-labelledby="map-title">
-      <div class="block-head">
-        <h2 id="map-title">Presentes en <span id="map-month">enero</span></h2>
-        <button id="reset" class="ghost small" type="button" hidden>← Chile</button>
-      </div>
-      <p class="hint">Clic en una región para verla sola.</p>
-      <div id="map" class="map"></div>
-      <div id="map-legend" class="legend"></div>
-      <dl class="scope-stats" id="scope-stats"></dl>
-    </section>
+    <!-- B · Puntos que viajan -->
+    <figure class="flock" aria-labelledby="flock-title">
+      <figcaption>
+        <h2 id="flock-title">Un punto, una especie · <span id="flock-month">enero</span></h2>
+        <p>Las residentes no se mueven. Las visitantes entran y salen del país con las estaciones.</p>
+      </figcaption>
+      <div id="flock" class="flock-chart"></div>
+    </figure>
 
-    <section class="viz-col" aria-labelledby="cal-title">
-      <div class="block-head">
-        <h2 id="cal-title">Calendario de la avifauna · <span id="scope-name">Chile</span></h2>
-      </div>
-      <p class="howto">Cada fila es una especie; cada columna, un mes. Cuanto más intenso el color, más presente está la
-        especie respecto de su mejor mes. Cambia de pestaña para ver cada grupo.</p>
-      <div class="legend-row">
-        <div id="cal-legend" class="legend"></div>
-        <span class="key"><i class="key-cell faint"></i>Celda tenue: registrada en pocos de los 8 años</span>
-        <span class="key"><i class="key-bar"></i>Barra: días con registro al mes (qué tan común es)</span>
-      </div>
-      <div class="tabs" id="tabs" role="tablist" aria-label="Ventana por clase estacional"></div>
-      <div id="calendar" class="grid-chart window" role="tabpanel"></div>
-      <div class="below">
-        <button id="cal-more" class="ghost small" type="button" hidden></button>
-        <details class="how">
-          <summary>¿Cómo se calcula y se ordena?</summary>
-          <p id="cal-note"></p>
-          <div class="formula">
-            <p>Presencia relativa de la especie <i>s</i> en el mes <i>m</i>:</p>
-            <math display="block" aria-label="r sub s m igual a un octavo de la suma, de 2017 a 2024, de d sub s m a dividido por E sub m a">
-              <msub><mi>r</mi><mrow><mi>s</mi><mo>,</mo><mi>m</mi></mrow></msub><mo>=</mo>
-              <mfrac><mn>1</mn><mn>8</mn></mfrac>
-              <munderover><mo>∑</mo><mrow><mi>a</mi><mo>=</mo><mn>2017</mn></mrow><mn>2024</mn></munderover>
-              <mfrac>
-                <msub><mi>d</mi><mrow><mi>s</mi><mo>,</mo><mi>m</mi><mo>,</mo><mi>a</mi></mrow></msub>
-                <msub><mi>E</mi><mrow><mi>m</mi><mo>,</mo><mi>a</mi></mrow></msub>
-              </mfrac>
-            </math>
-            <math display="block" aria-label="color de la celda igual a 100 por r sub s m dividido por el máximo de r sub s en los 12 meses">
-              <msub><mtext>color</mtext><mrow><mi>s</mi><mo>,</mo><mi>m</mi></mrow></msub><mo>=</mo><mn>100</mn><mo>·</mo>
-              <mfrac>
-                <msub><mi>r</mi><mrow><mi>s</mi><mo>,</mo><mi>m</mi></mrow></msub>
-                <mrow><munder><mo movablelimits="false">máx</mo><msup><mi>m</mi><mo>′</mo></msup></munder>
-                  <msub><mi>r</mi><mrow><mi>s</mi><mo>,</mo><msup><mi>m</mi><mo>′</mo></msup></mrow></msub></mrow>
-              </mfrac>
-            </math>
-            <dl class="symbols">
-              <dt><i>d</i><sub>s,m,a</sub></dt><dd>días del mes <i>m</i> del año <i>a</i> en que se registró la especie
-                <i>s</i> en la región (o en Chile).</dd>
-              <dt><i>E</i><sub>m,a</sub></dt><dd>suma de esos días para todas las especies en ese mes y año: cuánto se
-                observó en total. Corrige que en algunos meses (verano) sale más gente a observar.</dd>
-              <dt><i>r</i><sub>s,m</sub></dt><dd>participación de la especie en lo observado ese mes, promedio de los 8
-                años.</dd>
-              <dt>color</dt><dd>se divide por el mejor mes de la especie: 100 % = su mejor mes.</dd>
-            </dl>
-          </div>
-        </details>
-      </div>
-
-      <div class="block-head grid-head">
-        <h2 id="grid-title">¿Cuándo pesan más las visitantes? Por región y mes</h2>
-      </div>
-      <p class="howto">Cada región comparada consigo misma: violeta, el mes tiene más visitantes que su promedio anual;
-        verde, menos (dominan las residentes). Filas de norte a sur.</p>
-      <div class="legend-row">
-        <div id="grid-legend" class="legend"></div>
-        <span class="key"><i class="key-star">*</i>Región con pocos registros (&lt; 400 días-especie al mes): valores
-          inestables</span>
-      </div>
-      <div id="region-grid" class="grid-chart"></div>
-      <details class="how">
-        <summary>¿Cómo se calcula?</summary>
-        <p>Proporción de visitantes = peso de las especies visitantes (de verano y de invierno) en la presencia total
-          del
-          mes, donde cada especie pondera según qué tan presente está. Se muestra la diferencia entre cada mes y el
-          promedio de los 12 meses de esa misma región, así una región con pocos registros no aparece "más visitada"
-          solo por tener menos datos. La escala satura en el percentil 95 de las diferencias.</p>
-      </details>
-    </section>
+    <details class="table-view">
+      <summary>Ver los datos en tabla</summary>
+      <div id="table"></div>
+    </details>
   </main>
 
-  <aside id="panel" class="panel" aria-live="polite" hidden>
-    <button id="panel-close" class="ghost close" type="button" aria-label="Cerrar ficha">✕</button>
-    <p class="kicker" id="p-class"></p>
-    <h2 id="p-name"></h2>
-    <p class="sci" id="p-sci"></p>
-    <div class="panel-grid">
-      <figure>
-        <figcaption>Perfil anual en <span id="p-scope"></span><br>100 % = su mejor mes</figcaption>
-        <div id="p-radial"></div>
-      </figure>
-      <figure>
-        <figcaption>Frecuencia media por región</figcaption>
-        <div id="p-map"></div>
-      </figure>
-    </div>
-    <dl class="facts" id="p-facts"></dl>
-    <div id="p-sound" class="sound-box"></div>
-    <section id="p-images" class="images-box" aria-label="Fotografías de la especie"></section>
-  </aside>
-
-  <section class="sound-legend" aria-labelledby="sl-title">
-    <h2 id="sl-title" style="color:#13139e;">Cómo suena</h2>
-    <p>Con <b>▶</b> (Escuchar el año) cada mes dura 2,4 s y recorre Chile de norte a sur en cinco macrozonas (Norte
-      Grande,
-      Norte Chico, Centro, Sur y Austral). Un golpe grave y suave marca el inicio de cada mes.</p>
-    <ul>
-      <li><b>Timbre ← clase.</b> Las residentes son un colchón sostenido y estable: los <i>sedentarios</i>. Las
-        visitantes
-        son cantos reales: el <b>Fío-fío</b> (izquierda) por las de verano y el <b>Picaflor chico</b> (derecha) por las
-        de
-        invierno: los <i>nómadas</i>.</li>
-      <li><b>Ritmo ← la ola.</b> Cuantas más visitantes hay en una zona respecto de su propio año, más cantos suenan en
-        su tiempo del compás: la ola de verano crece en primavera y se apaga en otoño.</li>
-      <li><b>Tono ← latitud.</b> Los cantos se transponen: norte más agudo, sur más grave (escala pentatónica, ±6
-        semitonos),
-        sobre una base una quinta más grave que el canto original y filtrada para que no suene estridente.</li>
-      <li><b>Volumen ← cantidad.</b> Las zonas con más especies visitantes suenan más fuerte.</li>
-      <li>Si seleccionas una región, solo suena ella (con más detalle). Si abres una especie, suena <b>su</b> canto
-        donde
-        y cuando está presente.</li>
-    </ul>
-  </section>
-
-  <footer class="method">
-    <h2 style="color: #13139e;">Qué mide y de dónde viene</h2>
-    <p id="method-text"></p>
-    <p class="dois" id="dois"></p>
-    <p>Cantos: <a href="https://xeno-canto.org" target="_blank" rel="noopener">Xeno-canto</a>, con autor y licencia
-      Creative Commons en cada grabación. Proyecto del curso Visualización de Información 2026-2.</p>
+  <footer class="inicio-foot">
+    <p><a class="go" href="explorar.html">Explorar por región y especie →</a></p>
+    <p class="muted">Año típico 2017–2024 a partir de ~6,5 millones de registros de GBIF. Una especie está
+      «presente» un mes si se registró en al menos 4 de los 8 años y en ≥ 20 % de su mes pico. No se cuentan
+      las 185 especies ocasionales. Cantos de <a href="https://xeno-canto.org" target="_blank"
+        rel="noopener">Xeno-canto</a> (CC). Metodología y DOIs en <a href="explorar.html#method-text">Explorar</a>.
+    </p>
   </footer>
-
-  <section id="mixer" class="mixer-dock" aria-labelledby="mixer-title" hidden>
-    <div class="mixer-bar">
-      <h2 id="mixer-title">Mezcla de cantos</h2>
-      <button id="mixer-play" class="play icon-btn" type="button" aria-pressed="false" aria-label="Reproducir mezcla"
-        title="Reproducir mezcla" disabled>
-        <svg viewBox="0 0 16 16" aria-hidden="true">
-          <path id="mixer-play-icon" d="M4.5 2.5v11l9-5.5z" />
-        </svg>
-      </button>
-      <label class="mixer-sync" for="mixer-sync"
-        title="Todos comienzan juntos; desmarcado, cada ave espera un tiempo aleatorio.">
-        <input id="mixer-sync" type="checkbox"> Sincronizar
-      </label>
-      <button id="mixer-search-toggle" class="ghost small" type="button" aria-expanded="false"
-        aria-controls="mixer-catalog">+ Especies</button>
-      <button id="mixer-scene" class="ghost small" type="button">Mezclar lo que se ve</button>
-      <p id="mixer-status" class="mixer-status" role="status" aria-live="polite"></p>
-      <button id="mixer-close" class="ghost icon-btn mixer-close" type="button" aria-label="Minimizar mezclador"
-        title="Minimizar (la mezcla sigue sonando)">▾</button>
-    </div>
-    <div id="mixer-catalog" class="mixer-catalog" hidden>
-      <div class="mixer-catalog-controls">
-        <input id="mixer-query" type="search" placeholder="Buscar por nombre común o científico…" autocomplete="off"
-          aria-label="Buscar especie por nombre">
-        <div id="mixer-filters" class="mixer-filters" role="group" aria-label="Filtrar por estacionariedad">
-          <button type="button" data-class="all" aria-pressed="true">Todas</button>
-          <button type="button" data-class="residente" aria-pressed="false">Residentes</button>
-          <button type="button" data-class="visitante_estival" aria-pressed="false">De verano</button>
-          <button type="button" data-class="visitante_invernal" aria-pressed="false">De invierno</button>
-        </div>
-        <p id="mixer-result-count" class="mixer-result-count" role="status" aria-live="polite"></p>
-      </div>
-      <div id="mixer-grid" class="mixer-grid" aria-label="Especies con canto"></div>
-    </div>
-    <ul id="mixer-tracks" class="mixer-tracks" aria-label="Especies en la mezcla"></ul>
-  </section>
 
   <div id="tooltip" class="tooltip" role="tooltip" hidden></div>
 
   <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
   <script src="sonify.js"></script>
-  <script src="app.js?v=mixer-dock-1"></script>
+  <script src="inicio.js?v=inicio-1"></script>
 </body>
 
 </html>

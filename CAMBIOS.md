@@ -65,3 +65,9 @@ Agrega una línea numerada por entrada, con tu nombre entre paréntesis.
 18. Región de Magallanes para el mundo 3D: 16 especies nuevas con fotos (iNaturalist) y paletas automáticas (Qwen3-VL) con
    correcciones manuales; terreno de 4 escenas (`terrain-CL-MA.json`: Laguna Amarga en Torres del Paine, R. N. Magallanes, costa del
    Seno Otway y Seno Última Esperanza) y vegetación austral en `enrich/props_ma.json` (lenga, ñirre, calafate, mata negra). (Joaquín)
+19. Revisión con el profesor: la página era más exploratoria que visualización. Se separa en dos páginas enlazadas:
+   `index.html` (Visualización, nueva portada) y `explorar.html` (todo lo anterior, sin cambios). La portada tiene un
+   titular, «el pulso del año» (áreas apiladas jul → jun: 214 residentes constantes, ola de verano 33–106, invierno 11–26)
+   y «un punto, una especie» (366 puntos; las visitantes cruzan la frontera mes a mes). Sonido: cantos reales de especies
+   presentes, cantidad ∝ visitantes del mes. Ideas pendientes: loop de fondo de 4 compases por mes, general y por región,
+   con más copias de un canto cuanto más presente está la especie; pequeños múltiplos por región (propuesta C). (Joaquín)

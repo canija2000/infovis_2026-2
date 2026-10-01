@@ -1411,3 +1411,49 @@ details.how p {
   min-height: 3.2em;
   align-items: flex-start;
 }
+
+/* -------------------------------------------------------------- navegación entre páginas
+   Compartida por index.html (Visualización) y explorar.html (Explorar). */
+.site-nav {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 14px 24px 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 24px;
+  font-family: var(--mono);
+  font-size: 13px;
+}
+.site-nav .brand {
+  color: var(--ink-3);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+.site-nav ul {
+  display: flex;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.site-nav a.tab {
+  display: inline-block;
+  padding: 4px 12px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  color: var(--ink-2);
+  text-decoration: none;
+}
+.site-nav a.tab:hover {
+  border-color: var(--ink-3);
+  color: var(--ink);
+}
+.site-nav a.tab[aria-current="page"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
+}

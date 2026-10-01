@@ -1,6 +1,16 @@
 # web/ — Atlas sonoro de aves de Chile
 
-Sitio estático sin build step: `index.html`, `styles.css`, `app.js` (vistas e
+Sitio estático sin build step, en dos páginas enlazadas por la barra superior (`.site-nav`):
+
+- `index.html` · **Visualización** (portada): titular + «el pulso del año» (áreas apiladas de especies
+  presentes por mes y clase) + «un punto, una especie» (residentes quietas; visitantes que entran y salen
+  del país). Un mes compartido (botones, clic en el gráfico o ▶) mueve ambas vistas y el sonido:
+  residentes = colchón; visitantes = cantos de especies presentes ese mes, 1 por cada 12 especies.
+  Código en `inicio.js` e `inicio.css`; datos en `data/overview.json`
+  (`python3 python_scripts/build_overview_data.py`).
+- `explorar.html` · **Explorar**: el atlas completo, descrito abajo.
+
+Explorar usa `styles.css`, `app.js` (vistas e
 interacción, D3 v7 desde jsDelivr) y `sonify.js` (sonificación con Web Audio API).
 El mezclador permite añadir especies con grabación, escuchar sus clips juntos
 y ajustar el volumen de cada pista. El botón de silencio

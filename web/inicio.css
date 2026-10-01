@@ -1,0 +1,261 @@
+/* Portada (index.html): una sola idea a primera vista. Usa los tokens de styles.css. */
+
+.inicio .hero {
+  padding-top: 28px;
+  padding-bottom: 4px;
+}
+.inicio .hero h1 {
+  font-size: clamp(30px, 4.6vw, 52px);
+}
+.claim {
+  max-width: 34ch;
+  margin: 18px 0 0;
+  font-size: clamp(20px, 2.4vw, 28px);
+  line-height: 1.3;
+  color: var(--ink);
+}
+.claim b {
+  font-weight: 700;
+}
+.claim .n-stay {
+  color: var(--c0-ink);
+}
+.claim .n-summer {
+  color: var(--c1-ink);
+}
+
+.stage {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 8px 24px 24px;
+}
+.stage figure {
+  margin: 28px 0 0;
+}
+.stage figcaption h2 {
+  font-size: 17px;
+}
+.stage figcaption p {
+  margin: 4px 0 0;
+  color: var(--ink-2);
+}
+
+/* Leyenda de series: identidad con muestra + texto, nunca solo color. */
+.series-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin-top: 6px;
+  font: 13px var(--mono);
+  color: var(--ink-2);
+}
+.sw {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 6px;
+  border-radius: 2px;
+  vertical-align: -1px;
+}
+.sw.c0 { background: var(--c0); }
+.sw.c1 { background: var(--c1); }
+.sw.c2 { background: var(--c2); }
+
+/* ------------------------------------------------------------ A · pulso */
+.pulse-chart {
+  width: 100%;
+  margin-top: 8px;
+}
+.pulse-chart svg {
+  display: block;
+  overflow: visible;
+}
+.band {
+  stroke: var(--bg);
+  stroke-width: 2px;
+}
+.band.c0 { fill: var(--c0); }
+.band.c1 { fill: var(--c1); }
+.band.c2 { fill: var(--c2); }
+.grid line {
+  stroke: var(--rule);
+  stroke-width: 1px;
+}
+.axis text,
+.axis-title {
+  font: 12px var(--mono);
+  fill: var(--ink-3);
+}
+.direct text {
+  font: 13px var(--font);
+  fill: var(--ink-2);
+}
+.direct .lab-n {
+  font-weight: 700;
+  fill: var(--ink);
+}
+.pulse-chart .note {
+  font: 13px var(--mono);
+  fill: var(--ink-2);
+}
+.pulse-chart .cursor {
+  stroke: var(--cursor);
+  stroke-width: 2px;
+}
+.pulse-chart .hover {
+  stroke: var(--ink-3);
+  stroke-width: 1px;
+  stroke-dasharray: 3 3;
+  pointer-events: none;
+}
+.pulse-chart .hit {
+  fill: transparent;
+  cursor: pointer;
+}
+.tt-row {
+  display: block;
+}
+
+/* ------------------------------------------------------------ reproductor + meses */
+.player {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  margin-top: 20px;
+  padding: 12px 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+.player-label {
+  font: 13px var(--mono);
+  color: var(--ink-2);
+}
+.months {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  margin-left: auto;
+}
+.month {
+  min-width: 40px;
+  padding: 4px 6px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  font: 12px var(--mono);
+  color: var(--ink-3);
+}
+.month:hover {
+  border-color: var(--rule);
+  color: var(--ink);
+}
+.month[aria-pressed="true"] {
+  background: var(--accent);
+  color: var(--bg);
+}
+.play[aria-busy="true"] {
+  opacity: 0.6;
+}
+
+/* ------------------------------------------------------------ B · puntos */
+.flock-chart svg {
+  display: block;
+  max-width: 900px;
+}
+.flock .country {
+  fill: color-mix(in srgb, var(--c0) 6%, transparent);
+  stroke: var(--rule);
+  stroke-width: 1.5px;
+}
+.flock .zone {
+  font: 12px var(--mono);
+  letter-spacing: 0.06em;
+  fill: var(--ink-3);
+}
+.flock .count {
+  font: 13px var(--mono);
+  fill: var(--ink-2);
+}
+.dot {
+  stroke: var(--bg);
+  stroke-width: 1px;
+  transition: fill-opacity 0.6s;
+}
+.dot.c0 { fill: var(--c0); }
+.dot.c1 { fill: var(--c1); }
+.dot.c2 { fill: var(--c2); }
+/* Fuera de Chile: más tenues, para que el ojo se quede en lo presente. */
+.dot.away {
+  fill-opacity: 0.35;
+}
+.dot:hover {
+  stroke: var(--ink);
+  stroke-width: 1.5px;
+}
+
+/* ------------------------------------------------------------ tabla y pie */
+.table-view {
+  margin-top: 24px;
+  font-size: 14px;
+  color: var(--ink-2);
+}
+.table-view summary {
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 13px;
+}
+.table-view table {
+  margin-top: 10px;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+.table-view th,
+.table-view td {
+  padding: 3px 12px 3px 0;
+  border-bottom: 1px solid var(--rule);
+  text-align: right;
+}
+.table-view th[scope="row"],
+.table-view thead th:first-child {
+  text-align: left;
+}
+
+.inicio-foot {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 8px 24px 48px;
+  font-size: 14px;
+}
+.inicio-foot .muted {
+  max-width: 80ch;
+}
+.go {
+  display: inline-block;
+  padding: 8px 16px;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.go:hover {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+@media (max-width: 640px) {
+  .site-nav,
+  .stage,
+  .inicio-foot,
+  .inicio .hero {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .months {
+    margin-left: 0;
+  }
+  .month {
+    min-width: 0;
+    flex: 1 0 14%;
+  }
+}
