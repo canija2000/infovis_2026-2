@@ -217,50 +217,44 @@
   }
 
   // ---------------------------------------------------------------- C · mapas por mes
-  // Índice de ola por región y mes: nivel de verano − nivel de invierno, cada uno relativo al rango anual
-  // de esa clase en esa región (0 = su mes más bajo, 1 = el más alto). −1 = domina la ola de invierno,
-  // +1 = la de verano. Comparar cada región consigo misma evita que las regiones con pocos registros
-  // parezcan «más visitadas». Datos: region_month.json y regions.min.geojson (los mismos de Explorar).
-  const EFFORT_LOW = 400;
+  // Un punto por celda de 0,2° (~22 km) con datos suficientes ese mes (grid_month.json, de las descargas GBIF).
+  // Color = ola: (proporción de visitantes de verano − la de su región en el año) − (lo mismo para invierno).
+  // Naranja = el mes trae más visitantes de verano de lo habitual allí; azul = más de invierno.
+  // Tamaño = especie-días registrados (dónde se observa más), para no esconder el sesgo de esfuerzo.
   const maps = {};
+  const CONTINENT_WEST = -76; // longitud: deja fuera las islas oceánicas
   async function loadMaps() {
     const get = (f) => fetch(`data/${f}`).then((r) => {
       if (!r.ok) throw new Error(`${f}: ${r.status}`);
       return r.json();
     });
-    const [meta, regionMonth, geo] = await Promise.all([get("meta.json"), get("region_month.json"), get("regions.min.geojson")]);
-    const level = (series) => {
-      const [lo, hi] = d3.extent(series);
-      return series.map((v) => (hi > lo ? (v - lo) / (hi - lo) : 0));
-    };
-    const wave = new Map();
-    for (const f of geo.features) {
-      const rows = regionMonth.scopes[String(f.properties.id)];
-      if (!rows) continue;
-      const summer = level(rows.map((x) => x[2]));
-      const winter = level(rows.map((x) => x[3]));
-      wave.set(f.properties.id, {
-        index: summer.map((v, m) => v - winter[m]),
-        rows,
-        low: d3.mean(rows, (x) => x[5]) < EFFORT_LOW,
-      });
-    }
+    const [meta, grid, geo] = await Promise.all([get("meta.json"), get("grid_month.json?v=1"), get("regions.min.geojson")]);
     const names = new Map(meta.regions.map((r) => [r.id, r.name]));
-    Object.assign(maps, { geo, wave, names });
+    const months = grid.months.map((rows) => rows
+      .filter(([cell]) => grid.cells[cell][0] > CONTINENT_WEST)
+      .map(([cell, total, res, est, inv, wave]) => ({ cell: grid.cells[cell], total, res, est, inv, wave: wave / 1000 }))
+      .sort((a, b) => b.total - a.total)); // los grandes abajo, los chicos encima
+    Object.assign(maps, { geo, grid, months, names });
   }
 
   function drawMaps() {
     if (!maps.geo) return;
     const host = document.getElementById("maps");
     host.innerHTML = "";
-    // Divergente: azul (invierno) ↔ gris neutro ↔ naranja (verano), los mismos tonos de las clases.
-    const color = d3.scaleDiverging(d3.interpolateRgbBasis([css("--c2"), css("--empty"), css("--c1")])).domain([-1, 0, 1]);
-    maps.color = color;
+    // Divergente: azul (invierno) ↔ gris ↔ naranja (verano), los mismos tonos de las clases.
+    const sat = maps.grid.saturation;
+    const color = d3.scaleDiverging(d3.interpolateRgbBasis([css("--c2"), css("--ink-3"), css("--c1")]))
+      .domain([-sat, 0, sat]).clamp(true);
     const cardW = Math.max(130, Math.floor(host.clientWidth / (host.clientWidth < 560 ? 2 : 4)));
     const w = cardW - 16;
-    const h = Math.min(Math.round(w * 3.2), 520);
-    const projection = d3.geoMercator().fitSize([w, h], maps.geo);
+    const h = Math.min(Math.round(w * 3.4), 640);
+    // Encuadre de Chile continental (sin Juan Fernández ni Rapa Nui, que achicarían el resto).
+    const projection = d3.geoMercator().fitSize([w, h], { type: "MultiPoint", coordinates: [[-75.8, -17.4], [-66.3, -56]] });
     const path = d3.geoPath(projection);
+    const maxTotal = d3.max(maps.months, (rows) => d3.max(rows, (d) => d.total));
+    const k = Math.min(1.25, h / 520);
+    const radius = d3.scaleSqrt().domain([maps.grid.minDays, maxTotal]).range([1.3 * k, 4.2 * k]).clamp(true);
+    const outline = path(maps.geo);
 
     const cards = d3.select(host).selectAll("div.map-card").data(AUSTRAL).join("div")
       .attr("class", "map-card")
@@ -268,42 +262,56 @@
       .on("click", (event, m) => setMonth(m));
     cards.append("h3").text((m) => MONTHS[m]);
     const svg = cards.append("svg").attr("viewBox", `0 0 ${w} ${h}`).attr("width", w).attr("height", h)
-      .attr("role", "img").attr("aria-label", (m) => `Mapa de ${MONTHS[m]}`);
-    svg.selectAll("path").data((m) => maps.geo.features.map((f) => ({ f, m }))).join("path")
-      .attr("class", (d) => `region${maps.wave.get(d.f.properties.id)?.low ? " low" : ""}`)
-      .attr("d", (d) => path(d.f))
-      .attr("fill", (d) => {
-        const r = maps.wave.get(d.f.properties.id);
-        return r ? color(r.index[d.m]) : "none";
-      })
+      .attr("role", "img").attr("aria-label", (m) => `Mapa de ${MONTHS[m]}: un punto por zona de unos 22 km con registros`);
+    svg.append("clipPath").attr("id", (m) => `clip-${m}`).append("rect").attr("width", w).attr("height", h);
+    svg.append("path").attr("class", "land").attr("d", outline).attr("clip-path", (m) => `url(#clip-${m})`);
+    svg.append("g").selectAll("circle").data((m) => maps.months[m].map((d) => ({ ...d, m }))).join("circle")
+      .attr("class", "cell")
+      .attr("cx", (d) => projection([d.cell[0], d.cell[1]])[0])
+      .attr("cy", (d) => projection([d.cell[0], d.cell[1]])[1])
+      .attr("r", (d) => radius(d.total))
+      .attr("fill", (d) => color(d.wave))
       .on("pointermove", (event, d) => {
-        const r = maps.wave.get(d.f.properties.id);
-        if (!r) return;
-        const [, , est, inv] = r.rows[d.m];
-        const v = r.index[d.m];
-        const verdict = v > 0.25 ? "domina la ola de verano" : v < -0.25 ? "domina la ola de invierno" : "entre olas";
-        showTip(event, `<b>${maps.names.get(d.f.properties.id)}</b> · ${MONTHS[d.m]}<br>` +
-          `<span class="tt-row"><i class="sw c1"></i>Visitantes de verano <b>${est}</b></span>` +
-          `<span class="tt-row"><i class="sw c2"></i>Visitantes de invierno <b>${inv}</b></span>` +
-          `<i>${verdict}</i>${r.low ? "<br><i>pocos registros: valor inestable</i>" : ""}`);
+        const v = d.wave;
+        const verdict = v > 0.03 ? "más visitantes de verano que lo habitual en la región"
+          : v < -0.03 ? "más visitantes de invierno que lo habitual en la región" : "cerca de lo habitual en la región";
+        const share = (x) => `${Math.round((100 * x) / d.total)} %`;
+        showTip(event, `<b>${maps.names.get(d.cell[2])}</b> · ${MONTHS[d.m]}<br>` +
+          `Zona de ~22 km · ${d.total.toLocaleString("es-CL")} especie-días<br>` +
+          `<span class="tt-row"><i class="sw c0"></i>Residentes <b>${share(d.res)}</b></span>` +
+          `<span class="tt-row"><i class="sw c1"></i>Visitantes de verano <b>${share(d.est)}</b></span>` +
+          `<span class="tt-row"><i class="sw c2"></i>Visitantes de invierno <b>${share(d.inv)}</b></span>` +
+          `<i>${verdict}</i>`);
       })
       .on("pointerleave", hideTip);
+    cards.append("p").attr("class", "map-n").text((m) => `${maps.months[m].length} zonas`);
     maps.cards = cards;
-    drawMapsLegend(color);
+    drawMapsLegend(color, sat, radius);
     updateMaps(false);
   }
 
-  function drawMapsLegend(color) {
+  function drawMapsLegend(color, sat, radius) {
     const host = d3.select("#maps-legend");
     host.selectAll("*").remove();
     const w = 220;
     const svg = host.append("svg").attr("viewBox", `0 0 ${w} 34`).attr("width", w).attr("height", 34);
     const id = "maps-grad";
     const grad = svg.append("defs").append("linearGradient").attr("id", id);
-    d3.range(0, 1.01, 0.1).forEach((t) => grad.append("stop").attr("offset", `${t * 100}%`).attr("stop-color", color(t * 2 - 1)));
+    d3.range(0, 1.01, 0.1).forEach((t) => grad.append("stop").attr("offset", `${t * 100}%`).attr("stop-color", color((t * 2 - 1) * sat)));
     svg.append("rect").attr("x", 0).attr("y", 2).attr("width", w).attr("height", 10).attr("rx", 2).attr("fill", `url(#${id})`);
-    [["invierno", 0, "start"], ["entre olas", w / 2, "middle"], ["verano", w, "end"]].forEach(([t, x, anchor]) =>
+    [["invierno", 0, "start"], ["como siempre", w / 2, "middle"], ["verano", w, "end"]].forEach(([t, x, anchor]) =>
       svg.append("text").attr("x", x).attr("y", 28).attr("text-anchor", anchor).text(t));
+    // Tamaño: especie-días registrados.
+    const sizes = [100, 1000, 10000];
+    const g = host.append("svg").attr("viewBox", "0 0 210 34").attr("width", 210).attr("height", 34).append("g");
+    let x = 0;
+    sizes.forEach((v) => {
+      const r = radius(v);
+      g.append("circle").attr("class", "size-key").attr("cx", x + r).attr("cy", 7).attr("r", r);
+      g.append("text").attr("x", x + 2 * r + 4).attr("y", 11).text(v.toLocaleString("es-CL"));
+      x += 2 * r + 4 + v.toLocaleString("es-CL").length * 7.5 + 12;
+    });
+    g.append("text").attr("x", 0).attr("y", 28).text("especie-días registrados");
   }
 
   function updateMaps(follow) {

@@ -266,6 +266,11 @@
   gap: 8px 16px;
   margin-top: 10px;
 }
+.maps-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 24px;
+}
 .maps-legend svg {
   display: block;
 }
@@ -311,18 +316,28 @@
   display: block;
   margin: 0 auto;
 }
-.map-card .region {
+.map-card .land {
+  fill: var(--empty);
+  stroke: var(--rule);
+  stroke-width: 0.5px;
+}
+.map-card .cell {
   stroke: var(--bg);
-  stroke-width: 0.6px;
+  stroke-width: 0.4px;
 }
-.map-card .region.low {
-  stroke: var(--ink-3);
-  stroke-dasharray: 2 2;
-}
-.map-card .region:hover {
+.map-card .cell:hover {
   stroke: var(--ink);
   stroke-width: 1.2px;
-  stroke-dasharray: none;
+}
+.map-card .map-n {
+  margin: 4px 0 0;
+  font: 11px var(--mono);
+  color: var(--ink-3);
+  text-align: center;
+}
+.maps-legend .size-key {
+  fill: none;
+  stroke: var(--ink-3);
 }
 .maps-note {
   margin: 6px 0 0;

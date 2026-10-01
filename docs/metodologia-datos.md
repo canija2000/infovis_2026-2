@@ -226,3 +226,18 @@ Los anillos se reorientan para D3 (exterior horario).
   de búsqueda. Las grabaciones se llenan desde `sounds/manifest.json` (local,
   generado por `python_scripts/python_historicos/descargar_sonidos.py`) y se reproducen desde xeno-canto.org,
   porque `sounds/` no se publica.
+
+### 10.6 Grilla por mes (portada, mapas «La ola recorre todo el país»)
+
+- Fuente: las mismas 11 descargas GBIF (sección de DOIs), solo 2017–2024. `python_scripts/gbif/grid_aggregate.py`
+  asigna cada registro dentro de los polígonos regionales a una celda de 0,2° × 0,2° (~22 km) y cuenta
+  **especie-días**: pares (especie, fecha) distintos en la celda, sumados en los 8 años, por mes y por clase
+  nacional (`species.json`).
+- Filtro (`python_scripts/build_grid_data.py`): una celda aparece en un mes si suma ≥ 50 especie-días y tiene
+  registros en ≥ 3 de los 8 años. Unas 330–540 celdas por mes, 772 en total.
+- Índice de ola: `(v_m − V_región) − (i_m − I_región)`, donde `v_m` e `i_m` son las proporciones de especie-días
+  de visitantes de verano y de invierno en la celda ese mes, y `V_región`, `I_región` las de toda la región en el
+  año. Se compara con la región para no confundir hábitat (un humedal costero siempre tiene más playeros) con
+  estación. La escala de color satura en el percentil 95 de |índice| (±0,144).
+- El tamaño del punto es especie-días: muestra dónde se observa más (sesgo de esfuerzo), no dónde hay más aves.
+- Juan Fernández y Rapa Nui quedan fuera del encuadre (Chile continental).
