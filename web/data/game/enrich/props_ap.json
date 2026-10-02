@@ -1,0 +1,212 @@
+{
+ "_nota": "Props (vegetación y elementos) por escena de Arica y Parinacota. Tabla manual basada en los pisos vegetacionales de Luebert & Pliscoff (matorral desértico tropical-interior, herbazal altoandino de Festuca orthophylla, matorral bajo de Parastrephia, bofedales de Oxychloe/Distichia) y en lo que se ve en cada lugar (olivares de Azapa, totorales del Lluta). 'cover' = índices de legend en terrain-CL-AP.json.",
+ "humedal": [
+  {
+   "id": "totora",
+   "nombre": "Totora",
+   "tipo": "junco",
+   "cover": [
+    8,
+    2
+   ],
+   "nativo": true
+  },
+  {
+   "id": "brea",
+   "nombre": "Brea (Tessaria absinthioides)",
+   "tipo": "arbusto",
+   "cover": [
+    1,
+    2,
+    5
+   ],
+   "nativo": true
+  },
+  {
+   "id": "coiron",
+   "nombre": "Grama salada (Distichlis)",
+   "tipo": "pasto",
+   "cover": [
+    2,
+    8
+   ],
+   "nativo": true
+  },
+  {
+   "id": "bolones",
+   "nombre": "Bolones de la desembocadura",
+   "tipo": "roca",
+   "cover": [
+    5
+   ],
+   "nativo": null
+  }
+ ],
+ "valle": [
+  {
+   "id": "olivo",
+   "nombre": "Olivo de Azapa",
+   "tipo": "arbol",
+   "cover": [
+    0,
+    3
+   ],
+   "nativo": false
+  },
+  {
+   "id": "algarrobo",
+   "nombre": "Algarrobo (Prosopis)",
+   "tipo": "arbol",
+   "cover": [
+    1,
+    0
+   ],
+   "nativo": true
+  },
+  {
+   "id": "pimiento",
+   "nombre": "Molle (Schinus)",
+   "tipo": "arbol",
+   "cover": [
+    1,
+    4
+   ],
+   "nativo": true
+  },
+  {
+   "id": "brea",
+   "nombre": "Brea",
+   "tipo": "arbusto",
+   "cover": [
+    1,
+    5
+   ],
+   "nativo": true
+  },
+  {
+   "id": "casa_color",
+   "nombre": "Casa del valle",
+   "tipo": "edificio",
+   "cover": [
+    4
+   ],
+   "nativo": null
+  },
+  {
+   "id": "roca",
+   "nombre": "Roca de ladera",
+   "tipo": "roca",
+   "cover": [
+    5
+   ],
+   "nativo": null
+  }
+ ],
+ "bofedal": [
+  {
+   "id": "cojin_bofedal",
+   "nombre": "Cojín de bofedal (Oxychloe, Distichia)",
+   "tipo": "cojin",
+   "cover": [
+    2,
+    7
+   ],
+   "nativo": true
+  },
+  {
+   "id": "paja_brava",
+   "nombre": "Paja brava (Festuca orthophylla)",
+   "tipo": "pasto",
+   "cover": [
+    2,
+    5
+   ],
+   "nativo": true
+  },
+  {
+   "id": "tola",
+   "nombre": "Tola (Parastrephia)",
+   "tipo": "arbusto",
+   "cover": [
+    5,
+    1
+   ],
+   "nativo": true
+  },
+  {
+   "id": "llareta",
+   "nombre": "Llareta",
+   "tipo": "cojin",
+   "cover": [
+    5
+   ],
+   "nativo": true
+  },
+  {
+   "id": "quenoa",
+   "nombre": "Queñoa (Polylepis tarapacana)",
+   "tipo": "arbol",
+   "cover": [
+    5
+   ],
+   "nativo": true
+  },
+  {
+   "id": "roca_andina",
+   "nombre": "Roca volcánica",
+   "tipo": "roca",
+   "cover": [
+    5
+   ],
+   "nativo": null
+  }
+ ],
+ "lago": [
+  {
+   "id": "paja_brava",
+   "nombre": "Paja brava",
+   "tipo": "pasto",
+   "cover": [
+    5,
+    2
+   ],
+   "nativo": true
+  },
+  {
+   "id": "llareta",
+   "nombre": "Llareta",
+   "tipo": "cojin",
+   "cover": [
+    5
+   ],
+   "nativo": true
+  },
+  {
+   "id": "tola",
+   "nombre": "Tola",
+   "tipo": "arbusto",
+   "cover": [
+    5
+   ],
+   "nativo": true
+  },
+  {
+   "id": "roca_andina",
+   "nombre": "Roca volcánica",
+   "tipo": "roca",
+   "cover": [
+    5
+   ],
+   "nativo": null
+  },
+  {
+   "id": "bolones",
+   "nombre": "Piedras de la orilla",
+   "tipo": "roca",
+   "cover": [
+    5
+   ],
+   "nativo": null
+  }
+ ]
+}

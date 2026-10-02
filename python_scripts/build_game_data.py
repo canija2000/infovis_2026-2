@@ -53,7 +53,7 @@ SEASONS = ["verano", "verano", "otoño", "otoño", "otoño", "invierno", "invier
 # Propuesta de escenarios por región para componer las escenas. NO se deriva
 # de los datos: es un punto de partida para el diseño, a revisar.
 BIOMES = {
-    "CL-AP": ["costa", "desierto", "valle", "altiplano"],
+    "CL-AP": ["humedal", "valle", "bofedal", "lago"],  # escenas de terrain-CL-AP.json
     "CL-TA": ["costa", "desierto", "altiplano"],
     "CL-AN": ["costa", "desierto", "altiplano"],
     "CL-AT": ["costa", "desierto", "valle", "altiplano"],

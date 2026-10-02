@@ -27,6 +27,7 @@ from __future__ import annotations
 import argparse
 import csv
 import html
+import urllib.error
 import io
 import json
 import re
@@ -105,7 +106,11 @@ def commons_files(titles: list[str] | None = None, search: str | None = None) ->
         params["titles"] = "|".join(titles)
     else:
         params.update({"generator": "search", "gsrsearch": search, "gsrnamespace": 6, "gsrlimit": 15})
-    d = c.fetch_json("https://commons.wikimedia.org/w/api.php", params)
+    try:
+        d = c.fetch_json("https://commons.wikimedia.org/w/api.php", params)
+    except urllib.error.HTTPError as e:  # Commons es complementario: si limita (429), seguir con iNaturalist
+        print(f"  ! Commons respondió {e.code}: se omite")
+        return []
     out = []
     for p in (d.get("query", {}).get("pages") or {}).values():
         if "imageinfo" not in p or not re.search(r"\.(jpe?g|png)$", p["title"], re.I):
@@ -222,7 +227,11 @@ def download(sci: str, photos: list[dict]) -> None:
         ext = ".png" if p["url"].lower().endswith(".png") else ".jpg"
         path = folder / f"{p['id']}{ext}"
         if not path.exists():
-            path.write_bytes(c.fetch(p["url"], binary=True, cache=False))
+            try:
+                path.write_bytes(c.fetch(p["url"], binary=True, cache=False))
+            except urllib.error.HTTPError as e:  # p. ej. Commons limitando (429): esa foto queda sin bajar
+                print(f"  ! {p['id']}: {e.code}, no se descargó")
+                continue
         p["file"] = str(path.relative_to(c.REFS_DIR))
 
 

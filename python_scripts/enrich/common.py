@@ -35,7 +35,7 @@ MVP = [
 
 # Segundos mínimos entre peticiones por host (iNaturalist pide ≤ 1 req/s).
 RATE = {"api.inaturalist.org": 1.1, "inaturalist-open-data.s3.amazonaws.com": 0.5,
-        "static.inaturalist.org": 0.5}
+        "static.inaturalist.org": 0.5, "commons.wikimedia.org": 2.0}  # Commons responde 429 si se le pide más rápido
 DEFAULT_RATE = 0.5
 _last: dict[str, float] = {}
 
