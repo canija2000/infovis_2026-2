@@ -19,7 +19,8 @@ genera:
 El tramo se elige por energía en la banda de las aves (1,5–9 kHz) ponderada
 por tonalidad, para no quedarse con viento o ruido de fondo. Los ajustes a
 mano van en ``audio_overrides.json`` (excluir grabaciones, forzar una, fijar
-el segundo de inicio). La key de Xeno-canto se lee de ``.env`` (``api_sounds``)
+el segundo de inicio o la banda de búsqueda: ``"band": [250, 1000]`` para
+especies de voz grave como palomas y tórtolas; ver recortar_audio_banda.py). La key de Xeno-canto se lee de ``.env`` (``api_sounds``)
 o del entorno y nunca se escribe ni se imprime.
 """
 
@@ -205,25 +206,25 @@ def decode(path: Path) -> np.ndarray:
     return np.frombuffer(raw, dtype=np.float32).copy()
 
 
-def frame_scores(signal: np.ndarray, hop: int = 512, size: int = 1024) -> np.ndarray:
+def frame_scores(signal: np.ndarray, hop: int = 512, size: int = 1024, band_hz=BAND) -> np.ndarray:
     """Energía en la banda de las aves × tonalidad (1 − planitud espectral), por cuadro."""
     n = 1 + max(0, len(signal) - size) // hop
     idx = np.arange(size)[None, :] + hop * np.arange(n)[:, None]
     frames = signal[np.minimum(idx, len(signal) - 1)] * np.hanning(size)
     mag = np.abs(np.fft.rfft(frames, axis=1))
     freqs = np.fft.rfftfreq(size, 1 / RATE)
-    band = mag[:, (freqs >= BAND[0]) & (freqs <= BAND[1])] + 1e-9
+    band = mag[:, (freqs >= band_hz[0]) & (freqs <= band_hz[1])] + 1e-9
     energy = (band**2).sum(axis=1)
     flatness = np.exp(np.log(band).mean(axis=1)) / band.mean(axis=1)
     return energy * (1 - flatness) ** 2
 
 
-def best_start(signal: np.ndarray, seconds: float) -> int:
+def best_start(signal: np.ndarray, seconds: float, band_hz=BAND) -> int:
     size = int(seconds * RATE)
     if len(signal) <= size:
         return 0
     hop = 512
-    scores = frame_scores(signal, hop)
+    scores = frame_scores(signal, hop, band_hz=band_hz)
     width = max(1, size // hop)
     sums = np.convolve(scores, np.ones(width), "valid")
     return min(int(np.argmax(sums)) * hop, len(signal) - size)
@@ -253,14 +254,31 @@ def encode(signal: np.ndarray, path: Path, bitrate: str) -> None:
     tmp.replace(path)
 
 
-def make_clips(source: Path, rec_id: str, start: float | None = None) -> float:
+def highpass(signal: np.ndarray, cutoff: float) -> np.ndarray:
+    """Pasa-altos de primer orden (RC), sin scipy."""
+    a = float(np.exp(-2 * np.pi * cutoff / RATE))
+    out = np.empty_like(signal)
+    prev_x = prev_y = 0.0
+    for i, x in enumerate(signal.tolist()):
+        prev_y = a * (prev_y + x - prev_x)
+        prev_x = x
+        out[i] = prev_y
+    return out
+
+
+def make_clips(source: Path, rec_id: str, start: float | None = None, band_hz=None) -> float:
+    band_hz = tuple(band_hz) if band_hz else BAND
     signal = decode(source)
-    # Pasa-altos suave: quita ruido de viento/manejo.
-    signal = np.append(signal[0], signal[1:] - 0.965 * signal[:-1])
+    if band_hz[0] >= 1000:
+        # Pre-énfasis: quita ruido de viento/manejo (atenúa ~20 dB a 500 Hz).
+        signal = np.append(signal[0], signal[1:] - 0.965 * signal[:-1])
+    else:
+        # Voces graves (palomas, tórtolas): el pre-énfasis borraría el arrullo; solo un pasa-altos de ~150 Hz.
+        signal = highpass(signal, 150)
     size = int(CLIP_SECONDS * RATE)
-    s0 = int(start * RATE) if start is not None else best_start(signal, CLIP_SECONDS)
+    s0 = int(start * RATE) if start is not None else best_start(signal, CLIP_SECONDS, band_hz)
     clip = finish(signal[s0 : s0 + size], 0.2, 0.5)
-    g0 = best_start(clip, GRAIN_SECONDS)
+    g0 = best_start(clip, GRAIN_SECONDS, band_hz)
     grain = finish(clip[g0 : g0 + int(GRAIN_SECONDS * RATE)], 0.03, 0.3)
     encode(clip, AUDIO_DIR / f"XC{rec_id}.mp3", "64k")
     encode(grain, AUDIO_DIR / f"XC{rec_id}-g.mp3", "64k")
@@ -324,7 +342,7 @@ def main() -> None:
                 try:
                     path = ensure_file(session, rec)
                     if path:
-                        seconds = make_clips(path, rec["id"], rule.get("start"))
+                        seconds = make_clips(path, rec["id"], rule.get("start"), rule.get("band"))
                         chosen = (rec, seconds)
                         break
                 except (requests.RequestException, subprocess.CalledProcessError, ValueError) as error:

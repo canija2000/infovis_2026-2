@@ -92,3 +92,10 @@ Agrega una línea numerada por entrada, con tu nombre entre paréntesis.
    La frecuencia de detección no servía: se satura en las especies comunes. Pausa, silencio recordado e
    indicador de compás; nota «Cómo se compone el sonido» al final. Reemplaza la sonificación anterior de la
    portada (Explorar mantiene `sonify.js`). (Joaquín)
+24. Revisión de cantos del loop. Causa del «ruido de fondo» en la RM: los clips se recortaron buscando canto en
+   1,5–9 kHz y con pre-énfasis, y las palomas y tórtolas arrullan grave (~300–900 Hz): Paloma doméstica y Tórtola,
+   que suenan ×3–4 en la RM, quedaron con tramos casi solo de fondo. Además el loop tocaba 2 s desde un punto al
+   azar del clip. Cambios: `preparar_audio_web.py` acepta una banda por especie (`"band"` en audio_overrides.json)
+   y no aplica pre-énfasis a voces graves; `recortar_audio_banda.py` rehízo 7 clips débiles desde la grabación
+   original (Paloma doméstica 11 → 31 dB de contraste, Tórtola 12 → 31 dB); el loop toca desde los mejores tramos
+   de cada clip (`analizar_audio_loop.py`); página local `revisar_audio.py` para escuchar y decidir. (Joaquín)

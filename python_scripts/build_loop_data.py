@@ -19,6 +19,13 @@ Selección por ámbito y mes, entre las especies presentes (bit del mes en
     (la más extendida del mes suena 4 veces por compás; una con un cuarto de su
     extensión, 1).
 
+Revisión de audio (python_scripts/audio_review/):
+    analisis.json    mejores tramos de 2 s de cada clip (analizar_audio_loop.py): el
+                     loop toca desde ahí y no desde un punto al azar del clip.
+    decisiones.json  lo que decidió una persona al escuchar (revisar_audio.py):
+                     "excluir" saca la especie del loop (entra la siguiente);
+                     "original" usa el clip sin limpiar en vez de la pista del mezclador.
+
 Uso (desde la raíz del repo, después de build_web_data.py):
     python3 python_scripts/build_loop_data.py
 """
@@ -31,6 +38,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "web" / "data"
 PLACE_DAYS = ROOT / "gbif" / "staging" / "place_days.json"
+REVIEW = ROOT / "python_scripts" / "audio_review"
 TOP_ALL = 6
 TOP_VISITORS = 3
 MAX_COPIES = 4
@@ -41,12 +49,20 @@ def main() -> None:
     typical = json.loads((DATA / "typical_year.json").read_text(encoding="utf-8"))
     sounds = json.loads((DATA / "sounds.json").read_text(encoding="utf-8"))
 
-    clip = {}
+    analysis = json.loads((REVIEW / "analisis.json").read_text(encoding="utf-8")) if (REVIEW / "analisis.json").exists() else {}
+    decisions = json.loads((REVIEW / "decisiones.json").read_text(encoding="utf-8")) if (REVIEW / "decisiones.json").exists() else {}
+    clip, windows = {}, {}
     for e in sounds["species"]:
-        if e["recordings"]:
-            rec = e["recordings"][0]
-            # Pista con menos ambiente (mezclador) si existe; si no, el clip original.
-            clip[e["sid"]] = rec.get("mixer") or rec["src"]
+        if not e["recordings"]:
+            continue
+        state = decisions.get(str(e["sid"]), {}).get("estado")
+        if state == "excluir":
+            continue
+        rec = e["recordings"][0]
+        # Pista con menos ambiente (mezclador) si existe y nadie pidió el original; si no, el clip original.
+        kind = "mixer" if rec.get("mixer") and state != "original" else "src"
+        clip[e["sid"]] = rec[kind]
+        windows[e["sid"]] = analysis.get(str(e["sid"]), {}).get(kind, {}).get("windows", [])
 
     rows = defaultdict(list)  # rid -> filas [sid, rid, cls, peak, phase, amp, present, freq×12, prof×12, years×12]
     for r in typical["rows"]:
@@ -82,13 +98,14 @@ def main() -> None:
         scopes[str(rid)] = months
 
     payload = {
-        "note": "Por ámbito (0 = Chile, 1–16 regiones) y mes: [sid, copias por compás]. "
+        "note": "Por ámbito (0 = Chile, 1–16 regiones) y mes: [sid, copias por compás]. win = inicios (s) de los "
+        "mejores tramos de 2 s del clip. "
         "Generado por python_scripts/build_loop_data.py.",
         "barSeconds": 3,
         "barsPerMonth": 4,
         "maxCopies": MAX_COPIES,
         "species": {
-            str(sid): {"name": species[sid]["comName"], "cls": ["residente", "visitante_estival", "visitante_invernal"].index(species[sid]["class"]) if species[sid]["class"] != "ocasional" else 3, "clip": clip[sid]}
+            str(sid): {"name": species[sid]["comName"], "cls": ["residente", "visitante_estival", "visitante_invernal"].index(species[sid]["class"]) if species[sid]["class"] != "ocasional" else 3, "clip": clip[sid], "win": windows[sid]}
             for sid in sorted(used)
         },
         "scopes": scopes,

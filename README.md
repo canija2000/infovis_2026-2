@@ -32,6 +32,11 @@ GBIF (11 descargas anuales, Aves, Chile)
 - `python_scripts/gbif/loop_aggregate.py` + `python_scripts/build_loop_data.py`: lugar-días por especie, región
   y mes (celdas de ~5 km × fechas) → `web/data/loop.json`, qué especies suenan y cuántas copias en el loop de
   la portada.
+- Revisión de cantos: `python_scripts/analizar_audio_loop.py` mide cada clip (banda propia, contraste canto/fondo,
+  mejores tramos de 2 s → `python_scripts/audio_review/analisis.json`); `python_scripts/recortar_audio_banda.py`
+  vuelve a recortar desde la grabación original los clips débiles (p. ej. palomas y tórtolas, de voz grave) y lo
+  anota en `audio_overrides.json`; `python3 python_scripts/revisar_audio.py` abre una página local para escuchar
+  y marcar bien / original / excluir (`audio_review/decisiones.json`, que lee `build_loop_data.py`).
 - `python_scripts/build_web_data.py`: genera los archivos livianos de la web (~0,86 MB de
   carga inicial). Solo usa la biblioteca estándar y su salida es determinista.
 - `gbif/synonyms_xc.json`: nombres científicos GBIF → Xeno-canto (IOC).
