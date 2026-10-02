@@ -1,7 +1,9 @@
-"""Paso 4: terreno de las 4 mini-escenas de la Región Metropolitana ("cuartos" unidos por senderos).
+"""Paso 4: terreno de las mini-escenas de una región ("cuartos" unidos por senderos).
+
+Cada región tiene las escenas que su contexto pida (no siempre 4): ver REGION_SCENES.
 
 Uso (requiere el venv de enrich/: numpy, Pillow, rasterio, mercantile):
-    python_scripts/enrich/.venv/bin/python python_scripts/enrich/bake_terrain.py [--size 48]
+    python_scripts/enrich/.venv/bin/python python_scripts/enrich/bake_terrain.py --region CL-AP [--size 48] [--no-rivers]
 
 Fuentes (sin clave; respuestas en cache/, gitignored):
   - Relieve: AWS Terrain Tiles (terrarium, z14): elev = R*256 + G + B/256 - 32768.
@@ -11,8 +13,8 @@ Cada escena es un cuadrado de SCENES[..]["km"] km centrado en un lugar real. La 
 norte a sur (fila 0 = borde norte) y de oeste a este. Alturas en metros sobre hMin.
 
 Salidas:
-  web/data/game/terrain-CL-RM.json   escenas + leyenda de cobertura (< 100 KB)
-  refs/terrain_preview.png           relieve sombreado + cobertura + ríos, para revisión
+  web/data/game/terrain-<CODE>.json        escenas + leyenda de cobertura (< 100 KB)
+  refs/terrain_preview_<CODE>.png          relieve sombreado + cobertura + ríos, para revisión
 """
 
 from __future__ import annotations
@@ -53,6 +55,11 @@ REGION_SCENES = {"CL-RM": {
     "bosque": {"name": "Reserva Nacional Magallanes (bosque de lenga)", "lon": -71.0300, "lat": -53.1300, "km": 1.4},
     "costa": {"name": "Costa del Seno Otway (pingüinera)", "lon": -71.2200, "lat": -52.9750, "km": 1.4},
     "fiordo": {"name": "Seno Última Esperanza (Puerto Natales)", "lon": -72.5200, "lat": -51.7000, "km": 1.4},
+}, "CL-AP": {  # de la costa al altiplano: 0 → 4.500 m en 150 km
+    "humedal": {"name": "Desembocadura del río Lluta", "lon": -70.3220, "lat": -18.4180, "km": 1.4},
+    "valle": {"name": "Valle de Azapa (olivares de San Miguel)", "lon": -70.1780, "lat": -18.5240, "km": 1.4},
+    "bofedal": {"name": "Bofedal de Parinacota", "lon": -69.2680, "lat": -18.2020, "km": 1.4},
+    "lago": {"name": "Lago Chungará, al pie del Parinacota", "lon": -69.1810, "lat": -18.2400, "km": 1.4},
 }}
 # WorldCover → código del juego (un dígito).
 COVER = {10: 0, 20: 1, 30: 2, 40: 3, 50: 4, 60: 5, 70: 6, 80: 7, 90: 8, 95: 8, 100: 9}
@@ -145,7 +152,8 @@ def rivers(bb, n: int) -> list[dict]:
             (c.CACHE_DIR / "http").mkdir(parents=True, exist_ok=True)
             time.sleep(10 * (attempt + 1))
     else:
-        raise SystemExit("Overpass no respondió")
+        print("  ! Overpass no respondió: escena sin ríos (volver a correr cuando responda)")
+        return []
     w, s, e, nn = bb
     out = []
     for el in d["elements"]:
@@ -193,6 +201,7 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--size", type=int, default=48, help="celdas por lado de cada escena")
     ap.add_argument("--region", default="CL-RM", choices=sorted(REGION_SCENES))
+    ap.add_argument("--no-rivers", action="store_true", help="no consultar Overpass (ríos de OSM)")
     args = ap.parse_args()
     n = args.size
     scenes = {}
@@ -210,7 +219,7 @@ def main() -> None:
             "hMax": h_max,
             "height": [int(round(v - h_min)) for v in h.ravel()],
             "cover": [int(v) for v in cover(bb, n).ravel()],
-            "rivers": rivers(bb, n),
+            "rivers": [] if args.no_rivers else rivers(bb, n),
         }
         cov = np.bincount(scenes[key]["cover"], minlength=10)
         mix = ", ".join(f"{LEGEND[i]} {cov[i] * 100 // (n * n)}%" for i in np.argsort(-cov)[:4] if cov[i])
