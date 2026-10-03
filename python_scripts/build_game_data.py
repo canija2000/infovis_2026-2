@@ -65,7 +65,7 @@ BIOMES = {
     "CL-NB": ["valle", "bosque", "costa"],
     "CL-BI": ["costa", "bosque", "humedal", "ciudad"],
     "CL-AR": ["bosque", "lago", "pradera", "cordillera"],
-    "CL-LR": ["bosque", "humedal", "costa"],
+    "CL-LR": ["bosque", "humedal", "ciudad"],  # escenas de terrain-CL-LR.json
     "CL-LL": ["bosque", "lago", "costa"],
     "CL-AI": ["bosque", "fiordo", "estepa", "lago"],
     "CL-MA": ["estepa", "bosque", "costa", "fiordo"],

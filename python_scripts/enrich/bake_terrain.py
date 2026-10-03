@@ -60,6 +60,10 @@ REGION_SCENES = {"CL-RM": {
     "valle": {"name": "Valle de Azapa (olivares de San Miguel)", "lon": -70.1780, "lat": -18.5240, "km": 1.4},
     "bofedal": {"name": "Bofedal de Parinacota", "lon": -69.2680, "lat": -18.2020, "km": 1.4},
     "lago": {"name": "Lago Chungará, al pie del Parinacota", "lon": -69.1810, "lat": -18.2400, "km": 1.4},
+}, "CL-LR": {  # tres escenas bastan: bosque valdiviano, humedal del Cruces y la ciudad junto al río
+    "bosque": {"name": "Parque Oncol (bosque valdiviano costero)", "lon": -73.3050, "lat": -39.6950, "km": 1.4},
+    "humedal": {"name": "Santuario del río Cruces (Punucapa)", "lon": -73.2680, "lat": -39.7490, "km": 1.4},
+    "ciudad": {"name": "Costanera de Valdivia y río Calle-Calle", "lon": -73.2475, "lat": -39.8145, "km": 1.4},
 }}
 # WorldCover → código del juego (un dígito).
 COVER = {10: 0, 20: 1, 30: 2, 40: 3, 50: 4, 60: 5, 70: 6, 80: 7, 90: 8, 95: 8, 100: 9}

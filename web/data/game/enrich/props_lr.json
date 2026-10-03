@@ -1,0 +1,190 @@
+{
+ "_nota": "Props (vegetación y elementos) por escena de Los Ríos. Tabla manual basada en los pisos vegetacionales de Luebert & Pliscoff (bosque laurifolio valdiviano de Eucryphia cordifolia–Aextoxicon punctatum, bosque de Nothofagus dombeyi) y en lo que se ve en cada lugar (totorales y sauces del Cruces, costanera de Valdivia). 'cover' = índices de legend en terrain-CL-LR.json.",
+ "bosque": [
+  {
+   "id": "coigue",
+   "nombre": "Coigüe (Nothofagus dombeyi)",
+   "tipo": "arbol",
+   "cover": [
+    0
+   ],
+   "nativo": true
+  },
+  {
+   "id": "ulmo",
+   "nombre": "Ulmo (Eucryphia cordifolia)",
+   "tipo": "arbol",
+   "cover": [
+    0
+   ],
+   "nativo": true
+  },
+  {
+   "id": "arrayan",
+   "nombre": "Arrayán (Luma apiculata)",
+   "tipo": "arbol",
+   "cover": [
+    0
+   ],
+   "nativo": true
+  },
+  {
+   "id": "canelo",
+   "nombre": "Canelo (Drimys winteri)",
+   "tipo": "arbol",
+   "cover": [
+    0,
+    1
+   ],
+   "nativo": true
+  },
+  {
+   "id": "quila",
+   "nombre": "Quila (Chusquea)",
+   "tipo": "arbusto",
+   "cover": [
+    0,
+    1
+   ],
+   "nativo": true
+  },
+  {
+   "id": "nalca",
+   "nombre": "Nalca (Gunnera tinctoria)",
+   "tipo": "arbusto",
+   "cover": [
+    0,
+    2
+   ],
+   "nativo": true
+  },
+  {
+   "id": "helecho",
+   "nombre": "Helecho costilla de vaca (Blechnum)",
+   "tipo": "pasto",
+   "cover": [
+    0
+   ],
+   "nativo": true
+  },
+  {
+   "id": "tronco_caido",
+   "nombre": "Tronco caído con musgo",
+   "tipo": "roca",
+   "cover": [
+    0
+   ],
+   "nativo": true
+  }
+ ],
+ "humedal": [
+  {
+   "id": "totora",
+   "nombre": "Totora y junquillo",
+   "tipo": "junco",
+   "cover": [
+    8,
+    2,
+    7
+   ],
+   "nativo": true
+  },
+  {
+   "id": "sauce_chileno",
+   "nombre": "Sauce (Salix)",
+   "tipo": "arbol",
+   "cover": [
+    0,
+    8
+   ],
+   "nativo": false
+  },
+  {
+   "id": "canelo",
+   "nombre": "Canelo",
+   "tipo": "arbol",
+   "cover": [
+    0
+   ],
+   "nativo": true
+  },
+  {
+   "id": "coiron",
+   "nombre": "Pradera húmeda",
+   "tipo": "pasto",
+   "cover": [
+    2,
+    3
+   ],
+   "nativo": null
+  },
+  {
+   "id": "quila",
+   "nombre": "Quila",
+   "tipo": "arbusto",
+   "cover": [
+    0,
+    1
+   ],
+   "nativo": true
+  }
+ ],
+ "ciudad": [
+  {
+   "id": "casa_color",
+   "nombre": "Casas de madera de Valdivia",
+   "tipo": "edificio",
+   "cover": [
+    4
+   ],
+   "nativo": null
+  },
+  {
+   "id": "platano_oriental",
+   "nombre": "Plátano oriental",
+   "tipo": "arbol",
+   "cover": [
+    4,
+    0
+   ],
+   "nativo": false
+  },
+  {
+   "id": "canelo",
+   "nombre": "Canelo",
+   "tipo": "arbol",
+   "cover": [
+    0
+   ],
+   "nativo": true
+  },
+  {
+   "id": "banca_farol",
+   "nombre": "Banca y farol de la costanera",
+   "tipo": "objeto",
+   "cover": [
+    4,
+    2
+   ],
+   "nativo": null
+  },
+  {
+   "id": "muelle",
+   "nombre": "Muelle de la feria fluvial",
+   "tipo": "objeto",
+   "cover": [
+    4
+   ],
+   "nativo": null
+  },
+  {
+   "id": "coiron",
+   "nombre": "Pasto",
+   "tipo": "pasto",
+   "cover": [
+    2
+   ],
+   "nativo": null
+  }
+ ]
+}
