@@ -1,0 +1,116 @@
+{
+ "year": 2024,
+ "visits": 66064,
+ "species": 321,
+ "k_silueta": 2,
+ "ari_k_silueta": 0.544,
+ "k": 5,
+ "silhouette": {
+  "2": 0.31,
+  "3": 0.239,
+  "4": 0.217,
+  "5": 0.209,
+  "6": 0.206,
+  "7": 0.201,
+  "8": 0.21
+ },
+ "bic": {
+  "2": 47,
+  "3": -689,
+  "4": -869,
+  "5": -1004,
+  "6": -1171,
+  "7": -1071,
+  "8": -1354
+ },
+ "ari": 0.275,
+ "ari_sin_ocasionales": 0.276,
+ "pca_varianza": [
+  46.4,
+  18.0
+ ],
+ "contingencia": {
+  "G1": {
+   "residente": 103,
+   "visitante_estival": 0,
+   "visitante_invernal": 0,
+   "ocasional": 0
+  },
+  "G2": {
+   "residente": 58,
+   "visitante_estival": 13,
+   "visitante_invernal": 0,
+   "ocasional": 0
+  },
+  "G3": {
+   "residente": 49,
+   "visitante_estival": 3,
+   "visitante_invernal": 14,
+   "ocasional": 1
+  },
+  "G4": {
+   "residente": 2,
+   "visitante_estival": 37,
+   "visitante_invernal": 0,
+   "ocasional": 0
+  },
+  "G5": {
+   "residente": 1,
+   "visitante_estival": 38,
+   "visitante_invernal": 2,
+   "ocasional": 0
+  }
+ },
+ "grupos": {
+  "G1": [
+   "Zorzal patagónico",
+   "Chincol",
+   "Queltehue común",
+   "Chercán común",
+   "Gorrión",
+   "Gaviota dominicana",
+   "Tórtola",
+   "Tordo"
+  ],
+  "G2": [
+   "Golondrina chilena",
+   "Chirihue común",
+   "Gaviota cáhuil",
+   "Mirlo común",
+   "Pato real",
+   "Colegial austral",
+   "Caiquén",
+   "Chucao"
+  ],
+  "G3": [
+   "Picaflor chico",
+   "Diucón",
+   "Viudita",
+   "Yal común",
+   "Dormilona tontita",
+   "Picaflor del norte",
+   "Yal platero",
+   "Churrete chico"
+  ],
+  "G4": [
+   "Fío-fío",
+   "Golondrina de dorso negro",
+   "Pitotoy chico",
+   "Playero de Baird",
+   "Gaviota de Franklin",
+   "Pitotoy grande",
+   "Gaviotín sudamericano",
+   "Suri/Ñandú"
+  ],
+  "G5": [
+   "Run-run",
+   "Pilpilén austral",
+   "Bandurrilla común",
+   "Golondrina bermeja",
+   "Canquén colorado",
+   "Dormilona fraile",
+   "Canastero de cola larga",
+   "Dormilona rufa"
+  ]
+ }
+}
