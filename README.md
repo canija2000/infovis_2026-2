@@ -18,6 +18,9 @@ GBIF (11 descargas anuales, Aves, Chile)
 ```
 
 - `python_scripts/`: scripts de Python en uso (ver «Estructura de scripts» abajo).
+- **Datos crudos de GBIF** (no versionados, ~810 MB): `python3 python_scripts/gbif/bajar_crudos.py` baja las
+  11 descargas anuales por su DOI, sin credenciales, a `gbif/downloads/<año>.zip` y verifica tamaño y SHA-256
+  contra `gbif/descargas.json`. Cada zip es un CSV separado por tabuladores (SIMPLE_CSV de GBIF).
 - `python_scripts/gbif/`: pipeline de descarga, join espacial y agregación desde GBIF;
   sus datos intermedios y tablas de nombres viven en `gbif/`. Ver
   [`docs/metodologia-datos.md`](docs/metodologia-datos.md) (fuente, DOIs,

@@ -1,0 +1,90 @@
+{
+ "2016": {
+  "doi": "https://doi.org/10.15468/dl.kzmxav",
+  "key": "0008183-260921141020460",
+  "records": 95167,
+  "bytes": 14548299,
+  "url": "https://api.gbif.org/v1/occurrence/download/request/0008183-260921141020460.zip",
+  "sha256": "b640049ab6b80bd792b3282a577ac668905d39c21e6d0cdf2ae366017fe21df1"
+ },
+ "2017": {
+  "doi": "https://doi.org/10.15468/dl.q4gkgp",
+  "key": "0008185-260921141020460",
+  "records": 330324,
+  "bytes": 42047243,
+  "url": "https://api.gbif.org/v1/occurrence/download/request/0008185-260921141020460.zip",
+  "sha256": "4c2c964e5d1c3aa88c39dc144f1faee56006b7cf6a42f07bbea3ff6cf99e6f20"
+ },
+ "2018": {
+  "doi": "https://doi.org/10.15468/dl.bbzdhf",
+  "key": "0008186-260921141020460",
+  "records": 427262,
+  "bytes": 53552651,
+  "url": "https://api.gbif.org/v1/occurrence/download/request/0008186-260921141020460.zip",
+  "sha256": "93d2438b2890204fcd83d0e53983d6e631a13e5a73c76512e937cd06c622d8e3"
+ },
+ "2019": {
+  "doi": "https://doi.org/10.15468/dl.zd43an",
+  "key": "0008201-260921141020460",
+  "records": 587809,
+  "bytes": 72869297,
+  "url": "https://api.gbif.org/v1/occurrence/download/request/0008201-260921141020460.zip",
+  "sha256": "b87ec8bfef29cc0e94ab2f14550f2f026ebe3a240ebb32bab26b56dd89de3aa8"
+ },
+ "2020": {
+  "doi": "https://doi.org/10.15468/dl.6g73xy",
+  "key": "0008202-260921141020460",
+  "records": 562625,
+  "bytes": 69355298,
+  "url": "https://api.gbif.org/v1/occurrence/download/request/0008202-260921141020460.zip",
+  "sha256": "0fcc010779026a9d26113ff4e991a2934c70e8b7b2b0316aa3b87d4c428bf6bc"
+ },
+ "2021": {
+  "doi": "https://doi.org/10.15468/dl.ay45wx",
+  "key": "0008203-260921141020460",
+  "records": 737873,
+  "bytes": 88700490,
+  "url": "https://api.gbif.org/v1/occurrence/download/request/0008203-260921141020460.zip",
+  "sha256": "a0f3eb0413df0616361e84ea5d5164b67dff098b116826ad17832dda21f8f1a4"
+ },
+ "2022": {
+  "doi": "https://doi.org/10.15468/dl.c8636y",
+  "key": "0008209-260921141020460",
+  "records": 1035882,
+  "bytes": 125480036,
+  "url": "https://api.gbif.org/v1/occurrence/download/request/0008209-260921141020460.zip",
+  "sha256": "06ec8ad81d7183ba385b572452a573d10d6442838852ccd2d1d7dcf85058f149"
+ },
+ "2023": {
+  "doi": "https://doi.org/10.15468/dl.ha69dg",
+  "key": "0008212-260921141020460",
+  "records": 1388977,
+  "bytes": 170082237,
+  "url": "https://api.gbif.org/v1/occurrence/download/request/0008212-260921141020460.zip",
+  "sha256": "c954fe32e0af5b35827c059a5ea35655705c8d1e66ad2249fad535f9f99325ca"
+ },
+ "2024": {
+  "doi": "https://doi.org/10.15468/dl.mhq47r",
+  "key": "0008218-260921141020460",
+  "records": 1526831,
+  "bytes": 188974932,
+  "url": "https://api.gbif.org/v1/occurrence/download/request/0008218-260921141020460.zip",
+  "sha256": "c55b2720fe4126698a8e405be0f85f25ea1df4e89f1d714f3830c610b7697d2d"
+ },
+ "2025": {
+  "doi": "https://doi.org/10.15468/dl.zduqq6",
+  "key": "0008222-260921141020460",
+  "records": 29239,
+  "bytes": 2428699,
+  "url": "https://api.gbif.org/v1/occurrence/download/request/0008222-260921141020460.zip",
+  "sha256": "1c8d262d3d8c1596c432a0e448b9ac067c7795b0f805510d5c897ef5985a2188"
+ },
+ "2026": {
+  "doi": "https://doi.org/10.15468/dl.ykt9z2",
+  "key": "0008228-260921141020460",
+  "records": 18208,
+  "bytes": 1622509,
+  "url": "https://api.gbif.org/v1/occurrence/download/request/0008228-260921141020460.zip",
+  "sha256": "1509b06f7c3942595c2e12c2abed8c1c6c747dbd841d177d7fed78f953db474d"
+ }
+}
