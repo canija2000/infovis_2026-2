@@ -11,6 +11,8 @@ seguimiento del código anterior.
 
 Para una explicación de los gráficos y controles desde la interfaz, con
 capturas reales, consulta la [guía visual de uso](GUIA_INTERFAZ.md).
+Las medidas que usan las vistas y el sonido se definen en el
+[glosario de métricas](METRICAS.md).
 
 ## 1. El proyecto, de un vistazo
 
@@ -107,12 +109,12 @@ index.html
 
 | Lo que aparece en pantalla | Dueño del dibujo | Datos | Actualización |
 |---|---|---|---|
-| Especies presentes, mes a mes | `pulse.js` → `drawPulse()` | `overview.json` | El mes mueve el cursor |
-| Tabla equivalente de conteos | `pulse.js` → `drawTable()` | Los mismos conteos | Se dibuja al iniciar |
-| Un punto, una especie | `species-dots.js` → `drawFlock()` | Especies y máscara de presencia | El mes mueve las visitantes |
+| [Especies presentes, mes a mes](METRICAS.md#riqueza) | `pulse.js` → `drawPulse()` | `overview.json` | El mes mueve el cursor |
+| Tabla equivalente de [conteos](METRICAS.md#riqueza) | `pulse.js` → `drawTable()` | Los mismos conteos | Se dibuja al iniciar |
+| Un punto, una especie | `species-dots.js` → `drawFlock()` | Especies y [máscara de presencia](METRICAS.md#presente) | El mes mueve las visitantes |
 | La ola recorre todo el país | `monthly-maps.js` → `drawMaps()` | `grid_month.json` o `region_month.json` | Cambiar modo redibuja; cambiar mes resalta |
 | Una región de cerca | `region-detail.js` | `grid_region/<código>.json` | Elegir región carga y redibuja |
-| Controles y «Suenan» | `player.js` | Estado y voces del compás | Acción del usuario o reloj sonoro |
+| Controles y «Suenan» | `player.js` | Estado y [voces del compás](METRICAS.md#copias) | Acción del usuario o reloj sonoro |
 
 ### Mes y región: dos recorridos distintos
 
@@ -143,8 +145,8 @@ con la clave existente `loop-muted` de `localStorage`.
 **Los puntos significan cosas distintas:**
 
 - `species-dots.js`: un punto = una especie.
-- Mapa nacional en modo Zonas: un punto = una celda de unos 22 km.
-- Detalle regional: un punto = `perDot` especie-días, distribuido dentro de una
+- Mapa nacional en modo Zonas: un punto = una [celda de unos 22 km](METRICAS.md#ola-zonas).
+- Detalle regional: un punto = [`perDot` especie-días](METRICAS.md#por-punto), distribuido dentro de una
   celda de unos 5 km; no representa una ubicación exacta de un ave.
 
 La franja nacional muestra los doce meses juntos desde 760 px de ancho del
@@ -179,7 +181,8 @@ explorar.html
 
 `data/atlas.js` transforma la matriz compacta en filas con campos nombrados y
 construye `byScope`, `bySpecies`, `regionById` y `effortMean`. También calcula el
-dominio de la desviación; `explore/colors.js` lo aplica a la escala.
+dominio de la [desviación de visitantes](METRICAS.md#desviacion);
+`explore/colors.js` lo aplica a la escala con [saturación](METRICAS.md#saturacion).
 
 Al elegir una región, el coordinador actualiza mapa, estadísticas, grilla y
 pestañas. Si hay una especie abierta, vuelve a presentar su ficha con el nuevo
@@ -187,7 +190,7 @@ pestañas. Si hay una especie abierta, vuelve a presentar su ficha con el nuevo
 innecesariamente la selección ni el orden de filas.
 
 `calendar-selection.js` conserva los límites **12 / 24 / 16**, la expansión,
-la especie fijada y el orden por llegada de visitantes. La clasificación puede
+la especie fijada y el [orden por llegada de visitantes](METRICAS.md#llegada). La [clasificación](METRICAS.md#clases) puede
 ser distinta entre Chile y una región: al abrir una especie se conserva el
 cambio automático a la pestaña correspondiente.
 
@@ -224,9 +227,9 @@ Minimizar la barra tampoco la pausa: se conserva el comportamiento anterior.
 
 | Sistema | Plan / selección | Motor | Duración y comportamiento |
 |---|---|---|---|
-| Visualización | `loop.json` + `overview-plan.js` | `year-loop.js` | 4 compases de 3 s por mes; hasta 4 copias por especie |
-| Explorar | `atlas-plan.js` | `atlas-sonifier.js` | 2,4 s por mes; macrozonas, latitud y especie seleccionada |
-| Mezcla personalizada | Pistas del usuario | `mixer-engine.js` | Esperas aleatorias de 0,2–5,2 s o ciclos comunes de 6 s |
+| Visualización | `loop.json` + `overview-plan.js` | `year-loop.js` | [4 compases de 3 s](METRICAS.md#tiempo-sonoro) por mes; hasta [4 copias](METRICAS.md#copias) por especie |
+| Explorar | `atlas-plan.js` | `atlas-sonifier.js` | [2,4 s por mes; macrozonas, latitud y especie seleccionada](METRICAS.md#sonificacion-atlas) |
+| Mezcla personalizada | Pistas del usuario | `mixer-engine.js` | [Esperas aleatorias de 0,2–5,2 s o ciclos comunes de 6 s](METRICAS.md#mezclador) |
 
 Un **plan** describe eventos: muestra, volumen, posición estéreo y momento.
 Un **motor** ejecuta esos eventos con Web Audio. Cambiar un motor no modifica
@@ -324,8 +327,8 @@ Concatenar los archivos de `site.css` recupera exactamente los bytes del
 | Archivo en `js/shared/` | Responsabilidad única |
 |---|---|
 | `calendar.js` | Meses, orden austral y tramos estacionales |
-| `classes.js` | Nombres y etiquetas de las clases estacionales |
-| `format.js` | Formatos numéricos y descripción de frecuencia |
+| `classes.js` | Nombres y etiquetas de las [clases estacionales](METRICAS.md#clases) |
+| `format.js` | Formatos numéricos y descripción de [frecuencia](METRICAS.md#frecuencia) |
 | `random.js` | Generador con semilla fija |
 | `css.js` | Lectura de variables de diseño |
 | `d3.js` | Acceso explícito a la versión de D3 cargada por HTML |
