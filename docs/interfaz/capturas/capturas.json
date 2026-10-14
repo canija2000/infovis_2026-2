@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-14",
+  "source": "http://127.0.0.1:8001",
+  "viewport": {
+    "width": 1440,
+    "height": 1024
+  },
+  "branch": "huge-refactorization",
+  "notes": "Real interface screenshots. Overview paused; no production files changed. D3 provided from the identical pinned package.",
+  "photos": [
+    {
+      "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/712413180/medium.jpg",
+      "loaded": true
+    },
+    {
+      "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/712413226/medium.jpg",
+      "loaded": false
+    },
+    {
+      "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/665170083/medium.jpg",
+      "loaded": false
+    },
+    {
+      "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/712413203/medium.jpg",
+      "loaded": false
+    },
+    {
+      "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/632884195/medium.jpg",
+      "loaded": false
+    },
+    {
+      "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/613292515/medium.jpg",
+      "loaded": false
+    },
+    {
+      "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/711019693/medium.jpg",
+      "loaded": false
+    },
+    {
+      "url": "https://inaturalist-open-data.s3.amazonaws.com/photos/712413252/medium.jpg",
+      "loaded": false
+    }
+  ],
+  "errors": []
+}

@@ -1,12 +1,13 @@
+import { createBufferCache } from "./buffers.js";
 // Sonificación con Web Audio API (sin dependencias).
-// Un mes = un compás. app.js entrega, por compás, una descripción declarativa:
+// Un mes = un compás. pages/explore.js entrega, por compás, una descripción declarativa:
 //   { pad:  { freqs: [Hz…], gain },            colchón sostenido (residentes)
 //     hits: [{ at, sample, rate, gain, pan }],  cantos reales (granos de Xeno-canto)
 //     tick: true }                              golpe suave que marca el inicio del mes
 // `at` va de 0 a 1 dentro del compás; `rate` transpone el grano (tono ← latitud).
 // El AudioContext solo se crea tras un gesto del usuario (clic en Play).
 
-const Sonifier = (() => {
+export const Sonifier = (() => {
   const BAR_SECONDS = 2.4;
   const GRAIN_SECONDS = 0.9;
   // Los cantos se bajan una quinta y se filtran: los granos cortos de cantos agudos (Fío-fío ~4 kHz,
@@ -23,7 +24,7 @@ const Sonifier = (() => {
   let getBar = null;
   let onMonth = null;
   let muted = false;
-  const buffers = new Map();
+  const { buffers, load } = createBufferCache({ getContext: ensure });
   const queue = [];
 
   function ensure() {
@@ -40,22 +41,6 @@ const Sonifier = (() => {
     return ctx;
   }
 
-  async function load(urls) {
-    if (!ensure()) return;
-    await Promise.all(
-      urls.filter((u) => u && !buffers.has(u)).map(async (url) => {
-        buffers.set(url, null); // evita cargas duplicadas
-        try {
-          const data = await fetch(url).then((r) => r.arrayBuffer());
-          buffers.set(url, await ctx.decodeAudioData(data));
-        } catch (err) {
-          buffers.delete(url);
-          console.warn("No se pudo cargar", url, err);
-        }
-      }),
-    );
-  }
-
   // Colchón: dos osciladores suaves por nota con filtro cálido; entra y sale con rampas.
   function pad(time, { freqs, gain }) {
     if (!freqs || !freqs.length || gain <= 0) return;
@@ -69,7 +54,10 @@ const Sonifier = (() => {
     filter.frequency.value = 900;
     filter.connect(env).connect(master);
     freqs.forEach((f, i) => {
-      for (const [type, detune] of [["sine", 0], ["triangle", i % 2 ? 6 : -6]]) {
+      for (const [type, detune] of [
+        ["sine", 0],
+        ["triangle", i % 2 ? 6 : -6],
+      ]) {
         const osc = ctx.createOscillator();
         osc.type = type;
         osc.frequency.value = f;
@@ -197,7 +185,8 @@ const Sonifier = (() => {
     },
     setMuted(value) {
       muted = value;
-      if (master) master.gain.setTargetAtTime(value ? 0 : 0.9, ctx.currentTime, 0.05);
+      if (master)
+        master.gain.setTargetAtTime(value ? 0 : 0.9, ctx.currentTime, 0.05);
     },
   };
 })();

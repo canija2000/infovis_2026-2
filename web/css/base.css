@@ -1,0 +1,126 @@
+/* Atlas sonoro de aves de Chile — V1 */
+:root {
+  color-scheme: light;
+  --bg: #fcfcfb;
+  --surface: #ffffff;
+  --ink: #16161a;
+  --title: #13139e; /* título y encabezados */
+  --ink-2: #4f4e4a;
+  --ink-3: #85847e;
+  --rule: #e4e2dc;
+  --empty: #ecebe6;
+  --accent: #16161a;
+  --c0: #288665; /* residente: verde (arraigo) */
+  --c1: #ee9b45; /* visitante de verano */
+  --c2: #2c8fc9; /* visitante de invierno: azul frío */
+  --c3: #cfcdc6; /* ocasional */
+  --c0-ink: #288665;
+  --c1-ink: #b86a14;
+  --c2-ink: #1d6a99;
+  --cursor: #16161a;
+  --font:
+    "IBM Plex Sans", "Source Sans 3", system-ui, -apple-system, "Segoe UI",
+    sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #151514;
+    --surface: #1c1c1b;
+    --ink: #f4f3ef;
+    --title: #b4b4ff;
+    --title: #b4b4ff;
+    --ink-2: #c3c2b7;
+    --ink-3: #8f8e86;
+    --rule: #34332f;
+    --empty: #2a2a28;
+    --accent: #f4f3ef;
+    --c0: #36a67e;
+    --c1: #ee9b45;
+    --c2: #4aa3dc;
+    --c3: #4a4945;
+    --c0-ink: #5cc79f;
+    --c1-ink: #f3b36e;
+    --c2-ink: #8cc8ef;
+    --cursor: #f4f3ef;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #151514;
+  --surface: #1c1c1b;
+  --ink: #f4f3ef;
+  --title: #b4b4ff;
+  --ink-2: #c3c2b7;
+  --ink-3: #8f8e86;
+  --rule: #34332f;
+  --empty: #2a2a28;
+  --accent: #f4f3ef;
+  --c0: #36a67e;
+  --c1: #ee9b45;
+  --c2: #4aa3dc;
+  --c3: #4a4945;
+  --c0-ink: #5cc79f;
+  --c1-ink: #f3b36e;
+  --c2-ink: #8cc8ef;
+  --cursor: #f4f3ef;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 16px/1.5 var(--font);
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-underline-offset: 2px;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--title);
+}
+
+.kicker,
+.tool-label,
+.hint,
+.legend,
+.note,
+.mono {
+  font-family: var(--mono);
+}
+
+.kicker {
+  margin: 0 0 8px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.muted {
+  color: var(--ink-3);
+}
+.strong {
+  font-weight: 700;
+  fill: var(--ink);
+}
+

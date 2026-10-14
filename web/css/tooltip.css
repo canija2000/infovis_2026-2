@@ -1,0 +1,25 @@
+/* -------------------------------------------------------------- tooltip */
+.tooltip {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  max-width: 300px;
+  padding: 8px 10px;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  font-size: 13px;
+  line-height: 1.4;
+  pointer-events: none;
+}
+
+.tooltip i {
+  color: var(--ink-2);
+}
+.tooltip[hidden] {
+  display: none;
+}
+

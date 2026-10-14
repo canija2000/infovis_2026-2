@@ -40,3 +40,7 @@ python_scripts/enrich/.venv/
 refs/
 cache_images/
 :memory:.ses
+
+# Local verification dependencies and artifacts
+node_modules/
+test-results/

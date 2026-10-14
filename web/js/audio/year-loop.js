@@ -1,3 +1,4 @@
+import { createBufferCache } from "./buffers.js";
 // Loop sonoro de la portada (Web Audio API, sin dependencias).
 // El año suena como una pieza en bucle: cada mes son `barsPerMonth` compases de `barSeconds` segundos.
 // En cada compás, la página entrega la lista de cantos a tocar (plan): { hits: [{ url, gain, pan, seed, win }], tick }.
@@ -7,7 +8,7 @@
 // Los navegadores no dejan sonar audio sin un gesto del usuario: el AudioContext se crea al cargar, pero
 // queda suspendido hasta el primer clic o tecla (unlock).
 
-const SoundLoop = (() => {
+export const SoundLoop = (() => {
   const LOOKAHEAD = 0.3;
   const SEGMENT = 2.0; // segundos de canto por copia, como máximo
   let ctx = null;
@@ -22,7 +23,7 @@ const SoundLoop = (() => {
   let plan = null;
   let onBar = null;
   let muted = false;
-  const buffers = new Map();
+  const { buffers, load } = createBufferCache({ getContext: ensure });
   const queue = [];
 
   function ensure() {
@@ -37,22 +38,6 @@ const SoundLoop = (() => {
     master.gain.value = muted ? 0 : 0.85;
     master.connect(comp).connect(ctx.destination);
     return ctx;
-  }
-
-  function load(urls) {
-    if (!ensure()) return Promise.resolve();
-    return Promise.all(
-      urls.filter((u) => u && !buffers.has(u)).map(async (url) => {
-        buffers.set(url, null); // evita cargas duplicadas
-        try {
-          const data = await fetch(url).then((r) => r.arrayBuffer());
-          buffers.set(url, await ctx.decodeAudioData(data));
-        } catch (err) {
-          buffers.delete(url);
-          console.warn("No se pudo cargar", url, err);
-        }
-      }),
-    );
   }
 
   // Generador pseudoaleatorio con semilla: el mismo compás suena igual en cada vuelta del año.
@@ -72,7 +57,10 @@ const SoundLoop = (() => {
     const len = Math.min(SEGMENT, buffer.duration);
     // Desde uno de los mejores tramos del clip (análisis previo), no desde un punto al azar:
     // así no suena un pedazo de puro fondo entre dos cantos.
-    const pick = win && win.length ? win[Math.floor(rand() * win.length)] : rand() * Math.max(0, buffer.duration - len);
+    const pick =
+      win && win.length
+        ? win[Math.floor(rand() * win.length)]
+        : rand() * Math.max(0, buffer.duration - len);
     const offset = Math.min(pick, Math.max(0, buffer.duration - len));
     const at = time + rand() * Math.max(0.05, barSeconds - len * 0.6);
     const src = ctx.createBufferSource();
@@ -197,7 +185,8 @@ const SoundLoop = (() => {
     },
     setMuted(value) {
       muted = value;
-      if (master) master.gain.setTargetAtTime(value ? 0 : 0.85, ctx.currentTime, 0.05);
+      if (master)
+        master.gain.setTargetAtTime(value ? 0 : 0.85, ctx.currentTime, 0.05);
     },
   };
 })();
