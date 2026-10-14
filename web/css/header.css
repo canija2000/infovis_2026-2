@@ -1,0 +1,125 @@
+/* -------------------------------------------------------------- cabecera */
+.masthead {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 32px 24px 12px;
+}
+
+.masthead h1 {
+  font-size: clamp(26px, 3.6vw, 40px);
+  line-height: 1.12;
+  max-width: 30ch;
+}
+
+/* Título: «Nómadas & sedentarios» grande; la segunda línea, más chica y liviana.
+   Nómadas: redondeada tipo burbuja, ancha e inclinada, hueca, con contorno degradado verano → invierno.
+   Sedentarios: condensada e inclinada, en el verde de las residentes.
+   «&»: serif cursiva fina y clara, para que pese poco. */
+.masthead .travel {
+  /* Changa One solo existe en peso 400 (ya es gruesa) y trae cursiva propia. */
+  font-family: "Shrikhand", "Arial Rounded MT Bold", sans-serif;
+  font-weight: 400;
+  padding-left: 0.2em;
+  font-style: italic;
+  letter-spacing: 0.01em;
+  padding-right: 0.1em;
+  color: var(--c1);
+  /* la mitad interior del trazo la tapa el relleno: se ve ~0,07em */
+  /* contorno degradado: de verano a invierno, de arriba a abajo */
+  -webkit-text-stroke: 0.03em;
+  -webkit-text-stroke-color: black;
+  background: var(--c2);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.masthead .amp {
+  font-family: "IBM Plex Mono", Georgia, serif;
+  font-style: italic;
+  font-weight: 200;
+  font-size: 0.65em;
+  color: var(--ink-3);
+  margin: 0 0.06em;
+}
+.masthead .stay {
+  font-family: "Pixelify Sans", "Arial Narrow", sans-serif;
+  font-weight: 700;
+  font-size: 1.12em;
+  letter-spacing: 0;
+  color: var(--c0-ink);
+  -webkit-text-stroke: 0.03em;
+  -webkit-text-stroke-color: var(--c0);
+  background: white;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.masthead .subtitle {
+  display: block;
+  color: var(--ink-2);
+  margin-top: 0.15em;
+  font-size: 0.55em;
+  font-weight: 600;
+  font-style: italic;
+  letter-spacing: 0;
+}
+
+.lede {
+  max-width: 70ch;
+  margin: 14px 0 6px;
+  color: var(--ink-2);
+}
+/* Resumen: las dos categorías con la tipografía de su palabra en el título (relleno sólido: a tamaño
+   de texto un contorno no se lee). */
+.summary {
+  max-width: 80ch;
+  margin: 4px 0 0;
+  padding-left: 20px;
+  color: var(--ink-2);
+}
+.summary li {
+  margin: 2px 0;
+}
+.summary li.muted {
+  color: var(--ink-3);
+  font-size: 14px;
+  list-style: none;
+  margin-left: -20px;
+}
+.term {
+  font-size: 1.1em;
+}
+.term-stay {
+  font-family: "Pixelify Sans", "Arial Narrow", sans-serif;
+  font-weight: 700;
+  color: var(--c0-ink);
+}
+.term-travel {
+  font-family: "Shrikhand", "Arial Rounded MT Bold", sans-serif;
+  font-weight: 400;
+  color: var(--c2-ink);
+}
+
+/* Fórmula del calendario (MathML, sin librerías). */
+.formula {
+  margin-top: 10px;
+  color: var(--ink-2);
+}
+.formula math {
+  margin: 8px 0;
+  font-size: 1.15em;
+  color: var(--ink);
+}
+.formula .symbols {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 4px 12px;
+  margin: 8px 0 0;
+}
+.formula .symbols dt {
+  color: var(--ink);
+}
+.formula .symbols dd {
+  margin: 0;
+}
+

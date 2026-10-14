@@ -1,0 +1,329 @@
+/* Mezclador de cantos: dock inferior fuera del flujo de la página */
+.mixer-open {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 12px 0 10px;
+}
+.mixer-open svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+.mixer-open .knob {
+  stroke-width: 2.6;
+}
+.mixer-open[aria-expanded="true"] {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+.mixer-open.playing svg {
+  color: var(--c0);
+}
+.mixer-count {
+  min-width: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--bg);
+  font: 500 11px/18px var(--mono);
+  text-align: center;
+}
+.mixer-count[hidden] {
+  display: none;
+}
+.mixer-dock {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 8;
+  display: flex;
+  flex-direction: column;
+  max-width: 1192px;
+  max-height: min(70vh, 520px);
+  margin: 0 auto;
+  padding: 8px 14px 10px;
+  border: 1px solid var(--rule);
+  border-bottom: 0;
+  border-radius: 10px 10px 0 0;
+  background: color-mix(in srgb, var(--surface) 96%, transparent);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 -6px 24px rgb(0 0 0 / 0.08);
+}
+.mixer-dock[hidden] {
+  display: none;
+}
+body.with-panel .mixer-dock {
+  right: 380px;
+}
+/* Deja espacio al final de la página para que el dock no tape el contenido. */
+body.with-mixer {
+  padding-bottom: var(--mixer-h, 0px);
+}
+.mixer-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+}
+.mixer-dock h2 {
+  font-size: 15px;
+  margin: 0;
+}
+.mixer-dock .play.icon-btn {
+  width: 30px;
+  height: 30px;
+}
+.mixer-dock .play.icon-btn svg {
+  width: 13px;
+  height: 13px;
+}
+.mixer-dock .play:disabled {
+  opacity: .35;
+  cursor: not-allowed;
+}
+.mixer-sync {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  color: var(--ink-2);
+  font-size: 13px;
+}
+.mixer-sync input {
+  margin: 0;
+  accent-color: var(--c0);
+}
+.mixer-status {
+  flex: 1;
+  min-width: 140px;
+  margin: 0;
+  overflow: hidden;
+  color: var(--ink-3);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mixer-close {
+  width: 28px;
+  height: 28px;
+  font-size: 14px;
+}
+.mixer-catalog {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  margin-top: 8px;
+  padding: 8px;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: var(--bg);
+}
+.mixer-catalog[hidden],
+.mixer-card[hidden] {
+  display: none;
+}
+.mixer-catalog-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+}
+.mixer-catalog-controls input {
+  min-width: 180px;
+  flex: 1;
+  padding: 4px 9px;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--ink);
+  font: 13px var(--font);
+}
+.mixer-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.mixer-filters button {
+  padding: 2px 9px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: 12px;
+}
+.mixer-filters button[aria-pressed="true"] {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--bg);
+}
+.mixer-result-count {
+  margin: 0;
+  color: var(--ink-3);
+  font-size: 12px;
+}
+.mixer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 6px;
+  max-height: 210px;
+  margin-top: 8px;
+  overflow-y: auto;
+  padding: 2px;
+}
+.mixer-card {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  padding: 4px;
+  border: 1px solid var(--rule);
+  border-radius: 7px;
+  background: var(--surface);
+  text-align: left;
+}
+.mixer-card:hover {
+  border-color: var(--ink-3);
+}
+.mixer-card[aria-pressed="true"] {
+  border-color: var(--c0);
+  background: color-mix(in srgb, var(--c0) 10%, var(--surface));
+}
+.mixer-card-photo {
+  position: relative;
+  display: grid;
+  flex: 0 0 36px;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  overflow: hidden;
+  border-radius: 5px;
+  background: var(--empty);
+  color: var(--ink-3);
+  font-weight: 700;
+}
+.mixer-card-photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.mixer-card-info {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+  line-height: 1.15;
+}
+.mixer-card-info strong {
+  overflow: hidden;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mixer-card-info small {
+  margin-top: 2px;
+  color: var(--ink-3);
+  font-size: 11px;
+}
+.mixer-card-selected {
+  display: none;
+  color: var(--c0);
+  font-weight: 700;
+}
+.mixer-card[aria-pressed="true"] .mixer-card-selected {
+  display: inline;
+}
+.mixer-tracks {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 4px 12px;
+  min-height: 0;
+  margin: 8px 0 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+.mixer-tracks:empty {
+  display: none;
+}
+.mixer-track {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 3px 4px 3px 8px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  font-size: 13px;
+}
+.mixer-identity {
+  display: flex;
+  flex: 1;
+  align-items: baseline;
+  gap: 6px;
+  min-width: 0;
+}
+.mixer-identity strong {
+  overflow: hidden;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mixer-identity a,
+.mixer-original {
+  flex: none;
+  color: var(--ink-3);
+  font: 10px var(--mono);
+}
+.mixer-track input[type="range"] {
+  flex: none;
+  width: 72px;
+  accent-color: var(--c1);
+}
+.mixer-track output {
+  flex: none;
+  min-width: 34px;
+  color: var(--ink-2);
+  text-align: right;
+  font: 11px var(--mono);
+}
+.mixer-remove {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink-3);
+  font-size: 13px;
+  line-height: 1;
+}
+.mixer-remove:hover {
+  background: var(--empty);
+  color: var(--ink);
+}
+.mix-add {
+  margin-top: 6px;
+}
+select:focus-visible {
+  outline: 2px solid var(--c1);
+  outline-offset: 2px;
+}
+
+.search-tool input {
+  width: 230px;
+  padding: 6px 10px;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--ink);
+  font: 14px var(--font);
+}
+

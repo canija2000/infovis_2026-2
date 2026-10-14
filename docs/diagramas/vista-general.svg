@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 550" role="img" aria-labelledby="title desc"><title id="title">El proyecto, de un vistazo</title><desc id="desc">Diagrama de la organización del Atlas sonoro de aves de Chile.</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="#8b97a8"/></marker></defs>
+<rect width="1080" height="550" rx="16" fill="#fff"/>
+<text x="30" y="42" font-family="system-ui,sans-serif" font-size="25" font-weight="700" fill="#233249">El proyecto, de un vistazo</text>
+<polyline points="300,139 378,139" fill="none" stroke="#8b97a8" stroke-width="2" marker-end="url(#arrow)"/>
+<polyline points="530,191 530,225 120,225 120,258" fill="none" stroke="#8b97a8" stroke-width="2" marker-end="url(#arrow)"/>
+<polyline points="530,225 330,225 330,258" fill="none" stroke="#8b97a8" stroke-width="2" marker-end="url(#arrow)"/>
+<polyline points="530,225 540,225 540,258" fill="none" stroke="#8b97a8" stroke-width="2" marker-end="url(#arrow)"/>
+<polyline points="530,225 750,225 750,258" fill="none" stroke="#8b97a8" stroke-width="2" marker-end="url(#arrow)"/>
+<polyline points="530,225 960,225 960,258" fill="none" stroke="#8b97a8" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="30" y="85" width="270" height="106" rx="10" fill="#fff6df" stroke="#a07413" stroke-opacity=".35"/>
+<text x="46" y="114" fill="#a07413" font-family="system-ui,sans-serif" font-size="17" font-weight="700">PREPARAR · Python</text>
+<text x="46" y="139" fill="#38475b" font-family="system-ui,sans-serif" font-size="14">GBIF · fotos · cantos</text>
+<text x="46" y="159" fill="#38475b" font-family="system-ui,sans-serif" font-size="14">Calcula archivos antes de publicar</text>
+<rect x="380" y="85" width="300" height="106" rx="10" fill="#eaf1ff" stroke="#3757a4" stroke-opacity=".35"/>
+<text x="396" y="114" fill="#3757a4" font-family="system-ui,sans-serif" font-size="17" font-weight="700">PUBLICAR · web/</text>
+<text x="396" y="139" fill="#38475b" font-family="system-ui,sans-serif" font-size="14">HTML + CSS + módulos JS</text>
+<text x="396" y="159" fill="#38475b" font-family="system-ui,sans-serif" font-size="14">JSON preparados + clips de audio</text>
+<rect x="760" y="85" width="290" height="106" rx="10" fill="#f2f4f7" stroke="#526173" stroke-opacity=".35"/>
+<text x="776" y="114" fill="#526173" font-family="system-ui,sans-serif" font-size="17" font-weight="700">EXPLICAR · docs/</text>
+<text x="776" y="139" fill="#38475b" font-family="system-ui,sans-serif" font-size="14">Arquitectura y metodología</text>
+<text x="776" y="159" fill="#38475b" font-family="system-ui,sans-serif" font-size="14">Proceso, capturas y diagramas</text>
+<rect x="30" y="260" width="180" height="110" rx="10" fill="#eaf1ff" stroke="#3757a4" stroke-opacity=".35"/>
+<text x="46" y="289" fill="#3757a4" font-family="system-ui,sans-serif" font-size="17" font-weight="700">pages/</text>
+<text x="46" y="314" fill="#38475b" font-family="system-ui,sans-serif" font-size="14">Conecta cada página</text>
+<text x="46" y="334" fill="#38475b" font-family="system-ui,sans-serif" font-size="14">Coordina acciones</text>
+<rect x="240" y="260" width="180" height="110" rx="10" fill="#f2f4f7" stroke="#526173" stroke-opacity=".35"/>
+<text x="256" y="289" fill="#526173" font-family="system-ui,sans-serif" font-size="17" font-weight="700">state/</text>
+<text x="256" y="314" fill="#38475b" font-family="system-ui,sans-serif" font-size="14">Recuerda selecciones</text>
+<text x="256" y="334" fill="#38475b" font-family="system-ui,sans-serif" font-size="14">Mes, región, pistas</text>
+<rect x="450" y="260" width="180" height="110" rx="10" fill="#fff6df" stroke="#a07413" stroke-opacity=".35"/>
+<text x="466" y="289" fill="#a07413" font-family="system-ui,sans-serif" font-size="17" font-weight="700">data/</text>
+<text x="466" y="314" fill="#38475b" font-family="system-ui,sans-serif" font-size="14">Carga e indexa</text>
+<text x="466" y="334" fill="#38475b" font-family="system-ui,sans-serif" font-size="14">Datos y medios</text>
+<rect x="660" y="260" width="180" height="110" rx="10" fill="#e5f5ef" stroke="#2f765d" stroke-opacity=".35"/>
+<text x="676" y="289" fill="#2f765d" font-family="system-ui,sans-serif" font-size="17" font-weight="700">views/</text>
+<text x="676" y="314" fill="#38475b" font-family="system-ui,sans-serif" font-size="14">Dibuja la interfaz</text>
+<text x="676" y="334" fill="#38475b" font-family="system-ui,sans-serif" font-size="14">Informa interacciones</text>
+<rect x="870" y="260" width="180" height="110" rx="10" fill="#f0eaff" stroke="#7751a8" stroke-opacity=".35"/>
+<text x="886" y="289" fill="#7751a8" font-family="system-ui,sans-serif" font-size="17" font-weight="700">audio/</text>
+<text x="886" y="314" fill="#38475b" font-family="system-ui,sans-serif" font-size="14">Reproduce sonido</text>
+<text x="886" y="334" fill="#38475b" font-family="system-ui,sans-serif" font-size="14">Tres motores distintos</text>
+<rect x="30" y="423" width="480" height="90" rx="10" fill="#eaf1ff" stroke="#3757a4" stroke-opacity=".35"/>
+<text x="46" y="452" fill="#3757a4" font-family="system-ui,sans-serif" font-size="17" font-weight="700">Visualización</text>
+<text x="46" y="477" fill="#38475b" font-family="system-ui,sans-serif" font-size="14">index.html → js/pages/overview.js</text>
+<rect x="570" y="423" width="480" height="90" rx="10" fill="#eaf1ff" stroke="#3757a4" stroke-opacity=".35"/>
+<text x="586" y="452" fill="#3757a4" font-family="system-ui,sans-serif" font-size="17" font-weight="700">Explorar</text>
+<text x="586" y="477" fill="#38475b" font-family="system-ui,sans-serif" font-size="14">explorar.html → js/pages/explore.js</text>
+</svg>

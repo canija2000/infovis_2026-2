@@ -8,6 +8,11 @@ región. El año se puede reproducir como sonido.
 
 ## Arquitectura
 
+La organización actual, los diagramas y la guía por característica están en
+[docs/ARQUITECTURA.md](docs/ARQUITECTURA.md).
+Los gráficos y controles de la interfaz se explican con capturas en
+[docs/GUIA_INTERFAZ.md](docs/GUIA_INTERFAZ.md).
+
 ```text
 GBIF (11 descargas anuales, Aves, Chile)
   └─ python_scripts/gbif/*.py ► web/data/observations-*.json   agregado región × mes × especie
@@ -44,9 +49,9 @@ GBIF (11 descargas anuales, Aves, Chile)
   carga inicial). Solo usa la biblioteca estándar y su salida es determinista.
 - `gbif/synonyms_xc.json`: nombres científicos GBIF → Xeno-canto (IOC).
 - `web/`: frontend estático en dos páginas enlazadas. `index.html` (Visualización) es la portada:
-  una sola idea a primera vista (`inicio.js`, `inicio.css`, datos en `data/overview.json`).
-  `explorar.html` (Explorar) es el atlas completo: `app.js` contiene sus vistas y la interacción;
-  `sonify.js`, la sonificación.
+  una sola idea a primera vista (`js/pages/overview.js`, vistas en `js/views/overview/`,
+  estilos en `css/overview.css`). `explorar.html` usa `js/pages/explore.js`.
+  Los tres motores de audio viven en `js/audio/`; datos y estado tienen módulos propios.
 - `python_scripts/preparar_audio_web.py`: elige, descarga (Xeno-canto, `cnt:chile`) y recorta los
   cantos que publica la web en `web/audio/` (clips + `clips.json`).
 - `python_scripts/preparar_audio_mixer.py`: reduce el ambiente de los clips que
@@ -73,27 +78,21 @@ GBIF (11 descargas anuales, Aves, Chile)
 
 ## Estructura de scripts
 
-Todos se ejecutan desde la raíz del repo (las rutas se resuelven solas).
+Los comandos existentes se conservan. Sus implementaciones están agrupadas
+por tarea; las rutas de entrada y salida se resuelven desde el repositorio.
 
 ```text
 python_scripts/
-├── build_web_data.py        genera web/data/ (año típico, clases, geometría, sonidos)
-├── preparar_audio_web.py    cantos de Xeno-canto → clips en web/audio/
-├── preparar_audio_mixer.py  clips con menos ambiente → web/audio/mixer/
-├── preparar_imagenes_web.py fotos CC BY de GBIF → cache_images/candidates.json
-├── ordenar_imagenes_web.py  puntúa candidatas → ocho mejores en web/data/images.json
-├── gbif/                    pipeline GBIF (datos en <repo>/gbif/)
-│   ├── gbif_downloads.py    pedir descargas anuales (API GBIF)
-│   ├── run_pipeline.py      orquesta descarga + estado (gbif/state.json)
-│   ├── progress.py          estado de las descargas
-│   ├── join_aggregate.py    join espacial a regiones + agregado región × mes × especie
-│   ├── fetch_vernacular_es.py, merge_names.py, patch_comnames.py   nombres en español
-│   └── install.py           instala los agregados en web/data/
-└── python_historicos/       solo registro, no forman parte del flujo actual
-    ├── 10anios.py           pipeline original eBird nacional
-    ├── pull_regional.py, progress_check.py   ruta eBird por región (abandonada, 429)
-    ├── descargar_sonidos.py, optimizar_sonidos.py   primera descarga de cantos
-    └── gbif_pruebas/        prototipos y validaciones de la migración a GBIF
+├── atlas/              año típico, clases y datos base
+├── overview/           resumen, mapas y selección sonora de portada
+├── media/              preparación y revisión de fotos y cantos
+├── aviary/             exportación para el Aviario 3D
+├── gbif/               descargas y agregación
+├── enrich/             rasgos, paletas y terrenos del Aviario
+├── audio_review/       resultados de revisión sonora
+├── python_historicos/  scripts anteriores
+├── _compat.py          reenvío de rutas anteriores
+└── *.py                entradas compatibles con los comandos existentes
 ```
 
 ## Regenerar los datos de la web

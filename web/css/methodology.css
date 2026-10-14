@@ -1,0 +1,46 @@
+/* -------------------------------------------------------------- pie */
+.sound-legend,
+.method {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 20px 24px;
+  border-top: 1px solid var(--rule);
+  color: var(--ink-2);
+  font-size: 15px;
+}
+
+.sound-legend h2,
+.method h2 {
+  font-size: 17px;
+  color: var(--title);
+  margin-bottom: 6px;
+}
+.sound-legend ul {
+  margin: 6px 0 0;
+  padding-left: 18px;
+  max-width: 90ch;
+}
+.sound-legend p,
+.method p {
+  max-width: 90ch;
+  margin: 6px 0;
+}
+.method .dois {
+  font: 12px/1.6 var(--mono);
+  color: var(--ink-3);
+}
+
+/* Textos explicativos justificados. La división en sílabas (lang="es") evita huecos grandes
+   entre palabras. Los DOIs y la lista de citas quedan alineados a la izquierda. */
+.sound-legend p,
+.sound-legend li,
+.method p:not(.dois),
+details.how p {
+  text-align: justify;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+.method {
+  padding-bottom: 48px;
+}
+

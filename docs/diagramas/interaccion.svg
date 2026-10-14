@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 500" role="img" aria-labelledby="title desc"><title id="title">Una acción, un recorrido claro</title><desc id="desc">Diagrama de la organización del Atlas sonoro de aves de Chile.</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="#8b97a8"/></marker></defs>
+<rect width="1100" height="500" rx="16" fill="#fff"/>
+<text x="30" y="42" font-family="system-ui,sans-serif" font-size="25" font-weight="700" fill="#233249">Una acción, un recorrido claro</text>
+<polyline points="270,145 333,145" fill="none" stroke="#8b97a8" stroke-width="2" marker-end="url(#arrow)"/>
+<polyline points="635,145 698,145" fill="none" stroke="#8b97a8" stroke-width="2" marker-end="url(#arrow)"/>
+<polyline points="485,200 485,235 445,235 445,278" fill="none" stroke="#8b97a8" stroke-width="2" marker-end="url(#arrow)"/>
+<polyline points="485,235 700,235 700,278" fill="none" stroke="#8b97a8" stroke-width="2" marker-end="url(#arrow)"/>
+<polyline points="700,235 955,235 955,278" fill="none" stroke="#8b97a8" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="30" y="90" width="240" height="110" rx="10" fill="#e5f5ef" stroke="#2f765d" stroke-opacity=".35"/>
+<text x="46" y="119" fill="#2f765d" font-family="system-ui,sans-serif" font-size="17" font-weight="700">1 · Vista</text>
+<text x="46" y="144" fill="#38475b" font-family="system-ui,sans-serif" font-size="14">El usuario elige una región</text>
+<text x="46" y="164" fill="#38475b" font-family="system-ui,sans-serif" font-size="14">La vista informa el identificador</text>
+<rect x="335" y="90" width="300" height="110" rx="10" fill="#eaf1ff" stroke="#3757a4" stroke-opacity=".35"/>
+<text x="351" y="119" fill="#3757a4" font-family="system-ui,sans-serif" font-size="17" font-weight="700">2 · Coordinador</text>
+<text x="351" y="144" fill="#38475b" font-family="system-ui,sans-serif" font-size="14">pages/overview.js o explore.js</text>
+<text x="351" y="164" fill="#38475b" font-family="system-ui,sans-serif" font-size="14">Decide qué debe actualizarse</text>
+<rect x="700" y="90" width="365" height="110" rx="10" fill="#f2f4f7" stroke="#526173" stroke-opacity=".35"/>
+<text x="716" y="119" fill="#526173" font-family="system-ui,sans-serif" font-size="17" font-weight="700">3 · Estado</text>
+<text x="716" y="144" fill="#38475b" font-family="system-ui,sans-serif" font-size="14">Conserva la selección</text>
+<text x="716" y="164" fill="#38475b" font-family="system-ui,sans-serif" font-size="14">No descarga ni dibuja</text>
+<rect x="335" y="280" width="220" height="120" rx="10" fill="#fff6df" stroke="#a07413" stroke-opacity=".35"/>
+<text x="351" y="309" fill="#a07413" font-family="system-ui,sans-serif" font-size="17" font-weight="700">Datos</text>
+<text x="351" y="334" fill="#38475b" font-family="system-ui,sans-serif" font-size="14">Carga lo necesario</text>
+<text x="351" y="354" fill="#38475b" font-family="system-ui,sans-serif" font-size="14">Reutiliza índices y cachés</text>
+<rect x="590" y="280" width="220" height="120" rx="10" fill="#e5f5ef" stroke="#2f765d" stroke-opacity=".35"/>
+<text x="606" y="309" fill="#2f765d" font-family="system-ui,sans-serif" font-size="17" font-weight="700">Vistas</text>
+<text x="606" y="334" fill="#38475b" font-family="system-ui,sans-serif" font-size="14">Reciben la selección</text>
+<text x="606" y="354" fill="#38475b" font-family="system-ui,sans-serif" font-size="14">Actualizan sus elementos</text>
+<rect x="845" y="280" width="220" height="120" rx="10" fill="#f0eaff" stroke="#7751a8" stroke-opacity=".35"/>
+<text x="861" y="309" fill="#7751a8" font-family="system-ui,sans-serif" font-size="17" font-weight="700">Audio</text>
+<text x="861" y="334" fill="#38475b" font-family="system-ui,sans-serif" font-size="14">Recibe el plan sonoro</text>
+<text x="861" y="354" fill="#38475b" font-family="system-ui,sans-serif" font-size="14">Programa su reproducción</text>
+</svg>
