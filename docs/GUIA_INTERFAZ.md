@@ -3,6 +3,9 @@
 **Esta guía explica la web tal como la ve quien la usa:** qué muestra cada
 gráfico, cómo leerlo y qué cambia al pulsar sus controles.
 
+Las medidas están enlazadas a sus definiciones en el [glosario de métricas](METRICAS.md):
+puedes consultar su cálculo, unidad y ejemplo sin perder el contexto de la vista.
+
 Las capturas se tomaron de la rama local `huge-refactorization`, servida en
 `http://127.0.0.1:8001`, el 14 de octubre de 2026. Son imágenes reales de la
 interfaz, en escritorio y tema claro. La portada se pausó para mantener fijo el
@@ -22,13 +25,13 @@ mes, región y sonido de una no se transfieren a la otra.
 
 **Tres ideas para interpretar todo el sitio:**
 
-- El «año típico» resume registros de **2017–2024**; no es una transmisión en
+- El [«año típico»](METRICAS.md#contexto) resume registros de **2017–2024**; no es una transmisión en
   vivo ni un único año observado.
 - **Verde** identifica residentes, **naranja** visitantes de verano y **azul**
   visitantes de invierno en las vistas por clase. La grilla regional de
   Explorar usa una escala distinta: **verde–violeta**.
-- Especies, frecuencia, especie-días y presencia relativa son medidas
-  diferentes. El significado de un punto o un color depende del gráfico.
+- [Conteos de especies](METRICAS.md#riqueza), [frecuencia](METRICAS.md#frecuencia),
+  [especie-días](METRICAS.md#dias-especie) y [perfil relativo](METRICAS.md#perfil) son medidas diferentes. El significado de un punto o un color depende del gráfico.
 
 ## 2. Visualización: leer el ciclo anual
 
@@ -42,21 +45,23 @@ cambia el patrón por el país y dentro de una región.
 
 ![Gráfico de áreas apiladas del pulso anual](interfaz/capturas/02-pulso.png)
 
-**Qué muestra.** El número de especies presentes en cada mes, separado en tres
-bandas apiladas: residentes, visitantes de invierno y visitantes de verano.
+**Qué muestra.** El [número de especies presentes](METRICAS.md#riqueza) en cada mes,
+separado en tres bandas apiladas de [clases estacionales](METRICAS.md#clases):
+residentes, visitantes de invierno y visitantes de verano. «[Presente](METRICAS.md#presente)»
+exige registro en al menos cuatro años y un perfil de al menos 20 % del pico.
 
 | Elemento visible | Cómo leerlo |
 |---|---|
 | Eje horizontal | Los meses van de **julio a junio**, para dejar el verano en el centro |
-| Eje vertical | Número de especies |
-| Grosor de cada banda | Cuántas especies de esa clase están presentes en ese mes |
-| Borde superior de las tres bandas | Total de especies de los tres grupos presentes ese mes |
+| Eje vertical | [Número de especies](METRICAS.md#riqueza) |
+| Grosor de cada banda | Cuántas especies de esa clase están [presentes](METRICAS.md#presente) en ese mes |
+| Borde superior de las tres bandas | [Riqueza mensual](METRICAS.md#riqueza): total de los tres grupos presentes ese mes |
 | Línea vertical | Mes seleccionado |
 | Leyenda y rótulos | Identifican las clases y resumen sus conteos |
 
 En enero, los datos actuales suman **214 residentes + 105 visitantes de verano
 + 11 de invierno = 330 especies**. El título resume 214 especies clasificadas
-como residentes; el conteo de presencia del gráfico se calcula mes a mes y
+como residentes; el [conteo de presencia](METRICAS.md#riqueza) del gráfico se calcula mes a mes y
 puede variar ligeramente: en julio registra 213 residentes.
 
 **Qué puedes hacer.** Al pasar el cursor por un mes aparecen sus conteos. Al
@@ -71,16 +76,16 @@ hacer clic se selecciona ese mes para la portada y el recorrido sonoro salta a
 |---|---|---|
 | **❚❚ / ▶** | Pausa o reanuda el recorrido del año | Sonido y avance automático del mes |
 | **Parlante** | Silencia o activa el sonido | El volumen del recorrido; el mes sigue avanzando si no está pausado |
-| **Cuatro pequeñas barras** | Indican el compás actual | Son un indicador, no un selector |
+| **Cuatro pequeñas barras** | Indican el [compás actual](METRICAS.md#tiempo-sonoro) | Son un indicador, no un selector |
 | **Chile** | Escucha especies seleccionadas para el país | El ámbito sonoro |
 | **Nombre de la región** | Escucha especies de la región elegida abajo | El ámbito sonoro; no transforma los gráficos nacionales en gráficos regionales |
 | **Botones jul…jun** | Seleccionan un mes | Cursor del pulso, posición de las especies, resaltado de mapas y recorrido sonoro |
-| **«Suenan»** | Enumera las especies y sus copias | Describe la composición; no es una lista de botones para activar pistas |
+| **«Suenan»** | Enumera las especies y sus [copias](METRICAS.md#copias) | Describe la composición; no es una lista de botones para activar pistas |
 
-Cada mes dura **12 segundos**: cuatro compases de tres segundos. El año completo
+Cada mes dura [**12 segundos**](METRICAS.md#tiempo-sonoro): cuatro compases de tres segundos. El año completo
 dura **2 minutos y 24 segundos** y vuelve a empezar. Se seleccionan hasta seis
-especies muy extendidas y hasta tres visitantes adicionales; cada canto puede
-aparecer entre una y cuatro veces por compás. «×4» significa cuatro copias
+especies muy extendidas según sus [lugar-días](METRICAS.md#lugar-dias) y hasta tres visitantes adicionales; cada canto puede
+aparecer entre una y cuatro veces por compás. [«×4»](METRICAS.md#copias) significa cuatro copias
 sonoras, no cuatro individuos observados.
 
 La preferencia del parlante se recuerda para la próxima visita. Si el navegador
@@ -93,15 +98,16 @@ espaciadora también pausa o reanuda cuando el foco no está en otro control.
 
 **Qué muestra.** Cada punto representa **una especie**, no un ave individual.
 Las residentes se mantienen en su columna; las visitantes cambian entre «EN
-CHILE» y «FUERA DE CHILE» según su presencia estacional.
+CHILE» y «FUERA DE CHILE» según su [presencia mensual](METRICAS.md#presente).
 
-El color distingue la clase. Los números bajo las columnas cuentan especies.
+El color distingue la [clase](METRICAS.md#clases). Los números bajo las columnas [cuentan especies](METRICAS.md#riqueza).
 Las posiciones son una disposición gráfica: no corresponden a coordenadas de
 observación ni a rutas de viaje medidas. «Fuera» representa la ausencia en la
-máscara de presencia del año típico.
+[máscara de presencia](METRICAS.md#presente) del año típico. Las residentes se mantienen
+dentro por diseño; sus puntos no siempre coinciden con el conteo mensual del pulso.
 
 **Qué puedes hacer.** Pasar el cursor por un punto muestra el nombre, la clase
-y los meses de presencia. Cambiar el mes desde los controles o el pulso anima
+y los [meses de presencia](METRICAS.md#presente). Cambiar el mes desde los controles o el pulso anima
 las visitantes. Este gráfico no abre la ficha de especie al hacer clic; las
 fichas se consultan en Explorar.
 
@@ -110,27 +116,28 @@ fichas se consultan en Explorar.
 ![Doce mapas nacionales en el modo Zonas](interfaz/capturas/05-mapas-zonas.png)
 
 **Qué muestra.** Un mapa de Chile por mes, de julio a junio. Cada punto es una
-**zona de unos 22 km** con suficientes registros.
+[**celda de 0,2°, unos 22 km**](METRICAS.md#dias-especie) con suficientes registros.
 
 | Elemento | Significado |
 |---|---|
 | Punto | Una zona geográfica con datos suficientes ese mes |
-| Tamaño | Cantidad de especie-días registrados: indica cuánto se registró allí |
-| Naranja | Mayor presencia proporcional de visitantes de verano respecto del patrón anual de su región |
-| Azul | Mayor presencia proporcional de visitantes de invierno respecto de ese patrón |
+| Tamaño | [Cantidad de especie-días](METRICAS.md#dias-especie) registrados: indica cuánto se registró allí |
+| Naranja | [Índice de ola positivo](METRICAS.md#ola-zonas): balance estival mayor que la referencia regional |
+| Azul | [Índice de ola negativo](METRICAS.md#ola-zonas): balance invernal mayor que la referencia regional |
 | Color cercano al centro de la escala | Equilibrio cercano al patrón de referencia |
 | Marco del mes | Mes seleccionado en la portada |
 
-Un **especie-día** cuenta una especie registrada en una fecha dentro de una
+Un [**especie-día espacial**](METRICAS.md#dias-especie) cuenta una especie registrada en una fecha dentro de una
 celda; varios registros de la misma especie ese día no representan varios
-individuos en esta medida.
+individuos en esta medida. Estos mapas suman los ocho años; no muestran una
+media anual. La unidad espacial difiere de los días regionales de la ficha.
 
-Solo se dibujan zonas con al menos 50 especie-días en el mes y registros en al
-menos tres de los ocho años. La falta de un punto significa datos insuficientes
+Solo se dibujan zonas con [al menos 50 especie-días y registro en tres años](METRICAS.md#ola-zonas)
+en ese mes, acumulando el periodo. Es una regla distinta de la presencia de una especie. La falta de un punto significa datos insuficientes
 para esa vista; no demuestra ausencia de aves.
 
 **Qué puedes hacer.** Pasar el cursor por un punto muestra región, mes,
-cantidad registrada y composición. Pulsar una tarjeta mensual selecciona su
+[cantidad registrada y composición](METRICAS.md#ola-zonas). Pulsar una tarjeta mensual selecciona su
 mes para toda la portada. En escritorio amplio caben los doce mapas; en tamaños
 menores aparecen controles para desplazarse por la franja.
 
@@ -139,8 +146,8 @@ menores aparecen controles para desplazarse por la franja.
 ![Doce mapas nacionales en el modo Regiones](interfaz/capturas/06-mapas-regiones.png)
 
 El botón **Regiones** reemplaza los puntos por un color para cada región.
-Compara la ola de verano con la de invierno, llevando cada una al rango anual
-de esa misma región. **No es exactamente la misma medida del modo Zonas.**
+Compara [los niveles de riqueza de verano e invierno](METRICAS.md#ola-regiones),
+llevando cada serie al rango anual de esa misma región. **No es exactamente la misma medida del modo Zonas.**
 
 Naranja indica predominio relativo de la ola estival; azul, de la invernal.
 Un tono neutro indica equilibrio entre ambas olas. No representa directamente
@@ -148,7 +155,7 @@ abundancia de individuos ni el porcentaje de residentes.
 
 **Qué cambia el interruptor.** Cambia solo esta representación nacional y su
 leyenda. Conserva el mes, el detalle regional, los otros gráficos y el ámbito
-del sonido. Un contorno punteado señala regiones con pocos registros.
+del sonido. Un contorno punteado señala regiones con [poco esfuerzo de registro](METRICAS.md#esfuerzo).
 
 ### 2.6. «Una región de cerca»
 
@@ -156,14 +163,15 @@ del sonido. Un contorno punteado señala regiones con pocos registros.
 
 **Qué muestra.** Una ampliación de la región seleccionada, repetida para sus
 meses. Aquí los puntos significan otra cosa: **cada punto equivale a una cantidad
-de especie-días**, indicada debajo de la franja.
+de especie-días**, según el [factor por punto](METRICAS.md#por-punto) indicado debajo de la franja.
 
 Los puntos verdes, naranjas y azules muestran registros de cada clase. Se
-reparten dentro de celdas de unos 5 km; su posición no es la coordenada exacta
-de un registro. El factor de especie-días por punto se adapta a la región.
+reparten dentro de [celdas de 0,05°, unos 5 km](METRICAS.md#dias-especie); su posición no es la coordenada exacta
+de un registro. El [factor de especie-días por punto](METRICAS.md#por-punto) se adapta a la región.
 
-Bajo cada mapa se muestran las proporciones registradas de visitantes de verano
-y de invierno para ese mes.
+Bajo cada mapa se muestran las [proporciones de días-especie de visitantes](METRICAS.md#proporciones-espaciales)
+de verano e invierno para ese mes. Usan las tres clases regulares como denominador;
+no son el peso ponderado de visitantes que aparece en Explorar.
 
 | Control | Qué cambia |
 |---|---|
@@ -187,12 +195,12 @@ El pulso nacional y el gráfico «Un punto, una especie» conservan sus valores.
 
 ![Tabla de conteos mensuales](interfaz/capturas/09-tabla.png)
 
-**Ver los datos en tabla** despliega los mismos conteos nacionales del pulso.
+**Ver los datos en tabla** despliega los mismos [conteos nacionales de presencia](METRICAS.md#riqueza) del pulso.
 Sirve para leer cifras exactas por mes y clase. Abrirla o cerrarla no cambia los
 filtros ni el sonido.
 
 **Cómo se compone el sonido**, al final de la página, explica selección de
-especies, copias, tiempos, posición estéreo y controles. Es información
+especies, [copias](METRICAS.md#copias), [tiempos y posición estéreo](METRICAS.md#tiempo-sonoro) y controles. Es información
 explicativa; no configura la composición.
 
 ## 3. Explorar: comparar regiones y consultar especies
@@ -201,7 +209,7 @@ explicativa; no configura la composición.
 
 Esta página combina tres vistas: un mapa del mes elegido, un calendario de
 especies y una grilla de comparación regional. El resumen superior cuenta las
-clases nacionales; sigue siendo un resumen de Chile aunque después filtres una
+[especies por clase nacional](METRICAS.md#riqueza); sigue siendo un resumen de Chile aunque después filtres una
 región.
 
 ### 3.1. La barra de controles de Explorar
@@ -210,7 +218,7 @@ región.
 
 | Control | Qué hace |
 |---|---|
-| **▶ / ❚❚** | Inicia o pausa la sonificación mensual del atlas, de 2,4 segundos por mes |
+| **▶ / ❚❚** | Inicia o pausa la [sonificación mensual del atlas](METRICAS.md#sonificacion-atlas), de 2,4 segundos por mes |
 | **Parlante** | Silencia la sonificación y la mezcla personalizada, sin borrar sus selecciones |
 | **Mezcla** | Abre o minimiza el mezclador inferior; el número indica sus pistas |
 | **Deslizador Mes** | Cambia el mapa, las estadísticas y el mes resaltado de las grillas y el perfil de especie |
@@ -229,13 +237,14 @@ el ámbito elegido.
 
 ![Mapa de Explorar y estadísticas del ámbito](interfaz/capturas/12-mapa-explorar.png)
 
-**Qué muestra.** Para cada región, el número de especies presentes de la
+**Qué muestra.** Para cada región, el [número de especies presentes](METRICAS.md#riqueza) de la
 **pestaña activa** en el mes seleccionado. La leyenda indica clase y número de
 especies. Una región más intensa tiene más especies de esa clase presentes,
 no necesariamente más individuos.
 
-Al pasar el cursor aparecen el total presente, conteos por clase, peso de
-visitantes y esfuerzo de registro. Debajo del mapa, las estadísticas resumen
+Al pasar el cursor aparecen el [total presente y los conteos por clase](METRICAS.md#riqueza),
+el [peso ponderado de visitantes](METRICAS.md#peso-visitantes), su [desviación anual](METRICAS.md#desviacion)
+y el [esfuerzo de registro](METRICAS.md#esfuerzo). Debajo del mapa, las estadísticas resumen
 el ámbito actual: Chile o la región seleccionada.
 
 | Acción | Resultado |
@@ -260,14 +269,14 @@ y clase elegidas.
 |---|---|
 | Fila | Una especie |
 | Columna | Un mes |
-| Color más intenso | Mayor presencia relativa de esa especie respecto de su mejor mes |
-| **100 %** | El mes pico de esa especie; cada fila tiene su propia referencia |
-| Celda más tenue | Menos años con registro de la especie en ese mes |
-| Barra y cifra **días/mes**, a la derecha | Frecuencia de registro, expresada como días por mes promedio |
+| Color más intenso | Mayor [perfil relativo](METRICAS.md#perfil) de esa especie respecto de su mejor mes |
+| [**100 %**](METRICAS.md#perfil) | El [mes pico](METRICAS.md#pico) de esa especie; cada fila tiene su propia referencia |
+| Celda más tenue | Menos [años con registro](METRICAS.md#anios-registro) de la especie en ese mes |
+| Barra y cifra [**días/mes**](METRICAS.md#dias-mes), a la derecha | [Frecuencia de registro](METRICAS.md#frecuencia), convertida a días por mes promedio |
 | Marco vertical | Mes seleccionado |
 | Fila resaltada | Especie cuya ficha está abierta |
 
-El color usa un perfil corregido por esfuerzo de observación. Permite comparar
+El color usa un [perfil corregido por esfuerzo de registro](METRICAS.md#perfil). Permite comparar
 la **forma del ciclo de una especie**, mientras la barra ayuda a distinguir
 especies frecuentes de poco registradas. Dos celdas igualmente intensas en
 filas distintas no significan igual número de registros.
@@ -277,16 +286,17 @@ filas distintas no significan igual número de registros.
 | Control o interacción | Qué cambia |
 |---|---|
 | **Residentes / De verano / De invierno** | Cambia el grupo de filas, su color y el mapa principal |
-| Número de la pestaña | Indica cuántas especies de esa clase hay en el ámbito |
+| Número de la pestaña | [Cuenta especies clasificadas](METRICAS.md#riqueza) en esa clase del ámbito; no solo las presentes este mes |
 | **Mostrar las … especies** | Expande todas las filas de la clase actual |
 | **Mostrar solo las … más frecuentes** | Recupera la ventana reducida |
-| Pasar el cursor por una celda | Muestra nombre, mes, frecuencia, perfil y años con registro |
+| Pasar el cursor por una celda | Muestra nombre, mes, [frecuencia](METRICAS.md#frecuencia), [perfil](METRICAS.md#perfil) y [años con registro](METRICAS.md#anios-registro) |
 | Clic en una fila o celda | Abre la ficha de esa especie; no selecciona el mes de la celda |
 | **¿Cómo se calcula y se ordena?** | Despliega explicación y fórmulas, sin cambiar la vista |
 
 Por defecto se muestran hasta **12 residentes, 24 visitantes de verano o 16 de
-invierno**. Las residentes se ordenan por frecuencia; las visitantes, por su
-periodo principal de llegada y salida. La especie seleccionada puede añadirse
+invierno**. Las residentes se ordenan por [frecuencia media](METRICAS.md#frecuencia);
+las visitantes, por un [periodo de llegada y salida usado para ordenar](METRICAS.md#llegada).
+Este periodo usa perfil ≥ 50 % y no equivale a fechas observadas de migración. La especie seleccionada puede añadirse
 a la ventana aunque esté fuera de ese conjunto inicial.
 
 El orden de meses depende de la pestaña: julio–junio para residentes y verano;
@@ -297,22 +307,24 @@ enero–diciembre para invierno. Así la estación principal queda centrada.
 ![Grilla de variación estacional de visitantes por región](interfaz/capturas/14-grilla-regional.png)
 
 **Qué muestra.** Una fila por región, de norte a sur, más Chile; una columna por
-mes, de julio a junio. Compara el peso de las visitantes de cada mes con el
-promedio anual **de esa misma región**.
+mes, de julio a junio. Compara el [peso de las visitantes](METRICAS.md#peso-visitantes)
+con el promedio anual **de esa misma región**, mediante una [desviación](METRICAS.md#desviacion).
 
 | Elemento | Significado |
 |---|---|
-| Violeta | Las visitantes pesan más que el promedio anual de esa región |
-| Verde | Las visitantes pesan menos que ese promedio |
+| Violeta | [Desviación positiva](METRICAS.md#desviacion): más peso de visitantes que el promedio anual regional |
+| Verde | [Desviación negativa](METRICAS.md#desviacion): menos peso que ese promedio |
 | Tono neutro | Un valor cercano al promedio |
 | Marco vertical | Mes seleccionado |
 | Fila resaltada | Región seleccionada |
-| Asterisco junto al nombre | Pocos registros; sus valores son menos estables |
+| Asterisco junto al nombre | [Esfuerzo medio anual menor que 400 días-especie por mes](METRICAS.md#esfuerzo) |
 
-El peso de visitantes combina las clases de verano e invierno y pondera sus
-perfiles de presencia y años con registro. **Violeta no significa necesariamente
+El [peso de visitantes](METRICAS.md#peso-visitantes) combina las clases de verano e invierno
+y pondera sus perfiles relativos y años con registro. **Violeta no significa necesariamente
 que haya más visitantes que residentes:** significa más peso de visitantes
-respecto de lo habitual en esa región. La escala puede saturarse en los extremos.
+respecto de lo habitual en esa región. La escala [satura en el percentil 95](METRICAS.md#saturacion) de las desviaciones absolutas.
+Las diferencias entre porcentajes del tooltip se leen en [puntos porcentuales](METRICAS.md#desviacion),
+aunque se rotulen con «%».
 
 **Qué puedes hacer.** El cursor sobre una celda revela sus datos. Hacer clic en
 una fila o en sus celdas selecciona la región para el atlas; no cambia el mes.
@@ -329,34 +341,34 @@ región, mes y clase. El cierre no quita esa especie de una mezcla ya creada.
 
 ### 4.1. Perfil anual radial
 
-El gráfico circular muestra el mismo perfil estacional normalizado: enero está
+El gráfico circular muestra el mismo [perfil estacional normalizado](METRICAS.md#perfil): enero está
 arriba y los meses avanzan en sentido horario. Cuanto más lejos del centro
 queda el perfil, mayor presencia relativa en ese mes; 100 % es su mes pico.
 
-Se calcula para la región seleccionada. Si no hay una fila regular de la
+Se calcula para la región seleccionada. Si no hay una fila de la
 especie allí, usa Chile y lo indica en el título. El cursor sobre los puntos
 muestra mes, perfil y frecuencia. Cambiar el mes resalta su etiqueta; no cambia
 la curva anual completa.
 
 ### 4.2. Frecuencia media por región
 
-El mapa pequeño muestra qué tan frecuentemente se registra **esa especie** en
-cada región, promediando sus meses. Su escala es propia de la especie, distinta
+El mapa pequeño muestra la [frecuencia media anual](METRICAS.md#frecuencia) de
+**esa especie** en cada región, promediando sus doce meses. Su escala es propia de la especie, distinta
 del mapa principal de conteos.
 
 Pasar el cursor muestra frecuencia y clase regional. Pulsar una región cambia
-el ámbito del atlas y actualiza la ficha. Los territorios sin datos regulares
+el ámbito del atlas y actualiza la ficha. Los territorios sin datos
 no equivalen a una frecuencia medida de cero.
 
 ### 4.3. Los datos cortos de la ficha
 
 | Dato | Qué explica |
 |---|---|
-| Clase | Clasificación nacional y, cuando corresponde, clasificación regional |
-| Mejor mes | Pico del perfil y días de registro en la región indicada |
-| Estacionalidad | Cuánto varía su perfil entre meses |
-| Presencia regular | En cuántas regiones presenta registros regulares |
-| Registros | Días-especie del periodo 2017–2024, no número de individuos |
+| [Clase](METRICAS.md#clases) | Clasificación nacional y, cuando corresponde, clasificación regional |
+| [Mejor mes](METRICAS.md#pico) | Pico del perfil y [conversión a días de registro](METRICAS.md#dias-mes) en la región indicada |
+| [Estacionalidad](METRICAS.md#amplitud) | Amplitud del perfil nacional, incluso al elegir una región |
+| [Presencia regular](METRICAS.md#regiones-regulares) | Número de regiones donde la especie no se clasifica como ocasional |
+| [Registros](METRICAS.md#dias-especie) | Días-especie regionales acumulados en 2017–2024, no número de individuos |
 
 ### 4.4. Grabación y «Añadir a la mezcla»
 
@@ -402,10 +414,10 @@ en el calendario visible.
 |---|---|
 | **+ Especies / Cerrar búsqueda** | Abre o cierra el catálogo |
 | Buscador del catálogo | Filtra nombres comunes o científicos; admite búsquedas sin tildes |
-| **Todas / Residentes / De verano / De invierno** | Filtra las tarjetas por clase nacional |
+| **Todas / Residentes / De verano / De invierno** | Filtra las tarjetas por [clase nacional](METRICAS.md#clases) |
 | Tarjeta de un ave | Añade una pista y la marca como seleccionada |
-| Conteo de resultados | Indica cuántas especies coinciden con los filtros |
-| **Mezclar lo que se ve** | Añade hasta seis especies con canto, frecuentes en el mes, región y clase actuales del atlas |
+| [Conteo de resultados](METRICAS.md#riqueza) | Indica cuántas especies con grabación coinciden con los filtros |
+| **Mezclar lo que se ve** | [Selecciona hasta seis especies por frecuencia mensual](METRICAS.md#mezclador), con canto y en el ámbito y clase activos; no exige el umbral de presencia |
 
 El catálogo muestra especies con grabación. La imagen ayuda a reconocerlas;
 una marca **audio original** indica que se usa el clip sin la limpieza aplicada
@@ -422,9 +434,9 @@ Si repites la selección, las especies ya añadidas no se duplican.
 | Control | Qué hace |
 |---|---|
 | **▶ / ❚❚** del mezclador | Reproduce o pausa solamente la mezcla personalizada |
-| **Sincronizar** desmarcado | Cada canto espera entre 0,2 y 5,2 segundos y vuelve a esperar entre repeticiones |
-| **Sincronizar** marcado | Todas las pistas comienzan juntas y se repiten en ciclos comunes de seis segundos |
-| Volumen de una pista | Cambia solo esa especie; la cifra muestra su porcentaje |
+| **Sincronizar** desmarcado | [Espera aleatoria entre 0,2 y 5,2 segundos](METRICAS.md#mezclador), repetida entre cantos |
+| **Sincronizar** marcado | Todas las pistas comienzan juntas en [ciclos comunes de seis segundos](METRICAS.md#mezclador) |
+| [Volumen de una pista](METRICAS.md#mezclador) | Cambia su ganancia de reproducción; el porcentaje es un ajuste del usuario, no una métrica de presencia |
 | **✕** de una pista | La retira y detiene su reproducción |
 | **▾** de la barra | Minimiza el mezclador; una mezcla activa sigue sonando |
 | **Mezcla** de la barra superior | Vuelve a abrirlo y muestra cuántas pistas hay |
@@ -468,7 +480,8 @@ la barra para comprobar que ocultarla no equivale a pausar.
 
 ---
 
-Para localizar los archivos que implementan estas características, consulta
+Para revisar las definiciones, fórmulas, unidades y ejemplos, consulta el
+[glosario de métricas](METRICAS.md). Para localizar los archivos que implementan estas características, consulta
 [la guía de arquitectura](ARQUITECTURA.md). Este documento describe la
 interfaz y sus controles; las capturas originales están en
 [`interfaz/capturas/`](interfaz/capturas/).

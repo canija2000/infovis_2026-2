@@ -4,6 +4,9 @@ La obtención y selección de fotografías para las fichas se documenta por
 separado en [imagenes-especies.md](imagenes-especies.md). No interviene en las
 métricas de presencia descritas aquí.
 
+Para consultar cada medida desde la interfaz, con unidades, fórmulas y ejemplos,
+consulta el [glosario de métricas](METRICAS.md) y la [guía visual](GUIA_INTERFAZ.md).
+
 ## 1. Contexto y decisión
 
 El plan original (ruta A) contemplaba descargar observaciones históricas de

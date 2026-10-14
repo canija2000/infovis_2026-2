@@ -12,6 +12,8 @@ La organización actual, los diagramas y la guía por característica están en
 [docs/ARQUITECTURA.md](docs/ARQUITECTURA.md).
 Los gráficos y controles de la interfaz se explican con capturas en
 [docs/GUIA_INTERFAZ.md](docs/GUIA_INTERFAZ.md).
+Las definiciones, fórmulas y ejemplos de todas las medidas actuales están en
+[docs/METRICAS.md](docs/METRICAS.md).
 
 ```text
 GBIF (11 descargas anuales, Aves, Chile)
