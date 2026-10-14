@@ -17,8 +17,8 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Changa+One:ital@0;1&family=Shrikhand&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Pixelify+Sans:wght@400..700&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=inicio-8">
-  <link rel="stylesheet" href="inicio.css?v=inicio-8">
+  <link rel="stylesheet" href="styles.css?v=inicio-9">
+  <link rel="stylesheet" href="inicio.css?v=inicio-9">
 </head>
 
 <body class="inicio">
@@ -91,7 +91,7 @@
       <div id="flock" class="flock-chart"></div>
     </figure>
 
-    <!-- C1 · La ola en el mapa: Chile completo, un mapa por mes, cuatro a la vez -->
+    <!-- C1 · La ola en el mapa: Chile completo, los 12 meses de un vistazo -->
     <figure class="months-maps" aria-labelledby="maps-title">
       <figcaption>
         <div class="maps-title-row">
@@ -104,13 +104,13 @@
         <p id="maps-lede"></p>
         <div class="maps-head">
           <div id="maps-legend" class="maps-legend"></div>
-          <div class="maps-nav">
+          <div id="maps-nav" class="maps-nav" hidden>
             <button class="ghost small" type="button" data-strip="maps" data-dir="prev" aria-controls="maps">← anteriores</button>
             <button class="ghost small" type="button" data-strip="maps" data-dir="next" aria-controls="maps">siguientes →</button>
           </div>
         </div>
       </figcaption>
-      <div id="maps" class="maps-strip" tabindex="0" aria-label="Mapas de Chile de julio a junio; desplazar en horizontal"></div>
+      <div id="maps" class="maps-strip maps-strip-12" tabindex="0" aria-label="Mapas de Chile de julio a junio"></div>
       <p id="maps-note" class="maps-note"></p>
     </figure>
 
@@ -185,7 +185,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
   <script src="loop.js?v=2"></script>
-  <script src="inicio.js?v=inicio-8"></script>
+  <script src="inicio.js?v=inicio-9"></script>
 </body>
 
 </html>

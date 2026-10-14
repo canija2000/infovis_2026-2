@@ -274,15 +274,15 @@
   }
 
   // Tarjetas de una franja: una por mes en orden austral; `draw(svg, m, w, h)` dibuja cada mapa.
-  function buildStrip(id, cardW, h, draw, label) {
+  function buildStrip(id, cardW, h, draw, label, padX = 16, shortMonth = false) {
     const host = document.getElementById(id);
     host.innerHTML = "";
-    const w = cardW - 16;
+    const w = cardW - padX;
     const cards = d3.select(host).selectAll("div.map-card").data(AUSTRAL).join("div")
       .attr("class", "map-card")
       .style("width", `${cardW}px`)
       .on("click", (event, m) => setMonth(m));
-    cards.append("h3").text((m) => MONTHS[m]);
+    cards.append("h3").text((m) => (shortMonth ? MON[m] : MONTHS[m]));
     cards.append("svg").attr("viewBox", `0 0 ${w} ${h}`).attr("width", w).attr("height", h)
       .attr("role", "img").attr("aria-label", (m) => `${label} · ${MONTHS[m]}`)
       .each(function (m) { draw(d3.select(this), m, w, h); });
@@ -292,13 +292,18 @@
   }
   const cardWidth = (host, min = 130) => Math.max(min, Math.floor(host.clientWidth / (host.clientWidth < 560 ? 2 : 4)));
 
-  // ------------------------------ C1 · Chile (zonas | regiones)
+  // ------------------------------ C1 · Chile (zonas | regiones): los 12 meses en una fila
   function drawMaps() {
     if (!maps.geo) return;
     const host = document.getElementById("maps");
-    const cardW = cardWidth(host);
-    const w = cardW - 16;
-    const h = Math.min(Math.round(w * 3.4), 640);
+    const fitAll = host.clientWidth >= 760;
+    const cols = fitAll ? 12 : (host.clientWidth < 560 ? 3 : 6);
+    const cardW = Math.floor(host.clientWidth / cols);
+    const padX = 8;
+    const w = cardW - padX;
+    const h = Math.min(Math.round(w * 4.1), 420);
+    const nav = document.getElementById("maps-nav");
+    if (nav) nav.hidden = fitAll;
     const projection = d3.geoMercator().fitSize([w, h], CHILE_FRAME);
     const path = d3.geoPath(projection);
     const zones = maps.mode === "zones";
@@ -307,9 +312,9 @@
     if (zones) {
       const sat = maps.grid.saturation;
       color = d3.scaleDiverging(d3.interpolateRgbBasis([css("--c2"), css("--ink-3"), css("--c1")])).domain([-sat, 0, sat]).clamp(true);
-      const k = Math.min(1.25, h / 520);
+      const k = Math.min(1.2, h / 420);
       const maxTotal = d3.max(maps.months, (rows) => d3.max(rows, (d) => d.total));
-      radius = d3.scaleSqrt().domain([maps.grid.minDays, maxTotal]).range([1.3 * k, 4.2 * k]).clamp(true);
+      radius = d3.scaleSqrt().domain([maps.grid.minDays, maxTotal]).range([1.15 * k, 3.6 * k]).clamp(true);
     } else {
       color = d3.scaleDiverging(d3.interpolateRgbBasis([css("--c2"), css("--empty"), css("--c1")])).domain([-1, 0, 1]);
     }
@@ -335,7 +340,7 @@
           .on("pointermove", (event, f) => regionTip(event, f.properties.id, m))
           .on("pointerleave", hideTip);
       }
-    }, "Mapa de Chile");
+    }, "Mapa de Chile", padX, cardW < 92);
     cards.append("p").attr("class", "map-n").text((m) => (zones ? `${maps.months[m].length} zonas` : ""));
     drawMapsLegend(color, zones ? maps.grid.saturation : 1, radius);
     document.getElementById("maps-note").textContent = zones

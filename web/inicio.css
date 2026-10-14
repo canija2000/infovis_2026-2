@@ -282,6 +282,9 @@
   display: flex;
   gap: 6px;
 }
+.maps-nav[hidden] {
+  display: none;
+}
 /* Cuatro meses a la vista; el resto con scroll horizontal (con imán por mapa). */
 .maps-strip {
   display: flex;
@@ -297,6 +300,12 @@
   scroll-snap-align: start;
   border-radius: 8px;
   cursor: pointer;
+}
+.maps-strip-12 .map-card {
+  padding: 6px 4px 10px;
+}
+.maps-strip-12 .map-card h3 {
+  font-size: 12px;
 }
 .map-card h3 {
   margin: 0 0 6px;
