@@ -2,7 +2,7 @@
 import { AUSTRAL } from "../shared/calendar.js";
 import { REGIONAL_EXAMPLES, COMPARISON_REGIONS } from "./regional-examples.js";
 
-export function queryRegionalCalendar(data, state, images = null) {
+export function queryRegionalCalendar(data, state) {
   const example = REGIONAL_EXAMPLES.find(
     (item) => item.sciName === state.species,
   );
@@ -18,8 +18,7 @@ export function queryRegionalCalendar(data, state, images = null) {
     choices: REGIONAL_EXAMPLES,
     allRegions: state.allRegions,
     regionCount: regions.length,
-    photo:
-      images?.species.find((item) => item.sid === bird.id)?.images[0] ?? null,
+    photo: example.photo ?? null,
     rows: regions
       .filter(
         (region) => state.allRegions || COMPARISON_REGIONS.includes(region.id),

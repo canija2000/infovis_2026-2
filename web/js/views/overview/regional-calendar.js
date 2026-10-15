@@ -44,6 +44,9 @@ export function createRegionalCalendarView({
     status.querySelector("button").hidden = false;
   }
   function renderPhoto({ bird, photo }) {
+    // Expanding the matrix re-renders the same bird: keep its loaded photo.
+    if (photo && photoBox.dataset.url === photo.url) return;
+    photoBox.dataset.url = photo ? photo.url : "";
     photoBox.replaceChildren();
     if (!photo) {
       photoBox.append(
@@ -55,7 +58,6 @@ export function createRegionalCalendarView({
     img.alt = `${bird.comName} (${bird.sciName})`;
     img.width = 240;
     img.height = 240;
-    img.loading = "lazy";
     img.decoding = "async";
     img.src = photo.url;
     img.addEventListener(
@@ -78,6 +80,11 @@ export function createRegionalCalendarView({
     license.rel = "noopener noreferrer";
     caption.append(author, " · ", license);
     photoBox.append(img, caption);
+  }
+
+  // Warm the browser cache so switching species shows its photo at once.
+  function preloadPhotos(photos) {
+    for (const photo of photos) if (photo) new Image().src = photo.url;
   }
 
   function render(model) {
@@ -199,5 +206,5 @@ export function createRegionalCalendarView({
     detail.textContent =
       "Toca una celda para ver su detalle. Con teclado, entra con Tab y recorre con las flechas.";
   }
-  return { render, renderPhoto, showLoading, showError };
+  return { render, preloadPhotos, showLoading, showError };
 }

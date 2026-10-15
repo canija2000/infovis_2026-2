@@ -18,6 +18,8 @@ export default [
           "addEventListener",
           "removeEventListener",
           "ResizeObserver",
+          "IntersectionObserver",
+          "Image",
           "setTimeout",
           "clearTimeout",
           "setInterval",
