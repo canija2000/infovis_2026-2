@@ -3,7 +3,7 @@
 > **La regla de lectura:** Python prepara. `data` carga. `state` recuerda.
 > `views` dibuja. `audio` reproduce. `pages` conecta las piezas.
 
-Esta guía describe la **estructura implementada** en la rama local
+Esta guía describe la **estructura implementada** en la refactorización
 `huge-refactorization`, a partir de `57b6dc8`. La reorganización conserva las
 páginas, los datos publicados, las fórmulas, el aspecto y las reglas de sonido.
 Los nombres de funciones de dibujo existentes se mantienen para facilitar el
@@ -13,6 +13,8 @@ Para una explicación de los gráficos y controles desde la interfaz, con
 capturas reales, consulta la [guía visual de uso](GUIA_INTERFAZ.md).
 Las medidas que usan las vistas y el sonido se definen en el
 [glosario de métricas](METRICAS.md).
+La integración y revisión de la nueva ficha están registradas en
+[ESTRUCTURA.md](ESTRUCTURA.md), con las responsabilidades de cada módulo.
 
 ## 1. El proyecto, de un vistazo
 
@@ -21,6 +23,7 @@ Las medidas que usan las vistas y el sonido se definen en el
 | Quiero trabajar en… | Empiezo aquí |
 |---|---|
 | La portada **Visualización** | [`web/js/pages/overview.js`](../web/js/pages/overview.js) |
+| La **Ficha de métricas** | [`web/js/pages/metrics.js`](../web/js/pages/metrics.js) y [su estructura](ESTRUCTURA.md) |
 | El atlas **Explorar** | [`web/js/pages/explore.js`](../web/js/pages/explore.js) |
 | Un gráfico o control | [`web/js/views/`](../web/js/views/) |
 | La ficha de un ave | [`web/js/species/controller.js`](../web/js/species/controller.js) y las vistas `species-*` |
@@ -37,6 +40,7 @@ Repositorio
 ├── web/                 SITIO que se publica
 │   ├── index.html       Visualización
 │   ├── explorar.html    Explorar
+│   ├── metricas.html    Ficha de métricas
 │   ├── js/              Comportamiento, separado por responsabilidad
 │   ├── css/             Presentación visual
 │   ├── data/            JSON públicos, incluidos los del Aviario
@@ -46,13 +50,14 @@ Repositorio
 ├── Regiones/            Fuente geográfica original
 ├── docs/                EXPLICACIÓN del proyecto y su proceso
 ├── mineria/             INVESTIGACIÓN independiente de la web
+├── scripts/             PREPARACIÓN opcional de la ficha estática
 └── tests/               VERIFICACIÓN de arquitectura y equivalencia
 ```
 
 La web sigue siendo estática: D3 7.9.0 dibuja SVG; Web Audio reproduce los
 cantos; los módulos ES se cargan directamente desde HTML. **No hay proceso de
 compilación del frontend.** Node y las dependencias de desarrollo se usan para
-verificar, no para servir el sitio.
+verificar y regenerar opcionalmente la ficha estática, no para servir el sitio.
 
 ## 2. Quién puede hacer qué
 
@@ -68,6 +73,7 @@ verificar, no para servir el sitio.
 | `mixer/` | Coordinar la mezcla y seleccionar su escena | Delega la interfaz a vistas y la reproducción al motor |
 | `species/` | Coordinar la carga de detalle de especie | Delega los datos al repositorio y la presentación a vistas |
 | `explore/` | Consultas y reglas del atlas | Separa selección de filas, colores y ejes de la coordinación |
+| `metrics/` | Consultar las métricas y asociar conceptos con anclas | No accede al DOM ni modifica el estado |
 | `shared/` | Una utilidad explícita por archivo | Evita convertirse en una colección de lógica sin dueño |
 
 **Una responsabilidad no significa una función.** La galería puede tener
@@ -441,3 +447,20 @@ Evitar imports desde las vistas hacia `pages/`, usar selectores DOM desde
 `data/` o `audio/`, y duplicar el estado en varios módulos. La fábrica recibe
 solo las dependencias que necesita; las referencias SVG y los detalles de
 reproducción permanecen junto a su dueño.
+
+
+## 12. Integración de la ficha de métricas
+
+La revisión del 14 de octubre de 2026 movió la presentación que inicialmente
+estaba en `pages/metrics*.js` a vistas con responsabilidades propias. El estado
+de mes y ámbito vive en `state/metrics.js`; el repositorio indexa datos en
+`data/metrics.js`; las reglas derivadas están en `metrics/queries.js`.
+Los coordinadores conectan esas piezas mediante parámetros y callbacks, sin
+construir HTML. El detalle de archivos, los incumplimientos corregidos y las
+comprobaciones están en [ESTRUCTURA.md](ESTRUCTURA.md).
+
+La definición breve de la web se edita en `scripts/metrics-content.mjs`.
+`npm run build:metrics` prepara el HTML versionado usando los JSON públicos.
+No convierte `METRICAS.md`, no cambia los productores Python y no agrega un
+paso al despliegue. `npm run test:metrics` verifica las interacciones de la ficha;
+`npm test` comprueba también sus límites de arquitectura.

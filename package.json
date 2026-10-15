@@ -7,7 +7,9 @@
     "test": "node --test tests/unit/*.test.mjs",
     "test:browser": "node tests/browser-regression.cjs --baseline 57b6dc8",
     "test:python": "python3 tests/python-invariance.py",
-    "format:check": "prettier --check \"web/js/**/*.js\" \"tests/**/*.mjs\" tests/browser-regression.cjs eslint.config.js package.json"
+    "format:check": "prettier --check \"web/js/**/*.js\" \"tests/**/*.mjs\" tests/browser-regression.cjs eslint.config.js package.json",
+    "build:metrics": "node scripts/build-metrics.mjs",
+    "test:metrics": "node tests/metrics-browser.cjs"
   },
   "devDependencies": {
     "d3": "7.9.0",

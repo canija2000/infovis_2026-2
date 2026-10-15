@@ -72,3 +72,31 @@ test("published data, audio and deployment configuration are unchanged", () => {
     { cwd: root },
   );
 });
+
+test("metrics coordinators delegate presentation and rules stay independent of the DOM", () => {
+  for (const name of ["metrics.js", "metrics-links.js"]) {
+    const body = fs.readFileSync(path.join(js, "pages", name), "utf8");
+    assert.ok(
+      !/\b(innerHTML|createElement|createTreeWalker|MutationObserver|showModal|scrollIntoView)\b/.test(
+        body,
+      ),
+      `presentation leaked into pages/${name}`,
+    );
+  }
+  for (const dir of ["metrics", "state"]) {
+    for (const file of files(path.join(js, dir))) {
+      const body = fs.readFileSync(file, "utf8");
+      assert.ok(
+        !/\b(document|window|fetch|toLocaleString)\b/.test(body),
+        `DOM, loading or formatting leaked into ${file}`,
+      );
+    }
+  }
+  for (const file of files(path.join(js, "views/metrics"))) {
+    const body = fs.readFileSync(file, "utf8");
+    assert.ok(
+      !/from\s+["'][^"']*\/(pages|state|data)\//.test(body),
+      `view depends on coordination, state or data loading: ${file}`,
+    );
+  }
+});

@@ -10,10 +10,26 @@ región. El año se puede reproducir como sonido.
 
 La organización actual, los diagramas y la guía por característica están en
 [docs/ARQUITECTURA.md](docs/ARQUITECTURA.md).
+La distribución de responsabilidades de la ficha y su revisión están en
+[docs/ESTRUCTURA.md](docs/ESTRUCTURA.md).
 Los gráficos y controles de la interfaz se explican con capturas en
 [docs/GUIA_INTERFAZ.md](docs/GUIA_INTERFAZ.md).
 Las definiciones, fórmulas y ejemplos de todas las medidas actuales están en
-[docs/METRICAS.md](docs/METRICAS.md).
+[docs/METRICAS.md](docs/METRICAS.md). La versión pública está en
+[web/metricas.html](web/metricas.html): se abre como ventana translúcida desde
+los conceptos de Visualización y Explorar, con salto directo a la definición.
+Incluye un ejemplo del Fío-fío con fotografía atribuida y métricas reales para
+cada región y mes.
+
+La ficha usa definiciones breves redactadas para la web en
+`scripts/metrics-content.mjs`, con expresiones MathML; no reproduce el Markdown.
+Las métricas del ejemplo rodean una foto circular y se amplían al enfocarlas.
+Tras editar esas definiciones o actualizar los datos, ejecutar `npm run build:metrics`
+y versionar `web/metricas.html`. El generador toma el ejemplo de los JSON del atlas;
+la web desplegada no necesita compilación ni descarga Markdown. `npm test`
+comprueba los anclajes y la sincronización del ejemplo. `npm run test:metrics`
+verifica la ventana, el teclado y la vista móvil con Playwright (usa Chrome local
+si está instalado; también acepta `CHROME_PATH`).
 
 ```text
 GBIF (11 descargas anuales, Aves, Chile)
@@ -50,7 +66,7 @@ GBIF (11 descargas anuales, Aves, Chile)
 - `python_scripts/build_web_data.py`: genera los archivos livianos de la web (~0,86 MB de
   carga inicial). Solo usa la biblioteca estándar y su salida es determinista.
 - `gbif/synonyms_xc.json`: nombres científicos GBIF → Xeno-canto (IOC).
-- `web/`: frontend estático en dos páginas enlazadas. `index.html` (Visualización) es la portada:
+- `web/`: frontend estático en tres páginas enlazadas. `index.html` (Visualización) es la portada:
   una sola idea a primera vista (`js/pages/overview.js`, vistas en `js/views/overview/`,
   estilos en `css/overview.css`). `explorar.html` usa `js/pages/explore.js`.
   Los tres motores de audio viven en `js/audio/`; datos y estado tienen módulos propios.
