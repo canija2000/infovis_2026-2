@@ -16,7 +16,7 @@ export function createMetricConceptLinks(rootElement) {
           pattern.lastIndex = 0;
           return parent &&
             !parent.closest(
-              "a, button, input, select, option, textarea, label, summary, svg, script, style, dialog, [contenteditable], [role=button], [role=tab], #tooltip, .site-nav",
+              'a, button, input, select, option, textarea, label, summary, svg, script, style, dialog, [contenteditable], [role=button], [role=tab], [data-metric-links="off"], #tooltip, .site-nav',
             ) &&
             pattern.test(node.data)
             ? window.NodeFilter.FILTER_ACCEPT

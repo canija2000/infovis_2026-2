@@ -19,6 +19,7 @@
     rel="stylesheet">
   <link rel="stylesheet" href="css/site.css?v=refactor-1">
   <link rel="stylesheet" href="css/overview.css?v=refactor-1">
+  <link rel="stylesheet" href="css/regional-calendar.css">
   <link rel="stylesheet" href="css/metrics.css">
 </head>
 
@@ -92,6 +93,46 @@
       </figcaption>
       <div id="flock" class="flock-chart"></div>
     </figure>
+
+    <!-- B2 · Una misma especie, distintos papeles regionales -->
+    <section id="regional-calendar" class="regional-calendar" aria-labelledby="regional-title" aria-busy="true" data-metric-links="off">
+      <header class="regional-header">
+        <div>
+          <h2 id="regional-title">La misma ave, distintos calendarios</h2>
+          <p class="regional-claim">Ser visitante depende también del lugar desde donde se observa.</p>
+        </div>
+        <label class="regional-selector">Elige una especie
+          <select id="regional-species" aria-controls="regional-content" disabled>
+          </select>
+        </label>
+      </header>
+      <p class="regional-status" role="status"><span>Preparando los calendarios regionales…</span>
+        <button class="regional-retry ghost small" type="button" hidden>Reintentar</button>
+      </p>
+      <div id="regional-content" class="regional-content" hidden>
+        <div class="regional-bird">
+          <figure class="regional-photo" aria-label="Fotografía y atribución de la especie"></figure>
+          <h3 class="regional-bird-name"></h3>
+          <p class="regional-scientific"></p>
+          <p class="regional-reading" aria-live="polite"></p>
+        </div>
+        <div class="regional-panel">
+          <p class="regional-panel-title">Un año, visto desde cada región · julio a junio</p>
+          <div id="regional-matrix" class="regional-matrix"></div>
+          <div class="regional-keys" aria-label="Cómo leer la matriz">
+            <span class="regional-profile-key">Más intenso: mayor perfil relativo</span>
+            <span class="regional-presence-key">Punto: cumple presencia regular</span>
+          </div>
+          <p id="regional-cell-detail" class="regional-cell-detail" role="status"></p>
+          <button class="regional-expand" type="button" aria-expanded="false" aria-controls="regional-matrix">Ver las 16 regiones</button>
+        </div>
+      </div>
+      <p class="regional-note">El color sigue la clasificación de cada región. La intensidad compara cada mes con el pico de esa misma
+        especie en esa región; no compara cantidades de aves entre regiones. Un mes sin punto no demuestra ausencia.
+        Año típico 2017–2024 (GBIF). <a href="metricas.html#perfil" data-metric="perfil">Perfil relativo</a> ·
+        <a href="metricas.html#presente" data-metric="presente">Regla de presencia</a>.</p>
+      <noscript><p>Activa JavaScript para cambiar de especie y consultar sus calendarios regionales.</p></noscript>
+    </section>
 
     <!-- C1 · La ola en el mapa: Chile completo, los 12 meses de un vistazo -->
     <figure class="months-maps" aria-labelledby="maps-title">
@@ -191,6 +232,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
   <script type="module" src="js/pages/overview.js"></script>
+  <script type="module" src="js/pages/regional-calendar.js"></script>
   <script type="module" src="js/pages/metrics-links.js"></script>
 </body>
 

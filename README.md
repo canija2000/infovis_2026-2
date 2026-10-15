@@ -10,7 +10,7 @@ región. El año se puede reproducir como sonido.
 
 La organización actual, los diagramas y la guía por característica están en
 [docs/ARQUITECTURA.md](docs/ARQUITECTURA.md).
-La distribución de responsabilidades de la ficha y su revisión están en
+La distribución de responsabilidades de los calendarios regionales y la ficha está en
 [docs/ESTRUCTURA.md](docs/ESTRUCTURA.md).
 Los gráficos y controles de la interfaz se explican con capturas en
 [docs/GUIA_INTERFAZ.md](docs/GUIA_INTERFAZ.md).
@@ -20,6 +20,16 @@ Las definiciones, fórmulas y ejemplos de todas las medidas actuales están en
 los conceptos de Visualización y Explorar, con salto directo a la definición.
 Incluye un ejemplo del Fío-fío con fotografía atribuida y métricas reales para
 cada región y mes.
+
+La portada también incluye **«La misma ave, distintos calendarios»**: un selector
+alterna Picaflor chico, Chorlito chileno y Fío-fío, con una fotografía atribuida
+y una matriz regional de julio a junio. Muestra que **ser visitante depende
+también del lugar desde donde se observa**. La comparación comienza con siete
+regiones y permite ver las dieciséis; color, intensidad y punto distinguen clase
+regional, perfil relativo y presencia regular. Se coordina desde
+`web/js/pages/regional-calendar.js`, con estilos propios en
+`web/css/regional-calendar.css`. `npm run test:regional` verifica las interacciones,
+la adaptación a móvil, los estados de fallo y las tres fotografías reales.
 
 La ficha usa definiciones breves redactadas para la web en
 `scripts/metrics-content.mjs`, con expresiones MathML; no reproduce el Markdown.
