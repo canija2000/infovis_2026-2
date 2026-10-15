@@ -1,9 +1,102 @@
-# Estructura y mantenimiento de la ficha de métricas
+# Estructura y mantenimiento de las características del atlas
 
 La arquitectura general y sus diagramas están en [ARQUITECTURA.md](ARQUITECTURA.md).
-Este documento registra la revisión de la ficha y dónde mantener cada parte.
+Este documento registra la vista de calendarios regionales y la revisión de la
+ficha de métricas, con la responsabilidad y mantenimiento de cada parte.
 Las definiciones metodológicas completas siguen en [METRICAS.md](METRICAS.md);
 la web usa una redacción breve propia y conserva sus fórmulas.
+
+## Calendarios regionales · 14 de octubre de 2026
+
+La portada incorpora **«La misma ave, distintos calendarios»** entre los puntos
+por especie y los mapas. Su mensaje es: **«Ser visitante depende también del
+lugar desde donde se observa.»** Un selector muestra una sola especie a la vez:
+Picaflor chico, Chorlito chileno o Fío-fío. Cambia conjuntamente la fotografía
+con atribución, el nombre, la lectura breve y la matriz región × mes.
+
+La rama `vista-calendarios-regionales` nace de `origin/main` actualizado
+(`e90ea69`), que ya incluye la estructura modular y la ficha de métricas.
+
+### Responsabilidades
+
+| Ubicación | Responsabilidad | Límite |
+|---|---|---|
+| `web/js/pages/regional-calendar.js` | Coordinar carga, selección, consultas y presentación | No construye HTML ni interpreta perfiles |
+| `web/js/state/regional-calendar.js` | Recordar especie y expansión de regiones | No guarda nodos, carga ni dibuja |
+| `web/js/data/regional-calendar.js` | Cargar e indexar especies, regiones y filas originales | No decide colores, interpreta presencia ni modifica el DOM |
+| `web/js/data/media.js` | Reutilizar el índice existente de fotografías | La vista recibe la foto cargada, no el repositorio |
+| `web/js/overview/regional-examples.js` | Definir los tres ejemplos editoriales y las siete regiones iniciales | Usa nombres científicos estables, sin duplicar métricas |
+| `web/js/overview/regional-calendar.js` | Consultar clase regional, perfil, años y máscara publicada | Función pura, sin formato ni efectos sobre la página |
+| `web/js/views/overview/regional-calendar.js` | Presentar selector, foto, matriz, detalle y estados de carga/error | Devuelve acciones mediante callbacks; no modifica la selección |
+| `web/css/regional-calendar.css` | Estética suave y adaptación de este bloque | Reutiliza tipografía, colores y temas existentes |
+
+```text
+index.html
+└── pages/regional-calendar.js
+    ├── state/regional-calendar.js
+    ├── data/regional-calendar.js ── meta / species / typical_year.json
+    ├── data/media.js ── images.json
+    ├── overview/regional-calendar.js
+    │   └── overview/regional-examples.js
+    └── views/overview/regional-calendar.js
+```
+
+El módulo de página se inicia independientemente de `pages/overview.js`: un
+fallo de fotografías o perfiles no impide usar los gráficos ni el reproductor.
+Cambiar especie o expandir regiones devuelve una acción al coordinador; este
+modifica su estado y entrega un nuevo resultado a la vista. La matriz muestra
+el año completo, sin seguir el mes del reloj sonoro.
+
+### Cómo se lee y qué se conserva
+
+- **Filas:** siete regiones elegidas para los ejemplos (Arica y Parinacota,
+  Metropolitana, Biobío, La Araucanía, Los Ríos, Los Lagos y Magallanes),
+  ordenadas por latitud de norte a sur. «Ver las 16 regiones» amplía la matriz;
+  la expansión se conserva al cambiar de especie.
+- **Columnas:** julio a junio, reutilizando `shared/calendar.js`.
+- **Color y rótulo:** clase calculada **en esa región**, incluyendo ocasionales.
+  No se reutiliza la clase nacional como clase de todas las filas.
+- **Intensidad:** `prof` publicado, entre 0 y 100, relativo al pico de esa misma
+  especie y región. No representa cantidades comparables entre regiones.
+- **Punto:** bit de la máscara de presencia original. No se recalcula a partir
+  de `prof` redondeado; un mes sin punto no demuestra ausencia de la especie.
+- **Detalle:** tocar, pasar el cursor o enfocar una celda muestra región, mes,
+  perfil, años con registro y cumplimiento de presencia. Tab entra una vez a
+  la matriz; las flechas recorren celdas y Home/End los extremos de una fila.
+- **Sin datos:** la falta de fila regional se muestra con trama y texto; no se
+  transforma en cero ni se confunde con una clasificación ocasional.
+- **Fotografía:** primera foto del índice publicado, con autor enlazado a la
+  fuente y licencia. Un fallo de foto deja un aviso y mantiene la matriz.
+
+Los ejemplos se verifican contra los JSON actuales: Picaflor chico es invernal
+en Metropolitana y residente en La Araucanía, Los Ríos y Los Lagos; Chorlito
+chileno es invernal en Biobío y Los Lagos y residente en Magallanes; Fío-fío
+cumple presencia desde septiembre en Metropolitana y desde octubre en
+Magallanes, y es residente en Arica y Parinacota. Estas diferencias describen
+patrones registrados, no rutas migratorias ni movimientos individuales.
+
+La vista no necesita generación ni dependencias adicionales de producción.
+No se modifican los JSON publicados, los clips ni los productores Python.
+
+### Verificación de calendarios
+
+- `npm run check`, `npm run format:check` y `npm test`: imports, límites entre
+  capas, orden austral y geográfico, correspondencia exacta de los tres casos
+  con los perfiles/máscaras/años originales, fotos y distinción entre dato
+  faltante, cero y ocasional.
+- `npm run test:regional`: selector, expansión, flechas/Home/End, adaptación a
+  escritorio/tablet/móvil, ventanas de métricas, reintento de datos y fallo del
+  índice de imágenes. Las interacciones usan imágenes simuladas; una pasada
+  visual separada verifica las tres fotos remotas reales y guarda capturas.
+
+Resultado local: **27 pruebas aprobadas**, análisis estático y formato sin
+errores. Interacciones regionales verificadas a 1440, 768, 390 y 320 px;
+selectores, flechas, expansión, recuperación de datos y fotos reales comprobados.
+`npm run test:metrics` también pasa en escritorio y móvil. Las nuevas capturas
+de la [guía de interfaz](GUIA_INTERFAZ.md#23-bis-la-misma-ave-distintos-calendarios)
+documentan el resultado. La comprobación de fotos reales requiere conexión.
+
+## Ficha de métricas
 
 ## Revisión de la integración · 14 de octubre de 2026
 

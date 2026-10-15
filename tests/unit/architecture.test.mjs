@@ -100,3 +100,24 @@ test("metrics coordinators delegate presentation and rules stay independent of t
     );
   }
 });
+
+test("regional calendar keeps coordination, rules and presentation in their own layers", () => {
+  const coordinator = fs.readFileSync(
+    path.join(js, "pages/regional-calendar.js"),
+    "utf8",
+  );
+  assert.ok(!/\b(innerHTML|createElement|replaceChildren)\b/.test(coordinator));
+  for (const name of [
+    "overview/regional-calendar.js",
+    "overview/regional-examples.js",
+    "state/regional-calendar.js",
+  ]) {
+    const body = fs.readFileSync(path.join(js, name), "utf8");
+    assert.ok(!/\b(document|window|fetch|toLocaleString)\b/.test(body), name);
+  }
+  const view = fs.readFileSync(
+    path.join(js, "views/overview/regional-calendar.js"),
+    "utf8",
+  );
+  assert.ok(!/from\s+["'][^"']*\/(pages|state|data)\//.test(view));
+});

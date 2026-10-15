@@ -118,11 +118,20 @@ index.html
 | [Especies presentes, mes a mes](METRICAS.md#riqueza) | `pulse.js` → `drawPulse()` | `overview.json` | El mes mueve el cursor |
 | Tabla equivalente de [conteos](METRICAS.md#riqueza) | `pulse.js` → `drawTable()` | Los mismos conteos | Se dibuja al iniciar |
 | Un punto, una especie | `species-dots.js` → `drawFlock()` | Especies y [máscara de presencia](METRICAS.md#presente) | El mes mueve las visitantes |
+| La misma ave, distintos calendarios | `views/overview/regional-calendar.js` | Perfiles regionales de `typical_year.json` y `images.json` | El selector cambia especie, foto, texto y matriz |
 | La ola recorre todo el país | `monthly-maps.js` → `drawMaps()` | `grid_month.json` o `region_month.json` | Cambiar modo redibuja; cambiar mes resalta |
 | Una región de cerca | `region-detail.js` | `grid_region/<código>.json` | Elegir región carga y redibuja |
 | Controles y «Suenan» | `player.js` | Estado y [voces del compás](METRICAS.md#copias) | Acción del usuario o reloj sonoro |
 
 ### Mes y región: dos recorridos distintos
+
+El bloque de calendarios regionales tiene su propio coordinador
+`pages/regional-calendar.js`, estado `state/regional-calendar.js`, repositorio
+`data/regional-calendar.js` y consultas puras en `overview/regional-calendar.js`.
+Su selección de especie y expansión no dependen del reloj sonoro. Reutiliza
+`data/media.js` para las fotos; sus fallos de carga quedan aislados del resto de
+la portada. El recorrido y las reglas de lectura están en
+[ESTRUCTURA.md](ESTRUCTURA.md#calendarios-regionales--14-de-octubre-de-2026).
 
 ```mermaid
 sequenceDiagram

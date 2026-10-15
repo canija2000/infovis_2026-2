@@ -111,6 +111,32 @@ y los [meses de presencia](METRICAS.md#presente). Cambiar el mes desde los contr
 las visitantes. Este gráfico no abre la ficha de especie al hacer clic; las
 fichas se consultan en Explorar.
 
+### 2.3 bis. «La misma ave, distintos calendarios»
+
+![Picaflor chico: selector, fotografía y matriz regional](interfaz/capturas/22-calendarios-regionales.png)
+
+**Ser visitante depende también del lugar desde donde se observa.** El selector
+alterna entre Picaflor chico, Chorlito chileno y Fío-fío: solo una especie se
+muestra a la vez, con su foto, autor, licencia y lectura regional.
+
+La matriz ordena regiones de norte a sur y meses de julio a junio. El texto de
+cada fila y su color indican la **clase regional**, que puede cambiar para una
+misma especie. La intensidad muestra el [perfil relativo](METRICAS.md#perfil)
+respecto del pico de esa región; un punto indica que cumple la
+[regla de presencia](METRICAS.md#presente). Sin punto no significa ausencia.
+Una fila sin datos tiene trama; «ocasional» es una clasificación distinta.
+
+La comparación inicial reúne siete regiones. «Ver las 16 regiones» amplía la
+matriz y conserva la expansión cuando cambia la especie. Tocar o enfocar una
+celda muestra su perfil, años con registro y presencia; con teclado, Tab entra
+a la matriz y las flechas recorren las celdas. En pantallas pequeñas la matriz
+se desplaza horizontalmente y mantiene los nombres regionales visibles.
+El año se muestra completo y no cambia con el mes del reproductor.
+
+Las capturas de este bloque se tomaron en `vista-calendarios-regionales`, el
+14 de octubre de 2026, con fotografías reales: escritorio de 1440 px y
+[móvil de 390 px](interfaz/capturas/23-calendarios-regionales-movil.png).
+
 ### 2.4. «La ola recorre todo el país»: modo Zonas
 
 ![Doce mapas nacionales en el modo Zonas](interfaz/capturas/05-mapas-zonas.png)
