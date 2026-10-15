@@ -62,6 +62,9 @@ const server = http.createServer((req, res) => {
     await page.goto(base);
     const root = page.locator("#regional-calendar");
     const selector = root.locator("select");
+    // The section loads its data only when it nears the viewport.
+    assert.equal(await root.getAttribute("aria-busy"), "true");
+    await root.scrollIntoViewIfNeeded();
     await root.locator("tbody tr").first().waitFor();
     assert.equal(await selector.locator("option").count(), 3);
     assert.equal(await root.locator("tbody tr").count(), 7);
@@ -190,16 +193,18 @@ const server = http.createServer((req, res) => {
         : route.continue(),
     );
     await page.goto(base);
+    await root.scrollIntoViewIfNeeded();
     await root.locator(".regional-retry").waitFor({ state: "visible" });
     failData = false;
     await root.locator(".regional-retry").click();
     await root.locator("tbody tr").first().waitFor();
     assert.equal(await selector.isEnabled(), true);
     // Photo failures leave a useful matrix and an explicit fallback.
-    await page.route("**/data/images.json", (route) =>
+    await page.route("**/inaturalist-open-data.s3.amazonaws.com/**", (route) =>
       route.fulfill({ status: 503, body: "Unavailable" }),
     );
     await page.goto(base);
+    await root.scrollIntoViewIfNeeded();
     await root.locator("tbody tr").first().waitFor();
     await root.locator(".regional-photo-fallback").waitFor();
     assert.equal(await root.locator("tbody tr").count(), 7);
@@ -219,6 +224,7 @@ const server = http.createServer((req, res) => {
     const visual = await real.newPage();
     await visual.goto(base);
     const section = visual.locator("#regional-calendar");
+    await section.scrollIntoViewIfNeeded();
     for (const [name, value] of [
       ["picaflor", "Sephanoides sephaniodes"],
       ["chorlito", "Charadrius modestus"],

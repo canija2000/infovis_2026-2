@@ -118,7 +118,7 @@ index.html
 | [Especies presentes, mes a mes](METRICAS.md#riqueza) | `pulse.js` → `drawPulse()` | `overview.json` | El mes mueve el cursor |
 | Tabla equivalente de [conteos](METRICAS.md#riqueza) | `pulse.js` → `drawTable()` | Los mismos conteos | Se dibuja al iniciar |
 | Un punto, una especie | `species-dots.js` → `drawFlock()` | Especies y [máscara de presencia](METRICAS.md#presente) | El mes mueve las visitantes |
-| La misma ave, distintos calendarios | `views/overview/regional-calendar.js` | Perfiles regionales de `typical_year.json` y `images.json` | El selector cambia especie, foto, texto y matriz |
+| La misma ave, distintos calendarios | `views/overview/regional-calendar.js` | Perfiles regionales de `typical_year.json` (se piden al acercarse a la sección); la foto de cada ejemplo está fijada en `overview/regional-examples.js` (copiada de `images.json`, un test verifica que coincidan) | El selector cambia especie, foto, texto y matriz |
 | La ola recorre todo el país | `monthly-maps.js` → `drawMaps()` | `grid_month.json` o `region_month.json` | Cambiar modo redibuja; cambiar mes resalta |
 | Una región de cerca | `region-detail.js` | `grid_region/<código>.json` | Elegir región carga y redibuja |
 | Controles y «Suenan» | `player.js` | Estado y [voces del compás](METRICAS.md#copias) | Acción del usuario o reloj sonoro |

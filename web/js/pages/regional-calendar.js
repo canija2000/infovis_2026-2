@@ -1,14 +1,12 @@
 /** Compose the regional example independently of the overview's sound and maps. */
 import { loadRegionalCalendar } from "../data/regional-calendar.js";
-import { createMediaRepository } from "../data/media.js";
 import { createRegionalCalendarState } from "../state/regional-calendar.js";
 import { queryRegionalCalendar } from "../overview/regional-calendar.js";
+import { REGIONAL_EXAMPLES } from "../overview/regional-examples.js";
 import { createRegionalCalendarView } from "../views/overview/regional-calendar.js";
 
 const state = createRegionalCalendarState();
-const media = createMediaRepository();
 let data;
-let images = null;
 const view = createRegionalCalendarView({
   onSpeciesChange(species) {
     state.species = species;
@@ -21,10 +19,12 @@ const view = createRegionalCalendarView({
   onRetry: start,
 });
 function render() {
-  view.render(queryRegionalCalendar(data, state, images));
+  view.render(queryRegionalCalendar(data, state));
 }
 async function start() {
   view.showLoading();
+  // The photos do not depend on the data: fetch them in parallel with it.
+  view.preloadPhotos(REGIONAL_EXAMPLES.map((example) => example.photo));
   try {
     data = await loadRegionalCalendar();
     render();
@@ -33,12 +33,20 @@ async function start() {
     view.showError();
   }
 }
-// A missing remote image index must not hide the regional evidence.
-media
-  .loadImages()
-  .then((result) => {
-    images = result;
-    if (data) view.renderPhoto(queryRegionalCalendar(data, state, images));
-  })
-  .catch((error) => console.error(error));
-start();
+// The section sits below the overview: its data waits until it is near the
+// viewport, so it does not compete with the maps and sounds of the first screen.
+// Observe after "load", once the stylesheets have given the page its final layout.
+function startWhenNear() {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      if (!entries.some((entry) => entry.isIntersecting)) return;
+      observer.disconnect();
+      start();
+    },
+    { rootMargin: "300px 0px" },
+  );
+  observer.observe(document.getElementById("regional-calendar"));
+}
+if (!("IntersectionObserver" in window)) start();
+else if (document.readyState === "complete") startWhenNear();
+else window.addEventListener("load", startWhenNear, { once: true });

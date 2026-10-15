@@ -54,16 +54,17 @@ test("all three matrices preserve every published profile, year count and presen
   const original = JSON.stringify(payload);
   for (const example of REGIONAL_EXAMPLES) {
     const state = { species: example.sciName, allRegions: true };
-    const model = queryRegionalCalendar(data, state, images);
+    const model = queryRegionalCalendar(data, state);
     assert.equal(model.rows.length, 16);
     assert.deepEqual(
       model.rows.map((row) => row.region.id),
       Array.from({ length: 16 }, (_, index) => index + 1),
     );
-    assert.equal(
+    assert.deepEqual(
       model.photo,
       images.species.find((entry) => entry.sciName === example.sciName)
         .images[0],
+      "the embedded photo matches the first one in data/images.json",
     );
     assert.equal(model.rows[0].cells[0].month, 6);
     assert.equal(model.rows[0].cells.at(-1).month, 5);
@@ -103,11 +104,6 @@ test("comparison expands without losing its species; missing data differs from z
   assert.equal(occasional.cls, 3);
   assert.ok(occasional.cells.every((cell) => !cell.present));
   assert.ok(occasional.cells.some((cell) => cell.profile === 0));
-  assert.equal(
-    model.photo,
-    null,
-    "photo index may be unavailable without hiding profiles",
-  );
 });
 
 test("presence is never inferred again from the rounded profile", () => {
