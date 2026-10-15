@@ -7,3 +7,7 @@ export function freqText(row, m) {
   const days = new Date(2021, m + 1, 0).getDate();
   return `registrada en ${pct(f)} de los días (≈ ${(f * days).toFixed(1).replace(".", ",")} de ${days})`;
 }
+
+/** Locale-aware decimal formatting for metric values and worked calculations. */
+export const formatNumber = (value, digits = 1) =>
+  value.toLocaleString("es-CL", { maximumFractionDigits: digits });

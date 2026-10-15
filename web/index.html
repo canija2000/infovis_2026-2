@@ -19,6 +19,7 @@
     rel="stylesheet">
   <link rel="stylesheet" href="css/site.css?v=refactor-1">
   <link rel="stylesheet" href="css/overview.css?v=refactor-1">
+  <link rel="stylesheet" href="css/metrics.css">
 </head>
 
 <body class="inicio">
@@ -27,6 +28,7 @@
     <ul>
       <li><a class="site-tab" href="index.html" aria-current="page">Visualización</a></li>
       <li><a class="site-tab" href="explorar.html">Explorar</a></li>
+      <li><a class="site-tab" href="metricas.html#ejemplo" data-metric="ejemplo">Ficha de métricas</a></li>
       <li><a class="site-tab" href="https://canija2000.github.io/3d_aviario/" title="El juego: un aviario 3D con las aves de cada región">Aviario 3D ↗</a></li>
     </ul>
   </nav>
@@ -112,6 +114,7 @@
       </figcaption>
       <div id="maps" class="maps-strip maps-strip-12" tabindex="0" aria-label="Mapas de Chile de julio a junio"></div>
       <p id="maps-note" class="maps-note"></p>
+      <p class="metrics-reading">Cómo se calcula: <a href="metricas.html#ola-zonas" data-metric="ola-zonas">índice de ola por zona</a> · <a href="metricas.html#ola-regiones" data-metric="ola-regiones">índice por región</a>.</p>
     </figure>
 
     <!-- C2 · Una región de cerca: selector horizontal + sus 12 meses -->
@@ -145,6 +148,8 @@
         corresponde a visitantes.</p>
     </figure>
 
+    <p class="metrics-reading">Leer el detalle: <a href="metricas.html#por-punto" data-metric="por-punto">especie-días por punto</a> · <a href="metricas.html#proporciones-espaciales" data-metric="proporciones-espaciales">porcentajes de visitantes</a>.</p>
+
     <details class="table-view">
       <summary>Ver los datos en tabla</summary>
       <div id="table"></div>
@@ -153,6 +158,7 @@
 
   <section id="como-suena" class="como-suena" aria-labelledby="cs-title">
     <h2 id="cs-title">Cómo se compone el sonido</h2>
+    <p class="metrics-reading">Ver las fórmulas de <a href="metricas.html#lugar-dias" data-metric="lugar-dias">lugar-días</a>, <a href="metricas.html#copias" data-metric="copias">copias del canto</a> y <a href="metricas.html#tiempo-sonoro" data-metric="tiempo-sonoro">tiempos y ganancias</a>.</p>
     <p>La página reproduce el año como una pieza en bucle. Cada mes dura <b>4 compases de 3 segundos</b>
       (12 s), y el año completo, 2 min 24 s; al terminar, vuelve a empezar. Un golpe grave y suave marca el inicio
       de cada mes.</p>
@@ -185,6 +191,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
   <script type="module" src="js/pages/overview.js"></script>
+  <script type="module" src="js/pages/metrics-links.js"></script>
 </body>
 
 </html>

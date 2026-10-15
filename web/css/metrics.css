@@ -1,0 +1,583 @@
+/* Shared reference: a soft glass overlay and a readable, independent page. */
+.metric-link {
+  color: inherit;
+  text-decoration: underline dotted;
+  text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+  text-underline-offset: 0.22em;
+  border-radius: 3px;
+  cursor: help;
+}
+.metric-link:hover {
+  color: var(--title);
+  text-decoration-style: solid;
+}
+.metric-link:focus-visible,
+.metrics-page a:focus-visible,
+.metrics-close:focus-visible {
+  outline: 2px solid var(--c0);
+  outline-offset: 4px;
+}
+body.metrics-modal-open {
+  overflow: hidden;
+}
+.metrics-dialog {
+  width: min(1180px, calc(100vw - 64px));
+  height: min(900px, calc(100dvh - 64px));
+  max-width: none;
+  max-height: none;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--surface) 75%, transparent);
+  border-radius: 24px;
+  color: var(--ink);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  box-shadow:
+    0 32px 100px #182d352e,
+    0 4px 20px #182d3512;
+  backdrop-filter: blur(24px);
+}
+.metrics-dialog[open] {
+  display: flex;
+  flex-direction: column;
+  animation: metrics-appear 0.22s ease-out;
+}
+.metrics-dialog::backdrop {
+  background: #26393645;
+  backdrop-filter: blur(7px);
+}
+.metrics-dialog-bar {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 26px;
+  border-bottom: 1px solid var(--rule);
+}
+.metrics-dialog-bar h2 {
+  font-size: 19px;
+}
+.metrics-dialog-bar .kicker {
+  display: block;
+  margin: 0 0 2px;
+  font-size: 10px;
+}
+.metrics-dialog-bar > div:last-child {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.metrics-fullpage {
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.metrics-close {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+}
+.metrics-close:hover {
+  background: var(--empty);
+}
+.metrics-dialog iframe {
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  border: 0;
+  background: transparent;
+}
+.metrics-page {
+  background: var(--bg);
+}
+.metrics-embedded {
+  background: transparent;
+}
+.metrics-main {
+  max-width: 940px;
+  margin: auto;
+  padding: 32px 32px 50px;
+}
+.metrics-hero {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.metrics-hero .kicker {
+  font-size: 10px;
+}
+.metrics-hero h1 {
+  font-size: clamp(26px, 4vw, 36px);
+  letter-spacing: -0.04em;
+}
+.metrics-hero > p:last-child {
+  font-size: 14px;
+  color: var(--ink-2);
+  margin: 10px 0 0;
+}
+.metrics-example {
+  scroll-margin-top: 24px;
+  outline: none;
+}
+.metrics-example-controls {
+  display: flex;
+  gap: 22px;
+  justify-content: center;
+}
+.metrics-example-controls label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--ink-2);
+}
+.metrics-example-controls select {
+  max-width: 180px;
+  padding: 7px 22px 7px 0;
+  border: 0;
+  border-bottom: 1px solid var(--rule);
+  border-radius: 0;
+  color: var(--ink);
+  background: transparent;
+  font: inherit;
+  font-size: 12px;
+}
+.metrics-orbit {
+  position: relative;
+  height: 560px;
+  isolation: isolate;
+}
+.metrics-bird {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 212px;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  margin: 0;
+}
+.metrics-bird img {
+  display: block;
+  width: 212px;
+  height: 212px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 6px solid var(--bg);
+  outline: 1px solid var(--rule);
+}
+.metrics-bird figcaption {
+  margin-top: 18px;
+}
+.metrics-bird h2 {
+  font-size: 24px;
+  letter-spacing: -0.03em;
+}
+.metrics-bird i {
+  display: block;
+  font-size: 12px;
+  color: var(--ink-2);
+  margin-top: 2px;
+}
+#example-presence {
+  display: inline-block;
+  margin-top: 10px;
+  max-width: 190px;
+  font-size: 10px;
+  color: var(--ink-2);
+}
+#example-presence::before {
+  content: "";
+  display: inline-block;
+  height: 5px;
+  width: 5px;
+  border-radius: 50%;
+  background: var(--ink-3);
+  margin: 0 5px 1px 0;
+}
+#example-presence.is-present {
+  color: var(--c0-ink);
+}
+#example-presence.is-present::before {
+  background: var(--c0);
+}
+.orbit-metric {
+  position: absolute;
+  left: calc(50% + var(--x) * 36%);
+  top: calc(50% + var(--y) * 40%);
+  width: 150px;
+  padding: 10px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 14px;
+  transform: translate(-50%, -50%);
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+  transform-origin: center;
+  z-index: 1;
+}
+.orbit-label {
+  font-size: 11px;
+  color: var(--ink-2);
+}
+.orbit-metric strong {
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1.2;
+}
+.orbit-note {
+  color: var(--ink-3);
+  font-size: 10px;
+}
+.orbit-metric:hover,
+.orbit-metric:focus-visible {
+  transform: translate(-50%, -50%) scale(1.23);
+  background: var(--surface);
+  box-shadow: 0 8px 30px #182d3510;
+  z-index: 2;
+}
+.orbit-metric:hover strong,
+.orbit-metric:focus-visible strong {
+  color: var(--c0-ink);
+}
+.metrics-orbit-hint,
+.metrics-photo-credit {
+  text-align: center;
+  font-size: 11px;
+  color: var(--ink-3);
+  margin: 0 0 8px;
+}
+.metrics-photo-credit {
+  font-size: 10px;
+}
+.metrics-page a {
+  text-underline-offset: 3px;
+}
+.metrics-example-extra {
+  max-width: 700px;
+  margin: 24px auto 0;
+  font-size: 13px;
+}
+.metrics-example-extra > summary {
+  width: fit-content;
+  margin: auto;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--ink-2);
+}
+#example-calculation {
+  padding: 14px 0;
+  line-height: 1.7;
+}
+.metric-footnote {
+  color: var(--ink-2);
+  font-size: 12px;
+  line-height: 1.75;
+}
+.metrics-section-nav {
+  display: flex;
+  justify-content: center;
+  gap: 26px;
+  flex-wrap: wrap;
+  margin: 40px 0 24px;
+  padding: 18px 0;
+  border-block: 1px solid var(--rule);
+}
+.metrics-section-nav a {
+  font-size: 12px;
+  text-decoration: none;
+  color: var(--ink-2);
+}
+.metrics-section-nav a:hover {
+  color: var(--c0-ink);
+}
+.metrics-reference {
+  max-width: 700px;
+  margin: auto;
+}
+.metrics-notation {
+  font-size: 11px;
+  line-height: 1.9;
+  color: var(--ink-3);
+  margin: 0 0 36px;
+}
+.metric-group {
+  margin: 36px 0;
+  scroll-margin-top: 20px;
+}
+.metric-group h2 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--ink-3);
+  margin: 0 0 12px;
+}
+.metric-definition {
+  border-bottom: 1px solid var(--rule);
+  scroll-margin-top: 20px;
+}
+.metric-definition > summary {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: center;
+  cursor: pointer;
+  padding: 15px 0;
+  font-size: 15px;
+  list-style: none;
+}
+.metric-definition > summary::-webkit-details-marker {
+  display: none;
+}
+.metric-definition > summary::after {
+  content: "+";
+  color: var(--ink-3);
+  font-size: 16px;
+  font-weight: 400;
+}
+.metric-definition[open] > summary::after {
+  content: "−";
+}
+.metric-definition > summary > span:first-child {
+  flex: 1;
+}
+.metric-symbol {
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--ink-3);
+}
+.metric-definition > summary:hover,
+.metric-definition[open] > summary {
+  color: var(--c0-ink);
+}
+.metric-definition-body {
+  padding: 0 0 18px;
+  font-size: 14px;
+  line-height: 1.75;
+}
+.metric-definition-body p {
+  margin: 0 0 14px;
+}
+.metric-definition-body p:last-child {
+  margin-bottom: 0;
+}
+.metrics-equation {
+  padding: 18px 0 24px;
+  margin: 0 0 2px;
+  overflow-x: auto;
+  font-size: 20px;
+  scrollbar-width: thin;
+}
+.metrics-equation math {
+  margin: 0;
+  padding: 3px;
+}
+.metric-definition:target > summary {
+  color: var(--c0-ink);
+}
+.metrics-other > summary {
+  font-size: 12px;
+  color: var(--ink-2);
+  padding: 8px 0;
+  cursor: pointer;
+}
+.metrics-table-wrap {
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+.metrics-table-wrap table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 11px;
+}
+.metrics-table-wrap :is(th, td) {
+  padding: 10px 8px;
+  text-align: left;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--rule);
+}
+.metrics-table-wrap caption {
+  text-align: left;
+  margin-bottom: 10px;
+  color: var(--ink-2);
+}
+.metrics-table-wrap tr.is-selected {
+  color: var(--c0-ink);
+  background: color-mix(in srgb, var(--c0) 4%, transparent);
+}
+.metrics-footer {
+  max-width: 700px;
+  margin: 42px auto 0;
+  padding-top: 18px;
+  border-top: 1px solid var(--rule);
+  color: var(--ink-3);
+  font-size: 10px;
+}
+.metrics-reading {
+  font-size: 12px;
+  color: var(--ink-2);
+  margin: 12px 0;
+}
+.metrics-reading a {
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+}
+@keyframes metrics-appear {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (max-width: 700px) {
+  .metrics-main {
+    padding-inline: 20px;
+  }
+  .metrics-orbit {
+    height: 550px;
+  }
+  .metrics-bird {
+    width: 160px;
+  }
+  .metrics-bird img {
+    width: 160px;
+    height: 160px;
+  }
+  .metrics-bird h2 {
+    font-size: 22px;
+  }
+  .orbit-metric {
+    width: 120px;
+    left: calc(50% + var(--x) * 36%);
+  }
+  .orbit-metric strong {
+    font-size: 19px;
+  }
+  .metrics-section-nav {
+    gap: 20px;
+  }
+}
+@media (max-width: 480px) {
+  .metrics-main {
+    padding: 24px 14px 36px;
+  }
+  .metrics-hero {
+    margin-bottom: 20px;
+  }
+  .metrics-hero > p:last-child {
+    font-size: 12px;
+  }
+  .metrics-example-controls {
+    gap: 14px;
+  }
+  .metrics-example-controls label {
+    gap: 5px;
+    font-size: 10px;
+  }
+  .metrics-example-controls select {
+    max-width: 130px;
+    font-size: 11px;
+  }
+  .metrics-orbit {
+    height: 560px;
+  }
+  .metrics-bird {
+    width: 130px;
+  }
+  .metrics-bird img {
+    width: 130px;
+    height: 130px;
+    border-width: 4px;
+  }
+  .metrics-bird figcaption {
+    margin-top: 13px;
+  }
+  .metrics-bird h2 {
+    font-size: 20px;
+  }
+  .metrics-bird i {
+    font-size: 10px;
+  }
+  #example-presence {
+    font-size: 9px;
+  }
+  .orbit-metric {
+    width: 92px;
+    padding: 10px 3px;
+    left: calc(50% + var(--x) * 36%);
+  }
+  .orbit-label {
+    font-size: 10px;
+  }
+  .orbit-metric strong {
+    font-size: 16px;
+  }
+  .orbit-note {
+    font-size: 8px;
+  }
+  .orbit-metric:hover,
+  .orbit-metric:focus-visible {
+    transform: translate(-50%, -50%) scale(1.14);
+  }
+  .metrics-orbit-hint {
+    font-size: 10px;
+  }
+  .metrics-section-nav {
+    gap: 17px;
+    margin-top: 30px;
+  }
+  .metrics-section-nav a {
+    font-size: 11px;
+  }
+  .metric-definition > summary {
+    font-size: 14px;
+  }
+  .metric-symbol {
+    font-size: 12px;
+  }
+}
+@media (max-width: 600px) {
+  .metrics-dialog {
+    width: calc(100vw - 16px);
+    height: calc(100dvh - 24px);
+    border-radius: 18px;
+  }
+  .metrics-dialog-bar {
+    padding: 12px 16px;
+  }
+  .metrics-dialog-bar h2 {
+    font-size: 16px;
+  }
+  .metrics-dialog-bar .kicker {
+    font-size: 8px;
+  }
+  .metrics-fullpage {
+    font-size: 11px;
+  }
+  .metrics-dialog-bar > div:last-child {
+    gap: 10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .metrics-dialog[open] {
+    animation: none;
+  }
+  .orbit-metric {
+    transition: none;
+  }
+}

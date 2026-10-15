@@ -18,6 +18,7 @@
     href="https://fonts.googleapis.com/css2?family=Changa+One:ital@0;1&family=Shrikhand&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Pixelify+Sans:wght@400..700&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="css/site.css?v=refactor-1">
+  <link rel="stylesheet" href="css/metrics.css">
 </head>
 
 <body>
@@ -26,6 +27,7 @@
     <ul>
       <li><a class="site-tab" href="index.html">Visualización</a></li>
       <li><a class="site-tab" href="explorar.html" aria-current="page">Explorar</a></li>
+      <li><a class="site-tab" href="metricas.html#ejemplo" data-metric="ejemplo">Ficha de métricas</a></li>
       <li><a class="site-tab" href="https://canija2000.github.io/3d_aviario/" title="El juego: un aviario 3D con las aves de cada región">Aviario 3D ↗</a></li>
     </ul>
   </nav>
@@ -99,6 +101,7 @@
         <span class="key"><i class="key-cell faint"></i>Celda tenue: registrada en pocos de los 8 años</span>
         <span class="key"><i class="key-bar"></i>Barra: días con registro al mes (qué tan común es)</span>
       </div>
+      <p class="metrics-reading">Leer el calendario: <a href="metricas.html#perfil" data-metric="perfil">perfil relativo</a> · <a href="metricas.html#anios-registro" data-metric="anios-registro">años y opacidad</a> · <a href="metricas.html#dias-mes" data-metric="dias-mes">días/mes</a>.</p>
       <div class="tabs" id="tabs" role="tablist" aria-label="Ventana por clase estacional"></div>
       <div id="calendar" class="grid-chart window" role="tabpanel"></div>
       <div class="below">
@@ -252,6 +255,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
   <script type="module" src="js/pages/explore.js"></script>
+  <script type="module" src="js/pages/metrics-links.js"></script>
 </body>
 
 </html>
