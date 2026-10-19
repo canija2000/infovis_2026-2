@@ -26,6 +26,11 @@ async function main() {
   const loadRegion = createRegionLoader();
   let loopData = null;
   const getData = () => loopData;
+  const getCounts = (scope) => {
+    if (!scope) return data.months;
+    const rw = maps.regionWave && maps.regionWave.get(scope);
+    return rw ? rw.rows.map((r) => [r[1], r[2], r[3]]) : null;
+  };
   const { showTip, hideTip } = createTooltip();
   const { drawPulse, updatePulse, drawTable } = createPulse({
     data,
@@ -72,11 +77,13 @@ async function main() {
     showTip,
     hideTip,
   });
-  const { voicesFor, clipsFor, planBar } = createOverviewPlan({
-    sound,
-    getData,
-    preload: SoundLoop.load,
-  });
+  const { voicesFor, clipsFor, planBar, waveMetrics, classOf } =
+    createOverviewPlan({
+      sound,
+      getData,
+      getCounts,
+      preload: SoundLoop.load,
+    });
   const {
     updateBar,
     setSoundHint,
@@ -92,10 +99,14 @@ async function main() {
     getData,
     mapState,
     voicesFor,
+    waveMetrics,
+    classOf,
     setMonth,
     togglePause,
     toggleMute,
     setSoundScope,
+    setSoundMode,
+    setSoundSpeed,
   });
   function setMonth(m, fromLoop = false) {
     state.month = m;
@@ -120,7 +131,10 @@ async function main() {
       console.error(err);
       return;
     }
-    SoundLoop.configure(loopData);
+    SoundLoop.configure({
+      ...loopData,
+      barsPerMonth: sound.speed === 2 ? 2 : loopData.barsPerMonth,
+    });
     SoundLoop.setMuted(sound.muted);
     syncSoundButtons();
     updateNowPlaying();
@@ -159,9 +173,24 @@ async function main() {
   }
   function setSoundScope(scope) {
     sound.scope = scope;
-    if (loopData) SoundLoop.load(clipsFor(state.month));
+    if (loopData) {
+      SoundLoop.load(clipsFor(state.month));
+      SoundLoop.jump(state.month);
+    }
     syncSoundButtons();
     updateNowPlaying();
+  }
+  function setSoundMode(mode) {
+    sound.mode = mode;
+    if (loopData) SoundLoop.jump(state.month);
+    syncSoundButtons();
+    updateNowPlaying();
+  }
+  function setSoundSpeed(speed) {
+    sound.speed = speed === 2 ? 2 : 1;
+    SoundLoop.setBarsPerMonth(sound.speed === 2 ? 2 : 4);
+    if (loopData) SoundLoop.jump(state.month);
+    syncSoundButtons();
   }
   function onRegionChange(id) {
     updateRegionName(maps.names.get(id));
@@ -206,6 +235,7 @@ async function main() {
     .then((data) => {
       Object.assign(maps, data);
       drawAllMaps();
+      updateNowPlaying();
     })
     .catch((err) => {
       console.error(err);

@@ -180,3 +180,89 @@ for (const [name, oldFile, newFile] of [
     assert.deepEqual(b.trace, a.trace);
   });
 }
+
+test("overview data sonification encodes seasonal wave, stereo channels, regional classes and 2x speed", async () => {
+  globalThis.window = {
+    d3: { sum: (arr, fn) => arr.reduce((a, x) => a + fn(x), 0) },
+  };
+  const { createOverviewPlan } = await import(
+    "../../web/js/audio/overview-plan.js"
+  );
+  const loop = JSON.parse(source("web/data/loop.json"));
+  const sound = { scope: 0, mode: "wave", speed: 1 };
+  const plan = createOverviewPlan({
+    sound,
+    getData: () => loop,
+    preload() {},
+  });
+
+  // 1. Densidad estacional: noviembre (pico de verano, m=10) duplica los eventos de julio (invierno, m=6)
+  const julBar = plan.planBar(6, 0);
+  const novBar = plan.planBar(10, 0);
+  assert.ok(
+    novBar.hits.length >= julBar.hits.length * 1.8,
+    `summer bar (${novBar.hits.length}) has noticeably more calls than winter bar (${julBar.hits.length})`,
+  );
+  assert.ok(
+    novBar.tickFreq > julBar.tickFreq,
+    `summer month tick (${novBar.tickFreq} Hz) is higher in pitch than winter tick (${julBar.tickFreq} Hz)`,
+  );
+  assert.ok(
+    novBar.pad.cutoff > julBar.pad.cutoff,
+    `summer harmonic pad (${novBar.pad.cutoff} Hz) is brighter than winter pad (${julBar.pad.cutoff} Hz)`,
+  );
+
+  // 2. Separación espacial estéreo: verano a la izquierda (< -0.25), residentes al centro, invierno a la derecha (> +0.25)
+  const novVoices = plan.voicesFor(10);
+  const julVoices = plan.voicesFor(6);
+  assert.ok(
+    novVoices.filter(([, , cls]) => cls === 1).reduce((a, [, c]) => a + c, 0) >=
+      8,
+    "November has strong summer visitor presence",
+  );
+  assert.equal(
+    julVoices.filter(([, , cls]) => cls === 1).length,
+    0,
+    "July suppresses summer visitor calls in national wave mode",
+  );
+  for (const h of novBar.hits) {
+    assert.ok(h.pan >= -0.78 && h.pan <= 0.78);
+  }
+
+  // 3. Modo «Solo viajeras» silencia residentes y colchón armónico
+  sound.mode = "visitors";
+  const visVoices = plan.voicesFor(10);
+  assert.ok(
+    visVoices.every(([, , cls]) => cls !== 0),
+    "visitors mode excludes all resident species",
+  );
+  assert.equal(plan.planBar(10, 0).pad, null, "visitors mode disables pad");
+
+  // 4. Clasificación regional real: Picaflor chico (sid=16) es invernal (2) en RM (7) y residente (0) en Los Lagos (14)
+  assert.equal(plan.classOf(16, 7), 2);
+  assert.equal(plan.classOf(16, 14), 0);
+
+  // 5. Velocidad 2x en SoundLoop avanza de mes cada 2 compases (6 s)
+  const env = environment(
+    cache + "\n" + source("web/js/audio/year-loop.js"),
+    "SoundLoop",
+  );
+  env.engine.configure({ barSeconds: 3, barsPerMonth: 4 });
+  env.engine.setBarsPerMonth(2);
+  await env.engine.unlock();
+  const monthsSeen = [];
+  env.engine.start(
+    6,
+    (m, b) => plan.planBar(m, b),
+    (m, b) => monthsSeen.push([m, b]),
+  );
+  env.step(0.11);
+  env.step(3.15);
+  env.step(6.2);
+  assert.deepEqual(monthsSeen, [
+    [6, 0],
+    [6, 1],
+    [7, 0],
+  ]);
+  env.engine.stop();
+});

@@ -11,5 +11,5 @@ export function createSoundState() {
   } catch (_) {
     /* same default without storage */
   }
-  return { scope: 0, paused: false, muted };
+  return { scope: 0, paused: false, muted, mode: "wave", speed: 1 };
 }

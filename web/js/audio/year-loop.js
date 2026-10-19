@@ -1,10 +1,9 @@
 import { createBufferCache } from "./buffers.js";
 // Loop sonoro de la portada (Web Audio API, sin dependencias).
 // El año suena como una pieza en bucle: cada mes son `barsPerMonth` compases de `barSeconds` segundos.
-// En cada compás, la página entrega la lista de cantos a tocar (plan): { hits: [{ url, gain, pan, seed, win }], tick }.
+// En cada compás, la página entrega la descripción sonora (plan):
+//   { hits: [{ url, gain, pan, seed, win }], pad: { freqs, gain, cutoff }, tick, tickFreq }.
 // `win`: inicios (s) de los mejores tramos del clip; cada copia toca uno de ellos.
-// Cada «hit» es un fragmento de la grabación de una especie que entra en un momento al azar del compás;
-// una especie con 4 copias suena 4 veces en el mismo compás.
 // Los navegadores no dejan sonar audio sin un gesto del usuario: el AudioContext se crea al cargar, pero
 // queda suspendido hasta el primer clic o tecla (unlock).
 
@@ -79,12 +78,36 @@ export const SoundLoop = (() => {
     src.start(at, offset, len + 0.05);
   }
 
-  // Inicio de mes: golpe grave y suave, para que se oigan los «compases» del año.
-  function tick(time) {
+  // Colchón armónico continuo que sostiene el piso residente y refleja la estación del año.
+  function pad(time, { freqs, gain, cutoff = 700 }) {
+    if (!freqs || !freqs.length || gain <= 0) return;
+    const env = ctx.createGain();
+    env.gain.setValueAtTime(0.0001, time);
+    env.gain.linearRampToValueAtTime(gain, time + 0.45);
+    env.gain.setValueAtTime(gain, time + Math.max(0.5, barSeconds - 0.35));
+    env.gain.linearRampToValueAtTime(0.0001, time + barSeconds + 0.2);
+    const filter = ctx.createBiquadFilter();
+    filter.type = "lowpass";
+    filter.frequency.value = cutoff;
+    filter.connect(env).connect(master);
+    freqs.forEach((f, i) => {
+      const osc = ctx.createOscillator();
+      osc.type = i === 0 ? "sine" : "triangle";
+      osc.frequency.value = f;
+      const g = ctx.createGain();
+      g.gain.value = i === 0 ? 0.65 : 0.35;
+      osc.connect(g).connect(filter);
+      osc.start(time);
+      osc.stop(time + barSeconds + 0.25);
+    });
+  }
+
+  // Inicio de mes: golpe grave y suave cuya altura sube con la riqueza total del mes.
+  function tick(time, freq = 130) {
     const osc = ctx.createOscillator();
     osc.type = "sine";
-    osc.frequency.setValueAtTime(130, time);
-    osc.frequency.exponentialRampToValueAtTime(65, time + 0.15);
+    osc.frequency.setValueAtTime(freq, time);
+    osc.frequency.exponentialRampToValueAtTime(freq / 2, time + 0.15);
     const g = ctx.createGain();
     g.gain.setValueAtTime(0.0001, time);
     g.gain.exponentialRampToValueAtTime(0.16, time + 0.006);
@@ -102,7 +125,8 @@ export const SoundLoop = (() => {
     }
     while (nextTime < ctx.currentTime + LOOKAHEAD) {
       const p = plan(month, bar) || {};
-      if (p.tick) tick(nextTime);
+      if (p.tick) tick(nextTime, p.tickFreq);
+      if (p.pad) pad(nextTime, p.pad);
       (p.hits || []).forEach((h) => hit(nextTime, h));
       queue.push({ month, bar, time: nextTime });
       nextTime += barSeconds;
@@ -139,6 +163,10 @@ export const SoundLoop = (() => {
       barSeconds = opts.barSeconds || barSeconds;
       barsPerMonth = opts.barsPerMonth || barsPerMonth;
       ensure();
+    },
+    setBarsPerMonth(n) {
+      barsPerMonth = n || 4;
+      if (bar >= barsPerMonth) bar = 0;
     },
     async unlock() {
       if (!ensure()) return false;
