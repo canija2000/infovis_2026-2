@@ -10,30 +10,44 @@ export function createSpeciesDots({ data, state, showTip, hideTip }) {
     "Visitantes de invierno",
   ];
   const present = (s, m) => ((s.mask >> m) & 1) === 1;
-  const COLS = 12;
-  const GAP = 10; // distancia entre centros
-  // Silueta de ave posada mirando a la derecha, centrada en (0, 0); cabe en la grilla de GAP.
+  // Columnas por clase: las residentes (la clase más numerosa) usan una grilla más ancha,
+  // para que todas las columnas tengan una altura parecida y cada silueta se lea como ave.
+  const COLS = [14, 8, 8];
+  // Silueta de ave posada mirando a la derecha, centrada en (0, 0); mide ~9.6 × 8.4 unidades.
   const BIRD =
     "M-4.6 2.6L-2.4 0.6C-2.2-1.6-0.2-2.4 1.2-2C1.2-4 4-4.4 4.2-2.4L5-2L4.1-1.5" +
     "C4 1 2.6 2.8 0.2 2.9L0.4 4.4L-0.2 4.4L-0.5 2.9C-1.6 2.8-2.3 2.4-2.9 2Z";
-  const SCALE = 0.95;
   const flock = {};
   function flockLayout(narrow) {
-    const base = 270; // línea base de las columnas dentro de Chile
-    const out = narrow
-      ? { dx: 134, base: 500, label: [20, 330] }
-      : { dx: 430, base, label: [446, 22] };
+    const gap = narrow ? 12 : 16; // distancia entre centros
+    const pad = gap * 1.25;
+    const scale = (gap / 16) * 1.5;
+    const total = [0, 1, 2].map(
+      (c) => data.species.filter((s) => s.cls === c).length,
+    );
+    const rows = Math.max(...total.map((n, c) => Math.ceil(n / COLS[c])));
+    const width = (c) => COLS[c] * gap;
+    const base = 30 + pad + rows * gap; // línea base de las columnas dentro de Chile
+    const x0 = 8 + pad;
+    const x1 = x0 + width(0) + pad;
+    const x2 = x1 + width(1) + pad;
+    const boxRight = x2 + width(2) + pad;
+    const outBase = narrow ? base + 60 + rows * gap : base;
+    const ox1 = narrow ? x1 : boxRight + 2 * pad;
+    const ox2 = narrow ? x2 : ox1 + width(1) + pad;
     return {
-      w: narrow ? 430 : 720,
-      h: narrow ? 540 : 330,
-      box: { x: 8, y: 30, w: 418, h: base - 18 },
-      outLabel: out.label,
+      gap,
+      scale,
+      w: narrow ? boxRight : ox2 + width(2) + pad,
+      h: outBase + 50,
+      box: { x: 8, y: 30, w: boxRight - 8, h: base + 12 - 30 },
+      outLabel: narrow ? [20, base + 60] : [ox1, 22],
       groups: {
-        in0: { x: 24, base, cls: 0 },
-        in1: { x: 158, base, cls: 1 },
-        in2: { x: 292, base, cls: 2 },
-        out1: { x: out.dx + 24, base: out.base, cls: 1 },
-        out2: { x: out.dx + 158, base: out.base, cls: 2 },
+        in0: { x: x0, base, cls: 0 },
+        in1: { x: x1, base, cls: 1 },
+        in2: { x: x2, base, cls: 2 },
+        out1: { x: ox1, base: outBase, cls: 1 },
+        out2: { x: ox2, base: outBase, cls: 2 },
       },
     };
   }
@@ -101,9 +115,11 @@ export function createSpeciesDots({ data, state, showTip, hideTip }) {
   }
 
   function slot(group, k) {
+    const { gap } = flock.L;
+    const cols = COLS[group.cls];
     return [
-      group.x + 4 + (k % COLS) * GAP,
-      group.base - 4 - Math.floor(k / COLS) * GAP,
+      group.x + gap / 2 + (k % cols) * gap,
+      group.base - gap / 2 - Math.floor(k / cols) * gap,
     ];
   }
 
@@ -130,7 +146,7 @@ export function createSpeciesDots({ data, state, showTip, hideTip }) {
       .delay((s) => (animate && s.cls ? (s.phase / 12) * 500 : 0))
       .attr("transform", (s) => {
         const [x, y] = pos.get(s.sid).xy;
-        return `translate(${x},${y}) scale(${SCALE})`;
+        return `translate(${x},${y}) scale(${flock.L.scale})`;
       });
     flock.counts.text(([key, gr]) => `${rank[key]} ${SHORT[gr.cls]}`);
     document.getElementById("flock-month").textContent = MONTHS[m];

@@ -8,3 +8,10 @@
 .dot.bird:hover {
   stroke-width: 1.2px;
 }
+/* La grilla de siluetas es más ancha que la de puntos: rótulos algo mayores para compensar. */
+.flock .zone {
+  font-size: 13px;
+}
+.flock .count {
+  font-size: 15px;
+}
