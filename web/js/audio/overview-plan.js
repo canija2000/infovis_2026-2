@@ -395,8 +395,7 @@ export function createOverviewPlan({ sound, getData, getCounts, preload }) {
       }
     }
     if (!result.length) {
-      const fallback =
-        raw.find(([sid]) => classOf(sid) !== 0) || raw[0];
+      const fallback = raw.find(([sid]) => classOf(sid) !== 0) || raw[0];
       if (fallback) result.push([fallback[0], 1, classOf(fallback[0])]);
     }
     return result;
@@ -444,11 +443,7 @@ export function createOverviewPlan({ sound, getData, getCounts, preload }) {
     voices.forEach(([sid, copies, cls], vi) => {
       const sp = getData().species[sid];
       const level =
-        cls === 1
-          ? metrics.summerLevel
-          : cls === 2
-            ? metrics.winterLevel
-            : 0.5;
+        cls === 1 ? metrics.summerLevel : cls === 2 ? metrics.winterLevel : 0.5;
       const gain =
         sound.mode === "all"
           ? (cls === 0 ? 0.44 : 0.72) / Math.sqrt(allCopies)

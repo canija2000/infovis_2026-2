@@ -26,6 +26,7 @@ function environment(code, name) {
         "linearRampToValueAtTime",
         "exponentialRampToValueAtTime",
         "setTargetAtTime",
+        "cancelScheduledValues",
       ].map((method) => [
         method,
         (...args) => trace.push([node, key, method, ...args]),
@@ -265,4 +266,40 @@ test("overview data sonification encodes seasonal wave, stereo channels, regiona
     [7, 0],
   ]);
   env.engine.stop();
+});
+
+test("SoundLoop: pausing or jumping fades the harmonic pad instead of letting it ring for a whole bar", async () => {
+  const env = environment(
+    cache + "\n" + source("web/js/audio/year-loop.js"),
+    "SoundLoop",
+  );
+  env.engine.configure({ barSeconds: 3, barsPerMonth: 4 });
+  await env.engine.unlock();
+  env.engine.start(
+    0,
+    () => ({ pad: { freqs: [110, 165], gain: 0.04 } }),
+    () => {},
+  );
+  env.step(1.5);
+  env.engine.jump(5);
+  const fades = () =>
+    env.trace.filter(
+      ([, key, method, value]) =>
+        key === "gain" &&
+        method === "linearRampToValueAtTime" &&
+        value === 0.0001,
+    );
+  const cancelled = env.trace.filter(
+    ([, , method]) => method === "cancelScheduledValues",
+  );
+  assert.equal(cancelled.length, 1, "the sounding pad is cancelled on jump");
+  assert.ok(fades().some(([, , , , at]) => Math.abs(at - 1.58) < 1e-9));
+  env.step(2);
+  env.engine.stop();
+  assert.equal(
+    env.trace.filter(([, , method]) => method === "cancelScheduledValues")
+      .length,
+    2,
+    "the pad scheduled after the jump is cancelled on pause",
+  );
 });
