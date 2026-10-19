@@ -94,9 +94,9 @@ espaciadora también pausa o reanuda cuando el foco no está en otro control.
 
 ### 2.3. «Una silueta, una especie»
 
-![Especies representadas como siluetas de ave dentro y fuera de Chile](interfaz/capturas/04-especies.png)
+![Especies representadas como picaflores dentro y fuera de Chile](interfaz/capturas/04-especies.png)
 
-**Qué muestra.** Cada silueta de ave representa **una especie**, no un ave individual.
+**Qué muestra.** Cada picaflor representa **una especie**, no un ave individual.
 Las residentes se mantienen en su columna; las visitantes cambian entre «EN
 CHILE» y «FUERA DE CHILE» según su [presencia mensual](METRICAS.md#presente).
 
@@ -106,9 +106,11 @@ observación ni a rutas de viaje medidas. «Fuera» representa la ausencia en la
 [máscara de presencia](METRICAS.md#presente) del año típico. Las residentes se mantienen
 dentro por diseño; sus siluetas no siempre coinciden con el conteo mensual del pulso.
 
-**Qué puedes hacer.** Pasar el cursor por una silueta muestra el nombre, la clase
-y los [meses de presencia](METRICAS.md#presente). Cambiar el mes desde los controles o el pulso anima
-las visitantes. Este gráfico no abre la ficha de especie al hacer clic; las
+**Qué puedes hacer.** Pasar el cursor por un picaflor lo hace aletear y muestra el nombre, la clase
+y los [meses de presencia](METRICAS.md#presente). Al cambiar el mes desde los controles o el pulso, las
+visitantes que cruzan la frontera vuelan en arco aleteando, en el orden de su fecha de llegada; las que
+siguen en su columna solo se reacomodan. Con «reducir movimiento» activado en el sistema, cambian de
+lugar sin volar. Este gráfico no abre la ficha de especie al hacer clic; las
 fichas se consultan en Explorar.
 
 ### 2.3 bis. «La misma ave, distintos calendarios»
@@ -162,7 +164,7 @@ Solo se dibujan zonas con [al menos 50 especie-días y registro en tres años](M
 en ese mes, acumulando el periodo. Es una regla distinta de la presencia de una especie. La falta de un punto significa datos insuficientes
 para esa vista; no demuestra ausencia de aves.
 
-**Qué puedes hacer.** Pasar el cursor por una silueta muestra región, mes,
+**Qué puedes hacer.** Pasar el cursor por un punto muestra región, mes,
 [cantidad registrada y composición](METRICAS.md#ola-zonas). Pulsar una tarjeta mensual selecciona su
 mes para toda la portada. En escritorio amplio caben los doce mapas; en tamaños
 menores aparecen controles para desplazarse por la franja.

@@ -1,10 +1,39 @@
-/* B · «Una silueta, una especie»: ajustes del trazo para las siluetas de ave
-   (los colores y la opacidad de las ausentes vienen de .dot en overview.css). */
+/* B · «Una silueta, una especie»: picaflores. Los colores por clase vienen de .dot en overview.css. */
+/* Los picaflores vuelan en arco por encima del gráfico; a lo ancho no deben desbordar la página. */
+.flock-chart {
+  overflow-x: clip;
+}
+.flock-chart svg {
+  overflow: visible;
+}
+.dot.bird path {
+  stroke: none;
+}
+.dot.bird .eye {
+  fill: var(--bg);
+}
+/* Fuera de Chile, todo el picaflor se atenúa de una vez (las alas ya son translúcidas). */
 .dot.bird {
-  stroke-width: 0.6px;
+  transition: opacity 0.6s;
+}
+.dot.bird.away {
+  fill-opacity: 1;
+  opacity: 0.35;
+}
+.dot.bird:hover .body {
+  stroke: var(--ink);
+  stroke-width: 1px;
   stroke-linejoin: round;
   vector-effect: non-scaling-stroke;
 }
-.dot.bird:hover {
-  stroke-width: 1.2px;
+/* La grilla de siluetas es más ancha que la de puntos: rótulos algo mayores para compensar. */
+.flock .zone {
+  font-size: 13px;
+}
+.flock .count {
+  font-size: 15px;
+}
+/* En pantallas angostas, «20 de invierno» no cabe a 15 px. */
+.flock .narrow .count {
+  font-size: 12px;
 }
