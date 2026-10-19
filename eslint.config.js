@@ -20,6 +20,7 @@ export default [
           "ResizeObserver",
           "IntersectionObserver",
           "Image",
+          "Event",
           "setTimeout",
           "clearTimeout",
           "setInterval",
