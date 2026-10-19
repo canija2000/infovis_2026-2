@@ -1,0 +1,10 @@
+/* B · «Una silueta, una especie»: ajustes del trazo para las siluetas de ave
+   (los colores y la opacidad de las ausentes vienen de .dot en overview.css). */
+.dot.bird {
+  stroke-width: 0.6px;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.dot.bird:hover {
+  stroke-width: 1.2px;
+}

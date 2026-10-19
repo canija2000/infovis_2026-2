@@ -225,6 +225,7 @@ async function main() {
   drawFlock();
   drawMonths();
   drawTable();
+  announceDrawn();
   initStripNav("maps");
   initStripNav("region-maps");
   initMapsMode();
@@ -253,8 +254,14 @@ async function main() {
     drawAllMaps();
   });
 }
+// The sections below (regional calendar) wait for this, once the page above has its final height.
+function announceDrawn() {
+  document.documentElement.dataset.overview = "drawn";
+  document.dispatchEvent(new Event("overview:drawn"));
+}
 main().catch((err) => {
   console.error(err);
+  announceDrawn();
   document.getElementById("pulse").textContent =
     "No se pudieron cargar los datos.";
 });

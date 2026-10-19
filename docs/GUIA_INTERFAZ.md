@@ -92,11 +92,11 @@ La preferencia del parlante se recuerda para la próxima visita. Si el navegador
 bloquea el arranque, el primer clic o tecla habilita el sonido. La barra
 espaciadora también pausa o reanuda cuando el foco no está en otro control.
 
-### 2.3. «Un punto, una especie»
+### 2.3. «Una silueta, una especie»
 
-![Especies representadas como puntos dentro y fuera de Chile](interfaz/capturas/04-especies.png)
+![Especies representadas como siluetas de ave dentro y fuera de Chile](interfaz/capturas/04-especies.png)
 
-**Qué muestra.** Cada punto representa **una especie**, no un ave individual.
+**Qué muestra.** Cada silueta de ave representa **una especie**, no un ave individual.
 Las residentes se mantienen en su columna; las visitantes cambian entre «EN
 CHILE» y «FUERA DE CHILE» según su [presencia mensual](METRICAS.md#presente).
 
@@ -104,9 +104,9 @@ El color distingue la [clase](METRICAS.md#clases). Los números bajo las columna
 Las posiciones son una disposición gráfica: no corresponden a coordenadas de
 observación ni a rutas de viaje medidas. «Fuera» representa la ausencia en la
 [máscara de presencia](METRICAS.md#presente) del año típico. Las residentes se mantienen
-dentro por diseño; sus puntos no siempre coinciden con el conteo mensual del pulso.
+dentro por diseño; sus siluetas no siempre coinciden con el conteo mensual del pulso.
 
-**Qué puedes hacer.** Pasar el cursor por un punto muestra el nombre, la clase
+**Qué puedes hacer.** Pasar el cursor por una silueta muestra el nombre, la clase
 y los [meses de presencia](METRICAS.md#presente). Cambiar el mes desde los controles o el pulso anima
 las visitantes. Este gráfico no abre la ficha de especie al hacer clic; las
 fichas se consultan en Explorar.
@@ -162,7 +162,7 @@ Solo se dibujan zonas con [al menos 50 especie-días y registro en tres años](M
 en ese mes, acumulando el periodo. Es una regla distinta de la presencia de una especie. La falta de un punto significa datos insuficientes
 para esa vista; no demuestra ausencia de aves.
 
-**Qué puedes hacer.** Pasar el cursor por un punto muestra región, mes,
+**Qué puedes hacer.** Pasar el cursor por una silueta muestra región, mes,
 [cantidad registrada y composición](METRICAS.md#ola-zonas). Pulsar una tarjeta mensual selecciona su
 mes para toda la portada. En escritorio amplio caben los doce mapas; en tamaños
 menores aparecen controles para desplazarse por la franja.
@@ -215,7 +215,7 @@ el sonido está en Chile, sigue en Chile.
 
 Ocultar residentes permite ver mejor las visitantes. **No elimina especies de
 los datos, no recalcula los porcentajes y no quita sus cantos del recorrido.**
-El pulso nacional y el gráfico «Un punto, una especie» conservan sus valores.
+El pulso nacional y el gráfico «Una silueta, una especie» conservan sus valores.
 
 ### 2.7. La tabla y la explicación del sonido
 
@@ -479,7 +479,7 @@ a la fuente y licencia de cada grabación.
 
 | Selección | Afecta a… | Conserva… |
 |---|---|---|
-| Mes de Visualización | Cursor, puntos por especie, tarjeta mensual y reloj sonoro | Datos anuales completos y región elegida |
+| Mes de Visualización | Cursor, siluetas por especie, tarjeta mensual y reloj sonoro | Datos anuales completos y región elegida |
 | Región de Visualización | Detalle regional y botón de ámbito; sonido si el ámbito es regional | Gráficos nacionales |
 | Zonas / Regiones | Los doce mapas nacionales y su leyenda | Resto de la portada |
 | Ocultar residentes | Puntos verdes del detalle regional | Datos, porcentajes y sonido |

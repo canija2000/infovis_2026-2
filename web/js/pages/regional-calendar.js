@@ -35,7 +35,8 @@ async function start() {
 }
 // The section sits below the overview: its data waits until it is near the
 // viewport, so it does not compete with the maps and sounds of the first screen.
-// Observe after "load", once the stylesheets have given the page its final layout.
+// Observe once the overview has drawn its charts: before that the page above is
+// almost empty and the section would look close to the first screen.
 function startWhenNear() {
   const observer = new IntersectionObserver(
     (entries) => {
@@ -48,5 +49,5 @@ function startWhenNear() {
   observer.observe(document.getElementById("regional-calendar"));
 }
 if (!("IntersectionObserver" in window)) start();
-else if (document.readyState === "complete") startWhenNear();
-else window.addEventListener("load", startWhenNear, { once: true });
+else if (document.documentElement.dataset.overview === "drawn") startWhenNear();
+else document.addEventListener("overview:drawn", startWhenNear, { once: true });

@@ -1,4 +1,4 @@
-/** Presenta las especies como puntos que entran y salen de Chile. */
+/** Presenta las especies como siluetas de ave que entran y salen de Chile. */
 import { d3 } from "../../shared/d3.js";
 import { MONTHS, MON } from "../../shared/calendar.js";
 
@@ -12,6 +12,11 @@ export function createSpeciesDots({ data, state, showTip, hideTip }) {
   const present = (s, m) => ((s.mask >> m) & 1) === 1;
   const COLS = 12;
   const GAP = 10; // distancia entre centros
+  // Silueta de ave posada mirando a la derecha, centrada en (0, 0); cabe en la grilla de GAP.
+  const BIRD =
+    "M-4.6 2.6L-2.4 0.6C-2.2-1.6-0.2-2.4 1.2-2C1.2-4 4-4.4 4.2-2.4L5-2L4.1-1.5" +
+    "C4 1 2.6 2.8 0.2 2.9L0.4 4.4L-0.2 4.4L-0.5 2.9C-1.6 2.8-2.3 2.4-2.9 2Z";
+  const SCALE = 0.95;
   const flock = {};
   function flockLayout(narrow) {
     const base = 270; // línea base de las columnas dentro de Chile
@@ -80,11 +85,11 @@ export function createSpeciesDots({ data, state, showTip, hideTip }) {
     // Las visitantes se ordenan por fecha de llegada: entran y salen en ese orden.
     flock.dots = svg
       .append("g")
-      .selectAll("circle")
+      .selectAll("path")
       .data(data.species, (s) => s.sid)
-      .join("circle")
-      .attr("class", (s) => `dot c${s.cls}`)
-      .attr("r", 3.6)
+      .join("path")
+      .attr("class", (s) => `dot bird c${s.cls}`)
+      .attr("d", BIRD)
       .on("pointermove", (event, s) => {
         const months = d3.range(12).filter((m) => present(s, m));
         const span =
@@ -123,8 +128,10 @@ export function createSpeciesDots({ data, state, showTip, hideTip }) {
       .duration(dur)
       .ease(d3.easeCubicInOut)
       .delay((s) => (animate && s.cls ? (s.phase / 12) * 500 : 0))
-      .attr("cx", (s) => pos.get(s.sid).xy[0])
-      .attr("cy", (s) => pos.get(s.sid).xy[1]);
+      .attr("transform", (s) => {
+        const [x, y] = pos.get(s.sid).xy;
+        return `translate(${x},${y}) scale(${SCALE})`;
+      });
     flock.counts.text(([key, gr]) => `${rank[key]} ${SHORT[gr.cls]}`);
     document.getElementById("flock-month").textContent = MONTHS[m];
   }

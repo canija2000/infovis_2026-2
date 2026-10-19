@@ -24,6 +24,7 @@ export const SoundLoop = (() => {
   let muted = false;
   const { buffers, load } = createBufferCache({ getContext: ensure });
   const queue = [];
+  const pads = []; // colchones agendados: se apagan al pausar o saltar de mes
 
   function ensure() {
     if (ctx) return ctx;
@@ -90,6 +91,10 @@ export const SoundLoop = (() => {
     filter.type = "lowpass";
     filter.frequency.value = cutoff;
     filter.connect(env).connect(master);
+    const end = time + barSeconds + 0.25;
+    for (let i = pads.length - 1; i >= 0; i--)
+      if (pads[i].end <= ctx.currentTime) pads.splice(i, 1);
+    pads.push({ env, time, gain, end });
     freqs.forEach((f, i) => {
       const osc = ctx.createOscillator();
       osc.type = i === 0 ? "sine" : "triangle";
@@ -98,8 +103,33 @@ export const SoundLoop = (() => {
       g.gain.value = i === 0 ? 0.65 : 0.35;
       osc.connect(g).connect(filter);
       osc.start(time);
-      osc.stop(time + barSeconds + 0.25);
+      osc.stop(end);
     });
+  }
+  // Un colchón dura un compás entero: sin esto, seguiría sonando hasta 3 s tras pausar o elegir otro mes.
+  function silencePads() {
+    const now = ctx.currentTime;
+    for (const { env, time, gain } of pads.splice(0)) {
+      if (time >= now) {
+        env.disconnect();
+        continue;
+      }
+      // Valor aproximado de la envolvente ahora, para bajar desde ahí sin un clic.
+      const plateau = time + Math.max(0.5, barSeconds - 0.35);
+      const level =
+        now < time + 0.45
+          ? Math.max(0.0001, (gain * (now - time)) / 0.45)
+          : now < plateau
+            ? gain
+            : Math.max(
+                0.0001,
+                gain *
+                  (1 - (now - plateau) / (time + barSeconds + 0.2 - plateau)),
+              );
+      env.gain.cancelScheduledValues(now);
+      env.gain.setValueAtTime(level, now);
+      env.gain.linearRampToValueAtTime(0.0001, now + 0.08);
+    }
   }
 
   // Inicio de mes: golpe grave y suave cuya altura sube con la riqueza total del mes.
@@ -201,6 +231,7 @@ export const SoundLoop = (() => {
     jump(m) {
       if (!ctx || timer === null) return;
       queue.length = 0;
+      silencePads();
       month = m;
       bar = 0;
       nextTime = Math.max(ctx.currentTime + 0.05, nextTime - barSeconds); // descarta el compás ya agendado
@@ -210,6 +241,7 @@ export const SoundLoop = (() => {
       cancelAnimationFrame(raf);
       timer = null;
       queue.length = 0;
+      if (ctx) silencePads();
     },
     setMuted(value) {
       muted = value;
