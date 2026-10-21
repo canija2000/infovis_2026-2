@@ -234,6 +234,14 @@ export const groups = [
     title: "Traducir los datos a sonido",
     items: [
       def(
+        "ano-especie",
+        "Escuchar su año",
+        "1,5 s/mes",
+        "Una especie en un lugar: su canto suena una vez por mes, más fuerte cuanto más se registra y con más regularidad.",
+        `${v("nivel", "m")}${eq}${f(p, "<mn>100</mn>")}${mul}${f(Y, "<mn>8</mn>")}<mspace width="1em"/>${v("g", "m")}${eq}<msup><mrow>${v("nivel", "m")}</mrow><mn>1,3</mn></msup>`,
+        "Silencio si el nivel es menor que 0,05. Cada mes repite la misma frase de 1,35 s (el tramo del clip con más energía, igualado entre especies); 12 meses = 18 s. Sin compresor: el volumen es el dato.",
+      ),
+      def(
         "lugar-dias",
         "Lugar-días",
         "celdas × fechas",

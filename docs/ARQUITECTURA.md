@@ -29,7 +29,7 @@ La integración y revisión de la nueva ficha están registradas en
 | La ficha de un ave | [`web/js/species/controller.js`](../web/js/species/controller.js) y las vistas `species-*` |
 | La mezcla personalizada | [`web/js/mixer/controller.js`](../web/js/mixer/controller.js) |
 | Qué se escucha | Los planes de [`web/js/audio/`](../web/js/audio/) |
-| Cómo se reproduce | Los tres motores de [`web/js/audio/`](../web/js/audio/) |
+| Cómo se reproduce | Los motores de [`web/js/audio/`](../web/js/audio/) |
 | Cómo se cargan los datos | [`web/js/data/`](../web/js/data/) |
 | Cómo se calculan los datos | [`python_scripts/`](../python_scripts/) |
 | Colores, tipografía o distribución | [`web/css/`](../web/css/) |
@@ -118,7 +118,7 @@ index.html
 | [Especies presentes, mes a mes](METRICAS.md#riqueza) | `pulse.js` → `drawPulse()` | `overview.json` | El mes mueve el cursor |
 | Tabla equivalente de [conteos](METRICAS.md#riqueza) | `pulse.js` → `drawTable()` | Los mismos conteos | Se dibuja al iniciar |
 | Una silueta, una especie | `species-dots.js` → `drawFlock()` | Especies y [máscara de presencia](METRICAS.md#presente) | El mes hace volar a las visitantes |
-| La misma ave, distintos calendarios | `views/overview/regional-calendar.js` | Perfiles regionales de `typical_year.json` (se piden al acercarse a la sección); la foto de cada ejemplo está fijada en `overview/regional-examples.js` (copiada de `images.json`, un test verifica que coincidan) | El selector cambia especie, foto, texto y matriz |
+| La misma ave, distintos calendarios | `views/overview/regional-calendar.js` | Perfiles regionales de `typical_year.json` (se piden al acercarse a la sección); la foto de cada ejemplo está fijada en `overview/regional-examples.js` (copiada de `images.json`, un test verifica que coincidan) | El selector cambia especie, foto, texto y matriz; ▶ de una región la recorre con [«Escuchar su año»](METRICAS.md#ano-especie) |
 | La ola recorre todo el país | `monthly-maps.js` → `drawMaps()` | `grid_month.json` o `region_month.json` | Cambiar modo redibuja; cambiar mes resalta |
 | Una región de cerca | `region-detail.js` | `grid_region/<código>.json` | Elegir región carga y redibuja |
 | Controles y «Suenan» | `player.js` | Estado y [voces del compás](METRICAS.md#copias) | Acción del usuario o reloj sonoro |
@@ -129,8 +129,9 @@ El bloque de calendarios regionales tiene su propio coordinador
 `pages/regional-calendar.js`, estado `state/regional-calendar.js`, repositorio
 `data/regional-calendar.js` y consultas puras en `overview/regional-calendar.js`.
 Su selección de especie y expansión no dependen del reloj sonoro. Reutiliza
-`data/media.js` para las fotos; sus fallos de carga quedan aislados del resto de
-la portada. El recorrido y las reglas de lectura están en
+`data/media.js` para el índice de cantos; sus fallos de carga quedan aislados del resto de
+la portada. Su botón ▶ por región usa `audio/species-year.js` y, mediante
+`shared/audio-focus.js`, pausa el recorrido de la portada sin importarlo. El recorrido y las reglas de lectura están en
 [ESTRUCTURA.md](ESTRUCTURA.md#calendarios-regionales--14-de-octubre-de-2026).
 
 ```mermaid
@@ -191,7 +192,9 @@ explorar.html
     ├── mixer/controller.js            Coordina la mezcla personalizada
     └── audio/
         ├── atlas-plan.js             Eventos según región, mes y especie
-        └── atlas-sonifier.js         Reproducción mensual del atlas
+        ├── atlas-sonifier.js         Reproducción mensual del atlas
+        ├── species-year-plan.js      «Escuchar su año»: nivel y volumen por mes
+        └── species-year.js           Reproduce el año de una especie
 ```
 
 `data/atlas.js` transforma la matriz compacta en filas con campos nombrados y
@@ -245,10 +248,18 @@ Minimizar la barra tampoco la pausa: se conserva el comportamiento anterior.
 | Visualización | `loop.json` + `overview-plan.js` | `year-loop.js` | [4 compases de 3 s](METRICAS.md#tiempo-sonoro) por mes; hasta [4 copias](METRICAS.md#copias) por especie |
 | Explorar | `atlas-plan.js` | `atlas-sonifier.js` | [2,4 s por mes; macrozonas, latitud y especie seleccionada](METRICAS.md#sonificacion-atlas) |
 | Mezcla personalizada | Pistas del usuario | `mixer-engine.js` | [Esperas aleatorias de 0,2–5,2 s o ciclos comunes de 6 s](METRICAS.md#mezclador) |
+| Escuchar su año (calendarios regionales y ficha) | `species-year-plan.js` | `species-year.js` | [1,5 s por mes; una especie, volumen = perfil × años/8](METRICAS.md#ano-especie) |
 
 Un **plan** describe eventos: muestra, volumen, posición estéreo y momento.
 Un **motor** ejecuta esos eventos con Web Audio. Cambiar un motor no modifica
-los otros dos sistemas.
+los otros sistemas.
+
+**Un sonido a la vez.** `shared/audio-focus.js` emite el evento de documento
+`audio:claim` con el nombre de quien empieza a sonar por un gesto del usuario
+(`species-year`, `overview-loop`, `atlas`, `mixer`, `clip`). Cada coordinador
+decide qué pausar: «Escuchar su año» pausa a los demás y se detiene si otro se
+reanuda; el recorrido del atlas y la mezcla siguen pudiendo sonar juntos, como
+antes. Las páginas no se importan entre sí.
 
 `buffers.js` comparte el mecanismo de carga entre el loop y la sonificación,
 pero cada motor crea su propia caché y contexto. No se comparten por accidente

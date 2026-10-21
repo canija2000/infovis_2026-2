@@ -46,6 +46,9 @@ function environment(code, name) {
           "playbackRate",
           "threshold",
           "ratio",
+          "knee",
+          "attack",
+          "release",
         ].map((k) => [k, parameter(key, k)]),
       ),
       connect() {
@@ -90,7 +93,17 @@ function environment(code, name) {
     }
     async decodeAudioData() {
       trace.push(["decode"]);
-      return { duration: 6 };
+      // Seis segundos a 1 kHz, con el canto entre 3 y 4,5 s (para el motor de «Escuchar su año»).
+      const samples = new Float32Array(6000).map((_, i) =>
+        i >= 3000 && i < 4500 ? Math.sin(i) * 0.5 : 0.001,
+      );
+      return {
+        duration: 6,
+        sampleRate: 1000,
+        length: samples.length,
+        numberOfChannels: 1,
+        getChannelData: () => samples,
+      };
     }
   }
   const sandbox = {
@@ -111,7 +124,7 @@ function environment(code, name) {
   };
   vm.createContext(sandbox);
   vm.runInContext(
-    code.replace(/^import .*;\n/gm, "").replace(/export /g, "") +
+    code.replace(/^import [\s\S]*?;\n/gm, "").replace(/export /g, "") +
       `\nglobalThis.engine=${name};`,
     sandbox,
   );
@@ -175,12 +188,49 @@ for (const [name, oldFile, newFile] of [
       }
       engine.setMuted(true);
       engine.setMuted(false);
+      env.beforeStop = trace.length;
       engine.stop();
       assert.equal(engine.playing, false);
     }
-    assert.deepEqual(b.trace, a.trace);
+    // Hasta la pausa, la programación es la original. Al pausar, el loop además corta los cantos
+    // ya agendados (test siguiente); la sonificación del atlas se pausa como antes.
+    if (name === "SoundLoop")
+      assert.deepEqual(
+        b.trace.slice(0, b.beforeStop),
+        a.trace.slice(0, a.beforeStop),
+      );
+    else assert.deepEqual(b.trace, a.trace);
   });
 }
+
+test("SoundLoop: pausing cuts the bird songs already scheduled instead of letting them ring", async () => {
+  const env = environment(
+    cache + "\n" + source("web/js/audio/year-loop.js"),
+    "SoundLoop",
+  );
+  env.engine.configure({ barSeconds: 3, barsPerMonth: 4 });
+  await env.engine.load(["clip.mp3"]);
+  await env.engine.unlock();
+  env.engine.start(
+    0,
+    (month, bar) => ({
+      hits: [{ url: "clip.mp3", gain: 0.3, pan: 0, seed: bar, win: [0.5] }],
+    }),
+    () => {},
+  );
+  env.step(0.11);
+  const started = env.trace.filter(([, method]) => method === "start");
+  assert.ok(started.length >= 1, "a song was scheduled");
+  const before = env.trace.length;
+  env.engine.stop();
+  const after = env.trace.slice(before);
+  const stopped = after.filter(([, method]) => method === "stop");
+  assert.equal(
+    stopped.length,
+    started.length,
+    "every scheduled song is stopped on pause",
+  );
+});
 
 test("overview data sonification encodes seasonal wave, stereo channels, regional classes and 2x speed", async () => {
   globalThis.window = {
@@ -301,5 +351,76 @@ test("SoundLoop: pausing or jumping fades the harmonic pad instead of letting it
       .length,
     2,
     "the pad scheduled after the jump is cancelled on pause",
+  );
+});
+
+test("species year: one phrase per audible month, louder with presence, synced callbacks and clean stop", async () => {
+  const env = environment(
+    cache +
+      "\n" +
+      source("web/js/audio/species-year-plan.js") +
+      "\n" +
+      source("web/js/audio/species-year.js"),
+    "createSpeciesYearPlayer",
+  );
+  const player = env.engine();
+  const steps = [
+    { month: 6, profile: 100, years: 8 },
+    { month: 7, profile: 2, years: 1 },
+    { month: 8, profile: 50, years: 8 },
+  ];
+  const seen = [];
+  let ended = null;
+  player.unlock();
+  const ok = await player.play({
+    url: "clip.mp3",
+    steps,
+    onStep: (index, step) => seen.push(step.month),
+    onEnd: (info) => (ended = info),
+  });
+  assert.equal(ok, true);
+  const starts = env.trace.filter(([, method]) => method === "start");
+  assert.equal(starts.length, 2, "the near-silent month does not sound");
+  assert.ok(
+    starts.every(([, , , offset]) => Math.abs(offset - 3) < 0.05),
+    "each phrase starts where the song is, not in the background",
+  );
+  assert.ok(
+    Math.abs(starts[1][2] - starts[0][2] - 3) < 1e-9,
+    "1,5 s per month",
+  );
+  const peaks = env.trace
+    .filter(
+      ([node, key, method, value]) =>
+        node.startsWith("gain") &&
+        key === "gain" &&
+        method === "exponentialRampToValueAtTime" &&
+        value > 0.001,
+    )
+    .map(([, , , value]) => value);
+  assert.equal(peaks.length, 2);
+  assert.ok(
+    peaks[0] > peaks[1] * 2,
+    "a full month is clearly louder than a half month",
+  );
+  env.step(1.7);
+  assert.deepEqual(seen, [6, 7]);
+  env.step(4.7);
+  assert.deepEqual(seen, [6, 7, 8]);
+  assert.equal(ended.completed, true);
+  assert.equal(player.playing, false);
+
+  await player.play({
+    url: "clip.mp3",
+    steps,
+    onEnd: (info) => (ended = info),
+  });
+  const before = env.trace.length;
+  player.stop();
+  assert.equal(ended.completed, false);
+  assert.equal(
+    env.trace.slice(before).filter(([, method]) => method === "stop").length,
+    2,
+    "stopping cancels the phrases still to come",
   );
 });

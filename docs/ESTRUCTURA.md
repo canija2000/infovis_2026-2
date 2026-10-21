@@ -21,10 +21,11 @@ La rama `vista-calendarios-regionales` nace de `origin/main` actualizado
 
 | Ubicación | Responsabilidad | Límite |
 |---|---|---|
-| `web/js/pages/regional-calendar.js` | Coordinar carga, selección, consultas y presentación | No construye HTML ni interpreta perfiles |
-| `web/js/state/regional-calendar.js` | Recordar especie y expansión de regiones | No guarda nodos, carga ni dibuja |
+| `web/js/pages/regional-calendar.js` | Coordinar carga, selección, consultas, presentación y la escucha de una región | No construye HTML ni interpreta perfiles |
+| `web/js/state/regional-calendar.js` | Recordar especie, expansión de regiones y región que suena | No guarda nodos, carga ni dibuja |
 | `web/js/data/regional-calendar.js` | Cargar e indexar especies, regiones y filas originales | No decide colores, interpreta presencia ni modifica el DOM |
-| `web/js/data/media.js` | Reutilizar el índice existente de fotografías | La vista recibe la foto cargada, no el repositorio |
+| `web/js/data/media.js` | Reutilizar el índice existente de cantos | El coordinador elige la grabación; la vista no la carga |
+| `web/js/audio/species-year*.js` | Plan y motor de [«Escuchar su año»](METRICAS.md#ano-especie) | No conoce la matriz ni sus botones |
 | `web/js/overview/regional-examples.js` | Definir los tres ejemplos editoriales y las siete regiones iniciales | Usa nombres científicos estables, sin duplicar métricas |
 | `web/js/overview/regional-calendar.js` | Consultar clase regional, perfil, años y máscara publicada | Función pura, sin formato ni efectos sobre la página |
 | `web/js/views/overview/regional-calendar.js` | Presentar selector, foto, matriz, detalle y estados de carga/error | Devuelve acciones mediante callbacks; no modifica la selección |
@@ -35,9 +36,10 @@ index.html
 └── pages/regional-calendar.js
     ├── state/regional-calendar.js
     ├── data/regional-calendar.js ── meta / species / typical_year.json
-    ├── data/media.js ── images.json
+    ├── data/media.js ── sounds.json (al pulsar ▶)
     ├── overview/regional-calendar.js
     │   └── overview/regional-examples.js
+    ├── audio/species-year.js ── audio/species-year-plan.js
     └── views/overview/regional-calendar.js
 ```
 

@@ -11,7 +11,8 @@ se documentan las medidas del sonido, los datos preparados para el aviario
 externo, la selección de fotos y audio y el análisis independiente de minería.
 Los scripts históricos archivados no definen la metodología actual.
 
-Para ir directamente a los bloques complementarios: [sonido](#lugar-dias),
+Para ir directamente a los bloques complementarios: [sonido](#lugar-dias)
+(o [escuchar el año de una especie](#ano-especie)),
 [aviario](#aviario), [morfología](#rasgos), [relieve y paleta](#terreno-paleta),
 [calidad de fotos](#calidad-fotos), [calidad de audio](#calidad-audio) y
 [minería](#mineria).
@@ -39,6 +40,7 @@ Para ir directamente a los bloques complementarios: [sonido](#lugar-dias),
 | «Cada punto = … especie-días» | Un factor de representación del detalle regional | [Días-especie por punto](#por-punto) |
 | «×4», número de voces | Copias de cantos elegidas por extensión de registro | [Lugar-días y copias](#copias) |
 | Volumen «… %» de una pista | Un ajuste de reproducción elegido por quien usa la web | [Volumen y sincronización](#mezclador) |
+| Volumen del canto en «Escuchar su año» | Perfil relativo × años con registro de una especie en un lugar y mes | [Escuchar su año](#ano-especie) |
 
 ### La cadena principal
 
@@ -835,6 +837,43 @@ reproducción, no duraciones o ritmos de canto medidos en campo.
 
 Origen: [selección de escena](../web/js/mixer/scene-selection.js),
 [motor del mezclador](../web/js/audio/mixer-engine.js).
+
+<a id="ano-especie"></a>
+### 13.6. Escuchar su año: una especie, un lugar, un dato
+
+Está en «La misma ave, distintos calendarios» (un botón ▶ por región) y en la
+ficha de especie de Explorar (bajo el perfil radial). A diferencia de las
+sonificaciones anteriores, **no hay que reconocer qué ave canta**: la persona
+ya eligió la especie y ve avanzar un cursor sobre el gráfico. El sonido
+codifica **una sola variable**: qué tan presente está la especie cada mes.
+
+```text
+nivel(m)    = perfil(m)/100 × años con registro(m)/8      (0…1)
+amplitud(m) = nivel(m)^1,3      silencio si nivel(m) < 0,05
+```
+
+| Parámetro | Valor | Interpretación |
+|---|---|---|
+| Duración de un mes | 1,5 s; el año completo, 18 s | Tiempo de reproducción |
+| Frase | La misma en todos los meses: el tramo de 1,35 s con más energía del clip | Al repetir la misma frase, solo cambia el volumen y la comparación es directa |
+| Igualación | Cada clip se lleva a un RMS común antes de aplicar el nivel | Una grabación más fuerte no parece una especie más presente |
+| Exponente 1,3 | Nivel 0,5 ≈ −8 dB; 0,25 ≈ −16 dB | Hace audible la diferencia entre meses medios y altos |
+| Orden | Julio a junio en la matriz regional; enero a diciembre en la ficha (la aguja gira desde arriba) | Sigue el orden de cada gráfico |
+| Clip | Pista limpiada del mezclador si existe; si no, el clip de la ficha | Misma grabación que se puede oír en la ficha |
+| Salida | Ganancia 0,9 y solo un limitador (−3 dBFS, 20:1) | Sin compresor: el volumen es el dato y no se aplana |
+
+`años con registro / 8` es la misma ponderación que usa el foco de especie de
+Explorar (13.4). Evita que un registro aislado, que en el perfil relativo puede
+valer 100 %, suene como un mes de presencia regular. Por eso una celda intensa
+sin punto de presencia puede sonar más bajo de lo que sugiere su color.
+
+Un sonido a la vez: al empezar se pausan el recorrido de la portada, la
+sonificación y la mezcla de Explorar y el clip de la ficha; si alguno de ellos
+se reanuda, este se detiene. El parlante general no lo silencia, porque solo
+suena cuando se pide.
+
+Origen: [plan](../web/js/audio/species-year-plan.js),
+[motor](../web/js/audio/species-year.js).
 
 <a id="aviario"></a>
 ## 14. Medidas de los datos preparados para el aviario externo

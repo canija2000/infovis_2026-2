@@ -6,5 +6,6 @@ export function createExploreState() {
     expanded: false,
     species: null,
     muted: false,
+    yearPlaying: false, // «Escuchar su año» de la especie abierta
   };
 }

@@ -185,6 +185,45 @@ const server = http.createServer((req, res) => {
     await root.locator('.regional-note a[data-metric="perfil"]').click();
     await page.locator(".metrics-dialog").waitFor({ state: "visible" });
     await page.locator(".metrics-close").click();
+    // «Escuchar su año»: ▶ recorre la fila mes a mes, pausa el loop y se detiene al reanudarlo.
+    await page.emulateMedia({ colorScheme: "light" });
+    await page.setViewportSize({ width: 1440, height: 1000 });
+    const play = root.locator(".regional-play").nth(1);
+    const region = await root
+      .locator("tbody tr")
+      .nth(1)
+      .locator(".regional-region-name")
+      .textContent();
+    assert.match(
+      await play.getAttribute("aria-label"),
+      new RegExp(`^Escuchar el año de .+ en ${region}$`),
+    );
+    await play.click();
+    await root.locator(".regional-cell.is-now").waitFor();
+    assert.equal(await play.getAttribute("aria-pressed"), "true");
+    assert.equal(
+      await page.locator("#play").getAttribute("aria-pressed"),
+      "false",
+      "the overview loop pauses while the species year plays",
+    );
+    const first = await root
+      .locator(".regional-cell.is-now")
+      .getAttribute("data-month");
+    await page.waitForTimeout(1700);
+    assert.notEqual(
+      await root.locator(".regional-cell.is-now").getAttribute("data-month"),
+      first,
+      "the marker advances one month every 1.5 s",
+    );
+    assert.match(
+      await root.locator(".regional-cell-detail").textContent(),
+      /^♪ /,
+    );
+    await root.screenshot({ path: path.join(output, "regional-playing.png") });
+    await page.locator("#play").click();
+    assert.equal(await play.getAttribute("aria-pressed"), "false");
+    assert.equal(await root.locator(".regional-cell.is-now").count(), 0);
+    await page.locator("#play").click();
     // Retry after a data failure, independently of the other overview requests.
     let failData = true;
     await page.route("**/data/typical_year.json", (route) =>
@@ -251,7 +290,7 @@ const server = http.createServer((req, res) => {
     });
     await real.close();
     console.log(
-      `Regional calendar: selection, 3 real photos, published profiles, keyboard, expansion, responsive layout, retry and photo failure passed. Screenshots: ${output}`,
+      `Regional calendar: selection, 3 real photos, published profiles, keyboard, expansion, listening to a region, responsive layout, retry and photo failure passed. Screenshots: ${output}`,
     );
   } finally {
     await browser.close();

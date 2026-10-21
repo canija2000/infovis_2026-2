@@ -14,6 +14,7 @@ export function createMixer({
   media,
   scopeName,
   onTracksChange,
+  onStart = () => {},
 }) {
   const state = createMixerState();
   const { loadSounds, loadImages, soundEntry } = media;
@@ -53,6 +54,7 @@ export function createMixer({
   function toggleMixer() {
     if (!state.tracks.size) return;
     state.playing = !state.playing;
+    if (state.playing) onStart();
     engine.restartMixer();
     setMixerStatus(
       state.playing
@@ -183,5 +185,9 @@ export function createMixer({
     updateSceneButton,
     setMuted: engine.setMuted,
     hasTrack: (sid) => state.tracks.has(sid),
+    // Pausa la mezcla si suena (cuando el usuario pide escuchar el año de una especie).
+    pause() {
+      if (state.playing) toggleMixer();
+    },
   };
 }

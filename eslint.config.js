@@ -21,6 +21,7 @@ export default [
           "IntersectionObserver",
           "Image",
           "Event",
+          "CustomEvent",
           "setTimeout",
           "clearTimeout",
           "setInterval",

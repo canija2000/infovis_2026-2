@@ -18,6 +18,7 @@
     href="https://fonts.googleapis.com/css2?family=Changa+One:ital@0;1&family=Shrikhand&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Pixelify+Sans:wght@400..700&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="css/site.css?v=refactor-1">
+  <link rel="stylesheet" href="css/species-year.css">
   <link rel="stylesheet" href="css/metrics.css">
 </head>
 
@@ -172,6 +173,11 @@
       <figure>
         <figcaption>Perfil anual en <span id="p-scope"></span><br>100 % = su mejor mes</figcaption>
         <div id="p-radial"></div>
+        <button id="p-year" class="year-play" type="button" aria-pressed="false" hidden>
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9l7.5-4.5z"></path></svg>
+          <span>Escuchar su año</span></button>
+        <p id="p-year-note" class="year-note" hidden>Su canto, una vez por mes desde enero: más fuerte cuanto más
+          lejos del centro llega el perfil, en silencio cuando casi no se registra. 18 s.</p>
       </figure>
       <figure>
         <figcaption>Frecuencia media por región</figcaption>
@@ -203,6 +209,10 @@
       <li>Si seleccionas una región, solo suena ella (con más detalle). Si abres una especie, suena <b>su</b> canto
         donde
         y cuando está presente.</li>
+      <li><b>Escuchar su año</b>, en la ficha de una especie, es más simple: una aguja recorre el perfil radial de enero
+        a diciembre y su canto suena una vez por mes, más fuerte cuanto más se registra en el ámbito de la ficha y en
+        silencio cuando casi no está. Pausa la sonificación, la mezcla y el clip mientras suena.
+        <a href="metricas.html#ano-especie" data-metric="ano-especie">Cómo se calcula</a>.</li>
     </ul>
   </section>
 

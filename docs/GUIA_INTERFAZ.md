@@ -89,7 +89,9 @@ aparecer entre una y cuatro veces por compás. [«×4»](METRICAS.md#copias) sig
 sonoras, no cuatro individuos observados.
 
 La preferencia del parlante se recuerda para la próxima visita. Si el navegador
-bloquea el arranque, el primer clic o tecla habilita el sonido. La barra
+bloquea el arranque, el primer clic o tecla habilita el sonido. Si más abajo se
+pulsa ▶ para [escuchar el año de una especie](#23-bis-la-misma-ave-distintos-calendarios),
+el recorrido queda en pausa: suena una cosa a la vez. La barra
 espaciadora también pausa o reanuda cuando el foco no está en otro control.
 
 ### 2.3. «Una silueta, una especie»
@@ -134,6 +136,27 @@ celda muestra su perfil, años con registro y presencia; con teclado, Tab entra
 a la matriz y las flechas recorren las celdas. En pantallas pequeñas la matriz
 se desplaza horizontalmente y mantiene los nombres regionales visibles.
 El año se muestra completo y no cambia con el mes del reproductor.
+
+**Qué puedes escuchar.** Cada región tiene un botón **▶** junto a su nombre. Al
+pulsarlo, un marco recorre su fila de julio a junio, un mes cada 1,5 segundos
+(18 s el año), y suena el canto de la especie una vez por mes: **más fuerte
+cuanto más intenso es el color y más regular el registro, en silencio cuando
+casi no está**. Así se oye, por ejemplo, que el Fío-fío calla en el invierno de
+Metropolitana y canta todo el año en Arica y Parinacota. No hace falta
+reconocer el canto: es siempre la misma ave y la misma frase; solo cambia el
+volumen. Ver el [cálculo del volumen](METRICAS.md#ano-especie).
+
+| Control | Qué hace |
+|---|---|
+| **▶** de una región | Escucha el año de la especie en esa región; pausa el recorrido de la portada |
+| **■** (el mismo botón mientras suena) | Detiene la escucha |
+| **▶** de otra región | Detiene la actual y empieza la nueva |
+| Cambiar de especie o ampliar a 16 regiones | Detiene la escucha |
+| **❚❚ / ▶** del reproductor de la portada | Reanudar el recorrido detiene la escucha |
+
+Mientras suena, la línea bajo la matriz describe el mes en curso (perfil, años
+con registro y presencia), y en pantallas angostas la matriz se desplaza para
+mantenerlo a la vista. Una fila sin datos tiene el botón desactivado.
 
 Las capturas de este bloque se tomaron en `vista-calendarios-regionales`, el
 14 de octubre de 2026, con fotografías reales: escritorio de 1440 px y
@@ -378,6 +401,16 @@ especie allí, usa Chile y lo indica en el título. El cursor sobre los puntos
 muestra mes, perfil y frecuencia. Cambiar el mes resalta su etiqueta; no cambia
 la curva anual completa.
 
+**Escuchar su año.** El botón bajo el gráfico hace girar una aguja de enero a
+diciembre (1,5 s por mes) y reproduce el canto de la especie una vez por mes,
+más fuerte cuanto más lejos del centro llega el perfil y más regular es el
+registro, y en silencio cuando casi no se registra. Usa el mismo ámbito que el
+gráfico. Pulsarlo de nuevo («Detener»), cambiar de especie o de región, o cerrar
+la ficha lo detiene. Al empezar pausa la sonificación del atlas, la mezcla y el
+clip de la ficha; si alguno de ellos se reanuda, la escucha se detiene. Sin
+grabación, el botón lo indica y queda desactivado. Ver el
+[cálculo del volumen](METRICAS.md#ano-especie).
+
 ### 4.2. Frecuencia media por región
 
 El mapa pequeño muestra la [frecuencia media anual](METRICAS.md#frecuencia) de
@@ -489,6 +522,7 @@ a la fuente y licencia de cada grabación.
 | Clase de Explorar | Filas, color del calendario y conteos del mapa | Región, mes y pistas de mezcla |
 | Mes de Explorar | Mapa, estadísticas y marcadores mensuales | Curvas anuales, filas elegidas y pistas de mezcla |
 | Especie de Explorar | Ficha, fila resaltada y foco del recorrido mensual | Pistas que ya estaban en la mezcla |
+| ▶ de una región / «Escuchar su año» | Pausa los demás sonidos de la página mientras suena | Selecciones de mes, región, especie y mezcla |
 | Filtros del mezclador | Tarjetas disponibles en su catálogo | Pistas seleccionadas y filtros del atlas |
 | Volumen de pista | Una sola especie del mezclador | Las demás pistas |
 

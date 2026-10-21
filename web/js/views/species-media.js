@@ -1,5 +1,10 @@
 /** Presenta fotografías, grabaciones y sus atribuciones, con datos ya cargados. */
-export function createSpeciesMedia({ data, addToMixer, hasTrack }) {
+export function createSpeciesMedia({
+  data,
+  addToMixer,
+  hasTrack,
+  onClipPlay = () => {},
+}) {
   function showSoundLoading() {
     document.getElementById("p-sound").innerHTML =
       `<p class="muted">Buscando grabaciones…</p>`;
@@ -43,6 +48,9 @@ export function createSpeciesMedia({ data, addToMixer, hasTrack }) {
     document
       .getElementById("p-mix")
       .addEventListener("click", () => addToMixer([sid]));
+    box
+      .querySelectorAll("audio")
+      .forEach((audio) => audio.addEventListener("play", onClipPlay));
     updateMixButton(hasTrack);
   }
 
@@ -99,6 +107,12 @@ export function createSpeciesMedia({ data, addToMixer, hasTrack }) {
     }
   }
 
+  function pauseClips() {
+    document
+      .querySelectorAll("#p-sound audio")
+      .forEach((audio) => audio.pause());
+  }
+
   function updateMixButton(hasTrack) {
     const button = document.getElementById("p-mix");
     if (!button) return;
@@ -112,6 +126,7 @@ export function createSpeciesMedia({ data, addToMixer, hasTrack }) {
     clearImages,
     showImagesError,
     updateMixButton,
+    pauseClips,
     renderSound,
     renderImages,
   };

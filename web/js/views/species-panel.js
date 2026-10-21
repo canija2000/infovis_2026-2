@@ -12,7 +12,15 @@ export function createSpeciesPanel({
   selectScope,
   showTip,
   hideTip,
+  onPlayYear,
 }) {
+  const PLAY_D = "M5 3.5v9l7.5-4.5z";
+  const STOP_D = "M4.5 4.5h7v7h-7z";
+  const yearButton = document.getElementById("p-year");
+  yearButton.addEventListener("click", () => onPlayYear());
+  const reduceMotion = window.matchMedia?.(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
   function renderSpecies(sid) {
     const s = data.species[sid];
     const rows = data.bySpecies.get(sid);
@@ -134,6 +142,22 @@ export function createSpeciesPanel({
       .outerRadius((d) => rad(d.v))
       .curve(d3.curveCardinalClosed.tension(0.4));
     const pts = d3.range(12).map((m) => ({ m, v: row.prof[m] }));
+    // Aguja de «Escuchar su año»: oculta hasta que suena.
+    const needle = g
+      .selectAll("g.needle")
+      .data([0])
+      .join((enter) => {
+        const n = enter.append("g").attr("class", "needle");
+        n.append("line")
+          .attr("x1", 0)
+          .attr("y1", -r0 + 4)
+          .attr("x2", 0)
+          .attr("y2", -r1 - 3);
+        n.append("circle").attr("r", 3);
+        return n;
+      })
+      .attr("visibility", "hidden");
+    needle.attr("transform", "rotate(0)");
     g.selectAll("path.area")
       .data([pts])
       .join("path")
@@ -162,6 +186,7 @@ export function createSpeciesPanel({
         ),
       )
       .on("pointerleave", hideTip);
+    g.select("g.needle").raise();
   }
 
   function renderSpeciesMap(sid) {
@@ -193,11 +218,52 @@ export function createSpeciesPanel({
     );
   }
 
+  // available: la especie tiene grabación (true), no tiene (false) o aún no se sabe (null).
+  function setYearAvailable(available) {
+    yearButton.hidden = available === null;
+    document.getElementById("p-year-note").hidden = available !== true;
+    yearButton.disabled = available !== true;
+    if (available === false)
+      yearButton.querySelector("span").textContent =
+        "Sin grabación para escuchar su año";
+    else setYearPlayback(false);
+  }
+  // Mueve la aguja al mes que suena y resalta su punto; month = null deja la aguja oculta.
+  function setYearPlayback(playing, month = null) {
+    yearButton.setAttribute("aria-pressed", String(playing));
+    yearButton.classList.toggle("is-playing", playing);
+    yearButton.querySelector("span").textContent = playing
+      ? "Detener"
+      : "Escuchar su año";
+    yearButton
+      .querySelector("path")
+      .setAttribute("d", playing ? STOP_D : PLAY_D);
+    const g = d3.select("#p-radial g.root");
+    const needle = g.select("g.needle");
+    g.selectAll("text.mlab").classed("now", (m) => m === month);
+    g.selectAll("circle.dot").classed("now", (d) => d.m === month);
+    if (month === null) {
+      needle.interrupt().attr("visibility", "hidden");
+      return;
+    }
+    const target = `rotate(${month * 30})`;
+    if (needle.attr("visibility") === "hidden" || reduceMotion)
+      needle.interrupt().attr("transform", target);
+    else needle.transition().duration(260).attr("transform", target);
+    needle.attr("visibility", "visible");
+  }
+
   function updateMonth() {
     d3.selectAll("#p-radial text.mlab").classed(
       "current",
       (d) => d === state.month,
     );
   }
-  return { renderSpecies, hideSpecies, updateMonth };
+  return {
+    renderSpecies,
+    hideSpecies,
+    updateMonth,
+    setYearAvailable,
+    setYearPlayback,
+  };
 }

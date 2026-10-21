@@ -2,6 +2,7 @@
 export function createSpeciesDetail({ state, media, panel, mediaView }) {
   async function renderSound(sid) {
     mediaView.showSoundLoading();
+    panel.setYearAvailable(null);
     try {
       await media.loadSounds();
     } catch (_) {
@@ -9,7 +10,9 @@ export function createSpeciesDetail({ state, media, panel, mediaView }) {
       return;
     }
     if (state.species !== sid) return;
-    mediaView.renderSound(sid, media.soundEntry(sid));
+    const entry = media.soundEntry(sid);
+    mediaView.renderSound(sid, entry);
+    panel.setYearAvailable(!!entry?.recordings.length);
   }
   async function renderImages(sid) {
     mediaView.clearImages();

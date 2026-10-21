@@ -25,6 +25,7 @@ export const SoundLoop = (() => {
   const { buffers, load } = createBufferCache({ getContext: ensure });
   const queue = [];
   const pads = []; // colchones agendados: se apagan al pausar o saltar de mes
+  const hits = []; // cantos agendados: se apagan al pausar
 
   function ensure() {
     if (ctx) return ctx;
@@ -77,6 +78,23 @@ export const SoundLoop = (() => {
       env.connect(panner).connect(master);
     } else env.connect(master);
     src.start(at, offset, len + 0.05);
+    for (let i = hits.length - 1; i >= 0; i--)
+      if (hits[i].end <= ctx.currentTime) hits.splice(i, 1);
+    hits.push({ src, env, at, end: at + len });
+  }
+  // Al pausar, los cantos ya agendados (hasta ~5 s adelante) no deben seguir sonando.
+  function silenceHits() {
+    const now = ctx.currentTime;
+    for (const { src, env, at } of hits.splice(0)) {
+      if (at > now) {
+        src.stop();
+        continue;
+      }
+      env.gain.cancelScheduledValues(now);
+      env.gain.setValueAtTime(Math.max(0.0001, env.gain.value), now);
+      env.gain.exponentialRampToValueAtTime(0.0001, now + 0.08);
+      src.stop(now + 0.1);
+    }
   }
 
   // Colchón armónico continuo que sostiene el piso residente y refleja la estación del año.
@@ -241,7 +259,10 @@ export const SoundLoop = (() => {
       cancelAnimationFrame(raf);
       timer = null;
       queue.length = 0;
-      if (ctx) silencePads();
+      if (ctx) {
+        silencePads();
+        silenceHits();
+      }
     },
     setMuted(value) {
       muted = value;

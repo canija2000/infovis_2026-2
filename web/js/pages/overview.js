@@ -15,6 +15,7 @@ import { createRegionDetail } from "../views/overview/region-detail.js";
 import { createOverviewPlayer } from "../views/overview/player.js";
 import { createOverviewPlan } from "../audio/overview-plan.js";
 import { SoundLoop } from "../audio/year-loop.js";
+import { claimAudio, onAudioClaimed } from "../shared/audio-focus.js";
 
 /** Compose the overview; the sound clock and manual selections use the same month. */
 async function main() {
@@ -139,7 +140,8 @@ async function main() {
     syncSoundButtons();
     updateNowPlaying();
     await SoundLoop.load(clipsFor(state.month));
-    SoundLoop.start(state.month, planBar, onBar);
+    // Si mientras cargaba se pidió escuchar el año de una especie, el recorrido queda en pausa.
+    if (!sound.paused) SoundLoop.start(state.month, planBar, onBar);
     // Sin gesto del usuario el navegador mantiene el audio suspendido: el loop arranca con el primer clic o tecla.
     if (!SoundLoop.unlocked) {
       setSoundHint(true);
@@ -158,9 +160,19 @@ async function main() {
     if (!loopData) return;
     sound.paused = !sound.paused;
     if (sound.paused) SoundLoop.stop();
-    else SoundLoop.start(state.month, planBar, onBar);
+    else {
+      claimAudio("overview-loop");
+      SoundLoop.start(state.month, planBar, onBar);
+    }
     syncSoundButtons();
   }
+  // Escuchar el año de una especie (más abajo en la página) pausa el recorrido: un sonido a la vez.
+  onAudioClaimed((owner) => {
+    if (owner === "overview-loop" || sound.paused) return;
+    sound.paused = true;
+    if (loopData) SoundLoop.stop();
+    syncSoundButtons();
+  });
   function toggleMute() {
     sound.muted = !sound.muted;
     SoundLoop.setMuted(sound.muted);

@@ -26,7 +26,10 @@ alterna Picaflor chico, Chorlito chileno y Fío-fío, con una fotografía atribu
 y una matriz regional de julio a junio. Muestra que **ser visitante depende
 también del lugar desde donde se observa**. La comparación comienza con siete
 regiones y permite ver las dieciséis; color, intensidad y punto distinguen clase
-regional, perfil relativo y presencia regular. Se coordina desde
+regional, perfil relativo y presencia regular. El botón **▶** de cada región
+permite **escuchar su año**: el canto de la especie suena una vez por mes, más
+fuerte cuanto más presente está, y calla cuando no está; la ficha de especie de
+Explorar ofrece lo mismo bajo su perfil radial. Se coordina desde
 `web/js/pages/regional-calendar.js`, con estilos propios en
 `web/css/regional-calendar.css`. `npm run test:regional` verifica las interacciones,
 la adaptación a móvil, los estados de fallo y las tres fotografías reales.
