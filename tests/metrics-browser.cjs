@@ -90,7 +90,8 @@ const server = http.createServer((req, res) => {
           doc.getElementById("presente").getBoundingClientRect().top < 100
         );
       });
-      assert.ok((await frame.locator("math").count()) >= 35);
+      // 35 fórmulas originales − 4 de las sonificaciones retiradas − 1 del mezclador + «Escuchar su año».
+      assert.ok((await frame.locator("math").count()) >= 31);
       assert.equal(
         await frame.locator("#presente").evaluate((el) => el.open),
         true,

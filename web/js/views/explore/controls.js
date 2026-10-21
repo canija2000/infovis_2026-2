@@ -8,8 +8,6 @@ export function createExploreControls({
   setTab,
   openSpecies,
   setMonth,
-  togglePlay,
-  onMute,
   toggleExpanded,
   closeSpecies,
   selectScope,
@@ -73,16 +71,6 @@ export function createExploreControls({
     document.getElementById("cal-more").addEventListener("click", () => {
       toggleExpanded();
     });
-    document.getElementById("play").addEventListener("click", togglePlay);
-    document.getElementById("mute").addEventListener("click", (e) => {
-      onMute(!state.muted);
-      e.currentTarget.setAttribute("aria-pressed", String(state.muted));
-      e.currentTarget.setAttribute(
-        "aria-label",
-        state.muted ? "Activar sonido" : "Silenciar",
-      );
-      e.currentTarget.title = state.muted ? "Activar sonido" : "Silenciar";
-    });
     document
       .getElementById("reset")
       .addEventListener("click", () => selectScope(0));
@@ -91,10 +79,7 @@ export function createExploreControls({
       .addEventListener("click", closeSpecies);
     document.addEventListener("keydown", (e) => {
       if (e.target.closest("input, select, textarea, button, audio")) return;
-      if (e.code === "Space") {
-        e.preventDefault();
-        togglePlay();
-      } else if (e.key === "Escape" && state.species !== null) closeSpecies();
+      if (e.key === "Escape" && state.species !== null) closeSpecies();
     });
   }
 
@@ -106,20 +91,6 @@ export function createExploreControls({
       (d, i) => AUSTRAL[i] === state.month,
     );
   }
-  function setPlayback(playing) {
-    const btn = document.getElementById("play");
-    btn.setAttribute("aria-pressed", String(playing));
-    btn.setAttribute("aria-label", playing ? "Pausar" : "Escuchar el año");
-    btn.title = playing
-      ? "Pausar (barra espaciadora)"
-      : "Escuchar el año (barra espaciadora)";
-    document
-      .getElementById("play-icon")
-      .setAttribute(
-        "d",
-        playing ? "M4 2.5h3v11H4zM9 2.5h3v11H9z" : "M4.5 2.5v11l9-5.5z",
-      );
-  }
   function setScopeSelected(selected) {
     document.getElementById("reset").hidden = !selected;
   }
@@ -128,7 +99,6 @@ export function createExploreControls({
     setupSearch,
     setupControls,
     updateMonth,
-    setPlayback,
     setScopeSelected,
   };
 }

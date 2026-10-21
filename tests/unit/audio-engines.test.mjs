@@ -3,19 +3,14 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
 import vm from "node:vm";
-import { execFileSync } from "node:child_process";
 
 const root = path.resolve(import.meta.dirname, "../..");
-const original = (file) =>
-  execFileSync("git", ["show", `57b6dc8:${file}`], {
-    cwd: root,
-    encoding: "utf8",
-  });
 const source = (file) => fs.readFileSync(path.join(root, file), "utf8");
 function environment(code, name) {
   const trace = [],
     contexts = [],
-    intervals = new Map();
+    intervals = new Map(),
+    timeouts = [];
   let next = 1,
     id = 0;
   const parameter = (node, key) => ({
@@ -46,6 +41,9 @@ function environment(code, name) {
           "playbackRate",
           "threshold",
           "ratio",
+          "knee",
+          "attack",
+          "release",
         ].map((k) => [k, parameter(key, k)]),
       ),
       connect() {
@@ -63,6 +61,7 @@ function environment(code, name) {
   class AudioContext {
     constructor() {
       this.currentTime = 0;
+      this.sampleRate = 44100;
       this.state = "suspended";
       contexts.push(this);
     }
@@ -79,6 +78,19 @@ function environment(code, name) {
     createBufferSource() {
       return node("source");
     }
+    createBuffer(channels, length) {
+      const data = Array.from(
+        { length: channels },
+        () => new Float32Array(length),
+      );
+      return { duration: 0, getChannelData: (c) => data[c] };
+    }
+    createConvolver() {
+      return node("convolver");
+    }
+    createDelay() {
+      return { ...node("delay"), delayTime: { value: 0 } };
+    }
     createOscillator() {
       return node("oscillator");
     }
@@ -90,7 +102,17 @@ function environment(code, name) {
     }
     async decodeAudioData() {
       trace.push(["decode"]);
-      return { duration: 6 };
+      // Seis segundos a 1 kHz, con el canto entre 3 y 4,5 s (para el motor de «Escuchar su año»).
+      const samples = new Float32Array(6000).map((_, i) =>
+        i >= 3000 && i < 4500 ? Math.sin(i) * 0.5 : 0.001,
+      );
+      return {
+        duration: 6,
+        sampleRate: 1000,
+        length: samples.length,
+        numberOfChannels: 1,
+        getChannelData: () => samples,
+      };
     }
   }
   const sandbox = {
@@ -106,18 +128,21 @@ function environment(code, name) {
       return n;
     },
     clearInterval: (n) => intervals.delete(n),
+    setTimeout: (fn, ms) => timeouts.push({ fn, ms }),
     requestAnimationFrame: () => next++,
     cancelAnimationFrame() {},
   };
   vm.createContext(sandbox);
   vm.runInContext(
-    code.replace(/^import .*;\n/gm, "").replace(/export /g, "") +
+    code.replace(/^import [\s\S]*?;\n/gm, "").replace(/export /g, "") +
       `\nglobalThis.engine=${name};`,
     sandbox,
   );
   return {
     engine: sandbox.engine,
     trace,
+    timeouts,
+    contexts,
     step: (time) => {
       contexts.forEach((c) => (c.currentTime = time));
       [...intervals.values()].forEach((fn) => fn());
@@ -125,181 +150,114 @@ function environment(code, name) {
   };
 }
 const cache = source("web/js/audio/buffers.js");
-for (const [name, oldFile, newFile] of [
-  ["SoundLoop", "web/loop.js", "web/js/audio/year-loop.js"],
-  ["Sonifier", "web/sonify.js", "web/js/audio/atlas-sonifier.js"],
-]) {
-  test(`${name}: unchanged scheduling, envelopes, transposition, callbacks and mute`, async () => {
-    const a = environment(original(oldFile), name),
-      b = environment(cache + "\n" + source(newFile), name);
-    for (const env of [a, b]) {
-      const { engine, trace, step } = env;
-      if (name === "SoundLoop") {
-        engine.configure({ barSeconds: 3, barsPerMonth: 4 });
-        await engine.load(["clip.mp3", "clip.mp3"]);
-        await engine.unlock();
-        engine.start(
-          0,
-          (month, bar) => ({
-            tick: bar === 0,
-            hits: [
-              {
-                url: "clip.mp3",
-                gain: 0.3,
-                pan: -0.2,
-                seed: month * 11 + bar,
-                win: [0.5, 2.1],
-              },
-            ],
-          }),
-          (month, bar) => trace.push(["month", month, bar]),
-        );
-        for (const time of [0.11, 3.15, 6.2, 12.2]) step(time);
-        engine.jump(6);
-        step(15.3);
-      } else {
-        await engine.start(
-          0,
-          (month) => ({
-            tick: true,
-            pad: { freqs: [220, 330], gain: 0.1 },
-            hits: [
-              { at: 0.2, sample: "clip.mp3", rate: 0.8, gain: 0.3, pan: 0.35 },
-              { at: 0.5, sample: null, rate: 1, gain: 0.1 },
-            ],
-          }),
-          (month) => trace.push(["month", month]),
-          ["clip.mp3", "clip.mp3"],
-        );
-        for (const time of [0.1, 2.5, 5, 7.3]) step(time);
-      }
-      engine.setMuted(true);
-      engine.setMuted(false);
-      engine.stop();
-      assert.equal(engine.playing, false);
-    }
-    assert.deepEqual(b.trace, a.trace);
-  });
-}
-
-test("overview data sonification encodes seasonal wave, stereo channels, regional classes and 2x speed", async () => {
-  globalThis.window = {
-    d3: { sum: (arr, fn) => arr.reduce((a, x) => a + fn(x), 0) },
-  };
-  const { createOverviewPlan } = await import(
-    "../../web/js/audio/overview-plan.js"
-  );
-  const loop = JSON.parse(source("web/data/loop.json"));
-  const sound = { scope: 0, mode: "wave", speed: 1 };
-  const plan = createOverviewPlan({
-    sound,
-    getData: () => loop,
-    preload() {},
-  });
-
-  // 1. Densidad estacional: noviembre (pico de verano, m=10) duplica los eventos de julio (invierno, m=6)
-  const julBar = plan.planBar(6, 0);
-  const novBar = plan.planBar(10, 0);
-  assert.ok(
-    novBar.hits.length >= julBar.hits.length * 1.8,
-    `summer bar (${novBar.hits.length}) has noticeably more calls than winter bar (${julBar.hits.length})`,
-  );
-  assert.ok(
-    novBar.tickFreq > julBar.tickFreq,
-    `summer month tick (${novBar.tickFreq} Hz) is higher in pitch than winter tick (${julBar.tickFreq} Hz)`,
-  );
-  assert.ok(
-    novBar.pad.cutoff > julBar.pad.cutoff,
-    `summer harmonic pad (${novBar.pad.cutoff} Hz) is brighter than winter pad (${julBar.pad.cutoff} Hz)`,
-  );
-
-  // 2. Separación espacial estéreo: verano a la izquierda (< -0.25), residentes al centro, invierno a la derecha (> +0.25)
-  const novVoices = plan.voicesFor(10);
-  const julVoices = plan.voicesFor(6);
-  assert.ok(
-    novVoices.filter(([, , cls]) => cls === 1).reduce((a, [, c]) => a + c, 0) >=
-      8,
-    "November has strong summer visitor presence",
-  );
-  assert.equal(
-    julVoices.filter(([, , cls]) => cls === 1).length,
-    0,
-    "July suppresses summer visitor calls in national wave mode",
-  );
-  for (const h of novBar.hits) {
-    assert.ok(h.pan >= -0.78 && h.pan <= 0.78);
-  }
-
-  // 3. Modo «Solo viajeras» silencia residentes y colchón armónico
-  sound.mode = "visitors";
-  const visVoices = plan.voicesFor(10);
-  assert.ok(
-    visVoices.every(([, , cls]) => cls !== 0),
-    "visitors mode excludes all resident species",
-  );
-  assert.equal(plan.planBar(10, 0).pad, null, "visitors mode disables pad");
-
-  // 4. Clasificación regional real: Picaflor chico (sid=16) es invernal (2) en RM (7) y residente (0) en Los Lagos (14)
-  assert.equal(plan.classOf(16, 7), 2);
-  assert.equal(plan.classOf(16, 14), 0);
-
-  // 5. Velocidad 2x en SoundLoop avanza de mes cada 2 compases (6 s)
+test("species year: one scene per audible month, a chorus when present, synced callbacks and clean stop", async () => {
   const env = environment(
-    cache + "\n" + source("web/js/audio/year-loop.js"),
-    "SoundLoop",
+    cache +
+      "\n" +
+      source("web/js/audio/species-year-plan.js") +
+      "\n" +
+      source("web/js/audio/species-year.js"),
+    "createSpeciesYearPlayer",
   );
-  env.engine.configure({ barSeconds: 3, barsPerMonth: 4 });
-  env.engine.setBarsPerMonth(2);
-  await env.engine.unlock();
-  const monthsSeen = [];
-  env.engine.start(
-    6,
-    (m, b) => plan.planBar(m, b),
-    (m, b) => monthsSeen.push([m, b]),
+  const player = env.engine();
+  const steps = [
+    { month: 6, profile: 100, years: 8 },
+    { month: 7, profile: 2, years: 1 },
+    { month: 8, profile: 30, years: 8 },
+  ];
+  const seen = [];
+  let ended = null;
+  player.unlock();
+  const ok = await player.play({
+    url: "clip.mp3",
+    steps,
+    onStep: (index, step, planned) => seen.push([step.month, planned.scene]),
+    onEnd: (info) => (ended = info),
+  });
+  assert.equal(ok, true);
+  // Las aves llevan offset; el desbloqueo toca una muestra en silencio sin offset.
+  const starts = env.trace.filter(
+    ([, method, , offset]) => method === "start" && offset !== undefined,
   );
-  env.step(0.11);
-  env.step(3.15);
-  env.step(6.2);
-  assert.deepEqual(monthsSeen, [
-    [6, 0],
-    [6, 1],
-    [7, 0],
+  const julio = starts.filter(([, , at]) => at < 1.5);
+  const septiembre = starts.filter(([, , at]) => at >= 3);
+  assert.equal(julio.length, 6, "a full month is a chorus of six birds");
+  assert.equal(septiembre.length, 1, "a weak month is a single bird");
+  assert.equal(starts.length, 7, "the near-silent month does not sound");
+  assert.ok(
+    starts.every(([, , , offset]) => offset >= 0 && offset < 4.4),
+    "every bird sings from the song, not from the background",
+  );
+  assert.ok(
+    starts.every(([, , , offset, length]) => offset + length <= 6.02),
+    "no bird is cut off by the end of the clip",
+  );
+  env.step(1.7);
+  assert.deepEqual(seen, [
+    [6, "near"],
+    [7, null],
   ]);
-  env.engine.stop();
+  env.step(4.7);
+  assert.deepEqual(seen.at(-1), [8, "far"]);
+  assert.equal(ended.completed, true);
+  assert.equal(player.playing, false);
+
+  await player.play({
+    url: "clip.mp3",
+    steps,
+    onEnd: (info) => (ended = info),
+  });
+  const before = env.trace.length;
+  player.stop();
+  assert.equal(ended.completed, false);
+  assert.equal(
+    env.trace
+      .slice(before)
+      .filter(
+        ([node, method]) => node.startsWith("source") && method === "stop",
+      ).length,
+    7,
+    "stopping cancels every bird still to come",
+  );
 });
 
-test("SoundLoop: pausing or jumping fades the harmonic pad instead of letting it ring for a whole bar", async () => {
+test("species year: the first press unlocks inside the gesture and never waits on resume()", async () => {
   const env = environment(
-    cache + "\n" + source("web/js/audio/year-loop.js"),
-    "SoundLoop",
+    cache +
+      "\n" +
+      source("web/js/audio/species-year-plan.js") +
+      "\n" +
+      source("web/js/audio/species-year.js"),
+    "createSpeciesYearPlayer",
   );
-  env.engine.configure({ barSeconds: 3, barsPerMonth: 4 });
-  await env.engine.unlock();
-  env.engine.start(
-    0,
-    () => ({ pad: { freqs: [110, 165], gain: 0.04 } }),
-    () => {},
+  const player = env.engine();
+  player.unlock();
+  const [context] = env.contexts;
+  assert.ok(
+    env.trace.some(
+      ([node, method]) => node.startsWith("source") && method === "start",
+    ),
+    "a silent sample starts within the click (Safari)",
   );
-  env.step(1.5);
-  env.engine.jump(5);
-  const fades = () =>
-    env.trace.filter(
-      ([, key, method, value]) =>
-        key === "gain" &&
-        method === "linearRampToValueAtTime" &&
-        value === 0.0001,
-    );
-  const cancelled = env.trace.filter(
-    ([, , method]) => method === "cancelScheduledValues",
-  );
-  assert.equal(cancelled.length, 1, "the sounding pad is cancelled on jump");
-  assert.ok(fades().some(([, , , , at]) => Math.abs(at - 1.58) < 1e-9));
-  env.step(2);
-  env.engine.stop();
+  // Un navegador que nunca cumple resume() fuera del gesto: antes la primera pulsación quedaba colgada.
+  context.resume = () => new Promise(() => {});
+  context.state = "suspended";
+  const steps = [{ month: 0, profile: 100, years: 8 }];
+  let ended = null;
+  const ok = await player.play({
+    url: "clip.mp3",
+    steps,
+    onEnd: (info) => (ended = info),
+  });
+  assert.equal(ok, true, "play() returns without waiting for resume()");
+  assert.equal(player.playing, true);
+  const watchdog = env.timeouts.at(-1);
+  assert.equal(watchdog.ms, 1500);
+  watchdog.fn();
   assert.equal(
-    env.trace.filter(([, , method]) => method === "cancelScheduledValues")
-      .length,
-    2,
-    "the pad scheduled after the jump is cancelled on pause",
+    player.playing,
+    false,
+    "the button is released if audio never starts",
   );
+  assert.equal(ended.completed, false);
 });

@@ -26,7 +26,10 @@ alterna Picaflor chico, Chorlito chileno y Fío-fío, con una fotografía atribu
 y una matriz regional de julio a junio. Muestra que **ser visitante depende
 también del lugar desde donde se observa**. La comparación comienza con siete
 regiones y permite ver las dieciséis; color, intensidad y punto distinguen clase
-regional, perfil relativo y presencia regular. Se coordina desde
+regional, perfil relativo y presencia regular. El botón **▶** de cada región
+permite **escuchar su año**: el canto de la especie suena una vez por mes, más
+fuerte cuanto más presente está, y calla cuando no está; la ficha de especie de
+Explorar ofrece lo mismo bajo su perfil radial. Se coordina desde
 `web/js/pages/regional-calendar.js`, con estilos propios en
 `web/css/regional-calendar.css`. `npm run test:regional` verifica las interacciones,
 la adaptación a móvil, los estados de fallo y las tres fotografías reales.
@@ -66,8 +69,8 @@ GBIF (11 descargas anuales, Aves, Chile)
   región). Necesitan `shapely` y las descargas en `gbif/downloads/` (se bajan por DOI). Orden:
   `python3 python_scripts/gbif/grid_aggregate.py --res 0.2 0.05 && python3 python_scripts/build_grid_data.py`.
 - `python_scripts/gbif/loop_aggregate.py` + `python_scripts/build_loop_data.py`: lugar-días por especie, región
-  y mes (celdas de ~5 km × fechas) → `web/data/loop.json`, qué especies suenan y cuántas copias en el loop de
-  la portada.
+  y mes (celdas de ~5 km × fechas) → `web/data/loop.json`, qué especies sonaban y cuántas copias en el loop de
+  la portada (retirado; el archivo sigue publicado sin uso en la web).
 - Revisión de cantos: `python_scripts/analizar_audio_loop.py` mide cada clip (banda propia, contraste canto/fondo,
   mejores tramos de 2 s → `python_scripts/audio_review/analisis.json`); `python_scripts/recortar_audio_banda.py`
   vuelve a recortar desde la grabación original los clips débiles (p. ej. palomas y tórtolas, de voz grave) y lo
@@ -79,13 +82,13 @@ GBIF (11 descargas anuales, Aves, Chile)
 - `web/`: frontend estático en tres páginas enlazadas. `index.html` (Visualización) es la portada:
   una sola idea a primera vista (`js/pages/overview.js`, vistas en `js/views/overview/`,
   estilos en `css/overview.css`). `explorar.html` usa `js/pages/explore.js`.
-  Los tres motores de audio viven en `js/audio/`; datos y estado tienen módulos propios.
+  El audio («Escuchar su año») vive en `js/audio/`; datos y estado tienen módulos propios.
 - `python_scripts/preparar_audio_web.py`: elige, descarga (Xeno-canto, `cnt:chile`) y recorta los
   cantos que publica la web en `web/audio/` (clips + `clips.json`).
 - `python_scripts/preparar_audio_mixer.py`: reduce el ambiente de los clips que
-  admiten modificaciones y prepara las pistas independientes del mezclador.
-  Ver [`docs/mezclador-sonoro.md`](docs/mezclador-sonoro.md) para su uso,
-  funcionamiento y límites.
+  admiten modificaciones (`web/audio/mixer/`). Las preparó el mezclador, ya
+  retirado; hoy las usa «Escuchar su año». Ver
+  [`docs/mezclador-sonoro.md`](docs/mezclador-sonoro.md).
 - `python_scripts/preparar_imagenes_web.py`: consulta fotos de ocurrencias chilenas en GBIF
   y, si reúne menos de 32, completa con registros globales de la misma especie.
   Reúne hasta 64 candidatas
@@ -161,19 +164,13 @@ conexión a internet.
   general región × mes: cuánto se aleja cada mes del promedio anual de
   visitantes de la región.
 - **Zoom & filter:** clic en una región (mapa o grilla), pestañas por clase,
-  "mostrar todas", buscador de especie y scrubber de mes con ▶ (también con la
-  barra espaciadora).
+  "mostrar todas", buscador de especie y scrubber de mes.
 - **Detalle:** ficha de especie con perfil anual radial, mapa de frecuencia
   por región, clip de canto (si hay) y galería de hasta ocho fotos (si hay).
-- **Sonificación:** cada mes (2,4 s) recorre Chile de norte a sur en cinco
-  macrozonas. Residentes = colchón sostenido; visitantes = cantos reales
-  (Fío-fío en verano, Picaflor chico en invierno). Densidad ← la ola de cada
-  zona respecto de su propio año; tono ← latitud; volumen ← cantidad. El audio
-  parte solo después de pulsar Play.
-- **Mezclador:** grilla con foto, búsqueda y filtro estacional para elegir
-  especies; volumen individual y reproducción simultánea, desincronizada por
-  defecto o sincronizada con la casilla. Ver
-  [`docs/mezclador-sonoro.md`](docs/mezclador-sonoro.md).
+- **Sonificación:** «Escuchar su año», en la ficha de especie: una aguja
+  recorre el perfil radial y el canto de esa especie suena una vez por mes, más
+  fuerte cuanto más presente está (la misma idea que el ▶ por región de la
+  portada). La sonificación mensual por macrozonas y el mezclador se retiraron.
 
 ## Publicación
 
@@ -187,14 +184,14 @@ sirve como assets estáticos (`wrangler.jsonc`).
 python3 python_scripts/preparar_audio_web.py --dry-run   # selección y faltantes
 python3 python_scripts/preparar_audio_web.py             # descarga faltantes y genera web/audio/
 python3 python_scripts/build_web_data.py                 # enlaza web/audio/clips.json en web/data/sounds.json
-python3 python_scripts/preparar_audio_mixer.py           # crea pistas con menos ambiente para el mezclador
+python3 python_scripts/preparar_audio_mixer.py           # crea pistas con menos ambiente (audio/mixer/)
 ```
 
 `python_scripts/preparar_audio_web.py` cubre todas las especies que la web muestra sin
 expandir (232: top por pestaña en Chile y en cada región). Junta candidatas
 locales (`sounds/`) y de Xeno-canto (Chile primero, calidad A/B) y elige la
 mejor (Chile, canto o llamado, calidad, priorizando licencias sin ND). De cada una publica
-un clip de 6 s y un grano de 0,9 s para la sonificación, tomados del tramo con
+un clip de 6 s y un grano de 0,9 s (este último lo usaba la sonificación ya retirada), tomados del tramo con
 más energía en la banda de las aves (1,5–9 kHz) ponderada por tonalidad, para
 evitar viento o ruido de fondo. Hoy: 231 de 232 especies (falta el Guanay, sin
 grabaciones en Xeno-canto), ~13 MB. Los ajustes a mano (excluir una grabación,
@@ -203,9 +200,8 @@ respuestas de la API quedan en `cache_xenocanto/` (fuera de Git). Requiere `ffmp
 lee de `api_sounds` (`.env` o variable de entorno) y nunca se escribe ni se
 imprime. `sounds/` (originales) sigue fuera de Git; `web/audio/` sí se publica,
 con autor, licencia y enlace a la grabación original en la ficha.
-El mezclador usa 178 pistas con reducción espectral del fondo (177 archivos
-únicos); 53 grabaciones con licencia ND conservan el clip previo y aparecen
-marcadas como audio original. [Creative Commons explica que las licencias ND no
+«Escuchar su año» usa 178 pistas con reducción espectral del fondo (177
+archivos únicos); 53 grabaciones con licencia ND conservan el clip previo. [Creative Commons explica que las licencias ND no
 permiten compartir adaptaciones](https://creativecommons.org/licenses/by-nc-nd/4.0/).
 
 ## Fuentes y atribución

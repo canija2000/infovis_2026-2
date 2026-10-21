@@ -1,5 +1,5 @@
 /** Presenta fotografías, grabaciones y sus atribuciones, con datos ya cargados. */
-export function createSpeciesMedia({ data, addToMixer, hasTrack }) {
+export function createSpeciesMedia({ data, onClipPlay = () => {} }) {
   function showSoundLoading() {
     document.getElementById("p-sound").innerHTML =
       `<p class="muted">Buscando grabaciones…</p>`;
@@ -23,14 +23,11 @@ export function createSpeciesMedia({ data, addToMixer, hasTrack }) {
         ? ` (en Xeno-canto: <i>${entry.xcName}</i>)`
         : "";
     if (!entry.recordings.length) {
-      box.innerHTML =
-        `<h3>Canto</h3><p class="muted">Aún no hay un clip para esta especie${name}; al reproducir el año suena ` +
-        `con un tono sintético. <a href="${entry.searchUrl}" target="_blank" rel="noopener">Escuchar en Xeno-canto ↗</a></p>`;
+      box.innerHTML = `<h3>Canto</h3><p class="muted">Aún no hay un clip para esta especie${name}. <a href="${entry.searchUrl}" target="_blank" rel="noopener">Escuchar en Xeno-canto ↗</a></p>`;
       return;
     }
     box.innerHTML =
       `<h3>Canto${name}</h3>` +
-      `<button id="p-mix" class="ghost small mix-add" type="button" data-sid="${sid}">+ Añadir a la mezcla</button>` +
       entry.recordings
         .map(
           (r) =>
@@ -40,10 +37,9 @@ export function createSpeciesMedia({ data, addToMixer, hasTrack }) {
             `<br><span class="muted">Clip de 6 s (el tramo con más canto) de la grabación original.</span></figcaption></figure>`,
         )
         .join("");
-    document
-      .getElementById("p-mix")
-      .addEventListener("click", () => addToMixer([sid]));
-    updateMixButton(hasTrack);
+    box
+      .querySelectorAll("audio")
+      .forEach((audio) => audio.addEventListener("play", onClipPlay));
   }
 
   function renderImages(sid, photos) {
@@ -99,19 +95,18 @@ export function createSpeciesMedia({ data, addToMixer, hasTrack }) {
     }
   }
 
-  function updateMixButton(hasTrack) {
-    const button = document.getElementById("p-mix");
-    if (!button) return;
-    const inMix = hasTrack(Number(button.dataset.sid));
-    button.textContent = inMix ? "✓ En la mezcla" : "+ Añadir a la mezcla";
-    button.disabled = inMix;
+  function pauseClips() {
+    document
+      .querySelectorAll("#p-sound audio")
+      .forEach((audio) => audio.pause());
   }
+
   return {
     showSoundLoading,
     showSoundError,
     clearImages,
     showImagesError,
-    updateMixButton,
+    pauseClips,
     renderSound,
     renderImages,
   };

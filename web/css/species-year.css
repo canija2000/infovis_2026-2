@@ -1,0 +1,107 @@
+/* «Escuchar su año» en la ficha: botón bajo el perfil radial y aguja que recorre los meses.
+   Archivo aparte para no alterar species-panel.css, que el test de invariancia compara byte a byte. */
+.year-play {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 6px;
+  padding: 6px 13px 6px 10px;
+  border: 1px solid var(--ink-2);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font: 13px var(--font);
+  cursor: pointer;
+}
+.year-play[hidden] {
+  display: none;
+}
+.year-play svg {
+  width: 12px;
+  height: 12px;
+  fill: currentColor;
+}
+.year-play:hover,
+.year-play.is-playing {
+  background: var(--ink);
+  color: var(--surface);
+}
+.year-play:disabled {
+  border-color: var(--rule);
+  color: var(--ink-3);
+  background: transparent;
+  cursor: default;
+}
+.year-play:focus-visible {
+  outline: 2px solid var(--c0);
+  outline-offset: 2px;
+}
+.year-note {
+  margin: 6px 0 0;
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--ink-3);
+}
+#p-radial g.needle {
+  pointer-events: none;
+}
+#p-radial g.needle line {
+  stroke: var(--ink);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+#p-radial g.needle circle {
+  fill: var(--ink);
+}
+#p-radial circle.dot.now {
+  fill: var(--ink);
+  stroke: var(--surface);
+  stroke-width: 1.5;
+}
+#p-radial text.now {
+  fill: var(--ink);
+  font-weight: 600;
+}
+/* Qué está sonando y leyenda sonora («Así suena») bajo el botón. */
+.year-now {
+  min-height: 1.4em;
+  margin: 6px 0 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.year-now:empty {
+  min-height: 0;
+  margin: 0;
+}
+.year-scenes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 6px;
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--ink-3);
+}
+.year-scenes[hidden] {
+  display: none;
+}
+.year-scenes button {
+  padding: 2px 9px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font: 11px var(--font);
+  cursor: pointer;
+}
+.year-scenes button:hover,
+.year-scenes button[aria-pressed="true"] {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--surface);
+}
+.year-scenes button:focus-visible {
+  outline: 2px solid var(--c0);
+  outline-offset: 2px;
+}

@@ -11,7 +11,7 @@ se documentan las medidas del sonido, los datos preparados para el aviario
 externo, la selección de fotos y audio y el análisis independiente de minería.
 Los scripts históricos archivados no definen la metodología actual.
 
-Para ir directamente a los bloques complementarios: [sonido](#lugar-dias),
+Para ir directamente a los bloques complementarios: [sonido](#ano-especie),
 [aviario](#aviario), [morfología](#rasgos), [relieve y paleta](#terreno-paleta),
 [calidad de fotos](#calidad-fotos), [calidad de audio](#calidad-audio) y
 [minería](#mineria).
@@ -37,8 +37,7 @@ Para ir directamente a los bloques complementarios: [sonido](#lugar-dias),
 | Naranja / azul en Zonas | Diferencia de composición de registros frente a la referencia regional | [Ola por celda](#ola-zonas) |
 | Naranja / azul en Regiones | Diferencia entre niveles de riqueza de verano e invierno normalizados | [Ola regional](#ola-regiones) |
 | «Cada punto = … especie-días» | Un factor de representación del detalle regional | [Días-especie por punto](#por-punto) |
-| «×4», número de voces | Copias de cantos elegidas por extensión de registro | [Lugar-días y copias](#copias) |
-| Volumen «… %» de una pista | Un ajuste de reproducción elegido por quien usa la web | [Volumen y sincronización](#mezclador) |
+| Volumen del canto en «Escuchar su año» | Perfil relativo × años con registro de una especie en un lugar y mes | [Escuchar su año](#ano-especie) |
 
 ### La cadena principal
 
@@ -399,8 +398,6 @@ Hay otros conteos que responden a preguntas diferentes:
 | Resumen nacional superior de Explorar | Todas las especies por clase nacional, sin filtrar por mes o región |
 | Número de la pestaña del calendario | Especies clasificadas en esa clase del ámbito, aunque no estén presentes en el mes seleccionado |
 | Filas visibles | Subconjunto elegido para mostrar, con posible especie fijada |
-| Resultados del catálogo | Especies con grabación que coinciden con la búsqueda y clase nacional |
-| Número junto a «Mezcla» | Pistas añadidas, una por especie |
 
 El color del mapa principal usa un máximo compartido de la clase entre las
 regiones y los doce meses. Su referencia se conserva al mover el mes y puede
@@ -718,123 +715,84 @@ Origen: [productor fino](../python_scripts/overview/build_grid_data.py),
 [dibujo del detalle](../web/js/views/overview/region-detail.js).
 Datos: [directorio grid_region](../web/data/grid_region/).
 
-<a id="lugar-dias"></a>
 ## 13. Medidas y parámetros del sonido
 
-### 13.1. Lugar-días de una especie
+La web suena en un solo tipo de lugar: [Escuchar su año](#ano-especie), en los
+calendarios regionales de la portada y en la ficha de especie, además del clip
+de cada especie en su ficha. El recorrido sonoro de la portada, la
+sonificación mensual de Explorar y el mezclador se retiraron (ver
+[CAMBIOS](../CAMBIOS.md), entradas 27 y 28): había que reconocer qué ave
+cantaba y varias variables sonaban a la vez. Sus datos (`loop.json` y los
+granos `audio/*-g.mp3`) siguen publicados, pero la web ya no los usa; las pistas
+limpiadas de `audio/mixer/` sí se usan como clip de «Escuchar su año».
 
-Un lugar-día es una **celda de 0,05° × fecha** donde se registra una especie.
-Para cada especie y mes, el agregador deduplica la combinación
-`(celda, especie, fecha)` y suma los ocho años. Mide extensión del registro en
-espacio y tiempo, no número de aves.
+<a id="ano-especie"></a>
+### 13.1. Escuchar su año: una especie, un lugar, un dato
 
-El loop divide esa cantidad por ocho para obtener su peso de selección típico.
-Chile suma los aportes regionales. Si no existe el archivo intermedio
-`gbif/staging/place_days.json`, usa como respaldo:
-
-```text
-peso de respaldo = freq mensual publicada en ‰ × years mensual / 8
-```
-
-El respaldo puede producir otro ranking; conviene conservar el archivo de
-lugar-días para reproducir la selección original. Los pesos usados no se
-publican en `loop.json`: allí se guardan las especies elegidas y sus copias.
-
-Origen: [loop_aggregate.py](../python_scripts/gbif/loop_aggregate.py),
-[build_loop_data.py](../python_scripts/overview/build_loop_data.py).
-
-<a id="copias"></a>
-### 13.2. Selección de voces y copias en la portada
-
-Son elegibles las especies **presentes ese mes**, no ocasionales en el ámbito,
-con grabación y que no hayan sido excluidas en la revisión de audio.
-Se eligen las seis de mayor peso, y hasta tres visitantes adicionales de mayor
-peso que no hayan entrado. El máximo es nueve especies; puede haber menos.
+Está en «La misma ave, distintos calendarios» (un botón ▶ por región) y en la
+ficha de especie de Explorar (bajo el perfil radial). A diferencia de las
+sonificaciones retiradas, **no hay que reconocer qué ave canta**: la persona
+ya eligió la especie y ve avanzar un cursor sobre el gráfico. El sonido
+codifica **una sola variable**: qué tan presente está la especie cada mes. Ese
+nivel elige una de **tres escenas bien distintas**, en las que número de aves,
+distancia y volumen dicen lo mismo (codificación redundante). Se eligieron
+escenas discretas porque una versión anterior, con cambios graduales de
+volumen, filtro y voces superpuestas, casi no se distinguía al oído.
 
 ```text
-copias = techo(4 × peso especie / peso máximo de las elegidas)
-         limitado al rango 1…4
+nivel(m)  = perfil(m)/100 × años con registro(m)/8      (0…1)
+escena    = silencio  si nivel < 0,05
+            lejos     si nivel < 0,4    un ave sola, apagada y con mucho eco
+            medio     si nivel < 0,75   dos aves, algo apagadas y con algo de eco
+            cerca     en otro caso      un coro de seis aves que cantan a la vez, cerca
+volumen   = 0,45 + 0,55 × nivel, ajustado al objetivo de la escena
 ```
 
-**Ejemplo inventado.** Con pesos 100, 50 y 25, las copias son 4, 2 y 1 por
-compás. «×4» describe cuatro eventos de reproducción, no cuatro individuos.
+| Escena | Aves | Pasa-bajos | Directo / eco | Volumen objetivo |
+|---|---|---|---|---|
+| Cerca | 6, en coro | Sin filtro (las aves de atrás, algo apagadas) | 1 / 0,12 | 0 dB (referencia) |
+| Medio | 2 | 0,8 × tono del canto | 0,75 / 0,35 | −8 dB |
+| Lejos | 1 | 0,35 × tono del canto | 0,3 / 1 | −15 dB |
 
-La clase que colorea las voces publicadas en el loop es la nacional, aunque la
-selección se haya hecho usando la clase regional. Las exclusiones o elecciones
-de audio original revisadas a mano también afectan qué cantos se oyen.
-
-Datos y origen: [loop.json](../web/data/loop.json),
-[productor](../python_scripts/overview/build_loop_data.py).
-
-<a id="tiempo-sonoro"></a>
-### 13.3. Tiempo, ganancia y posición estéreo de la portada
-
-| Parámetro | Valor / cálculo | Interpretación |
+| Parámetro | Valor | Interpretación |
 |---|---|---|
-| Compás | 3 s | Unidad de programación de cantos |
-| Compases por mes | 4 | Un mes representado dura 12 s |
-| Año completo | `12 × 12 = 144 s` | Ciclo sonoro de 2 min 24 s |
-| Tramo de canto | Hasta 2 s | Fragmento de un clip; puede ser más corto si el archivo lo es |
-| Ganancia por copia | `0,6 / raíz(total de copias del compás)` | Ajuste para que muchas voces no eleven tanto el nivel |
-| Posición estéreo `pan` | Entre −0,7 y +0,7, con semilla | Reparto entre canales; no es longitud geográfica |
-| Ganancia maestra | 0,85 o 0 al silenciar | Ajuste de salida |
+| Duración de un mes | 1,5 s; el año completo, 18 s | Tiempo de reproducción |
+| Canto de cada ave | El canto completo (hasta 1,35 s), del tramo con más energía del clip; si desde su punto no alcanza la grabación, empieza antes en vez de cortarse | Ninguna ave se corta a mitad de nota |
+| El coro | Seis aves repartidas de −0,9 a +0,9 en estéreo, sin ninguna que domine al centro; cada una a su propia distancia (las de atrás, apagadas y con su propio eco), con su ritmo y su tono (±3–9 %) y entrando en los primeros 0,35 s; algunas callan antes. Cada mes, otra mezcla de entradas y de puntos del canto (al azar con semilla: cada vuelta suena igual) | Se oyen varias aves a la vez y no una sola cantando seguido. Con cinco copias casi sincrónicas, izquierda y derecha quedaban casi iguales (correlación 0,8–0,9) y, en cantos de notas cortas y regulares como el del Picaflor chico, las copias se alineaban en una sola secuencia más rápida. Medido ahora: correlación 0,5–0,65 y ritmo irregular (variación de los intervalos 0,35 → 0,7 en el Picaflor chico) |
+| Volumen del coro | Se reparte entre las aves para que el total siga al de la escena | Voces independientes: más aves no suben de golpe el volumen |
+| Entradas y salidas | 50 ms de entrada y 300 ms de salida | Sin golpes: el coro respira |
+| Tono del canto | Cruces por cero / 2 del tramo, entre 1 y 9 kHz | El filtro se ajusta a cada especie: un ave lejana suena igual de apagada sea su canto grave o muy agudo |
+| Compensación | El volumen se corrige por lo que quita el filtro (medido en el propio clip), hasta ×12 | Sin ella, un canto agudo filtrado quedaba unos 30 dB abajo: inaudible |
+| Eco | Ruido estéreo que decae en 2,2 s, con 40 ms de retardo | Es la señal principal de distancia: un canto casi tonal filtrado solo baja de volumen, pero uno que llega sobre todo como eco se oye lejano |
+| Igualación | Cada clip se lleva a un RMS común antes de aplicar el nivel | Una grabación más fuerte no parece una especie más presente |
+| Orden | Julio a junio en la matriz regional; enero a diciembre en la ficha (la aguja gira desde arriba) | Sigue el orden de cada gráfico |
+| Clip | Pista con menos ruido de fondo (`audio/mixer/`) si existe; si no, el clip de la ficha | Misma grabación que se puede oír en la ficha |
+| Salida | Ganancia 0,9 y solo un limitador (−3 dBFS, 20:1) | Sin compresor: no se aplana la diferencia entre escenas |
 
-La ganancia es un multiplicador de señal; no equivale a un porcentaje lineal
-de volumen percibido ni a decibelios calibrados. Ventanas y semillas ayudan a
-repetir una composición y no representan una variable biológica.
+**Leyenda sonora.** «Así suena: Mucha / Media / Poca», junto a la matriz y en la
+ficha, toca un mes de ejemplo de cada escena (niveles 1, 0,55 y 0,25) con el
+canto de la especie elegida. Mientras suena un año, la página escribe la escena
+del mes («♪ abril: un ave sola, lejos»).
 
-Origen: [plan de portada](../web/js/audio/overview-plan.js),
-[motor del loop](../web/js/audio/year-loop.js).
+Medido al renderizar con OfflineAudioContext (energía de cada mes): en cuatro
+especies de tono distinto (Chincol, Fío-fío, Chorlito chileno y Picaflor chico),
+el coro cercano queda en ≈ −29 dB, las dos aves en ≈ −34 a −36 dB y el ave
+lejana en ≈ −37 a −39 dB, además de la diferencia de textura (seis voces que se
+entrecruzan, dos, una) y de eco. En el silencio que sigue, el eco del ave lejana
+aún suena (≈ −50 dB) y el coro termina seco (≈ −65 dB). Con el Picaflor chico
+en Metropolitana, de abril a julio queda una sola ave lejana; de septiembre a
+marzo, el coro cercano.
 
-<a id="sonificacion-atlas"></a>
-### 13.4. Sonificación de Explorar: niveles, eventos y transposición
+`años con registro / 8` (la misma ponderación que usaba la sonificación
+retirada de Explorar para una especie) evita que un registro aislado, que en el perfil relativo puede
+valer 100 %, suene como un mes de presencia regular. Por eso una celda intensa
+sin punto de presencia puede sonar más bajo de lo que sugiere su color.
 
-Explorar tiene su propia transformación musical, diferente del loop de la
-portada. Un mes dura **2,4 segundos**, por lo que un ciclo de doce meses dura
-28,8 segundos. En Chile, los eventos se reparten en cinco zonas; al elegir una
-región se usa esa región.
+Un sonido a la vez: en Explorar, al empezar se pausa el clip de la ficha; si el
+clip se reanuda, la escucha se detiene.
 
-| Medida / parámetro | Cálculo | Qué modifica |
-|---|---|---|
-| Nivel mensual de clase | `(conteo − mínimo anual)/(máximo − mínimo)`; cero si es constante | Intensidad estacional del patrón |
-| Nivel de zona | Media de los niveles de sus regiones | Número de eventos de visitantes |
-| Eventos por clase y zona | `redondear(nivel × máximo)`; máximo 2 en Chile y 3 en una región | Cuántos granos de canto se programan |
-| Peso absoluto de clase | Conteo regional / máximo de esa clase entre todas las regiones y meses; luego media por zona | Ganancia de visitantes: `0,1 + 0,3 × raíz(peso)` |
-| Foco en una especie | Máximo en la zona de `prof/100 × years/8` | Sustituye el patrón de visitantes por eventos de esa especie; ganancia 0,32 |
-| Residentes | Conteo del mes / máximo anual de residentes del ámbito | Colchón sostenido; ganancia `0,06 × nivel` o `0,025 × nivel` con especie enfocada |
-| Latitud | Latitud regional o media de centroides de la zona | Transposición en una escala pentatónica de −6 a +6 semitonos |
-| Velocidad del canto | `2^(semitonos/12) × 2^(−7/12)` | Motor aplica además una transposición global de −7 semitonos |
-| Posición estéreo | Verano −0,35; invierno +0,35; foco 0 | Separa capas sonoras |
-
-El colchón tiene una raíz de 110 Hz en Chile; regionalmente se multiplica por
-la transposición de latitud y añade una segunda frecuencia a 1,5 veces la raíz.
-La salida maestra usa ganancia 0,9, o 0 al silenciar. Los conteos y perfiles son
-datos; la escala musical, los máximos de eventos y las ganancias son decisiones
-de representación. No expresan frecuencia acústica natural, cantidad de
-individuos ni ubicación de una grabación.
-
-Origen: [atlas-plan.js](../web/js/audio/atlas-plan.js),
-[atlas-sonifier.js](../web/js/audio/atlas-sonifier.js).
-
-<a id="mezclador"></a>
-### 13.5. Mezclador: selección, volumen y sincronización
-
-«Mezclar lo que se ve» toma hasta **seis especies con grabación** de la clase y
-ámbito activos, con frecuencia positiva en el mes. Ordena por esa frecuencia.
-**No exige superar el umbral de presencia mensual**, a diferencia del loop.
-
-El número de pistas cuenta especies añadidas, sin duplicarlas. El volumen
-individual mostrado en porcentaje representa el multiplicador de señal de
-esa pista (`50 % → 0,5`). No se deriva de su frecuencia ni de su peso ecológico.
-Silenciar conserva esos valores. La ganancia de salida de la mezcla es 0,8.
-
-Sin sincronización, cada canto espera entre **0,2 y 5,2 s** antes de comenzar y
-entre repeticiones. Con sincronización, comienzan juntos en ciclos de seis
-segundos, incluyendo silencio si un clip es más corto. Son tiempos de
-reproducción, no duraciones o ritmos de canto medidos en campo.
-
-Origen: [selección de escena](../web/js/mixer/scene-selection.js),
-[motor del mezclador](../web/js/audio/mixer-engine.js).
+Origen: [plan](../web/js/audio/species-year-plan.js),
+[motor](../web/js/audio/species-year.js).
 
 <a id="aviario"></a>
 ## 14. Medidas de los datos preparados para el aviario externo
@@ -1011,7 +969,8 @@ con mayor contraste:
 | `seconds` | Duración del audio decodificado |
 
 El corte inicial de audio usa la misma idea de energía y planitud para encontrar
-un tramo útil. La limpieza del mezclador estima el ruido con el percentil 25
+un tramo útil. La limpieza de las pistas de `audio/mixer/` (preparadas para el
+mezclador, hoy retirado, y usadas por «Escuchar su año») estima el ruido con el percentil 25
 de la magnitud en cada frecuencia y lo suaviza entre frecuencias. Su ganancia
 es `1 − 1,6 × ruido/magnitud`, limitada entre 0,08 y 1 y suavizada; atenúa
 además las frecuencias graves con `clip((Hz−120)/230, 0,12, 1)`. Son parámetros
@@ -1106,7 +1065,7 @@ Origen: [fenologia_2024.py](../mineria/fenologia_2024.py),
 | `overview.json` | Subconjunto de especies regulares y conteos nacionales | `overview/build_overview_data.py` → pulso y puntos por especie |
 | `grid_month.json` | Cantidades espaciales de 0,2°, índice de ola y límite de color | `overview/build_grid_data.py` → modo Zonas |
 | `grid_region/*.json` | Cantidades finas de 0,05° y factor perDot | `overview/build_grid_data.py` → detalle regional |
-| `loop.json` | Especies elegidas, copias, tiempos y ventanas de audio | `overview/build_loop_data.py` → reproductor de portada |
+| `loop.json` | Especies elegidas, copias, tiempos y ventanas de audio | `overview/build_loop_data.py` → sin uso en la web desde que se retiró el recorrido sonoro |
 | `game/index.json`, `game/region-*.json` | Shares, lifts, índices anuales, riqueza y elencos | `aviary/build_game_data.py` → datos para proyecto externo |
 | `game/enrich/*.json`, `game/terrain-*.json` | Rasgos, proporciones, paletas, relieve y cobertura | Scripts `enrich/` → preparación de modelos y escenas |
 | Cachés y `audio_review/*.json` | Scores de fotos, medidas de audio y decisiones de revisión | Scripts `media/` → selección de materiales |

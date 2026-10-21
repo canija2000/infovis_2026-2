@@ -18,6 +18,8 @@
     href="https://fonts.googleapis.com/css2?family=Changa+One:ital@0;1&family=Shrikhand&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Pixelify+Sans:wght@400..700&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="css/site.css?v=refactor-1">
+  <link rel="stylesheet" href="css/species-year.css">
+  <link rel="stylesheet" href="css/explore-toolbar.css">
   <link rel="stylesheet" href="css/metrics.css">
 </head>
 
@@ -42,30 +44,6 @@
   </header>
 
   <nav class="toolbar" aria-label="Controles">
-    <div class="tool play-tool">
-      <button id="play" class="play icon-btn" type="button" aria-pressed="false" aria-label="Escuchar el año"
-        title="Escuchar el año (barra espaciadora)">
-        <svg viewBox="0 0 16 16" aria-hidden="true">
-          <path id="play-icon" d="M4.5 2.5v11l9-5.5z" />
-        </svg>
-      </button>
-      <button id="mute" class="ghost icon-btn" type="button" aria-pressed="false" aria-label="Silenciar"
-        title="Silenciar">
-        <svg viewBox="0 0 20 20" aria-hidden="true">
-          <path class="speaker" d="M3 7.5h3l4-3.5v12l-4-3.5H3z" />
-          <path class="waves" d="M13 7a4 4 0 0 1 0 6M15.5 4.5a7.5 7.5 0 0 1 0 11" />
-          <path class="cross" d="M13 7.5l5 5M18 7.5l-5 5" />
-        </svg>
-      </button>
-      <button id="mixer-open" class="ghost mixer-open" type="button" aria-expanded="false" aria-controls="mixer"
-        title="Mezclar cantos de varias especies">
-        <svg viewBox="0 0 20 20" aria-hidden="true">
-          <path d="M5 3v14M10 3v14M15 3v14" />
-          <path class="knob" d="M3.5 12h3M8.5 6h3M13.5 10h3" />
-        </svg>
-        Mezcla <span id="mixer-count" class="mixer-count" hidden></span>
-      </button>
-    </div>
     <div class="tool month-tool">
       <label for="month" class="tool-label">Mes <strong id="month-label">enero</strong></label>
       <input id="month" type="range" min="0" max="11" step="1" value="6" aria-describedby="month-label">
@@ -172,6 +150,19 @@
       <figure>
         <figcaption>Perfil anual en <span id="p-scope"></span><br>100 % = su mejor mes</figcaption>
         <div id="p-radial"></div>
+        <button id="p-year" class="year-play" type="button" aria-pressed="false" hidden>
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9l7.5-4.5z"></path></svg>
+          <span>Escuchar su año</span></button>
+        <p id="p-year-now" class="year-now" aria-live="polite"></p>
+        <p id="p-year-note" class="year-note" hidden>Su canto, mes a mes desde enero: cuanto más lejos del centro
+          llega el perfil, más aves cantan y más cerca suenan; con poca presencia, un ave sola y lejana, con eco.
+          18 s.</p>
+        <div id="p-scenes" class="year-scenes" role="group" aria-label="Así suena cada nivel de presencia" hidden>
+          <span>Así suena:</span>
+          <button type="button" data-scene="near" aria-pressed="false" title="Un coro de aves, cerca y nítido">Mucha</button>
+          <button type="button" data-scene="mid" aria-pressed="false" title="Dos aves, a media distancia">Media</button>
+          <button type="button" data-scene="far" aria-pressed="false" title="Un ave sola, lejos y con eco">Poca</button>
+        </div>
       </figure>
       <figure>
         <figcaption>Frecuencia media por región</figcaption>
@@ -185,25 +176,13 @@
 
   <section class="sound-legend" aria-labelledby="sl-title">
     <h2 id="sl-title" style="color:#13139e;">Cómo suena</h2>
-    <p>Con <b>▶</b> (Escuchar el año) cada mes dura 2,4 s y recorre Chile de norte a sur en cinco macrozonas (Norte
-      Grande,
-      Norte Chico, Centro, Sur y Austral). Un golpe grave y suave marca el inicio de cada mes.</p>
-    <ul>
-      <li><b>Timbre ← clase.</b> Las residentes son un colchón sostenido y estable: los <i>sedentarios</i>. Las
-        visitantes
-        son cantos reales: el <b>Fío-fío</b> (izquierda) por las de verano y el <b>Picaflor chico</b> (derecha) por las
-        de
-        invierno: los <i>nómadas</i>.</li>
-      <li><b>Ritmo ← la ola.</b> Cuantas más visitantes hay en una zona respecto de su propio año, más cantos suenan en
-        su tiempo del compás: la ola de verano crece en primavera y se apaga en otoño.</li>
-      <li><b>Tono ← latitud.</b> Los cantos se transponen: norte más agudo, sur más grave (escala pentatónica, ±6
-        semitonos),
-        sobre una base una quinta más grave que el canto original y filtrada para que no suene estridente.</li>
-      <li><b>Volumen ← cantidad.</b> Las zonas con más especies visitantes suenan más fuerte.</li>
-      <li>Si seleccionas una región, solo suena ella (con más detalle). Si abres una especie, suena <b>su</b> canto
-        donde
-        y cuando está presente.</li>
-    </ul>
+    <p>En la ficha de una especie, <b>Escuchar su año</b> hace girar una aguja por el perfil radial de enero a
+      diciembre y cada mes suena su canto en una de tres escenas: con mucha presencia en el ámbito de la ficha,
+      un coro de aves cerca; con presencia media, dos aves a media distancia; con poca, un ave sola, lejos y con eco; y
+      silencio cuando casi no está. Los botones «Así suena» tocan un ejemplo de cada una. No hace falta reconocer el
+      canto: es siempre la misma ave. Se nota más en las especies que vienen y se van; en una residente suena casi igual todo el año.
+      Pausa el clip de la ficha mientras suena.
+      <a href="metricas.html#ano-especie" data-metric="ano-especie">Cómo se calcula</a>.</p>
   </section>
 
   <footer class="method">
@@ -213,43 +192,6 @@
     <p>Cantos: <a href="https://xeno-canto.org" target="_blank" rel="noopener">Xeno-canto</a>, con autor y licencia
       Creative Commons en cada grabación. Proyecto del curso Visualización de Información 2026-2.</p>
   </footer>
-
-  <section id="mixer" class="mixer-dock" aria-labelledby="mixer-title" hidden>
-    <div class="mixer-bar">
-      <h2 id="mixer-title">Mezcla de cantos</h2>
-      <button id="mixer-play" class="play icon-btn" type="button" aria-pressed="false" aria-label="Reproducir mezcla"
-        title="Reproducir mezcla" disabled>
-        <svg viewBox="0 0 16 16" aria-hidden="true">
-          <path id="mixer-play-icon" d="M4.5 2.5v11l9-5.5z" />
-        </svg>
-      </button>
-      <label class="mixer-sync" for="mixer-sync"
-        title="Todos comienzan juntos; desmarcado, cada ave espera un tiempo aleatorio.">
-        <input id="mixer-sync" type="checkbox"> Sincronizar
-      </label>
-      <button id="mixer-search-toggle" class="ghost small" type="button" aria-expanded="false"
-        aria-controls="mixer-catalog">+ Especies</button>
-      <button id="mixer-scene" class="ghost small" type="button">Mezclar lo que se ve</button>
-      <p id="mixer-status" class="mixer-status" role="status" aria-live="polite"></p>
-      <button id="mixer-close" class="ghost icon-btn mixer-close" type="button" aria-label="Minimizar mezclador"
-        title="Minimizar (la mezcla sigue sonando)">▾</button>
-    </div>
-    <div id="mixer-catalog" class="mixer-catalog" hidden>
-      <div class="mixer-catalog-controls">
-        <input id="mixer-query" type="search" placeholder="Buscar por nombre común o científico…" autocomplete="off"
-          aria-label="Buscar especie por nombre">
-        <div id="mixer-filters" class="mixer-filters" role="group" aria-label="Filtrar por estacionariedad">
-          <button type="button" data-class="all" aria-pressed="true">Todas</button>
-          <button type="button" data-class="residente" aria-pressed="false">Residentes</button>
-          <button type="button" data-class="visitante_estival" aria-pressed="false">De verano</button>
-          <button type="button" data-class="visitante_invernal" aria-pressed="false">De invierno</button>
-        </div>
-        <p id="mixer-result-count" class="mixer-result-count" role="status" aria-live="polite"></p>
-      </div>
-      <div id="mixer-grid" class="mixer-grid" aria-label="Especies con canto"></div>
-    </div>
-    <ul id="mixer-tracks" class="mixer-tracks" aria-label="Especies en la mezcla"></ul>
-  </section>
 
   <div id="tooltip" class="tooltip" role="tooltip" hidden></div>
 

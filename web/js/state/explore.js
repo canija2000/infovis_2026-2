@@ -5,6 +5,7 @@ export function createExploreState() {
     tab: 1,
     expanded: false,
     species: null,
-    muted: false,
+    yearPlaying: false, // «Escuchar su año» de la especie abierta
+    scenePlaying: null, // ejemplo de la leyenda sonora que suena (near, mid, far)
   };
 }

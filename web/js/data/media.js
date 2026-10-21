@@ -38,16 +38,11 @@ export function createMediaRepository() {
   }
   const soundEntry = (sid) =>
     sounds && sounds.species.find((x) => x.sid === sid);
-  const grainOf = (sid) => {
-    const e = soundEntry(sid);
-    return e && e.recordings.length ? e.recordings[0].grain : null;
-  };
 
   return {
     loadSounds,
     loadImages,
     soundEntry,
-    grainOf,
     getSounds: () => sounds,
     getImages: () => images,
   };
