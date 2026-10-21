@@ -26,6 +26,9 @@ La rama `vista-calendarios-regionales` nace de `origin/main` actualizado
 | `web/js/data/regional-calendar.js` | Cargar e indexar especies, regiones y filas originales | No decide colores, interpreta presencia ni modifica el DOM |
 | `web/js/data/media.js` | Reutilizar el índice existente de cantos | El coordinador elige la grabación; la vista no la carga |
 | `web/js/audio/species-year*.js` | Plan y motor de [«Escuchar su año»](METRICAS.md#ano-especie) | No conoce la matriz ni sus botones |
+| `web/js/audio/season-chorus*.js` | Plan, motor y medidor de [«El coro de las estaciones»](METRICAS.md#coro-estaciones) | No tiene reloj propio ni conoce el gráfico: recibe cuántas especies hay de cada grupo |
+| `web/js/pages/season-chorus.js` | Coordinar la barra continua, el motor y la vista del coro | No dibuja ni crea audio por su cuenta |
+| `web/js/overview/pulse-curve.js` | Leer la curva del gráfico en cualquier punto entre meses (la misma de d3) | Función pura |
 | `web/js/overview/regional-examples.js` | Definir los tres ejemplos editoriales y las siete regiones iniciales | Usa nombres científicos estables, sin duplicar métricas |
 | `web/js/overview/regional-calendar.js` | Consultar clase regional, perfil, años y máscara publicada | Función pura, sin formato ni efectos sobre la página |
 | `web/js/views/overview/regional-calendar.js` | Presentar selector, foto, matriz, detalle y estados de carga/error | Devuelve acciones mediante callbacks; no modifica la selección |

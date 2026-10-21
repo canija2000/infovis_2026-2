@@ -38,6 +38,7 @@ Para ir directamente a los bloques complementarios: [sonido](#ano-especie),
 | Naranja / azul en Regiones | Diferencia entre niveles de riqueza de verano e invierno normalizados | [Ola regional](#ola-regiones) |
 | «Cada punto = … especie-días» | Un factor de representación del detalle regional | [Días-especie por punto](#por-punto) |
 | Volumen del canto en «Escuchar su año» | Perfil relativo × años con registro de una especie en un lugar y mes | [Escuchar su año](#ano-especie) |
+| Aves que cantan en «El coro de las estaciones» | Especies de cada grupo en ese punto del año, respecto de su propio pico | [El coro de las estaciones](#coro-estaciones) |
 
 ### La cadena principal
 
@@ -717,9 +718,10 @@ Datos: [directorio grid_region](../web/data/grid_region/).
 
 ## 13. Medidas y parámetros del sonido
 
-La web suena en un solo tipo de lugar: [Escuchar su año](#ano-especie), en los
-calendarios regionales de la portada y en la ficha de especie, además del clip
-de cada especie en su ficha. El recorrido sonoro de la portada, la
+La web suena en dos lugares: [El coro de las estaciones](#coro-estaciones), sobre
+«Especies presentes en Chile, mes a mes», y [Escuchar su año](#ano-especie), en
+los calendarios regionales de la portada y en la ficha de especie, además del
+clip de cada especie en su ficha. El recorrido sonoro de la portada, la
 sonificación mensual de Explorar y el mezclador se retiraron (ver
 [CAMBIOS](../CAMBIOS.md), entradas 27 y 28): había que reconocer qué ave
 cantaba y varias variables sonaban a la vez. Sus datos (`loop.json` y los
@@ -793,6 +795,73 @@ clip se reanuda, la escucha se detiene.
 
 Origen: [plan](../web/js/audio/species-year-plan.js),
 [motor](../web/js/audio/species-year.js).
+
+<a id="coro-estaciones"></a>
+### 13.2. El coro de las estaciones: tres grupos, un año continuo
+
+Está en «Especies presentes en Chile, mes a mes». El botón «▶ Escuchar el año»
+mueve una barra de julio a junio **de forma continua** (3 s por mes; 33 s los
+once tramos), y también se puede arrastrar o mover con las flechas. Donde la
+barra corta el borde superior de cada banda se posa un ave del color de su
+grupo, que canta por él. Como «Escuchar su año», **no hay que reconocer qué ave
+canta**: cada ave del gráfico abre el pico y suelta notas exactamente cuando su
+grupo suena, así el gráfico hace de leyenda. Cada capa codifica una sola
+variable: cuántas especies de su grupo hay en ese punto del año.
+
+```text
+n_g(t)     = grosor de la banda del grupo g bajo la barra, en la misma curva que
+             dibuja el gráfico (d3.curveMonotoneX; en cada mes, el conteo publicado)
+nivel_g(t) = 0,1 + 0,9 × (n_g(t) / pico de g)^1,6        visitantes de verano e invierno
+           = 1                                            residentes (no siguen al dato)
+aves       = máx(1, redondear(nivel × aves máximas del grupo))
+cantos/s   = nivel × cantos por segundo del grupo en su pico (proceso de Poisson)
+volumen    = 0,55 + 0,45 × nivel;   distancia = 0,55 × (1 − nivel)
+```
+
+El exponente separa los meses bajos de los altos (el oído no distingue bien
+31 % de 42 %, pero sí «casi nada» de «mucho»); el piso de 0,1 evita que un grupo
+con decenas de especies se calle varios segundos, lo que se leería como «no hay
+ninguna». La forma de cada capa sigue su propia curva (el pico de invierno, en
+mayo, se oye), y el tamaño del coro respeta la diferencia entre grupos.
+
+| Grupo | Especies que cantan | Aves a la vez | Cantos/s en el pico | Lugar | Distancia |
+|---|---|---|---|---|---|
+| Residentes | Chincol, Diuca común, Loica, Tórtola | 2 | 1,2 | Centro, repartidas | Fija, lejos (apagadas y con eco); bajan hasta 30 % cuando cantan fuerte las visitantes |
+| Visitantes de verano | Fío-fío, Jilguero cordillerano, Golondrina barranquera, Picaflor cordillerano | 1 a 5 | 3,2 | Izquierda (−0,55 ± 0,5) | Cerca en el pico; más lejos cuantas menos hay |
+| Visitantes de invierno | Viudita, Tenca de alas blancas, Bandurrilla de los bosques, Chorlito chileno | 1 a 3 | 2 | Derecha (+0,55 ± 0,45) | Igual que verano |
+
+Las especies se eligieron porque su presencia nacional sigue la estación de su
+grupo (las de verano, ausentes de junio a agosto; las de invierno, de diciembre
+a febrero), porque tienen grabación limpia y por contraste: verano agudo y
+rápido (gorjeos, chillido de picaflor) y el «fío-fío»; invierno, notas más lentas
+y algo más graves; residentes, cantos conocidos y el arrullo grave de la Tórtola.
+El lado del estéreo es el mismo lado de la barra donde está el ave del grupo.
+
+| Parámetro | Valor | Interpretación |
+|---|---|---|
+| Canto de cada ave | 1,6 s (verano), 1,8 s (invierno), 2,6 s (residentes), ±15 %; empieza en un tramo con canto del clip (≥ 35 % de la energía del mejor) | No empieza en un silencio de la grabación |
+| Variación entre aves | Tono y ritmo ±3,5 %, volumen −20 % al azar, nunca dos veces seguidas la misma especie si hay otra | Se oyen aves distintas, no copias |
+| Distancia | Pasa-bajos en (2,2 − 1,6 × distancia) × tono del canto y envío al eco de 0,08 + 0,9 × distancia | La misma metáfora de «Escuchar su año»: poca presencia, más lejos |
+| Agenda | Cada 50 ms, con 250 ms de anticipación; candidatos a la tasa del pico y aceptados con la proporción de la tasa actual | Si la barra entra en el pico, el coro crece de inmediato |
+| Pico y notas | Nivel medido en cada capa (RMS por cuadro): el pico se abre con él; una nota sale al empezar cada sílaba (el nivel supera dos veces su piso y vuelve a bajar del 55 % de su máximo antes de la siguiente) | La animación sigue al sonido real: un gorjeo suelta muchas notas y en pares, un silbido lento pocas y sueltas; las de las residentes, pequeñas y tenues |
+| Igualación y salida | Cada clip a un RMS común; ganancia 0,9 y limitador (−3 dBFS) | Una grabación más fuerte no parece un grupo más grande |
+
+Medido al grabar la salida real de la página (Chromium, ventanas de 2 s): de
+−32 dB en julio y junio a −27 dB entre noviembre y enero; en los meses de verano
+la izquierda queda 4 a 6 dB sobre la derecha, y en otoño e invierno se inclina
+hacia la derecha. Notas: las de verano, ninguna o casi ninguna en
+julio, agosto y junio, y entre 5 y 12 a la vez en pantalla de noviembre a marzo;
+las de invierno, al revés.
+
+Un sonido a la vez: empezar el coro pausa «Escuchar su año» y viceversa. Pausar
+deja la barra donde estaba; el siguiente ▶ sigue desde ahí (o parte de julio si
+el año terminó).
+
+Origen: [curva](../web/js/overview/pulse-curve.js),
+[plan](../web/js/audio/season-chorus-plan.js),
+[motor](../web/js/audio/season-chorus.js),
+[medidor](../web/js/audio/season-chorus-meter.js),
+[vista](../web/js/views/overview/pulse-chorus.js).
 
 <a id="aviario"></a>
 ## 14. Medidas de los datos preparados para el aviario externo

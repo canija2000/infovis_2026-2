@@ -6,7 +6,14 @@ const SHORT = ["residentes", "de verano", "de invierno"];
 // Orden de apilado: residentes abajo, invierno al medio (banda delgada), verano arriba (la ola).
 const STACK = [0, 2, 1];
 
-export function createPulse({ data, state, setMonth, showTip, hideTip }) {
+export function createPulse({
+  data,
+  state,
+  setMonth,
+  showTip,
+  hideTip,
+  onDrawn,
+}) {
   const pulse = {};
   function drawPulse() {
     const host = document.getElementById("pulse");
@@ -168,6 +175,8 @@ export function createPulse({ data, state, setMonth, showTip, hideTip }) {
 
     Object.assign(pulse, { x, cursor });
     updatePulse();
+    // Capas que se dibujan encima del gráfico (la barra y las aves del coro).
+    if (onDrawn) onDrawn({ g, x, y, w, h });
   }
   function updatePulse() {
     if (!pulse.x) return;

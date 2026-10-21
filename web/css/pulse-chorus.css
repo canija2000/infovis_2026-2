@@ -1,0 +1,191 @@
+/* «El coro de las estaciones» sobre «Especies presentes en Chile, mes a mes»: botón, barra continua,
+   aves que cantan en cada curva y notas. Archivo aparte: overview.css se compara byte a byte en el
+   test de invariancia. */
+
+.chorus-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+  margin-top: 12px;
+}
+.chorus-play {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 15px 7px 12px;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--bg);
+  font: 600 14px var(--font);
+  cursor: pointer;
+}
+.chorus-play svg {
+  width: 12px;
+  height: 12px;
+  fill: currentColor;
+}
+.chorus-play svg[hidden] {
+  display: none;
+}
+.chorus-play:hover {
+  background: transparent;
+  color: var(--ink);
+}
+.chorus-play.is-playing {
+  background: transparent;
+  color: var(--ink);
+}
+.chorus-play[aria-busy="true"] {
+  opacity: 0.65;
+  cursor: progress;
+}
+.chorus-play:focus-visible {
+  outline: 2px solid var(--c0);
+  outline-offset: 2px;
+}
+.stage figcaption .chorus-hint {
+  flex: 1 1 320px;
+  max-width: 62ch;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--ink-2);
+}
+.stage figcaption .chorus-now {
+  flex-basis: 100%;
+  min-height: 1.5em;
+  margin: 0;
+  font: 12px var(--mono);
+  color: var(--ink-2);
+}
+.chorus-now:empty {
+  display: none;
+}
+.chorus-now > b {
+  margin-right: 12px;
+  color: var(--ink);
+  text-transform: capitalize;
+}
+.chorus-now .v {
+  margin-right: 12px;
+  white-space: nowrap;
+}
+.chorus-now .v b {
+  font-weight: 600;
+}
+.chorus-now .c0 b { color: var(--c0-ink); }
+.chorus-now .c1 b { color: var(--c1-ink); }
+.chorus-now .c2 b { color: var(--c2-ink); }
+
+/* La barra reemplaza al cursor del mes. */
+.pulse-chart.has-chorus .cursor {
+  display: none;
+}
+.chorus {
+  pointer-events: none;
+}
+.chorus-line {
+  stroke: var(--cursor);
+  stroke-width: 1.5px;
+}
+.chorus-span {
+  stroke-width: 5px;
+  stroke-linecap: round;
+}
+.chorus-span.c0 { stroke: var(--c0-ink); }
+.chorus-span.c1 { stroke: var(--c1-ink); }
+.chorus-span.c2 { stroke: var(--c2-ink); }
+.chorus-handle {
+  pointer-events: all;
+  cursor: grab;
+  outline: none;
+  touch-action: none;
+}
+.chorus-handle.dragging {
+  cursor: grabbing;
+}
+.chorus-grab {
+  fill: transparent;
+}
+.chorus-knob {
+  fill: var(--cursor);
+  stroke: var(--bg);
+  stroke-width: 2px;
+}
+.chorus-handle:focus-visible .chorus-knob {
+  stroke: var(--c0);
+  stroke-width: 3px;
+}
+
+/* Aves: color de su grupo, con un borde del fondo para separarlas de las bandas. */
+.chorus-bird .figure path {
+  stroke: var(--bg);
+  stroke-width: 1.1px;
+  stroke-linejoin: round;
+  paint-order: stroke;
+}
+.chorus-bird.c0 .body,
+.chorus-bird.c0 .skull,
+.chorus-bird.c0 .tail { fill: var(--c0); }
+.chorus-bird.c1 .body,
+.chorus-bird.c1 .skull,
+.chorus-bird.c1 .tail { fill: var(--c1); }
+.chorus-bird.c2 .body,
+.chorus-bird.c2 .skull,
+.chorus-bird.c2 .tail { fill: var(--c2); }
+.chorus-bird.c0 .wing { fill: var(--c0-ink); }
+.chorus-bird.c1 .wing { fill: var(--c1-ink); }
+.chorus-bird.c2 .wing { fill: var(--c2-ink); }
+.chorus-bird .figure .upper,
+.chorus-bird .figure .lower {
+  fill: var(--ink);
+  stroke: none;
+}
+.chorus-bird .figure .eye {
+  fill: var(--ink);
+  stroke: none;
+}
+.chorus-bird .figure .legs {
+  fill: none;
+  stroke: var(--ink-2);
+  stroke-width: 1px;
+  paint-order: normal;
+}
+.chorus-bird .halo { fill: var(--surface); }
+.chorus-bird.c0 .halo { fill: var(--c0); }
+.chorus-bird.c1 .halo { fill: var(--c1); }
+.chorus-bird.c2 .halo { fill: var(--c2); }
+.chorus-count {
+  font: 600 12px var(--mono);
+  paint-order: stroke;
+  stroke: var(--bg);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+.chorus-bird.c0 .chorus-count { fill: var(--c0-ink); }
+.chorus-bird.c1 .chorus-count { fill: var(--c1-ink); }
+.chorus-bird.c2 .chorus-count { fill: var(--c2-ink); }
+
+/* Notas que salen del pico. */
+.sing-note {
+  stroke: var(--bg);
+  stroke-width: 0.6px;
+  paint-order: stroke;
+}
+.sing-note.c0 { fill: var(--c0-ink); }
+.sing-note.c1 { fill: var(--c1-ink); }
+.sing-note.c2 { fill: var(--c2-ink); }
+
+@media (max-width: 640px) {
+  .stage figcaption .chorus-hint {
+    flex-basis: 100%;
+  }
+}
+
+/* Mientras suena, la anotación del pico cede el primer plano a las aves y sus notas. */
+.pulse-chart.chorus-on .note {
+  opacity: 0.35;
+  transition: opacity 0.4s;
+}

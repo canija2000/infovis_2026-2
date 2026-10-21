@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="css/overview.css?v=refactor-1">
   <link rel="stylesheet" href="css/flock.css">
   <link rel="stylesheet" href="css/month-selectors.css">
+  <link rel="stylesheet" href="css/pulse-chorus.css">
   <link rel="stylesheet" href="css/regional-calendar.css">
   <link rel="stylesheet" href="css/metrics.css">
   <link rel="stylesheet" href="css/versions.css">
@@ -64,6 +65,16 @@
           <span><i class="sw c0"></i>Residentes</span>
           <span><i class="sw c1"></i>Visitantes de verano</span>
           <span><i class="sw c2"></i>Visitantes de invierno</span>
+        </div>
+        <div class="chorus-controls">
+          <button id="chorus-play" class="chorus-play" type="button" aria-pressed="false" aria-controls="pulse">
+            <svg class="i-play" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1l9 5-9 5z" /></svg>
+            <svg class="i-pause" viewBox="0 0 12 12" aria-hidden="true" hidden><path d="M2 1h3v10H2zM7 1h3v10H7z" /></svg>
+            <span class="chorus-label">Escuchar el año</span>
+          </button>
+          <p class="chorus-hint">En cada curva canta un ave por su grupo: cuantas más especies hay, más aves cantan y
+            más cerca. 33 segundos; también puedes arrastrar la barra.</p>
+          <p id="chorus-now" class="chorus-now" aria-live="polite"></p>
         </div>
       </figcaption>
       <div id="pulse" class="pulse-chart"></div>
@@ -201,6 +212,15 @@
 
   <section id="como-suena" class="como-suena" aria-labelledby="cs-title">
     <h2 id="cs-title">Cómo suena</h2>
+    <p><b>Escuchar el año del país.</b> En «Especies presentes en Chile, mes a mes», el botón <b>▶ Escuchar el año</b>
+      mueve una barra de julio a junio, sin saltos. Donde la barra corta cada curva hay un ave de su color, que canta
+      por su grupo: las <b>residentes</b> suenan siempre igual, de fondo y lejos (Chincol, Diuca, Loica y Tórtola); las
+      <b>visitantes de verano</b> (Fío-fío, Jilguero cordillerano, Golondrina barranquera y Picaflor cordillerano) y
+      las <b>de invierno</b> (Viudita, Tenca de alas blancas, Bandurrilla de los bosques y Chorlito chileno) cantan
+      adelante, con más aves, más seguido y más cerca cuanto más gruesa es su banda. El verano suena a la izquierda y
+      el invierno a la derecha, el mismo lado donde está su ave. Cuando un ave canta abre el pico y suelta notas: más
+      grandes cuanto más fuerte suena y en pares cuando el canto es rápido.
+      <a href="metricas.html#coro-estaciones" data-metric="coro-estaciones">Cómo se calcula</a>.</p>
     <p><b>Escuchar el año de una especie.</b> En «La misma ave, distintos calendarios», el botón <b>▶</b> de cada región
       recorre su fila de julio a junio y cada mes suena el canto de esa especie en una de tres escenas: con mucha
       presencia, <b>un coro de aves cerca</b>; con presencia media, <b>dos aves a media distancia</b>; con poca, <b>un ave
