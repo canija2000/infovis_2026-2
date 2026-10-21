@@ -4,7 +4,7 @@
  * Cada mes suena el canto de la especie. El nivel de presencia del mes elige una de tres escenas
  * bien distintas, para que se reconozcan sin explicación (codificación redundante de una sola
  * variable: número de aves, distancia y volumen dicen lo mismo):
- *   cerca · un coro de cinco aves que cantan juntas el canto completo, de lado a lado;
+ *   cerca · un coro de seis aves que cantan a la vez, cada una en su lugar, distancia y ritmo;
  *   medio · dos aves cantando juntas, algo apagadas y con un poco de eco;
  *   lejos · un ave sola, muy apagada y con mucho eco, como desde el otro lado de un valle.
  * En silencio cuando casi no está. No hay que reconocer el canto: la persona ya eligió el ave
@@ -36,7 +36,7 @@ export function stepLevel({ profile, years }) {
 export const SCENES = {
   near: {
     label: "un coro de aves, cerca",
-    birds: 5,
+    birds: 6,
     muffle: null,
     dry: 1,
     wet: 0.12, // un poco de aire común: une al coro en un mismo lugar
@@ -48,7 +48,7 @@ export const SCENES = {
     muffle: 0.8,
     dry: 0.75,
     wet: 0.35,
-    db: -5,
+    db: -8,
   },
   far: {
     label: "un ave sola, lejos",
@@ -56,7 +56,7 @@ export const SCENES = {
     muffle: 0.35,
     dry: 0.3,
     wet: 1,
-    db: -13,
+    db: -15,
   },
 };
 
@@ -80,21 +80,41 @@ export function stepGain(level) {
   return 0.45 + 0.55 * Math.min(1, level);
 }
 
-// El coro: todas las aves cantan a la vez el canto completo, como al amanecer. Para que suene a
-// muchas aves y no a una sola duplicada, cada una entra apenas desfasada (menos de 0,15 s), canta
-// desde otro punto de la grabación (así se cruzan notas distintas), con una afinación levemente
-// propia (±1,5–3,5 %), en otro lugar del espacio estéreo y algo más cerca o más atrás (level).
-// Antes, con fragmentos cortos, entradas muy separadas y ±5–8 % de afinación, sonaba entrecortado.
-// El orden es fijo para que cada vuelta del año suene igual.
-const BIRDS = [
-  { delay: 0, shift: 0, rate: 1, pan: 0, level: 1 },
-  { delay: 0.07, shift: 0.45, rate: 1.02, pan: -0.75, level: 0.85 },
-  { delay: 0.13, shift: 0.9, rate: 0.98, pan: 0.75, level: 0.85 },
-  { delay: 0.04, shift: 0.25, rate: 1.035, pan: -0.4, level: 0.7 },
-  { delay: 0.1, shift: 0.65, rate: 0.97, pan: 0.4, level: 0.7 },
+// El coro. Con una sola grabación, cinco copias casi sincrónicas sonaban como una sola ave: los
+// canales izquierdo y derecho quedaban casi iguales (correlación 0,8–0,9) y, en cantos de notas
+// cortas y regulares como el del Picaflor chico, las copias se alineaban en una sola secuencia
+// más rápida («la misma ave cantando seguido»). Para que se oigan varias aves a la vez:
+//   · seis aves repartidas de un extremo al otro, sin ninguna que domine al centro;
+//   · cada una a su propia distancia (depth): las de atrás, más apagadas y con más eco;
+//   · cada una con su ritmo y su tono (±3–9 %): sus notas dejan de coincidir y se entrecruzan,
+//     como aves distintas que no cantan sincronizadas;
+//   · cada mes, otra mezcla de entradas y de puntos del canto (al azar con semilla: cada vuelta del
+//     año suena igual, pero un mes no repite al anterior).
+const CHORUS = [
+  { pan: -0.9, depth: 0.1, rate: 1, level: 1 },
+  { pan: 0.85, depth: 0, rate: 1.06, level: 1 },
+  { pan: -0.35, depth: 0.45, rate: 0.93, level: 0.85 },
+  { pan: 0.4, depth: 0.3, rate: 1.03, level: 0.9 },
+  { pan: -0.6, depth: 0.7, rate: 1.09, level: 0.75 },
+  { pan: 0.1, depth: 0.6, rate: 0.96, level: 0.8 },
 ];
-// Con un ave o dos, se quedan al centro o se reparten suave entre ambos lados.
-const PANS = { 1: [0], 2: [-0.35, 0.35], 5: null };
+const PAIR = [
+  { pan: -0.45, depth: 0, rate: 1, level: 1 },
+  { pan: 0.45, depth: 0.25, rate: 0.95, level: 0.9 },
+];
+const SOLO = [{ pan: 0, depth: 0, rate: 1, level: 1 }];
+const GROUPS = { 1: SOLO, 2: PAIR, 6: CHORUS };
+
+// Generador con semilla (mulberry32): el mismo mes suena igual en cada vuelta.
+function seeded(seed) {
+  let t = seed >>> 0;
+  return () => {
+    t = (t + 0x6d2b79f5) >>> 0;
+    let r = Math.imul(t ^ (t >>> 15), 1 | t);
+    r = (r + Math.imul(r ^ (r >>> 7), 61 | r)) ^ r;
+    return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
+  };
+}
 
 // steps: [{ month, profile, years }] en el orden en que se recorren.
 export function planSpeciesYear(steps, start = 0) {
@@ -114,10 +134,10 @@ export function planSpeciesYear(steps, start = 0) {
       };
     const { birds, muffle, dry, wet, db } = SCENES[scene];
     const gain = stepGain(level);
-    const pans = PANS[birds];
-    const chorus = BIRDS.slice(0, birds);
+    const group = GROUPS[birds];
+    const random = seeded(1 + (step.month ?? 12) * 101 + birds * 7);
     // Voces no correlacionadas suman energía: se reparte para que el volumen total siga a `gain`.
-    const scale = gain / Math.hypot(...chorus.map((bird) => bird.level));
+    const scale = gain / Math.hypot(...group.map((bird) => bird.level));
     return {
       index,
       month: step.month,
@@ -129,14 +149,21 @@ export function planSpeciesYear(steps, start = 0) {
       dry,
       wet,
       db,
-      voices: chorus.map((bird, i) => ({
-        at: at + bird.delay,
-        duration: PHRASE_SECONDS - bird.delay,
-        shift: bird.shift,
-        rate: bird.rate,
-        pan: pans ? pans[i] : bird.pan,
-        gain: bird.level * scale,
-      })),
+      voices: group.map((bird, i) => {
+        // La primera ave entra al inicio del mes (marca el mes); las demás, repartidas en 0,35 s.
+        const delay = i === 0 ? 0 : 0.03 + random() * 0.32;
+        // Algunas callan un poco antes: no todas terminan juntas.
+        const early = i === 0 ? 0 : random() * 0.25;
+        return {
+          at: at + delay,
+          duration: PHRASE_SECONDS - delay - early,
+          shift: birds === 1 ? 0 : random() * 1.2,
+          rate: bird.rate,
+          pan: bird.pan,
+          depth: bird.depth,
+          gain: bird.level * scale,
+        };
+      }),
     };
   });
 }

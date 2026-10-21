@@ -226,7 +226,7 @@ ocho. El botón «Escuchar su año» del perfil radial lo coordina
 
 | Sistema | Plan / selección | Motor | Duración y comportamiento |
 |---|---|---|---|
-| Escuchar su año (calendarios regionales y ficha) | `species-year-plan.js` | `species-year.js` | [1,5 s por mes; una especie; nivel = perfil × años/8 → escena: coro de 5 aves cerca, 2 a media distancia o 1 lejos con eco](METRICAS.md#ano-especie) |
+| Escuchar su año (calendarios regionales y ficha) | `species-year-plan.js` | `species-year.js` | [1,5 s por mes; una especie; nivel = perfil × años/8 → escena: coro de 6 aves cerca, 2 a media distancia o 1 lejos con eco](METRICAS.md#ano-especie) |
 
 Un **plan** describe eventos: muestra, volumen, posición estéreo y momento.
 Un **motor** ejecuta esos eventos con Web Audio. Cambiar un motor no modifica

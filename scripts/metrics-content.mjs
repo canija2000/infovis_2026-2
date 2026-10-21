@@ -239,7 +239,7 @@ export const groups = [
         "1,5 s/mes",
         "Una especie en un lugar: cada mes suena su canto. El nivel elige una de tres escenas: un coro de aves cerca, dos a media distancia o una sola, lejos y con eco.",
         `${v("nivel", "m")}${eq}${f(p, "<mn>100</mn>")}${mul}${f(Y, "<mn>8</mn>")}`,
-        "Lejos (1 ave, mucho eco) si el nivel es menor que 0,4; medio (2 aves) hasta 0,75; cerca (coro de 5 aves que cantan juntas) desde ahí. Silencio bajo 0,05. 1,5 s por mes; 18 s el año.",
+        "Lejos (1 ave, mucho eco) si el nivel es menor que 0,4; medio (2 aves) hasta 0,75; cerca (coro de 6 aves que cantan a la vez) desde ahí. Silencio bajo 0,05. 1,5 s por mes; 18 s el año.",
       ),
     ],
   },

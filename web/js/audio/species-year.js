@@ -14,8 +14,8 @@ import {
  * mes suena, para que la página mueva el cursor. Cada página crea su propio reproductor.
  * Sin compresor: el volumen es parte del dato y no debe aplanarse; solo un limitador evita saturar.
  *
- * Cadena de un mes (cerca: un coro de cinco aves que cantan juntas):
- *                    ave → envolvente → paneo ┐
+ * Cadena de un mes (cerca: un coro de seis aves; las de atrás, apagadas y con su propio eco):
+ *                    ave → envolvente → [apagado] → paneo ┐
  *                    ave → envolvente → paneo ├→ pasa-bajos (distancia) ┬→ directo → salida
  *                    ave → envolvente → paneo ┘                         └→ retardo → eco → salida
  */
@@ -135,8 +135,9 @@ export function createSpeciesYearPlayer() {
     return filter;
   }
 
-  function voice(buffer, offset, spec, bus) {
-    const { at, duration, gain, rate, pan, shift } = spec;
+  // depth (0–1): qué tan atrás está esta ave dentro de su escena; más atrás, más apagada y con más eco.
+  function voice(buffer, offset, spec, bus, reverbIn, pitch) {
+    const { at, duration, gain, rate, pan, shift, depth = 0 } = spec;
     const env = ctx.createGain();
     const release = Math.min(RELEASE, duration / 2);
     env.gain.setValueAtTime(0.0001, at);
@@ -147,11 +148,25 @@ export function createSpeciesYearPlayer() {
     src.buffer = buffer;
     src.playbackRate.value = rate;
     src.connect(env);
+    let out = env;
+    if (depth > 0) {
+      const filter = ctx.createBiquadFilter();
+      filter.type = "lowpass";
+      filter.frequency.value = Math.min(
+        ctx.sampleRate / 2 - 100,
+        Math.max(800, pitch * (4 - 3 * depth)),
+      );
+      filter.Q.value = Math.SQRT1_2;
+      out = out.connect(filter);
+      const send = ctx.createGain();
+      send.gain.value = 0.6 * depth;
+      out.connect(send).connect(reverbIn);
+    }
     if (pan && ctx.createStereoPanner) {
       const panner = ctx.createStereoPanner();
       panner.pan.value = pan;
-      env.connect(panner).connect(bus);
-    } else env.connect(bus);
+      out.connect(panner).connect(bus);
+    } else out.connect(bus);
     // Cada ave canta su tramo completo: si desde su punto del canto no alcanza el clip, empieza
     // antes, en vez de cortarse a mitad de nota.
     const want = duration * rate;
@@ -223,7 +238,14 @@ export function createSpeciesYearPlayer() {
         const { cutoff, makeup } = distanceOf(step, tone);
         const bus = monthBus(step, cutoff, delay);
         return step.voices.map((v) =>
-          voice(buffer, start, { ...v, gain: v.gain * norm * makeup }, bus),
+          voice(
+            buffer,
+            start,
+            { ...v, gain: v.gain * norm * makeup },
+            bus,
+            delay,
+            tone.pitch,
+          ),
         );
       });
     const end = ctx.currentTime + yearDuration(steps.length) + 0.05;

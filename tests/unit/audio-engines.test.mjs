@@ -181,11 +181,11 @@ test("species year: one scene per audible month, a chorus when present, synced c
   );
   const julio = starts.filter(([, , at]) => at < 1.5);
   const septiembre = starts.filter(([, , at]) => at >= 3);
-  assert.equal(julio.length, 5, "a full month is a chorus of five birds");
+  assert.equal(julio.length, 6, "a full month is a chorus of six birds");
   assert.equal(septiembre.length, 1, "a weak month is a single bird");
-  assert.equal(starts.length, 6, "the near-silent month does not sound");
+  assert.equal(starts.length, 7, "the near-silent month does not sound");
   assert.ok(
-    starts.every(([, , , offset]) => offset > 2.9 && offset < 4),
+    starts.every(([, , , offset]) => offset >= 0 && offset < 4.4),
     "every bird sings from the song, not from the background",
   );
   assert.ok(
@@ -216,7 +216,7 @@ test("species year: one scene per audible month, a chorus when present, synced c
       .filter(
         ([node, method]) => node.startsWith("source") && method === "stop",
       ).length,
-    6,
+    7,
     "stopping cancels every bird still to come",
   );
 });

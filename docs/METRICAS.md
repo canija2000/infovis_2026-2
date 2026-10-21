@@ -744,21 +744,21 @@ nivel(m)  = perfil(m)/100 × años con registro(m)/8      (0…1)
 escena    = silencio  si nivel < 0,05
             lejos     si nivel < 0,4    un ave sola, apagada y con mucho eco
             medio     si nivel < 0,75   dos aves, algo apagadas y con algo de eco
-            cerca     en otro caso      un coro de cinco aves que cantan juntas, nítido
+            cerca     en otro caso      un coro de seis aves que cantan a la vez, cerca
 volumen   = 0,45 + 0,55 × nivel, ajustado al objetivo de la escena
 ```
 
 | Escena | Aves | Pasa-bajos | Directo / eco | Volumen objetivo |
 |---|---|---|---|---|
-| Cerca | 5, en coro | Sin filtro | 1 / 0,12 | 0 dB (referencia) |
-| Medio | 2 | 0,8 × tono del canto | 0,75 / 0,35 | −5 dB |
-| Lejos | 1 | 0,35 × tono del canto | 0,3 / 1 | −13 dB |
+| Cerca | 6, en coro | Sin filtro (las aves de atrás, algo apagadas) | 1 / 0,12 | 0 dB (referencia) |
+| Medio | 2 | 0,8 × tono del canto | 0,75 / 0,35 | −8 dB |
+| Lejos | 1 | 0,35 × tono del canto | 0,3 / 1 | −15 dB |
 
 | Parámetro | Valor | Interpretación |
 |---|---|---|
 | Duración de un mes | 1,5 s; el año completo, 18 s | Tiempo de reproducción |
 | Canto de cada ave | El canto completo (hasta 1,35 s), del tramo con más energía del clip; si desde su punto no alcanza la grabación, empieza antes en vez de cortarse | Ninguna ave se corta a mitad de nota |
-| El coro | Las aves entran juntas (desfases de 0 a 0,13 s), cada una desde otro punto del canto (0 a 0,9 s), con ±1,5–3,5 % de afinación, repartidas de −0,75 a +0,75 en estéreo y unas algo más atrás (70–100 % del volumen) | Suena como muchas aves cantando a la vez, no como una sola duplicada; una versión anterior con fragmentos cortos, entradas separadas y ±5–8 % de afinación sonaba entrecortada |
+| El coro | Seis aves repartidas de −0,9 a +0,9 en estéreo, sin ninguna que domine al centro; cada una a su propia distancia (las de atrás, apagadas y con su propio eco), con su ritmo y su tono (±3–9 %) y entrando en los primeros 0,35 s; algunas callan antes. Cada mes, otra mezcla de entradas y de puntos del canto (al azar con semilla: cada vuelta suena igual) | Se oyen varias aves a la vez y no una sola cantando seguido. Con cinco copias casi sincrónicas, izquierda y derecha quedaban casi iguales (correlación 0,8–0,9) y, en cantos de notas cortas y regulares como el del Picaflor chico, las copias se alineaban en una sola secuencia más rápida. Medido ahora: correlación 0,5–0,65 y ritmo irregular (variación de los intervalos 0,35 → 0,7 en el Picaflor chico) |
 | Volumen del coro | Se reparte entre las aves para que el total siga al de la escena | Voces independientes: más aves no suben de golpe el volumen |
 | Entradas y salidas | 50 ms de entrada y 300 ms de salida | Sin golpes: el coro respira |
 | Tono del canto | Cruces por cero / 2 del tramo, entre 1 y 9 kHz | El filtro se ajusta a cada especie: un ave lejana suena igual de apagada sea su canto grave o muy agudo |
@@ -776,8 +776,9 @@ del mes («♪ abril: un ave sola, lejos»).
 
 Medido al renderizar con OfflineAudioContext (energía de cada mes): en cuatro
 especies de tono distinto (Chincol, Fío-fío, Chorlito chileno y Picaflor chico),
-el coro cercano queda en ≈ −24 a −26 dB, las dos aves en ≈ −29 a −31 dB y el
-ave lejana en ≈ −35 a −37 dB. En el silencio que sigue, el eco del ave lejana
+el coro cercano queda en ≈ −29 dB, las dos aves en ≈ −34 a −36 dB y el ave
+lejana en ≈ −37 a −39 dB, además de la diferencia de textura (seis voces que se
+entrecruzan, dos, una) y de eco. En el silencio que sigue, el eco del ave lejana
 aún suena (≈ −50 dB) y el coro termina seco (≈ −65 dB). Con el Picaflor chico
 en Metropolitana, de abril a julio queda una sola ave lejana; de septiembre a
 marzo, el coro cercano.

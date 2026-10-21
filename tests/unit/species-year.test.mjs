@@ -57,11 +57,7 @@ test("three clearly different scenes: a close chorus, two birds, one bird far aw
   assert.equal(stepScene(0.5), "mid");
   assert.equal(stepScene(0.9), "near");
   const { near, mid, far } = SCENES;
-  assert.deepEqual(
-    [far.birds, mid.birds, near.birds],
-    [1, 2, 5],
-    "one bird, two birds, a chorus",
-  );
+  assert.deepEqual([far.birds, mid.birds, near.birds], [1, 2, 6]);
   assert.ok(far.wet > mid.wet && mid.wet > near.wet, "farther, more echo");
   assert.ok(near.wet <= 0.15, "the chorus is close: only a little shared air");
   assert.ok(
@@ -75,38 +71,64 @@ test("three clearly different scenes: a close chorus, two birds, one bird far aw
   );
   for (const scene of ["near", "mid", "far"])
     assert.equal(stepScene(stepLevel(exampleStep(scene))), scene);
+});
+
+test("the chorus sounds like several birds at once, not one bird singing faster", () => {
   const [step] = planSpeciesYear([{ month: 0, profile: 100, years: 8 }]);
-  assert.equal(step.voices.length, 5);
+  assert.equal(step.voices.length, 6);
   const onsets = step.voices.map((voice) => voice.at - step.at);
+  assert.equal(onsets[0], 0, "the first bird marks the start of the month");
   assert.ok(
-    Math.max(...onsets) < 0.15,
-    "the chorus sings together: every bird enters within 0,15 s",
+    Math.max(...onsets) <= 0.36,
+    "they sing together: every bird enters within the first 0,36 s",
   );
   assert.equal(
-    new Set(step.voices.map((voice) => voice.shift)).size,
-    5,
-    "each bird sings from another part of the song, so notes cross instead of doubling",
+    new Set(step.voices.map((voice) => voice.shift.toFixed(3))).size,
+    6,
+    "each bird sings from another part of the song",
   );
+  const rates = step.voices.map((voice) => voice.rate);
+  assert.equal(new Set(rates).size, 6, "each bird has its own tempo and pitch");
   assert.ok(
-    step.voices.every((voice) => Math.abs(voice.rate - 1) <= 0.035),
-    "small detuning: a chorus, not chipmunks",
+    rates.every((rate) => Math.abs(rate - 1) <= 0.1),
+    "within a natural range, not chipmunks",
   );
   const pans = step.voices.map((voice) => voice.pan);
   assert.ok(
-    Math.min(...pans) <= -0.7 && Math.max(...pans) >= 0.7,
-    "side to side",
+    Math.min(...pans) <= -0.85 && Math.max(...pans) >= 0.85,
+    "from one side to the other",
+  );
+  assert.ok(
+    pans.filter((pan) => Math.abs(pan) < 0.2).length <= 1,
+    "no group of birds piled up in the centre",
+  );
+  const depths = step.voices.map((voice) => voice.depth);
+  assert.ok(
+    Math.max(...depths) - Math.min(...depths) >= 0.5,
+    "some birds close, some further back",
   );
   assert.ok(
     step.voices.every(
-      (voice) => Math.abs(voice.at + voice.duration - (step.at + 1.35)) < 1e-9,
+      (voice) => voice.at + voice.duration <= step.at + 1.35 + 1e-9,
     ),
-    "every bird sings the whole phrase and ends with the others, before the next month",
+    "every bird ends before the next month",
   );
   assert.ok(
     Math.abs(
       Math.hypot(...step.voices.map((voice) => voice.gain)) - step.gain,
     ) < 1e-9,
     "the chorus keeps the month's overall level",
+  );
+  const [other] = planSpeciesYear([{ month: 1, profile: 100, years: 8 }]);
+  assert.notDeepEqual(
+    other.voices.map((voice) => voice.shift),
+    step.voices.map((voice) => voice.shift),
+    "one month does not repeat the previous one",
+  );
+  assert.deepEqual(
+    planSpeciesYear([{ month: 0, profile: 100, years: 8 }])[0].voices,
+    step.voices,
+    "the same month sounds the same every time",
   );
 });
 
