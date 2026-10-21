@@ -226,7 +226,7 @@ ocho. El botón «Escuchar su año» del perfil radial lo coordina
 
 | Sistema | Plan / selección | Motor | Duración y comportamiento |
 |---|---|---|---|
-| El coro de las estaciones (gráfico de arriba de la portada) | `season-chorus-plan.js`; curva en `overview/pulse-curve.js` | `season-chorus.js` (+ `season-chorus-meter.js` para pico y notas) | [Barra continua de julio a junio, 3 s por mes; tres capas: residentes de fondo y fijas, verano (izquierda) e invierno (derecha) con más aves cuanto más gruesa su banda](METRICAS.md#coro-estaciones) |
+| El coro de las estaciones (gráfico de arriba de la portada) | `season-chorus-plan.js`; curva en `overview/pulse-curve.js` | `season-chorus.js` (+ `season-chorus-meter.js`: envolvente y sílabas de cada canto, para el pico y las notas) | [Barra continua de julio a junio, 3 s por mes; un canto por grupo (Tortolita cuyana, Picaflor cordillerano, Viudita): residentes de fondo y fijas, verano (izquierda) e invierno (derecha) con más aves cuanto más gruesa su banda; cada ave dibujada es una voz](METRICAS.md#coro-estaciones) |
 | Escuchar su año (calendarios regionales y ficha) | `species-year-plan.js` | `species-year.js` | [1,5 s por mes; una especie; nivel = perfil × años/8 → escena: coro de 6 aves cerca, 2 a media distancia o 1 lejos con eco](METRICAS.md#ano-especie) |
 
 Un **plan** describe eventos: muestra, volumen, posición estéreo y momento.

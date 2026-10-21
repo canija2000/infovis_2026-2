@@ -74,6 +74,15 @@
           </button>
           <p class="chorus-hint">En cada curva canta un ave por su grupo: cuantas más especies hay, más aves cantan y
             más cerca. 33 segundos; también puedes arrastrar la barra.</p>
+          <div class="chorus-legend" role="group" aria-label="Así suena cada grupo">
+            <span>Así suena:</span>
+            <button type="button" data-layer="0" aria-pressed="false" title="Tortolita cuyana: un arrullo grave y parejo"><i
+                class="sw c0"></i>Residentes · arrullo</button>
+            <button type="button" data-layer="1" aria-pressed="false" title="Picaflor cordillerano: chillidos agudos y rápidos"><i
+                class="sw c1"></i>Verano · chillidos</button>
+            <button type="button" data-layer="2" aria-pressed="false" title="Viudita: un silbido largo que baja"><i
+                class="sw c2"></i>Invierno · silbido</button>
+          </div>
           <p id="chorus-now" class="chorus-now" aria-live="polite"></p>
         </div>
       </figcaption>
@@ -213,13 +222,14 @@
   <section id="como-suena" class="como-suena" aria-labelledby="cs-title">
     <h2 id="cs-title">Cómo suena</h2>
     <p><b>Escuchar el año del país.</b> En «Especies presentes en Chile, mes a mes», el botón <b>▶ Escuchar el año</b>
-      mueve una barra de julio a junio, sin saltos. Donde la barra corta cada curva hay un ave de su color, que canta
-      por su grupo: las <b>residentes</b> suenan siempre igual, de fondo y lejos (Chincol, Diuca, Loica y Tórtola); las
-      <b>visitantes de verano</b> (Fío-fío, Jilguero cordillerano, Golondrina barranquera y Picaflor cordillerano) y
-      las <b>de invierno</b> (Viudita, Tenca de alas blancas, Bandurrilla de los bosques y Chorlito chileno) cantan
-      adelante, con más aves, más seguido y más cerca cuanto más gruesa es su banda. El verano suena a la izquierda y
-      el invierno a la derecha, el mismo lado donde está su ave. Cuando un ave canta abre el pico y suelta notas: más
-      grandes cuanto más fuerte suena y en pares cuando el canto es rápido.
+      mueve una barra de julio a junio, sin saltos. Donde la barra corta cada curva se posa un ave de su color, y cada
+      grupo tiene un canto propio, fácil de distinguir: las <b>residentes</b>, el arrullo grave y parejo de la Tortolita
+      cuyana, siempre igual y de fondo; las <b>visitantes de verano</b>, los chillidos agudos y rápidos del Picaflor
+      cordillerano; las <b>de invierno</b>, el silbido largo de la Viudita. Cuanto más gruesa es la banda de las
+      visitantes, más aves cantan a la vez (y se ven más aves junto a la barra), más seguido y más cerca. El verano suena
+      a la izquierda y el invierno a la derecha, el mismo lado donde está su ave. Cada ave abre el pico al compás de su
+      propio canto y suelta una nota por sílaba: sueltas para el arrullo, en pares para los chillidos y una nota larga
+      para el silbido. Los botones «Así suena» tocan un canto de cada grupo.
       <a href="metricas.html#coro-estaciones" data-metric="coro-estaciones">Cómo se calcula</a>.</p>
     <p><b>Escuchar el año de una especie.</b> En «La misma ave, distintos calendarios», el botón <b>▶</b> de cada región
       recorre su fila de julio a junio y cada mes suena el canto de esa especie en una de tres escenas: con mucha

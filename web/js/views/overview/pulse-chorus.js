@@ -2,20 +2,22 @@
  * «El coro de las estaciones» sobre «Especies presentes en Chile, mes a mes».
  *
  * Una barra recorre el gráfico de julio a junio. Donde corta el borde de cada banda se posa un ave
- * del color de su grupo; cuando su grupo suena, el ave canta: abre el pico al ritmo del sonido real
- * y suelta notas. Las notas cambian con el canto: más grandes cuanto más fuerte, en pares cuando las
- * sílabas llegan seguidas (un gorjeo), sueltas cuando son lentas (un silbido); las de las residentes,
- * pequeñas y tenues, como el canto lejano que se oye. Junto a cada ave, cuántas especies hay.
+ * del color de su grupo. Cada ave dibujada es una voz que se oye: la posada en la curva y, a su
+ * lado, las que se suman mientras cantan (más especies, más aves a la vez). Cada una abre el pico
+ * con la envolvente de su propio canto, en el instante que se oye, y suelta una nota al comienzo
+ * de cada sílaba. Las notas dicen cómo canta su grupo: corcheas sueltas y pequeñas para el arrullo
+ * de las residentes, pares de corcheas para la ráfaga de chillidos del verano y una blanca para el
+ * silbido largo del invierno. Las aves lejanas se ven más chicas y más tenues.
  *
  * La vista no carga datos ni crea audio: recibe en render() la posición, los bordes y los conteos
- * de la curva, y lo que mide el motor sonoro en cada capa.
+ * de la curva, y lo que el motor dice que suena ave por ave.
  */
 import { d3 } from "../../shared/d3.js";
 import { MONTHS } from "../../shared/calendar.js";
 
 const SHORT = ["residentes", "de verano", "de invierno"];
-// Orden de dibujo (de atrás hacia adelante) y lado de cada ave respecto de la barra
-// (el mismo lado del estéreo donde suena su grupo).
+// Orden de dibujo (de atrás hacia adelante) y lado de cada grupo respecto de la barra
+// (el mismo lado del estéreo donde suena).
 const ORDER = [0, 2, 1];
 const SIDE = { 0: -1, 1: -1, 2: 1 };
 // Tamaño del ave y distancia a la barra (px); en pantallas angostas, más chicas.
@@ -23,6 +25,23 @@ const SIZES = {
   wide: { scale: 2.1, offset: 27 },
   narrow: { scale: 1.45, offset: 19 },
 };
+// Dónde se ubican las aves acompañantes respecto del ave posada (px con el ave a escala 2,1):
+// hacia afuera de la barra; las de verano, hacia arriba, y las residentes, hacia la banda verde.
+const FLOCK = {
+  0: [[0, 0]],
+  1: [
+    [0, 0],
+    [-36, -10],
+    [-70, -2],
+    [-50, -38],
+  ],
+  2: [
+    [0, 0],
+    [36, -10],
+    [70, -2],
+  ],
+};
+const COMPANION = 0.8; // tamaño de una acompañante respecto del ave posada
 // Ave posada mirando hacia adelante en el año (derecha), centrada en el cuerpo; ~22 × 16 unidades.
 const HEAD = [5.4, -5.4];
 const BIRD = {
@@ -37,19 +56,31 @@ const BIRD = {
 };
 const BEAK_TIP = [HEAD[0] + 7.4, HEAD[1] + 0.3];
 // Notas (unidades de ~9 px de alto, la cabeza en el origen).
+const HEAD_NOTE =
+  "M-2.3,0.2 C-2.3,-1.2 -0.4,-1.9 1.2,-1.5 C2.3,-1.2 2.6,0.1 2,0.8 C1,1.8 -2.3,1.6 -2.3,0.2 Z";
 const NOTE = {
-  single:
-    "M-2.3,0.2 C-2.3,-1.2 -0.4,-1.9 1.2,-1.5 C2.3,-1.2 2.6,0.1 2,0.8 C1,1.8 -2.3,1.6 -2.3,0.2 Z" +
+  // corchea: una sílaba suelta (el arrullo)
+  pulse:
+    HEAD_NOTE +
     "M1.6,-0.6 L1.6,-8.6 L2.6,-8.6 C3,-6.6 5.6,-6 5.2,-3.2 C4.8,-4.6 3.6,-5.4 2.6,-5.6 L2.6,-0.6 Z",
-  pair:
-    "M-2.3,0.2 C-2.3,-1.2 -0.4,-1.9 1.2,-1.5 C2.3,-1.2 2.6,0.1 2,0.8 C1,1.8 -2.3,1.6 -2.3,0.2 Z" +
+  // dos corcheas unidas: sílabas rápidas (la ráfaga de chillidos)
+  burst:
+    HEAD_NOTE +
     "M4.2,-0.8 C4.2,-2.2 6.1,-2.9 7.7,-2.5 C8.8,-2.2 9.1,-0.9 8.5,-0.2 C7.5,0.8 4.2,0.6 4.2,-0.8 Z" +
     "M1.6,-0.6 L1.6,-8.6 L9.1,-9.8 L9.1,-1.6 L8.1,-1.6 L8.1,-7.3 L2.6,-6.4 L2.6,-0.6 Z",
+  // blanca (cabeza hueca): una nota larga y sostenida (el silbido)
+  long:
+    "M-2.6,0.2 C-2.6,-1.4 -0.4,-2.1 1.4,-1.7 C2.6,-1.4 2.9,0.1 2.3,0.9 C1.2,2 -2.6,1.8 -2.6,0.2 Z" +
+    "M-1.5,0.5 C-1.2,1 1.1,0.2 1.4,-0.6 C1.2,-1 -1.1,-0.3 -1.5,0.5 Z" +
+    "M1.8,-0.5 L1.8,-9.4 L2.8,-9.4 L2.8,-0.5 Z",
 };
-const MAX_NOTES = 48;
+const MAX_NOTES = 60;
 
 export function createPulseChorus({
+  birds: flockSize,
+  notes: noteStyle,
   onToggle,
+  onPreview,
   onScrubStart,
   onScrub,
   onScrubEnd,
@@ -61,17 +92,20 @@ export function createPulseChorus({
     !!window.matchMedia &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (button) button.addEventListener("click", () => onToggle());
+  // «Así suena»: un botón por grupo toca un canto suelto de su ave.
+  const legend = [...document.querySelectorAll(".chorus-legend [data-layer]")];
+  legend.forEach((b) =>
+    b.addEventListener("click", () => onPreview(Number(b.dataset.layer))),
+  );
 
   let geom = null;
   let birdScale = SIZES.wide.scale;
   let barGap = SIZES.wide.offset;
   let layer = null; // nodos del gráfico actual (se rehacen al redibujar)
-  let notes = []; // { node, k, x, y, vx, vy, age, life, size, sway, base }
-  const lastOnset = [-Infinity, -Infinity, -Infinity];
-  let clock = 0;
+  let notes = []; // { node, x, y, vx, vy, age, life, size, sway, base }
   let lastMonth = null;
 
-  // geom: { g, x, y, h } del gráfico recién dibujado. Las capas nuevas van encima de las bandas.
+  // geom: { g, x, y, w, h } del gráfico recién dibujado. Las capas nuevas van encima de las bandas.
   function attach(next) {
     geom = next;
     ({ scale: birdScale, offset: barGap } =
@@ -118,32 +152,41 @@ export function createPulseChorus({
       .attr("aria-valuemax", 11);
     bindDrag(handle.node());
 
-    const birds = root
+    // Una bandada por grupo; el ave 0 está siempre posada en la curva.
+    const flocks = root
       .append("g")
       .attr("class", "chorus-birds")
       .selectAll("g")
       .data(ORDER)
       .join("g")
-      .attr("class", (k) => `chorus-bird c${k}`);
-    birds.append("circle").attr("class", "halo").attr("r", 12);
-    const bird = birds.append("g").attr("class", "figure");
-    bird.append("path").attr("class", "legs").attr("d", BIRD.legs);
-    bird.append("path").attr("class", "tail").attr("d", BIRD.tail);
-    bird.append("path").attr("class", "body").attr("d", BIRD.body);
-    bird.append("path").attr("class", "wing").attr("d", BIRD.wing);
-    const head = bird.append("g").attr("class", "head");
-    head.append("path").attr("class", "lower").attr("d", BIRD.lower);
-    head.append("path").attr("class", "upper").attr("d", BIRD.upper);
-    head.append("path").attr("class", "skull").attr("d", BIRD.head);
-    head.append("path").attr("class", "eye").attr("d", BIRD.eye);
-    birds
+      .attr("class", (k) => `chorus-flock c${k}`);
+    flocks
+      .selectAll("g.chorus-bird")
+      .data((k) => d3.range(flockSize[k] || 1).map((slot) => ({ k, slot })))
+      .join("g")
+      .attr("class", (d) => `chorus-bird c${d.k}${d.slot ? " companion" : ""}`)
+      .each(function () {
+        const node = d3.select(this);
+        node.append("circle").attr("class", "halo").attr("r", 12);
+        const bird = node.append("g").attr("class", "figure");
+        bird.append("path").attr("class", "legs").attr("d", BIRD.legs);
+        bird.append("path").attr("class", "tail").attr("d", BIRD.tail);
+        bird.append("path").attr("class", "body").attr("d", BIRD.body);
+        bird.append("path").attr("class", "wing").attr("d", BIRD.wing);
+        const head = bird.append("g").attr("class", "head");
+        head.append("path").attr("class", "lower").attr("d", BIRD.lower);
+        head.append("path").attr("class", "upper").attr("d", BIRD.upper);
+        head.append("path").attr("class", "skull").attr("d", BIRD.head);
+        head.append("path").attr("class", "eye").attr("d", BIRD.eye);
+      });
+    // Cuántas especies hay: sobre el ave de verano y la de invierno; bajo la residente.
+    flocks
       .append("text")
       .attr("class", "chorus-count")
-      .attr("dy", "0.35em")
-      .attr("x", (k) => (SIDE[k] < 0 ? -14 : 14) * birdScale)
-      .attr("text-anchor", (k) => (SIDE[k] < 0 ? "end" : "start"));
+      .attr("text-anchor", "middle")
+      .attr("dy", "0.35em");
     const noteLayer = root.append("g").attr("class", "chorus-notes");
-    layer = { root, spans, handle, birds, noteLayer };
+    layer = { root, spans, handle, flocks, noteLayer };
   }
 
   function bindDrag(node) {
@@ -179,14 +222,16 @@ export function createPulseChorus({
   }
 
   /**
-   * frame: { p, edges, counts, meters (por capa: { open, onset, strength } o null), month,
-   * monthCounts (conteos publicados de ese mes), dt, active (si el coro está sonando) }.
+   * frame: { p, edges, counts, month, monthCounts (conteos publicados de ese mes), dt,
+   * active (si el coro está sonando), meters: por grupo, un arreglo con lo que canta cada ave
+   * ({ visible, open, onset, distance } o null), o null si no suena }.
    */
   function render(frame) {
     if (!geom || !layer) return;
     const { x, y } = geom;
     const bx = x(0) + frame.p * x.step();
-    clock += frame.dt || 0;
+    const unit = birdScale / SIZES.wide.scale;
+    const motion = !reducedMotion();
     layer.root.classed("is-active", !!frame.active);
     geom.g
       .node()
@@ -199,46 +244,57 @@ export function createPulseChorus({
       .attr("y1", (k) => y(frame.edges[ORDER.indexOf(k)]) - 1.5)
       .attr("y2", (k) => y(frame.edges[ORDER.indexOf(k) + 1]) + 1.5);
 
-    const motion = !reducedMotion();
-    layer.birds.each(function (k) {
-      const meter = frame.meters ? frame.meters[k] : null;
-      const open = meter ? meter.open : 0;
+    layer.flocks.each(function (k) {
       const top = frame.edges[ORDER.indexOf(k) + 1];
       const cx = bx + SIDE[k] * barGap;
       const cy = y(top) - 3;
-      const bob = motion ? -1.2 * open : 0;
-      const node = d3.select(this);
-      node
-        .classed("singing", open > 0.08)
-        .attr(
-          "transform",
-          `translate(${cx.toFixed(1)},${(cy + bob).toFixed(1)})`,
-        );
-      node
-        .select(".figure")
-        .attr(
-          "transform",
-          `scale(${birdScale},${birdScale * (1 + 0.05 * open)})`,
-        );
-      // Cantar: la cabeza se levanta y el pico se abre con el nivel del sonido.
-      node
-        .select(".head")
-        .attr(
-          "transform",
-          `translate(${HEAD[0]},${HEAD[1]}) rotate(${(-14 * open).toFixed(1)})`,
-        );
-      node
-        .select(".upper")
-        .attr("transform", `rotate(${(-9 * open).toFixed(1)},3.1,0)`);
-      node
-        .select(".lower")
-        .attr("transform", `rotate(${(32 * open).toFixed(1)},3.1,0.6)`);
-      node
-        .select(".halo")
-        .attr("r", 10 + 6 * open)
-        .attr("opacity", (0.28 * open).toFixed(3));
-      node.select(".chorus-count").text(Math.round(frame.counts[k]));
-      if (meter && meter.onset && motion) spawn(k, cx, cy + bob, meter, open);
+      const flock = d3.select(this);
+      const voices = frame.meters ? frame.meters[k] : null;
+      flock.selectAll("g.chorus-bird").each(function ({ slot }) {
+        const voice = voices ? voices[slot] : null;
+        const open = voice ? voice.open : 0;
+        const distance = voice ? voice.distance : 0;
+        // El ave posada siempre se ve; las acompañantes, solo mientras cantan.
+        const shown = slot === 0 ? 1 : voice ? voice.visible : 0;
+        const [ox, oy] = FLOCK[k][slot] || [0, 0];
+        const size = birdScale * (slot ? COMPANION : 1) * (1 - 0.25 * distance);
+        const bob = motion ? -1.2 * open : 0;
+        const bxp = cx + ox * unit;
+        const byp = cy + oy * unit + (slot ? (1 - shown) * 6 : 0) + bob;
+        const node = d3.select(this);
+        node
+          .classed("singing", open > 0.08)
+          .attr("opacity", (shown * (slot ? 1 - 0.4 * distance : 1)).toFixed(3))
+          .attr("transform", `translate(${bxp.toFixed(1)},${byp.toFixed(1)})`);
+        node
+          .select(".figure")
+          .attr("transform", `scale(${size},${size * (1 + 0.05 * open)})`);
+        // Cantar: la cabeza se levanta y el pico se abre con el nivel de su propio canto.
+        node
+          .select(".head")
+          .attr(
+            "transform",
+            `translate(${HEAD[0]},${HEAD[1]}) rotate(${(-14 * open).toFixed(1)})`,
+          );
+        node
+          .select(".upper")
+          .attr("transform", `rotate(${(-9 * open).toFixed(1)},3.1,0)`);
+        node
+          .select(".lower")
+          .attr("transform", `rotate(${(34 * open).toFixed(1)},3.1,0.6)`);
+        node
+          .select(".halo")
+          .attr("r", 8 + 6 * open)
+          .attr("opacity", (0.3 * open * shown).toFixed(3));
+        if (voice && voice.onset && motion && shown > 0.5)
+          spawn(k, bxp, byp, size, open, voice);
+      });
+      const above = k !== 0;
+      flock
+        .select(".chorus-count")
+        .attr("x", cx + 1.5 * unit)
+        .attr("y", cy + (above ? -30 : 28) * unit)
+        .text(Math.round(frame.counts[k]));
     });
     if (notes.length) step(frame.dt || 0);
     const month = frame.month;
@@ -256,34 +312,30 @@ export function createPulseChorus({
     }
   }
 
-  // Una nota sale del pico. Su forma y tamaño dicen cómo es el canto en ese instante.
-  function spawn(k, cx, cy, meter, open) {
+  // Una nota sale del pico al comenzar una sílaba: su forma dice cómo canta el grupo y su tamaño,
+  // qué tan fuerte; las aves lejanas sueltan notas más chicas y tenues.
+  function spawn(k, cx, cy, size, open, voice) {
     if (notes.length >= MAX_NOTES) notes.shift().node.remove();
-    const fast = clock - lastOnset[k] < 0.22;
-    lastOnset[k] = clock;
-    const far = k === 0;
-    const dir = SIDE[k];
-    const tipX = cx + BEAK_TIP[0] * birdScale;
-    const tipY = cy + (BEAK_TIP[1] - 8 * open) * birdScale;
-    const size = (far ? 0.6 : 0.75) + (far ? 0.25 : 0.55) * meter.strength;
+    const style = noteStyle[k] || "pulse";
+    const strength = Math.min(1, voice.onset);
+    const near = 1 - 0.6 * voice.distance;
     const node = layer.noteLayer
       .append("path")
       .attr("class", `sing-note c${k}`)
-      .attr("d", fast && !far ? NOTE.pair : NOTE.single)
+      .attr("d", NOTE[style])
       .node();
+    const dir = SIDE[k];
     notes.push({
       node,
-      k,
-      x: tipX,
-      y: tipY,
-      // Las notas se alejan de la barra hacia el lado de su ave; las residentes suben casi rectas.
-      vx: far ? (Math.random() - 0.5) * 8 : dir * (6 + Math.random() * 12),
-      vy: -(far ? 16 : 26) - Math.random() * 14,
+      x: cx + BEAK_TIP[0] * size,
+      y: cy + (BEAK_TIP[1] - 6 * open) * size,
+      vx: k === 0 ? (Math.random() - 0.5) * 8 : dir * (8 + Math.random() * 12),
+      vy: -(style === "long" ? 18 : 28) - Math.random() * 12,
       age: 0,
-      life: far ? 2 : 1.4,
-      size,
+      life: style === "long" ? 1.8 : 1.3,
+      size: (size / SIZES.wide.scale) * (0.85 + 0.6 * strength) * near,
       sway: Math.random() * Math.PI * 2,
-      base: far ? 0.5 : 0.95,
+      base: 0.95 * (0.55 + 0.45 * near),
     });
   }
 
@@ -298,11 +350,11 @@ export function createPulseChorus({
       n.y += n.vy * dt;
       const t = n.age / n.life;
       const wobble = Math.sin(n.sway + n.age * 6) * 2.2;
-      const grow = 0.6 + 0.4 * Math.min(1, n.age / 0.18);
-      const opacity = n.base * (t < 0.15 ? t / 0.15 : 1 - (t - 0.15) / 0.85);
+      const grow = 0.6 + 0.4 * Math.min(1, n.age / 0.15);
+      const opacity = n.base * (t < 0.1 ? t / 0.1 : 1 - (t - 0.1) / 0.9);
       n.node.setAttribute(
         "transform",
-        `translate(${(n.x + wobble).toFixed(1)},${n.y.toFixed(1)}) scale(${(n.size * grow * 1.7).toFixed(2)})`,
+        `translate(${(n.x + wobble).toFixed(1)},${n.y.toFixed(1)}) scale(${(n.size * grow * 1.8).toFixed(2)})`,
       );
       n.node.setAttribute("opacity", Math.max(0, opacity).toFixed(3));
       return true;
@@ -335,5 +387,12 @@ export function createPulseChorus({
     if (!playing) clearNotes();
   }
 
-  return { attach, render, setStatus };
+  // Qué botón de «Así suena» está sonando (null: ninguno).
+  function setPreview(k) {
+    legend.forEach((b) =>
+      b.setAttribute("aria-pressed", String(Number(b.dataset.layer) === k)),
+    );
+  }
+
+  return { attach, render, setStatus, setPreview };
 }

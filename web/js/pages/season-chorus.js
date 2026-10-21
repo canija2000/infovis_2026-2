@@ -13,7 +13,11 @@ import {
   LAST,
 } from "../overview/pulse-curve.js";
 import { createSeasonChorus } from "../audio/season-chorus.js";
-import { SPECIES, SECONDS_PER_MONTH } from "../audio/season-chorus-plan.js";
+import {
+  LAYERS,
+  SPECIES,
+  SECONDS_PER_MONTH,
+} from "../audio/season-chorus-plan.js";
 import { createMediaRepository } from "../data/media.js";
 import { createChorusState } from "../state/overview.js";
 import { createPulseChorus } from "../views/overview/pulse-chorus.js";
@@ -32,7 +36,10 @@ export function createSeasonChorusController({
   const media = createMediaRepository();
   const state = createChorusState();
   const view = createPulseChorus({
+    birds: [0, 1, 2].map((k) => LAYERS[k].maxBirds),
+    notes: [0, 1, 2].map((k) => SPECIES[k].note),
     onToggle: toggle,
+    onPreview: preview,
     onScrubStart: scrubStart,
     onScrub: scrubTo,
     onScrubEnd: scrubEnd,
@@ -64,7 +71,7 @@ export function createSeasonChorusController({
 
   function loop(time) {
     frameId = null;
-    if (state.status !== "playing" && !state.scrubbing) return;
+    if (state.status === "idle" && !state.scrubbing) return;
     const dt = lastTime === null ? 0 : Math.min(0.1, (time - lastTime) / 1000);
     lastTime = time;
     if (state.status === "playing" && !state.scrubbing)
@@ -80,19 +87,20 @@ export function createSeasonChorusController({
     frameId = requestAnimationFrame(loop);
   }
 
-  // Cantos de cada grupo: la grabación limpia de cada especie elegida (o la original).
+  // Canto de cada grupo: la grabación limpia de su especie (o la original).
   function load() {
     if (!loading)
       loading = media
         .loadSounds()
         .then(() => {
           const urls = {};
-          for (const k of [0, 1, 2])
-            urls[k] = SPECIES[k]
-              .map((name) => species.find((s) => s.name === name))
-              .map((s) => s && media.soundEntry(s.sid)?.recordings?.[0])
-              .filter(Boolean)
-              .map((r) => r.mixer || r.src);
+          for (const k of [0, 1, 2]) {
+            const bird = species.find((s) => s.name === SPECIES[k].name);
+            const recording =
+              bird && media.soundEntry(bird.sid)?.recordings?.[0];
+            if (!recording) return false;
+            urls[k] = recording.mixer || recording.src;
+          }
           return engine.load(urls);
         })
         .then((ok) => {
@@ -108,6 +116,7 @@ export function createSeasonChorusController({
   }
 
   async function play() {
+    if (state.status === "preview") stop();
     const mine = ++request;
     if (!engine.unlock()) return view.setStatus("error");
     claimAudio(OWNER);
@@ -137,10 +146,36 @@ export function createSeasonChorusController({
     }, 1500);
   }
 
+  // «Así suena»: un canto suelto de un grupo, con su ave cantando sobre la curva.
+  async function preview(k) {
+    const again = state.status === "preview" && state.preview === k;
+    stop();
+    if (again) return;
+    const mine = ++request;
+    if (!engine.unlock()) return;
+    claimAudio(OWNER);
+    state.status = "preview";
+    state.preview = k;
+    view.setPreview(k);
+    const ok = await load();
+    if (mine !== request) return;
+    if (!ok) return stop();
+    const seconds = engine.preview(k, curve.peak);
+    run();
+    setTimeout(
+      () => {
+        if (mine === request) stop();
+      },
+      seconds * 1000 + 400,
+    );
+  }
+
   // Pausa: la barra queda donde estaba; el siguiente ▶ sigue desde ahí (o parte de julio si terminó).
   function stop() {
     request += 1;
     state.status = "idle";
+    state.preview = null;
+    view.setPreview(null);
     state.scrubbing = false;
     engine.stop();
     if (frameId !== null) cancelAnimationFrame(frameId);
@@ -150,8 +185,8 @@ export function createSeasonChorusController({
   }
 
   function toggle() {
-    if (state.status === "idle") play();
-    else stop();
+    if (state.status === "playing" || state.status === "loading") stop();
+    else play();
   }
 
   // Arrastrar la barra (o moverla con las flechas: delta en meses).
