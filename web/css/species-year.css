@@ -62,3 +62,46 @@
   fill: var(--ink);
   font-weight: 600;
 }
+/* Qué está sonando y leyenda sonora («Así suena») bajo el botón. */
+.year-now {
+  min-height: 1.4em;
+  margin: 6px 0 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.year-now:empty {
+  min-height: 0;
+  margin: 0;
+}
+.year-scenes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 6px;
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--ink-3);
+}
+.year-scenes[hidden] {
+  display: none;
+}
+.year-scenes button {
+  padding: 2px 9px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font: 11px var(--font);
+  cursor: pointer;
+}
+.year-scenes button:hover,
+.year-scenes button[aria-pressed="true"] {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--surface);
+}
+.year-scenes button:focus-visible {
+  outline: 2px solid var(--c0);
+  outline-offset: 2px;
+}

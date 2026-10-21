@@ -125,19 +125,20 @@ El año se muestra completo y no cambia con el mes del reproductor.
 
 **Qué puedes escuchar.** Cada región tiene un botón **▶** junto a su nombre. Al
 pulsarlo, un marco recorre su fila de julio a junio, un mes cada 1,5 segundos
-(18 s el año), y cada mes suena el canto de la especie. Cuanto más intenso es
-el color y más regular el registro, **más fuerte, más aves (de un canto
-solitario a un coro de tres) y más cerca** (nítido; lejos suena apagado y con
-eco); **en silencio cuando casi no está**. Así se oye, por ejemplo, que el Fío-fío calla en el invierno de
+(18 s el año), y cada mes suena el canto de la especie en una de tres escenas:
+**muchas aves cerca** (color intenso y registro regular), **dos aves a media
+distancia** o **un ave sola, lejos y con eco** (poca presencia); **silencio**
+cuando casi no está. Bajo la matriz se escribe la escena del mes que suena. Así se oye, por ejemplo, que el Fío-fío calla en el invierno de
 Metropolitana y canta todo el año en Arica y Parinacota. No hace falta
-reconocer el canto: es siempre la misma ave; volumen, número de aves y
-distancia dicen lo mismo de tres maneras. Ver el [cálculo](METRICAS.md#ano-especie).
+reconocer el canto: es siempre la misma ave; número de aves, distancia y
+volumen dicen lo mismo. Ver el [cálculo](METRICAS.md#ano-especie).
 
 | Control | Qué hace |
 |---|---|
 | **▶** de una región | Escucha el año de la especie en esa región |
 | **■** (el mismo botón mientras suena) | Detiene la escucha |
 | **▶** de otra región | Detiene la actual y empieza la nueva |
+| **Así suena: Mucha presencia / Media / Poca** | Toca un mes de ejemplo de cada escena con el canto de la especie elegida |
 | Cambiar de especie o ampliar a 16 regiones | Detiene la escucha |
 
 Mientras suena, la línea bajo la matriz describe el mes en curso (perfil, años
@@ -376,8 +377,10 @@ la curva anual completa.
 
 **Escuchar su año.** El botón bajo el gráfico hace girar una aguja de enero a
 diciembre (1,5 s por mes) y reproduce el canto de la especie: cuanto más lejos
-del centro llega el perfil y más regular es el registro, más fuerte, más aves y
-más cerca suena; en silencio cuando casi no se registra. Usa el mismo ámbito que el
+del centro llega el perfil y más regular es el registro, más aves y más cerca
+(cuatro nítidas, dos, o una sola lejana con eco); en silencio cuando casi no se
+registra. Bajo el botón se escribe la escena del mes («♪ julio: un ave sola,
+lejos») y «Así suena: Mucha / Media / Poca» toca un ejemplo de cada escena. Usa el mismo ámbito que el
 gráfico. Pulsarlo de nuevo («Detener»), cambiar de especie o de región, o cerrar
 la ficha lo detiene. Al empezar pausa el clip de la ficha; si el clip se
 reanuda, la escucha se detiene. Se nota más en especies que

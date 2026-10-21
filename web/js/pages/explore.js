@@ -18,6 +18,7 @@ import { createSpeciesPanel } from "../views/species-panel.js";
 import { createSpeciesDetail } from "../species/controller.js";
 import { createSpeciesMedia } from "../views/species-media.js";
 import { createSpeciesYearPlayer } from "../audio/species-year.js";
+import { SCENES, exampleStep } from "../audio/species-year-plan.js";
 import { claimAudio, onAudioClaimed } from "../shared/audio-focus.js";
 import { CALENDAR } from "../shared/calendar.js";
 
@@ -97,6 +98,7 @@ async function main() {
     showTip,
     hideTip,
     onPlayYear: toggleYear,
+    onPlayScene: toggleScene,
   });
   const speciesDetail = createSpeciesDetail({
     state,
@@ -142,50 +144,68 @@ async function main() {
     renderCalendar();
   }
 
-  // «Escuchar su año»: el canto de la especie abierta suena mes a mes, con volumen según su perfil
-  // en el ámbito de la ficha. Un sonido a la vez: pausa el clip de la ficha y se detiene si este suena.
+  // «Escuchar su año»: el canto de la especie abierta suena mes a mes en el ámbito de la ficha;
+  // cuanto más presente, más aves y más cerca. La leyenda toca un mes de ejemplo de cada escena.
+  // Un sonido a la vez: pausa el clip de la ficha y se detiene si este suena.
   const speciesYear = createSpeciesYearPlayer();
   let yearRequest = 0;
   function stopYear() {
     yearRequest += 1;
-    if (!state.yearPlaying) return;
+    if (!state.yearPlaying && state.scenePlaying === null) return;
     state.yearPlaying = false;
+    state.scenePlaying = null;
     speciesYear.stop();
     panel.setYearPlayback(false);
+    panel.setScenePlayback(null);
   }
-  async function toggleYear() {
-    if (state.yearPlaying) return stopYear();
-    const sid = state.species;
-    const recording = media.soundEntry(sid)?.recordings[0];
-    if (sid === null || !recording) return;
-    const mine = ++yearRequest;
+  async function listen(steps, onStep) {
+    const recording = media.soundEntry(state.species)?.recordings[0];
+    if (!recording) return stopYear();
+    const mine = yearRequest;
     speciesYear.unlock();
     claimAudio("species-year");
     speciesMedia.pauseClips();
-    state.yearPlaying = true;
-    panel.setYearPlayback(true);
-    const rows = data.bySpecies.get(sid);
-    const row = rows.get(state.scope) || rows.get(0);
     const ok = await speciesYear.play({
       url: recording.mixer || recording.src,
-      steps: CALENDAR.map((m) => ({
+      steps,
+      onStep(index, step, planned) {
+        if (mine === yearRequest) onStep(step, planned);
+      },
+      onEnd() {
+        if (mine === yearRequest) stopYear();
+      },
+    });
+    if (!ok && mine === yearRequest) stopYear();
+  }
+  function toggleYear() {
+    if (state.yearPlaying) return stopYear();
+    stopYear();
+    if (state.species === null) return;
+    state.yearPlaying = true;
+    panel.setYearPlayback(true);
+    const rows = data.bySpecies.get(state.species);
+    const row = rows.get(state.scope) || rows.get(0);
+    listen(
+      CALENDAR.map((m) => ({
         month: m,
         profile: row.prof[m],
         years: row.years[m],
       })),
-      onStep(index, step) {
-        if (mine === yearRequest) panel.setYearPlayback(true, step.month);
-      },
-      onEnd() {
-        if (mine !== yearRequest) return;
-        state.yearPlaying = false;
-        panel.setYearPlayback(false);
-      },
-    });
-    if (!ok && mine === yearRequest) {
-      state.yearPlaying = false;
-      panel.setYearPlayback(false);
-    }
+      (step, planned) =>
+        panel.setYearPlayback(
+          true,
+          step.month,
+          planned.scene ? SCENES[planned.scene].label : "en silencio",
+        ),
+    );
+  }
+  function toggleScene(scene) {
+    if (state.scenePlaying === scene) return stopYear();
+    stopYear();
+    if (state.species === null) return;
+    state.scenePlaying = scene;
+    panel.setScenePlayback(scene);
+    listen([exampleStep(scene)], () => {});
   }
   onAudioClaimed((owner) => {
     if (owner !== "species-year") stopYear();

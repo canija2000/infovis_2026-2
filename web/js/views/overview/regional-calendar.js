@@ -26,6 +26,7 @@ export function createRegionalCalendarView({
   onSpeciesChange,
   onRegionsChange,
   onPlayRegion,
+  onPlayScene,
   onRetry,
 }) {
   const root = document.getElementById("regional-calendar");
@@ -44,6 +45,9 @@ export function createRegionalCalendarView({
   select.addEventListener("change", () => onSpeciesChange(select.value));
   regionsButton.addEventListener("click", onRegionsChange);
   root.querySelector(".regional-retry").addEventListener("click", onRetry);
+  const sceneButtons = [...root.querySelectorAll(".regional-scenes button")];
+  for (const button of sceneButtons)
+    button.addEventListener("click", () => onPlayScene(button.dataset.scene));
 
   function showLoading() {
     root.setAttribute("aria-busy", "true");
@@ -268,8 +272,17 @@ export function createRegionalCalendarView({
     playing = null;
   }
 
-  // region: región que suena (o null para ninguna); month: mes que suena en este instante.
-  function setPlayback(region, month = null) {
+  // Leyenda sonora: marca el ejemplo que suena (o ninguno).
+  function setScenePlayback(scene) {
+    for (const button of sceneButtons)
+      button.setAttribute(
+        "aria-pressed",
+        String(button.dataset.scene === scene),
+      );
+  }
+
+  // region: región que suena (o null); month: mes que suena; sound: cómo suena ese mes.
+  function setPlayback(region, month = null, sound = "") {
     if (playing && playing.region === region && region !== null) {
       const row = drawn.rows.get(region);
       if (playing.month !== null) {
@@ -294,7 +307,10 @@ export function createRegionalCalendarView({
     cell?.classList.add("is-now");
     drawn.headers.get(month)?.classList.add("is-now");
     if (!cell) return;
-    detail.textContent = `♪ ${cell.getAttribute("aria-label")}`;
+    detail.replaceChildren(
+      element("b", "regional-now-sound", `♪ ${sound}`),
+      ` · ${cell.getAttribute("aria-label")}`,
+    );
     keepVisible(cell, drawn.rows.get(region).tr.querySelector("th"));
   }
 
@@ -307,5 +323,12 @@ export function createRegionalCalendarView({
     else if (rect.left < left) matrix.scrollLeft -= left - rect.left + 8;
   }
 
-  return { render, preloadPhotos, showLoading, showError, setPlayback };
+  return {
+    render,
+    preloadPhotos,
+    showLoading,
+    showError,
+    setPlayback,
+    setScenePlayback,
+  };
 }

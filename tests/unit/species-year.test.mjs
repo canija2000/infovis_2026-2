@@ -6,11 +6,14 @@ import {
   MONTH_SECONDS,
   SILENT_BELOW,
   bestWindow,
+  SCENES,
+  exampleStep,
+  lowpassRatio,
   planSpeciesYear,
-  stepDistance,
+  songPitch,
   stepGain,
   stepLevel,
-  stepVoices,
+  stepScene,
 } from "../../web/js/audio/species-year-plan.js";
 import { createRegionalCalendarRepository } from "../../web/js/data/regional-calendar.js";
 import { queryRegionalCalendar } from "../../web/js/overview/regional-calendar.js";
@@ -32,7 +35,7 @@ test("level follows profile and regularity; gain grows with it and is silent nea
     last = gain;
   }
   assert.equal(stepGain(1), 1);
-  assert.equal(stepGain(0.5), 0.5, "volume is proportional to the level");
+  assert.ok(stepGain(SILENT_BELOW) > 0.4, "a faint month is still audible");
 });
 
 test("one step per month, evenly spaced", () => {
@@ -48,33 +51,61 @@ test("one step per month, evenly spaced", () => {
   assert.ok(plan[0].at > 10);
 });
 
-test("density and distance follow the same level: more present means more birds and closer", () => {
-  assert.equal(stepVoices(0.02), 0);
-  assert.equal(stepVoices(0.2), 1);
-  assert.equal(stepVoices(0.5), 2);
-  assert.equal(stepVoices(0.9), 3);
-  let last = { voices: 0, cutoff: 0, wet: Infinity };
-  for (let level = SILENT_BELOW; level <= 1; level += 0.05) {
-    const voices = stepVoices(level);
-    const { cutoff, wet } = stepDistance(level);
-    assert.ok(voices >= last.voices, `voices never drop at ${level}`);
-    assert.ok(cutoff > last.cutoff, `brighter (closer) at ${level}`);
-    assert.ok(wet < last.wet, `less echo (closer) at ${level}`);
-    last = { voices, cutoff, wet };
-  }
-  const [step] = planSpeciesYear([{ month: 0, profile: 100, years: 8 }]);
-  assert.equal(step.voices.length, 3);
+test("three clearly different scenes: more present means more birds, closer and less echo", () => {
+  assert.equal(stepScene(0.02), null);
+  assert.equal(stepScene(0.2), "far");
+  assert.equal(stepScene(0.5), "mid");
+  assert.equal(stepScene(0.9), "near");
+  const { near, mid, far } = SCENES;
+  assert.deepEqual(
+    [far.birds, mid.birds, near.birds],
+    [1, 2, 4],
+    "birds you can count",
+  );
+  assert.ok(far.wet > mid.wet && mid.wet > near.wet, "farther, more echo");
   assert.ok(
-    step.voices.every(
-      (voice) => voice.at + voice.duration <= step.at + 1.35 + 1e-9,
-    ),
-    "every voice ends before the next month",
+    far.dry < mid.dry && mid.dry < near.dry,
+    "farther, less direct sound",
+  );
+  assert.ok(far.db < mid.db && mid.db < near.db, "farther, quieter");
+  assert.ok(
+    far.muffle < mid.muffle && near.muffle === null,
+    "farther, more muffled",
+  );
+  for (const scene of ["near", "mid", "far"])
+    assert.equal(stepScene(stepLevel(exampleStep(scene))), scene);
+  const [step] = planSpeciesYear([{ month: 0, profile: 100, years: 8 }]);
+  assert.equal(step.voices.length, 4);
+  const onsets = step.voices.map((voice) => voice.at).sort((a, b) => a - b);
+  assert.ok(
+    onsets.every((at, i) => i === 0 || at - onsets[i - 1] >= 0.25),
+    "each bird enters at least 0,25 s after the previous one: they can be told apart",
+  );
+  assert.ok(
+    step.voices.every((voice) => voice.at + voice.duration <= step.at + 1.45),
+    "every bird ends before the next month",
   );
   assert.ok(
     Math.abs(
       Math.hypot(...step.voices.map((voice) => voice.gain)) - step.gain,
     ) < 1e-9,
     "the chorus keeps the month's overall level",
+  );
+});
+
+test("song pitch and filter loss are measured from the clip itself", () => {
+  const rate = 44100;
+  const tone = (hz) =>
+    new Float32Array(rate).map((_, i) =>
+      Math.sin((2 * Math.PI * hz * i) / rate),
+    );
+  assert.ok(Math.abs(songPitch(tone(4000), rate) - 4000) < 50);
+  assert.equal(songPitch(tone(200), rate), 1000, "limited to 1–9 kHz");
+  const high = tone(6000);
+  assert.ok(lowpassRatio(high, rate, 20000) > 0.95, "no filter, no loss");
+  assert.ok(
+    lowpassRatio(high, rate, 2000) < 0.2,
+    "a low cutoff removes a high song",
   );
 });
 
@@ -108,7 +139,14 @@ test("published data: the regional examples sound where and when the matrix says
   // Picaflor chico en Los Ríos es residente: suena todo el año.
   const picaflor = year("Sephanoides sephaniodes", "Los Ríos");
   assert.ok([...picaflor.values()].every((gain) => gain > 0.2));
-  // Chorlito chileno en Metropolitana es ocasional: un registro aislado suena apenas.
-  const chorlito = year("Charadrius modestus", "Metropolitana");
-  assert.ok(Math.max(...chorlito.values()) < 0.3);
+  // Chorlito chileno en Metropolitana es ocasional: a lo más un ave sola y lejana.
+  const model = queryRegionalCalendar(data, {
+    species: "Charadrius modestus",
+    allRegions: true,
+  });
+  const row = model.rows.find((item) => item.region.name === "Metropolitana");
+  const scenes = planSpeciesYear(row.cells)
+    .map((step) => step.scene)
+    .filter(Boolean);
+  assert.ok(scenes.every((scene) => scene === "far"));
 });

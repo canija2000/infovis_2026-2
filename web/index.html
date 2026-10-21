@@ -98,8 +98,17 @@
         <div class="regional-panel">
           <p class="regional-panel-title">Un año, visto desde cada región · julio a junio</p>
           <p class="regional-listen"><b>▶ Escucha su año en una región.</b> Cada mes suena su propio canto: cuanto
-            más intenso es el color, más aves cantan y más cerca suenan; cuando casi no se registra, un canto solitario
-            y lejano, o silencio. 18 segundos.</p>
+            más intenso es el color, más aves cantan y más cerca suenan; cuando casi no se registra, un ave sola y
+            lejana, con eco, o silencio. 18 segundos.</p>
+          <div class="regional-scenes" role="group" aria-label="Así suena cada nivel de presencia">
+            <span>Así suena:</span>
+            <button type="button" data-scene="near" aria-pressed="false"
+              title="Muchas aves, cerca y nítidas">▶ Mucha presencia</button>
+            <button type="button" data-scene="mid" aria-pressed="false"
+              title="Dos aves, a media distancia">▶ Media</button>
+            <button type="button" data-scene="far" aria-pressed="false"
+              title="Un ave sola, lejos y con eco">▶ Poca</button>
+          </div>
           <div id="regional-matrix" class="regional-matrix"></div>
           <div class="regional-keys" aria-label="Cómo leer la matriz">
             <span class="regional-profile-key">Más intenso: mayor perfil relativo</span>
@@ -182,10 +191,12 @@
   <section id="como-suena" class="como-suena" aria-labelledby="cs-title">
     <h2 id="cs-title">Cómo suena</h2>
     <p><b>Escuchar el año de una especie.</b> En «La misma ave, distintos calendarios», el botón <b>▶</b> de cada región
-      recorre su fila de julio a junio y cada mes suena el canto de esa especie. Cuanto más se registra, y con más
-      regularidad, <b>más fuerte</b>, <b>más aves</b> (de un canto solitario a un pequeño coro de tres) y <b>más
-      cerca</b> (nítido; lejos suena apagado y con eco). Las tres cosas dicen lo mismo, y en silencio cuando casi no
-      está. No hace falta reconocer el canto: solo comparar cuándo y cuánto suena en cada región. En Explorar, la ficha de cada especie ofrece lo mismo bajo su perfil anual.
+      recorre su fila de julio a junio y cada mes suena el canto de esa especie en una de tres escenas: con mucha
+      presencia, <b>muchas aves cerca</b>; con presencia media, <b>dos aves a media distancia</b>; con poca, <b>un ave
+      sola, lejos y con eco</b>; y silencio cuando casi no está. Los botones «Así suena» tocan un ejemplo de cada una,
+      y mientras suena el año la página escribe la escena de cada mes. No hace falta reconocer el canto: solo comparar
+      cuándo y cuánto suena en cada región. En Explorar, la ficha de cada especie ofrece lo mismo bajo su perfil
+      anual.
       <a href="metricas.html#ano-especie" data-metric="ano-especie">Cómo se calcula</a>.</p>
   </section>
 

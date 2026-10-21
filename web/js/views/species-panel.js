@@ -13,11 +13,16 @@ export function createSpeciesPanel({
   showTip,
   hideTip,
   onPlayYear,
+  onPlayScene,
 }) {
   const PLAY_D = "M5 3.5v9l7.5-4.5z";
   const STOP_D = "M4.5 4.5h7v7h-7z";
   const yearButton = document.getElementById("p-year");
   yearButton.addEventListener("click", () => onPlayYear());
+  const sceneButtons = [...document.querySelectorAll("#p-scenes button")];
+  for (const button of sceneButtons)
+    button.addEventListener("click", () => onPlayScene(button.dataset.scene));
+  const yearNow = document.getElementById("p-year-now");
   const reduceMotion = window.matchMedia?.(
     "(prefers-reduced-motion: reduce)",
   ).matches;
@@ -222,14 +227,26 @@ export function createSpeciesPanel({
   function setYearAvailable(available) {
     yearButton.hidden = available === null;
     document.getElementById("p-year-note").hidden = available !== true;
+    document.getElementById("p-scenes").hidden = available !== true;
     yearButton.disabled = available !== true;
     if (available === false)
       yearButton.querySelector("span").textContent =
         "Sin grabación para escuchar su año";
     else setYearPlayback(false);
   }
+  // Leyenda sonora: marca el ejemplo que suena (o ninguno).
+  function setScenePlayback(scene) {
+    for (const button of sceneButtons)
+      button.setAttribute(
+        "aria-pressed",
+        String(button.dataset.scene === scene),
+      );
+  }
   // Mueve la aguja al mes que suena y resalta su punto; month = null deja la aguja oculta.
-  function setYearPlayback(playing, month = null) {
+  // sound: cómo suena ese mes («muchas aves, cerca»…), escrito bajo el botón.
+  function setYearPlayback(playing, month = null, sound = "") {
+    yearNow.textContent =
+      playing && month !== null ? `♪ ${MONTHS[month]}: ${sound}` : "";
     yearButton.setAttribute("aria-pressed", String(playing));
     yearButton.classList.toggle("is-playing", playing);
     yearButton.querySelector("span").textContent = playing
@@ -265,5 +282,6 @@ export function createSpeciesPanel({
     updateMonth,
     setYearAvailable,
     setYearPlayback,
+    setScenePlayback,
   };
 }

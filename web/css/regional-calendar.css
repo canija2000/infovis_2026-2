@@ -433,3 +433,36 @@
     min-height: 4.5em;
   }
 }
+/* Leyenda sonora: un mes de ejemplo de cada escena, con el canto de la especie elegida. */
+.regional-scenes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+  margin: 0 0 12px;
+  font-size: 12px;
+  color: var(--ink-2);
+}
+.regional-scenes button {
+  padding: 4px 11px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font: 12px var(--font);
+  cursor: pointer;
+}
+.regional-scenes button:hover,
+.regional-scenes button[aria-pressed="true"] {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--bg);
+}
+.regional-scenes button:focus-visible {
+  outline: 2px solid var(--c0);
+  outline-offset: 2px;
+}
+.regional-now-sound {
+  color: var(--ink);
+  font-weight: 600;
+}
