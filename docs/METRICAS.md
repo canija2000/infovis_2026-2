@@ -37,7 +37,6 @@ Para ir directamente a los bloques complementarios: [sonido](#ano-especie),
 | Naranja / azul en Zonas | Diferencia de composición de registros frente a la referencia regional | [Ola por celda](#ola-zonas) |
 | Naranja / azul en Regiones | Diferencia entre niveles de riqueza de verano e invierno normalizados | [Ola regional](#ola-regiones) |
 | «Cada punto = … especie-días» | Un factor de representación del detalle regional | [Días-especie por punto](#por-punto) |
-| Volumen «… %» de una pista | Un ajuste de reproducción elegido por quien usa la web | [Volumen y sincronización](#mezclador) |
 | Volumen del canto en «Escuchar su año» | Perfil relativo × años con registro de una especie en un lugar y mes | [Escuchar su año](#ano-especie) |
 
 ### La cadena principal
@@ -399,8 +398,6 @@ Hay otros conteos que responden a preguntas diferentes:
 | Resumen nacional superior de Explorar | Todas las especies por clase nacional, sin filtrar por mes o región |
 | Número de la pestaña del calendario | Especies clasificadas en esa clase del ámbito, aunque no estén presentes en el mes seleccionado |
 | Filas visibles | Subconjunto elegido para mostrar, con posible especie fijada |
-| Resultados del catálogo | Especies con grabación que coinciden con la búsqueda y clase nacional |
-| Número junto a «Mezcla» | Pistas añadidas, una por especie |
 
 El color del mapa principal usa un máximo compartido de la clase entre las
 regiones y los doce meses. Su referencia se conserva al mover el mes y puede
@@ -720,36 +717,17 @@ Datos: [directorio grid_region](../web/data/grid_region/).
 
 ## 13. Medidas y parámetros del sonido
 
-La web suena en dos lugares: [Escuchar su año](#ano-especie) (calendarios
-regionales de la portada y ficha de especie) y la [mezcla](#mezclador) de
-Explorar, además del clip de cada especie en su ficha. El recorrido sonoro de
-la portada y la sonificación mensual de Explorar se retiraron (ver
-[CAMBIOS](../CAMBIOS.md), entrada 27): había que reconocer qué ave cantaba y
-varias variables sonaban a la vez. Sus datos (`loop.json` y los granos
-`audio/*-g.mp3`) siguen publicados, pero la web ya no los usa.
-
-<a id="mezclador"></a>
-### 13.1. Mezclador: selección, volumen y sincronización
-
-«Mezclar lo que se ve» toma hasta **seis especies con grabación** de la clase y
-ámbito activos, con frecuencia positiva en el mes. Ordena por esa frecuencia.
-**No exige superar el umbral de presencia mensual.**
-
-El número de pistas cuenta especies añadidas, sin duplicarlas. El volumen
-individual mostrado en porcentaje representa el multiplicador de señal de
-esa pista (`50 % → 0,5`). No se deriva de su frecuencia ni de su peso ecológico.
-Silenciar conserva esos valores. La ganancia de salida de la mezcla es 0,8.
-
-Sin sincronización, cada canto espera entre **0,2 y 5,2 s** antes de comenzar y
-entre repeticiones. Con sincronización, comienzan juntos en ciclos de seis
-segundos, incluyendo silencio si un clip es más corto. Son tiempos de
-reproducción, no duraciones o ritmos de canto medidos en campo.
-
-Origen: [selección de escena](../web/js/mixer/scene-selection.js),
-[motor del mezclador](../web/js/audio/mixer-engine.js).
+La web suena en un solo tipo de lugar: [Escuchar su año](#ano-especie), en los
+calendarios regionales de la portada y en la ficha de especie, además del clip
+de cada especie en su ficha. El recorrido sonoro de la portada, la
+sonificación mensual de Explorar y el mezclador se retiraron (ver
+[CAMBIOS](../CAMBIOS.md), entradas 27 y 28): había que reconocer qué ave
+cantaba y varias variables sonaban a la vez. Sus datos (`loop.json` y los
+granos `audio/*-g.mp3`) siguen publicados, pero la web ya no los usa; las pistas
+limpiadas de `audio/mixer/` sí se usan como clip de «Escuchar su año».
 
 <a id="ano-especie"></a>
-### 13.2. Escuchar su año: una especie, un lugar, un dato
+### 13.1. Escuchar su año: una especie, un lugar, un dato
 
 Está en «La misma ave, distintos calendarios» (un botón ▶ por región) y en la
 ficha de especie de Explorar (bajo el perfil radial). A diferencia de las
@@ -769,7 +747,7 @@ amplitud(m) = nivel(m)^1,3      silencio si nivel(m) < 0,05
 | Igualación | Cada clip se lleva a un RMS común antes de aplicar el nivel | Una grabación más fuerte no parece una especie más presente |
 | Exponente 1,3 | Nivel 0,5 ≈ −8 dB; 0,25 ≈ −16 dB | Hace audible la diferencia entre meses medios y altos |
 | Orden | Julio a junio en la matriz regional; enero a diciembre en la ficha (la aguja gira desde arriba) | Sigue el orden de cada gráfico |
-| Clip | Pista limpiada del mezclador si existe; si no, el clip de la ficha | Misma grabación que se puede oír en la ficha |
+| Clip | Pista con menos ruido de fondo (`audio/mixer/`) si existe; si no, el clip de la ficha | Misma grabación que se puede oír en la ficha |
 | Salida | Ganancia 0,9 y solo un limitador (−3 dBFS, 20:1) | Sin compresor: el volumen es el dato y no se aplana |
 
 `años con registro / 8` (la misma ponderación que usaba la sonificación
@@ -777,9 +755,8 @@ retirada de Explorar para una especie) evita que un registro aislado, que en el 
 valer 100 %, suene como un mes de presencia regular. Por eso una celda intensa
 sin punto de presencia puede sonar más bajo de lo que sugiere su color.
 
-Un sonido a la vez: en Explorar, al empezar se pausan la mezcla y el clip de la
-ficha; si alguno de ellos se reanuda, este se detiene. El parlante de Explorar
-(que silencia la mezcla) no lo silencia, porque solo suena cuando se pide.
+Un sonido a la vez: en Explorar, al empezar se pausa el clip de la ficha; si el
+clip se reanuda, la escucha se detiene.
 
 Origen: [plan](../web/js/audio/species-year-plan.js),
 [motor](../web/js/audio/species-year.js).
@@ -959,7 +936,8 @@ con mayor contraste:
 | `seconds` | Duración del audio decodificado |
 
 El corte inicial de audio usa la misma idea de energía y planitud para encontrar
-un tramo útil. La limpieza del mezclador estima el ruido con el percentil 25
+un tramo útil. La limpieza de las pistas de `audio/mixer/` (preparadas para el
+mezclador, hoy retirado, y usadas por «Escuchar su año») estima el ruido con el percentil 25
 de la magnitud en cada frecuencia y lo suaviza entre frecuencias. Su ganancia
 es `1 − 1,6 × ruido/magnitud`, limitada entre 0,08 y 1 y suavizada; atenúa
 además las frecuencias graves con `clip((Hz−120)/230, 0,12, 1)`. Son parámetros

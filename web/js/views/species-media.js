@@ -1,10 +1,5 @@
 /** Presenta fotografías, grabaciones y sus atribuciones, con datos ya cargados. */
-export function createSpeciesMedia({
-  data,
-  addToMixer,
-  hasTrack,
-  onClipPlay = () => {},
-}) {
+export function createSpeciesMedia({ data, onClipPlay = () => {} }) {
   function showSoundLoading() {
     document.getElementById("p-sound").innerHTML =
       `<p class="muted">Buscando grabaciones…</p>`;
@@ -33,7 +28,6 @@ export function createSpeciesMedia({
     }
     box.innerHTML =
       `<h3>Canto${name}</h3>` +
-      `<button id="p-mix" class="ghost small mix-add" type="button" data-sid="${sid}">+ Añadir a la mezcla</button>` +
       entry.recordings
         .map(
           (r) =>
@@ -43,13 +37,9 @@ export function createSpeciesMedia({
             `<br><span class="muted">Clip de 6 s (el tramo con más canto) de la grabación original.</span></figcaption></figure>`,
         )
         .join("");
-    document
-      .getElementById("p-mix")
-      .addEventListener("click", () => addToMixer([sid]));
     box
       .querySelectorAll("audio")
       .forEach((audio) => audio.addEventListener("play", onClipPlay));
-    updateMixButton(hasTrack);
   }
 
   function renderImages(sid, photos) {
@@ -111,19 +101,11 @@ export function createSpeciesMedia({
       .forEach((audio) => audio.pause());
   }
 
-  function updateMixButton(hasTrack) {
-    const button = document.getElementById("p-mix");
-    if (!button) return;
-    const inMix = hasTrack(Number(button.dataset.sid));
-    button.textContent = inMix ? "✓ En la mezcla" : "+ Añadir a la mezcla";
-    button.disabled = inMix;
-  }
   return {
     showSoundLoading,
     showSoundError,
     clearImages,
     showImagesError,
-    updateMixButton,
     pauseClips,
     renderSound,
     renderImages,

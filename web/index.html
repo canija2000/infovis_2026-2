@@ -20,6 +20,7 @@
   <link rel="stylesheet" href="css/site.css?v=refactor-1">
   <link rel="stylesheet" href="css/overview.css?v=refactor-1">
   <link rel="stylesheet" href="css/flock.css">
+  <link rel="stylesheet" href="css/month-selectors.css">
   <link rel="stylesheet" href="css/regional-calendar.css">
   <link rel="stylesheet" href="css/metrics.css">
 </head>
@@ -57,17 +58,9 @@
       <div id="pulse" class="pulse-chart"></div>
     </figure>
 
-    <!-- Controles comunes: el mes manda en ambas vistas -->
+    <!-- Mes del gráfico de arriba (y de los mapas por mes) -->
     <div class="player">
-      <div class="player-controls">
-        <button id="play" class="play icon-btn" type="button" aria-pressed="true" aria-label="Pausar el año"
-          title="Pausar (barra espaciadora)">
-          <svg viewBox="0 0 16 16" aria-hidden="true">
-            <path id="play-icon" d="M4 2.5h3v11H4zM9 2.5h3v11H9z" />
-          </svg>
-        </button>
-      </div>
-      <div class="months" id="months" role="group" aria-label="Mes"></div>
+      <div class="months" id="months" role="group" aria-label="Mes del gráfico de especies presentes"></div>
     </div>
 
     <!-- B · Siluetas que viajan -->
@@ -77,6 +70,7 @@
         <p>Las residentes no se mueven. Las visitantes entran y salen del país con las estaciones.</p>
       </figcaption>
       <div id="flock" class="flock-chart"></div>
+      <div class="months flock-months" id="flock-months" role="group" aria-label="Mes de «Una silueta, una especie»"></div>
     </figure>
 
     <!-- B2 · Una misma especie, distintos papeles regionales -->

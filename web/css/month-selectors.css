@@ -1,0 +1,17 @@
+/* Selectores de mes de la portada. Sin el reproductor sonoro, cada fila de meses va centrada
+   bajo su gráfico. Archivo aparte: overview.css se compara byte a byte en el test de invariancia. */
+.player {
+  justify-content: center;
+}
+.player .months,
+.flock-months {
+  margin-left: 0;
+  justify-content: center;
+}
+/* El selector de «Una silueta, una especie» va bajo el gráfico, centrado en su ancho. */
+.flock-months {
+  max-width: 900px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--rule);
+}

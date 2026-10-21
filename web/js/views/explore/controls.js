@@ -8,7 +8,6 @@ export function createExploreControls({
   setTab,
   openSpecies,
   setMonth,
-  onMute,
   toggleExpanded,
   closeSpecies,
   selectScope,
@@ -71,15 +70,6 @@ export function createExploreControls({
       .addEventListener("input", (e) => setMonth(AUSTRAL[+e.target.value]));
     document.getElementById("cal-more").addEventListener("click", () => {
       toggleExpanded();
-    });
-    document.getElementById("mute").addEventListener("click", (e) => {
-      onMute(!state.muted);
-      e.currentTarget.setAttribute("aria-pressed", String(state.muted));
-      e.currentTarget.setAttribute(
-        "aria-label",
-        state.muted ? "Activar sonido" : "Silenciar",
-      );
-      e.currentTarget.title = state.muted ? "Activar sonido" : "Silenciar";
     });
     document
       .getElementById("reset")

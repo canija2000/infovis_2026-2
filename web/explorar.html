@@ -19,6 +19,7 @@
     rel="stylesheet">
   <link rel="stylesheet" href="css/site.css?v=refactor-1">
   <link rel="stylesheet" href="css/species-year.css">
+  <link rel="stylesheet" href="css/explore-toolbar.css">
   <link rel="stylesheet" href="css/metrics.css">
 </head>
 
@@ -43,24 +44,6 @@
   </header>
 
   <nav class="toolbar" aria-label="Controles">
-    <div class="tool play-tool">
-      <button id="mute" class="ghost icon-btn" type="button" aria-pressed="false" aria-label="Silenciar"
-        title="Silenciar">
-        <svg viewBox="0 0 20 20" aria-hidden="true">
-          <path class="speaker" d="M3 7.5h3l4-3.5v12l-4-3.5H3z" />
-          <path class="waves" d="M13 7a4 4 0 0 1 0 6M15.5 4.5a7.5 7.5 0 0 1 0 11" />
-          <path class="cross" d="M13 7.5l5 5M18 7.5l-5 5" />
-        </svg>
-      </button>
-      <button id="mixer-open" class="ghost mixer-open" type="button" aria-expanded="false" aria-controls="mixer"
-        title="Mezclar cantos de varias especies">
-        <svg viewBox="0 0 20 20" aria-hidden="true">
-          <path d="M5 3v14M10 3v14M15 3v14" />
-          <path class="knob" d="M3.5 12h3M8.5 6h3M13.5 10h3" />
-        </svg>
-        Mezcla <span id="mixer-count" class="mixer-count" hidden></span>
-      </button>
-    </div>
     <div class="tool month-tool">
       <label for="month" class="tool-label">Mes <strong id="month-label">enero</strong></label>
       <input id="month" type="range" min="0" max="11" step="1" value="6" aria-describedby="month-label">
@@ -189,9 +172,8 @@
       diciembre y su canto suena una vez por mes: más fuerte cuanto más se registra en el ámbito de la ficha, y en
       silencio cuando casi no está. No hace falta reconocer el canto: es siempre la misma frase y solo cambia el
       volumen. Se nota más en las especies que vienen y se van; en una residente suena casi igual todo el año.
-      Pausa la mezcla y el clip mientras suena.
+      Pausa el clip de la ficha mientras suena.
       <a href="metricas.html#ano-especie" data-metric="ano-especie">Cómo se calcula</a>.</p>
-    <p>La <b>Mezcla</b> permite escuchar juntas las especies que elijas, con el volumen que prefieras.</p>
   </section>
 
   <footer class="method">
@@ -201,43 +183,6 @@
     <p>Cantos: <a href="https://xeno-canto.org" target="_blank" rel="noopener">Xeno-canto</a>, con autor y licencia
       Creative Commons en cada grabación. Proyecto del curso Visualización de Información 2026-2.</p>
   </footer>
-
-  <section id="mixer" class="mixer-dock" aria-labelledby="mixer-title" hidden>
-    <div class="mixer-bar">
-      <h2 id="mixer-title">Mezcla de cantos</h2>
-      <button id="mixer-play" class="play icon-btn" type="button" aria-pressed="false" aria-label="Reproducir mezcla"
-        title="Reproducir mezcla" disabled>
-        <svg viewBox="0 0 16 16" aria-hidden="true">
-          <path id="mixer-play-icon" d="M4.5 2.5v11l9-5.5z" />
-        </svg>
-      </button>
-      <label class="mixer-sync" for="mixer-sync"
-        title="Todos comienzan juntos; desmarcado, cada ave espera un tiempo aleatorio.">
-        <input id="mixer-sync" type="checkbox"> Sincronizar
-      </label>
-      <button id="mixer-search-toggle" class="ghost small" type="button" aria-expanded="false"
-        aria-controls="mixer-catalog">+ Especies</button>
-      <button id="mixer-scene" class="ghost small" type="button">Mezclar lo que se ve</button>
-      <p id="mixer-status" class="mixer-status" role="status" aria-live="polite"></p>
-      <button id="mixer-close" class="ghost icon-btn mixer-close" type="button" aria-label="Minimizar mezclador"
-        title="Minimizar (la mezcla sigue sonando)">▾</button>
-    </div>
-    <div id="mixer-catalog" class="mixer-catalog" hidden>
-      <div class="mixer-catalog-controls">
-        <input id="mixer-query" type="search" placeholder="Buscar por nombre común o científico…" autocomplete="off"
-          aria-label="Buscar especie por nombre">
-        <div id="mixer-filters" class="mixer-filters" role="group" aria-label="Filtrar por estacionariedad">
-          <button type="button" data-class="all" aria-pressed="true">Todas</button>
-          <button type="button" data-class="residente" aria-pressed="false">Residentes</button>
-          <button type="button" data-class="visitante_estival" aria-pressed="false">De verano</button>
-          <button type="button" data-class="visitante_invernal" aria-pressed="false">De invierno</button>
-        </div>
-        <p id="mixer-result-count" class="mixer-result-count" role="status" aria-live="polite"></p>
-      </div>
-      <div id="mixer-grid" class="mixer-grid" aria-label="Especies con canto"></div>
-    </div>
-    <ul id="mixer-tracks" class="mixer-tracks" aria-label="Especies en la mezcla"></ul>
-  </section>
 
   <div id="tooltip" class="tooltip" role="tooltip" hidden></div>
 

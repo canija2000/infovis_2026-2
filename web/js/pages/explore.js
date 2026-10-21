@@ -17,7 +17,6 @@ import { createMethodology } from "../views/explore/methodology.js";
 import { createSpeciesPanel } from "../views/species-panel.js";
 import { createSpeciesDetail } from "../species/controller.js";
 import { createSpeciesMedia } from "../views/species-media.js";
-import { createMixer } from "../mixer/controller.js";
 import { createSpeciesYearPlayer } from "../audio/species-year.js";
 import { claimAudio, onAudioClaimed } from "../shared/audio-focus.js";
 import { CALENDAR } from "../shared/calendar.js";
@@ -61,15 +60,6 @@ async function main() {
     regionTip,
     axis,
   });
-  const mixer = createMixer({
-    data,
-    state,
-    media,
-    scopeName,
-    onTracksChange: () => speciesMedia.updateMixButton(mixer.hasTrack),
-    onStart: () => claimAudio("mixer"),
-  });
-  const { updateSceneButton } = mixer;
   const calendar = createCalendar({
     data,
     state,
@@ -88,7 +78,6 @@ async function main() {
     setTab,
     openSpecies,
     setMonth,
-    onMute,
     toggleExpanded,
     closeSpecies,
     selectScope,
@@ -96,8 +85,6 @@ async function main() {
   const { renderTabs, setupSearch, setupControls } = controls;
   const speciesMedia = createSpeciesMedia({
     data,
-    addToMixer: mixer.addToMixer,
-    hasTrack: mixer.hasTrack,
     onClipPlay: () => claimAudio("clip"),
   });
   const panel = createSpeciesPanel({
@@ -120,7 +107,6 @@ async function main() {
   const { renderMethod } = createMethodology({ data });
 
   function renderCalendar() {
-    updateSceneButton();
     calendar.renderCalendar();
   }
   function setTab(c) {
@@ -155,13 +141,9 @@ async function main() {
     state.expanded = !state.expanded;
     renderCalendar();
   }
-  function onMute(muted) {
-    state.muted = muted;
-    mixer.setMuted(muted);
-  }
 
   // «Escuchar su año»: el canto de la especie abierta suena mes a mes, con volumen según su perfil
-  // en el ámbito de la ficha. Un sonido a la vez: pausa la mezcla y el clip.
+  // en el ámbito de la ficha. Un sonido a la vez: pausa el clip de la ficha y se detiene si este suena.
   const speciesYear = createSpeciesYearPlayer();
   let yearRequest = 0;
   function stopYear() {
@@ -206,8 +188,7 @@ async function main() {
     }
   }
   onAudioClaimed((owner) => {
-    if (owner === "species-year") mixer.pause();
-    else stopYear();
+    if (owner !== "species-year") stopYear();
   });
 
   // ---------------------------------------------------------------- estado
@@ -218,7 +199,6 @@ async function main() {
     renderScopeStats();
     axis.updateMonth();
     panel.updateMonth();
-    updateSceneButton();
   }
 
   function selectScope(id) {
@@ -234,7 +214,6 @@ async function main() {
 
   renderSummary();
   setupControls();
-  mixer.setupMixer();
   setupSearch();
   renderLegend(document.getElementById("grid-legend"), deviation, {
     label: "Visitantes vs. promedio anual de la región",

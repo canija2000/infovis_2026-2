@@ -82,13 +82,13 @@ GBIF (11 descargas anuales, Aves, Chile)
 - `web/`: frontend estático en tres páginas enlazadas. `index.html` (Visualización) es la portada:
   una sola idea a primera vista (`js/pages/overview.js`, vistas en `js/views/overview/`,
   estilos en `css/overview.css`). `explorar.html` usa `js/pages/explore.js`.
-  Los tres motores de audio viven en `js/audio/`; datos y estado tienen módulos propios.
+  El audio («Escuchar su año») vive en `js/audio/`; datos y estado tienen módulos propios.
 - `python_scripts/preparar_audio_web.py`: elige, descarga (Xeno-canto, `cnt:chile`) y recorta los
   cantos que publica la web en `web/audio/` (clips + `clips.json`).
 - `python_scripts/preparar_audio_mixer.py`: reduce el ambiente de los clips que
-  admiten modificaciones y prepara las pistas independientes del mezclador.
-  Ver [`docs/mezclador-sonoro.md`](docs/mezclador-sonoro.md) para su uso,
-  funcionamiento y límites.
+  admiten modificaciones (`web/audio/mixer/`). Las preparó el mezclador, ya
+  retirado; hoy las usa «Escuchar su año». Ver
+  [`docs/mezclador-sonoro.md`](docs/mezclador-sonoro.md).
 - `python_scripts/preparar_imagenes_web.py`: consulta fotos de ocurrencias chilenas en GBIF
   y, si reúne menos de 32, completa con registros globales de la misma especie.
   Reúne hasta 64 candidatas
@@ -170,11 +170,7 @@ conexión a internet.
 - **Sonificación:** «Escuchar su año», en la ficha de especie: una aguja
   recorre el perfil radial y el canto de esa especie suena una vez por mes, más
   fuerte cuanto más presente está (la misma idea que el ▶ por región de la
-  portada). La sonificación mensual por macrozonas se retiró.
-- **Mezclador:** grilla con foto, búsqueda y filtro estacional para elegir
-  especies; volumen individual y reproducción simultánea, desincronizada por
-  defecto o sincronizada con la casilla. Ver
-  [`docs/mezclador-sonoro.md`](docs/mezclador-sonoro.md).
+  portada). La sonificación mensual por macrozonas y el mezclador se retiraron.
 
 ## Publicación
 
@@ -188,7 +184,7 @@ sirve como assets estáticos (`wrangler.jsonc`).
 python3 python_scripts/preparar_audio_web.py --dry-run   # selección y faltantes
 python3 python_scripts/preparar_audio_web.py             # descarga faltantes y genera web/audio/
 python3 python_scripts/build_web_data.py                 # enlaza web/audio/clips.json en web/data/sounds.json
-python3 python_scripts/preparar_audio_mixer.py           # crea pistas con menos ambiente para el mezclador
+python3 python_scripts/preparar_audio_mixer.py           # crea pistas con menos ambiente (audio/mixer/)
 ```
 
 `python_scripts/preparar_audio_web.py` cubre todas las especies que la web muestra sin
@@ -204,9 +200,8 @@ respuestas de la API quedan en `cache_xenocanto/` (fuera de Git). Requiere `ffmp
 lee de `api_sounds` (`.env` o variable de entorno) y nunca se escribe ni se
 imprime. `sounds/` (originales) sigue fuera de Git; `web/audio/` sí se publica,
 con autor, licencia y enlace a la grabación original en la ficha.
-El mezclador usa 178 pistas con reducción espectral del fondo (177 archivos
-únicos); 53 grabaciones con licencia ND conservan el clip previo y aparecen
-marcadas como audio original. [Creative Commons explica que las licencias ND no
+«Escuchar su año» usa 178 pistas con reducción espectral del fondo (177
+archivos únicos); 53 grabaciones con licencia ND conservan el clip previo. [Creative Commons explica que las licencias ND no
 permiten compartir adaptaciones](https://creativecommons.org/licenses/by-nc-nd/4.0/).
 
 ## Fuentes y atribución

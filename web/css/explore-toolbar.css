@@ -1,0 +1,13 @@
+/* Barra de Explorar sin sonido ni mezcla: solo el mes y el buscador, centrados.
+   Archivo aparte: las hojas de site.css se comparan byte a byte en el test de invariancia. */
+.toolbar {
+  justify-content: center;
+}
+.search-tool input {
+  min-width: 260px;
+}
+@media (max-width: 760px) {
+  .search-tool input {
+    min-width: 0;
+  }
+}

@@ -2,8 +2,8 @@ import { loadOverview } from "../data/overview.js";
 import { loadSpatialMaps, createRegionLoader } from "../data/spatial.js";
 import {
   createOverviewState,
+  createFlockState,
   createMapState,
-  createClockState,
 } from "../state/overview.js";
 import { createTooltip } from "../shared/tooltip.js";
 import { createPulse } from "../views/overview/pulse.js";
@@ -11,20 +11,19 @@ import { createSpeciesDots } from "../views/overview/species-dots.js";
 import { createMapStrips } from "../views/overview/map-strip.js";
 import { createMonthlyMaps } from "../views/overview/monthly-maps.js";
 import { createRegionDetail } from "../views/overview/region-detail.js";
-import { createOverviewPlayer } from "../views/overview/player.js";
+import { createMonthSelector } from "../views/overview/month-selector.js";
 
-// Cada mes del avance automático dura 12 s, como el antiguo recorrido sonoro (4 compases de 3 s).
-const MONTH_MS = 12000;
-
-/** Compose the overview; the month clock and manual selections use the same month. */
+/**
+ * Compose the overview. The upper month selector drives the monthly chart (and the
+ * monthly maps); «Una silueta, una especie» has its own month and selector.
+ */
 async function main() {
   const data = await loadOverview();
   const state = createOverviewState(),
-    mapState = createMapState(),
-    clock = createClockState();
+    flock = createFlockState(),
+    mapState = createMapState();
   const maps = {};
   const loadRegion = createRegionLoader();
-  let timer = null;
   const { showTip, hideTip } = createTooltip();
   const { drawPulse, updatePulse, drawTable } = createPulse({
     data,
@@ -35,7 +34,7 @@ async function main() {
   });
   const { drawFlock, updateFlock } = createSpeciesDots({
     data,
-    state,
+    state: flock,
     showTip,
     hideTip,
   });
@@ -71,33 +70,26 @@ async function main() {
     showTip,
     hideTip,
   });
-  const { syncPlayButton, initControls, drawMonths, updateMonths } =
-    createOverviewPlayer({
-      state,
-      clock,
-      setMonth,
-      togglePause,
-    });
-  function setMonth(m, fromClock = false) {
+  const months = createMonthSelector({
+    host: "#months",
+    getMonth: () => state.month,
+    onSelect: setMonth,
+  });
+  const flockMonths = createMonthSelector({
+    host: "#flock-months",
+    getMonth: () => flock.month,
+    onSelect: setFlockMonth,
+  });
+  function setMonth(m) {
     state.month = m;
-    // Un mes elegido a mano dura completo antes de que el avance siga.
-    if (!fromClock && !clock.paused) startClock();
     updatePulse();
-    updateFlock(true);
-    updateMonths();
+    months.update();
     updateMaps(true);
   }
-  function startClock() {
-    clearInterval(timer);
-    timer = setInterval(() => setMonth((state.month + 1) % 12, true), MONTH_MS);
-  }
-  function togglePause() {
-    clock.paused = !clock.paused;
-    if (clock.paused) {
-      clearInterval(timer);
-      timer = null;
-    } else startClock();
-    syncPlayButton();
+  function setFlockMonth(m) {
+    flock.month = m;
+    updateFlock(true);
+    flockMonths.update();
   }
   async function selectRegion(id) {
     mapState.region = id;
@@ -124,7 +116,8 @@ async function main() {
   }
   drawPulse();
   drawFlock();
-  drawMonths();
+  months.draw();
+  flockMonths.draw();
   drawTable();
   announceDrawn();
   initStripNav("maps");
@@ -143,9 +136,6 @@ async function main() {
       document.getElementById("maps").textContent =
         "No se pudieron cargar los mapas.";
     });
-  initControls();
-  if (!clock.paused) startClock();
-  syncPlayButton();
   let lastWidth = innerWidth;
   addEventListener("resize", () => {
     if (innerWidth === lastWidth) return;

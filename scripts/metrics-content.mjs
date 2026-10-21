@@ -241,14 +241,6 @@ export const groups = [
         `${v("nivel", "m")}${eq}${f(p, "<mn>100</mn>")}${mul}${f(Y, "<mn>8</mn>")}<mspace width="1em"/>${v("g", "m")}${eq}<msup><mrow>${v("nivel", "m")}</mrow><mn>1,3</mn></msup>`,
         "Silencio si el nivel es menor que 0,05. Cada mes repite la misma frase de 1,35 s (el tramo del clip con más energía, igualado entre especies); 12 meses = 18 s. Sin compresor: el volumen es el dato.",
       ),
-      def(
-        "mezclador",
-        "Mezcla, volumen y sincronía",
-        "0…1",
-        "Hasta seis especies con audio, ordenadas por frecuencia del mes. El volumen lo elige quien escucha.",
-        `${v("ganancia", "pista")}${eq}${f(t("volumen %"), "<mn>100</mn>")}`,
-        "No exige presencia mensual. Sin sincronía: espera aleatoria de 0,2–5,2 s. Con sincronía: ciclos de 6 s. Ganancia de salida: 0,8.",
-      ),
     ],
   },
   {

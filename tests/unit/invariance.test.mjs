@@ -24,10 +24,8 @@ const { loadAtlas } = await import("../../web/js/data/atlas.js");
 const { selectRows } = await import(
   "../../web/js/explore/calendar-selection.js"
 );
-const { sceneSpecies } = await import("../../web/js/mixer/scene-selection.js");
 const { AUSTRAL, CALENDAR } = await import("../../web/js/shared/calendar.js");
 const data = await loadAtlas();
-const sounds = json("sounds.json");
 const fn = (source, name) => {
   const start = source.indexOf(`  function ${name}(`);
   assert.ok(start >= 0, name);
@@ -70,24 +68,6 @@ test("calendar keeps selection, pinned species and ordering in all regions/class
         assert.deepEqual(
           selectRows(data, state, order),
           old(data, state, order),
-        );
-      }
-});
-
-test("mix scene selection retains the original six-song policy", () => {
-  const old = new Function(
-    "D",
-    "state",
-    "sounds",
-    `const MIXER_SCENE_SIZE=6;${fn(script, "sceneSpecies")};return sceneSpecies();`,
-  );
-  for (const scope of data.byScope.keys())
-    for (const tab of [0, 1, 2])
-      for (let month = 0; month < 12; month++) {
-        const state = { scope, tab, month };
-        assert.deepEqual(
-          sceneSpecies(data, state, sounds),
-          old(data, state, sounds),
         );
       }
 });
