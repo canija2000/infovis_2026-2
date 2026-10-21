@@ -42,9 +42,15 @@ export function createSpeciesYearPlayer() {
   }
 
   // El navegador solo deja sonar audio tras un gesto: se llama dentro del clic, antes de cargar nada.
+  // Además de resume(), toca una muestra en silencio: Safari solo desbloquea el audio si algo
+  // empieza a sonar dentro del mismo gesto.
   function unlock() {
     if (!ensure()) return false;
     if (ctx.state !== "running") ctx.resume().catch(() => {});
+    const silent = ctx.createBufferSource();
+    silent.buffer = ctx.createBuffer(1, 1, ctx.sampleRate);
+    silent.connect(ctx.destination);
+    silent.start(0);
     return true;
   }
 
@@ -118,8 +124,10 @@ export function createSpeciesYearPlayer() {
     if (mine !== token) return false; // otra reproducción o una detención llegó mientras cargaba
     const buffer = buffers.get(url);
     if (!buffer) return false;
-    if (ctx.state !== "running") await ctx.resume().catch(() => {});
-    if (mine !== token) return false;
+    // No se espera a resume(): fuera del gesto, en algunos navegadores esa promesa no se cumple
+    // nunca y la primera pulsación quedaba sin sonar. Se programa ya; si el audio arranca un poco
+    // después, el reloj de Web Audio, las frases y el cursor arrancan juntos.
+    if (ctx.state !== "running") ctx.resume().catch(() => {});
     const { start, norm } = windowOf(url, buffer);
     const plan = planSpeciesYear(steps, ctx.currentTime);
     const sources = plan
@@ -147,6 +155,10 @@ export function createSpeciesYearPlayer() {
       timer: setInterval(tick, 25),
     };
     tick();
+    // Si el navegador no dejó arrancar el audio, se libera el botón: el siguiente clic lo intenta de nuevo.
+    setTimeout(() => {
+      if (session && session.token === mine && ctx.state !== "running") stop();
+    }, 1500);
     return true;
   }
 

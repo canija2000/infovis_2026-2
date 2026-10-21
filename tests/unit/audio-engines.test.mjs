@@ -9,7 +9,8 @@ const source = (file) => fs.readFileSync(path.join(root, file), "utf8");
 function environment(code, name) {
   const trace = [],
     contexts = [],
-    intervals = new Map();
+    intervals = new Map(),
+    timeouts = [];
   let next = 1,
     id = 0;
   const parameter = (node, key) => ({
@@ -60,6 +61,7 @@ function environment(code, name) {
   class AudioContext {
     constructor() {
       this.currentTime = 0;
+      this.sampleRate = 44100;
       this.state = "suspended";
       contexts.push(this);
     }
@@ -75,6 +77,9 @@ function environment(code, name) {
     }
     createBufferSource() {
       return node("source");
+    }
+    createBuffer() {
+      return { duration: 0 };
     }
     createOscillator() {
       return node("oscillator");
@@ -113,6 +118,7 @@ function environment(code, name) {
       return n;
     },
     clearInterval: (n) => intervals.delete(n),
+    setTimeout: (fn, ms) => timeouts.push({ fn, ms }),
     requestAnimationFrame: () => next++,
     cancelAnimationFrame() {},
   };
@@ -125,6 +131,8 @@ function environment(code, name) {
   return {
     engine: sandbox.engine,
     trace,
+    timeouts,
+    contexts,
     step: (time) => {
       contexts.forEach((c) => (c.currentTime = time));
       [...intervals.values()].forEach((fn) => fn());
@@ -157,7 +165,10 @@ test("species year: one phrase per audible month, louder with presence, synced c
     onEnd: (info) => (ended = info),
   });
   assert.equal(ok, true);
-  const starts = env.trace.filter(([, method]) => method === "start");
+  // Las frases llevan offset; el desbloqueo toca una muestra en silencio sin offset.
+  const starts = env.trace.filter(
+    ([, method, , offset]) => method === "start" && offset !== undefined,
+  );
   assert.equal(starts.length, 2, "the near-silent month does not sound");
   assert.ok(
     starts.every(([, , , offset]) => Math.abs(offset - 3) < 0.05),
@@ -201,4 +212,45 @@ test("species year: one phrase per audible month, louder with presence, synced c
     2,
     "stopping cancels the phrases still to come",
   );
+});
+
+test("species year: the first press unlocks inside the gesture and never waits on resume()", async () => {
+  const env = environment(
+    cache +
+      "\n" +
+      source("web/js/audio/species-year-plan.js") +
+      "\n" +
+      source("web/js/audio/species-year.js"),
+    "createSpeciesYearPlayer",
+  );
+  const player = env.engine();
+  player.unlock();
+  const [context] = env.contexts;
+  assert.ok(
+    env.trace.some(
+      ([node, method]) => node.startsWith("source") && method === "start",
+    ),
+    "a silent sample starts within the click (Safari)",
+  );
+  // Un navegador que nunca cumple resume() fuera del gesto: antes la primera pulsación quedaba colgada.
+  context.resume = () => new Promise(() => {});
+  context.state = "suspended";
+  const steps = [{ month: 0, profile: 100, years: 8 }];
+  let ended = null;
+  const ok = await player.play({
+    url: "clip.mp3",
+    steps,
+    onEnd: (info) => (ended = info),
+  });
+  assert.equal(ok, true, "play() returns without waiting for resume()");
+  assert.equal(player.playing, true);
+  const watchdog = env.timeouts.at(-1);
+  assert.equal(watchdog.ms, 1500);
+  watchdog.fn();
+  assert.equal(
+    player.playing,
+    false,
+    "the button is released if audio never starts",
+  );
+  assert.equal(ended.completed, false);
 });
