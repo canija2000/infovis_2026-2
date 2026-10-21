@@ -185,7 +185,7 @@ const server = http.createServer((req, res) => {
     await root.locator('.regional-note a[data-metric="perfil"]').click();
     await page.locator(".metrics-dialog").waitFor({ state: "visible" });
     await page.locator(".metrics-close").click();
-    // «Escuchar su año»: ▶ recorre la fila mes a mes, pausa el loop y se detiene al reanudarlo.
+    // «Escuchar su año»: ▶ recorre la fila mes a mes y el mismo botón la detiene.
     await page.emulateMedia({ colorScheme: "light" });
     await page.setViewportSize({ width: 1440, height: 1000 });
     const play = root.locator(".regional-play").nth(1);
@@ -201,11 +201,6 @@ const server = http.createServer((req, res) => {
     await play.click();
     await root.locator(".regional-cell.is-now").waitFor();
     assert.equal(await play.getAttribute("aria-pressed"), "true");
-    assert.equal(
-      await page.locator("#play").getAttribute("aria-pressed"),
-      "false",
-      "the overview loop pauses while the species year plays",
-    );
     const first = await root
       .locator(".regional-cell.is-now")
       .getAttribute("data-month");
@@ -220,10 +215,9 @@ const server = http.createServer((req, res) => {
       /^♪ /,
     );
     await root.screenshot({ path: path.join(output, "regional-playing.png") });
-    await page.locator("#play").click();
+    await play.click();
     assert.equal(await play.getAttribute("aria-pressed"), "false");
     assert.equal(await root.locator(".regional-cell.is-now").count(), 0);
-    await page.locator("#play").click();
     // Retry after a data failure, independently of the other overview requests.
     let failData = true;
     await page.route("**/data/typical_year.json", (route) =>

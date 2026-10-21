@@ -28,5 +28,4 @@ export const METRIC_TERMS = [
   ["presentes", "presente"],
   ["presente", "presente"],
   ["en chile", "presente"],
-  ["lugar-días", "lugar-dias"],
 ].sort((a, b) => b[0].length - a[0].length);

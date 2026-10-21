@@ -28,9 +28,7 @@ export function createSpeciesMedia({
         ? ` (en Xeno-canto: <i>${entry.xcName}</i>)`
         : "";
     if (!entry.recordings.length) {
-      box.innerHTML =
-        `<h3>Canto</h3><p class="muted">Aún no hay un clip para esta especie${name}; al reproducir el año suena ` +
-        `con un tono sintético. <a href="${entry.searchUrl}" target="_blank" rel="noopener">Escuchar en Xeno-canto ↗</a></p>`;
+      box.innerHTML = `<h3>Canto</h3><p class="muted">Aún no hay un clip para esta especie${name}. <a href="${entry.searchUrl}" target="_blank" rel="noopener">Escuchar en Xeno-canto ↗</a></p>`;
       return;
     }
     box.innerHTML =

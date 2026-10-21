@@ -1,9 +1,9 @@
 # Mezclador de cantos
 
 El mezclador permite escuchar varias especies a la vez y ajustar el volumen de
-cada una. Funciona de forma independiente de **Escuchar el año**, la sonificación
-mensual descrita en la página: ambas pueden sonar al mismo tiempo. El botón de
-silencio general afecta a las dos.
+cada una. El botón de silencio general de Explorar la silencia. **Escuchar su
+año**, en la ficha de especie, la pausa mientras suena (la antigua sonificación
+mensual «Escuchar el año» se retiró).
 
 ## Uso en la web
 
@@ -62,7 +62,6 @@ para mantener el mismo punto de partida.
 | `web/data/sounds.json` | Asocia esas rutas y créditos con el ID de especie para la web. |
 | `web/audio/mixer/XC*.mp3` | Archivos con reducción de sonido ambiente para el mezclador. |
 | `web/app.js` | Dock, selector, filtros, volúmenes y programación de las pistas con Web Audio. |
-| `web/sonify.js` | Sonificación mensual existente; no usa las pistas nuevas del mezclador. |
 
 Al abrir el dock, el navegador carga `sounds.json` e `images.json` para preparar el selector. Los
 MP3 de las especies se descargan y decodifican al reproducirlas. Cada pista

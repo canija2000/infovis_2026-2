@@ -18,8 +18,6 @@ import { createSpeciesPanel } from "../views/species-panel.js";
 import { createSpeciesDetail } from "../species/controller.js";
 import { createSpeciesMedia } from "../views/species-media.js";
 import { createMixer } from "../mixer/controller.js";
-import { createAtlasPlan } from "../audio/atlas-plan.js";
-import { Sonifier } from "../audio/atlas-sonifier.js";
 import { createSpeciesYearPlayer } from "../audio/species-year.js";
 import { claimAudio, onAudioClaimed } from "../shared/audio-focus.js";
 import { CALENDAR } from "../shared/calendar.js";
@@ -29,7 +27,6 @@ async function main() {
   const data = await loadAtlas();
   const state = createExploreState();
   const media = createMediaRepository();
-  const { loadSounds, grainOf } = media;
   const { showTip, hideTip } = createTooltip();
   const { RAMPS, classScale, deviation } = createExploreColors({ data });
   const { scopeName, rm, tabOrder, lowEffort, shareMean } =
@@ -91,7 +88,6 @@ async function main() {
     setTab,
     openSpecies,
     setMonth,
-    togglePlay,
     onMute,
     toggleExpanded,
     closeSpecies,
@@ -122,13 +118,6 @@ async function main() {
     mediaView: speciesMedia,
   });
   const { renderMethod } = createMethodology({ data });
-  const { barFor } = createAtlasPlan({
-    data,
-    state,
-    rm,
-    grainOf,
-    getSounds: media.getSounds,
-  });
 
   function renderCalendar() {
     updateSceneButton();
@@ -153,10 +142,6 @@ async function main() {
       renderTabs();
       renderMap();
     }
-    if (Sonifier.playing)
-      loadSounds()
-        .then(() => Sonifier.load([grainOf(sid)]))
-        .catch(() => {});
     speciesDetail.renderSpecies(sid);
     renderCalendar();
   }
@@ -172,39 +157,11 @@ async function main() {
   }
   function onMute(muted) {
     state.muted = muted;
-    Sonifier.setMuted(muted);
     mixer.setMuted(muted);
-  }
-  async function togglePlay() {
-    if (Sonifier.playing) {
-      Sonifier.stop();
-      controls.setPlayback(false);
-      return;
-    }
-    try {
-      await loadSounds();
-    } catch (err) {
-      console.warn("Sin índice de cantos; se usarán tonos sintéticos", err);
-    }
-    const layers = (media.getSounds() && media.getSounds().layers) || {};
-    const urls = [
-      ...Object.values(layers).map(grainOf),
-      state.species !== null ? grainOf(state.species) : null,
-    ];
-    claimAudio("atlas");
-    const ok = await Sonifier.start(
-      state.month,
-      barFor,
-      (m) => setMonth(m),
-      urls,
-    );
-    if (!ok) return;
-    Sonifier.setMuted(state.muted);
-    controls.setPlayback(true);
   }
 
   // «Escuchar su año»: el canto de la especie abierta suena mes a mes, con volumen según su perfil
-  // en el ámbito de la ficha. Un sonido a la vez: pausa la sonificación del atlas, la mezcla y el clip.
+  // en el ámbito de la ficha. Un sonido a la vez: pausa la mezcla y el clip.
   const speciesYear = createSpeciesYearPlayer();
   let yearRequest = 0;
   function stopYear() {
@@ -249,13 +206,8 @@ async function main() {
     }
   }
   onAudioClaimed((owner) => {
-    if (owner === "species-year") {
-      if (Sonifier.playing) {
-        Sonifier.stop();
-        controls.setPlayback(false);
-      }
-      mixer.pause();
-    } else stopYear();
+    if (owner === "species-year") mixer.pause();
+    else stopYear();
   });
 
   // ---------------------------------------------------------------- estado

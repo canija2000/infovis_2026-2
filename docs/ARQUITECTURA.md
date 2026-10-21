@@ -96,21 +96,17 @@ esas referencias no se guardan en el estado de selección.
 ```text
 index.html
 └── pages/overview.js                   Coordina la portada
-    ├── state/overview.js              Mes, región, modo del mapa y sonido
+    ├── state/overview.js              Mes, región, modo del mapa y avance automático
     ├── data/overview.js               overview.json
     ├── data/spatial.js                Grillas, geometría y resumen regional
-    ├── data/loop.js                   Selección sonora del año
     ├── views/overview/
     │   ├── pulse.js                  Áreas apiladas + tabla accesible
     │   ├── species-dots.js           Un picaflor por especie, con vuelo
     │   ├── monthly-maps.js           Doce mapas de Chile
     │   ├── region-detail.js          Selector + mapas de una región
     │   ├── map-strip.js              Tarjetas y desplazamiento de mapas
-    │   └── player.js                 Meses, botones y lista «Suenan»
-    └── audio/
-        ├── overview-plan.js          Decide los eventos de cada compás
-        ├── year-loop.js              Programa y reproduce los eventos
-        └── buffers.js                Conserva audio decodificado por motor
+    │   └── player.js                 Meses y botón de pausa del avance
+    └── (el sonido de la portada vive en pages/regional-calendar.js)
 ```
 
 | Lo que aparece en pantalla | Dueño del dibujo | Datos | Actualización |
@@ -121,42 +117,38 @@ index.html
 | La misma ave, distintos calendarios | `views/overview/regional-calendar.js` | Perfiles regionales de `typical_year.json` (se piden al acercarse a la sección); la foto de cada ejemplo está fijada en `overview/regional-examples.js` (copiada de `images.json`, un test verifica que coincidan) | El selector cambia especie, foto, texto y matriz; ▶ de una región la recorre con [«Escuchar su año»](METRICAS.md#ano-especie) |
 | La ola recorre todo el país | `monthly-maps.js` → `drawMaps()` | `grid_month.json` o `region_month.json` | Cambiar modo redibuja; cambiar mes resalta |
 | Una región de cerca | `region-detail.js` | `grid_region/<código>.json` | Elegir región carga y redibuja |
-| Controles y «Suenan» | `player.js` | Estado y [voces del compás](METRICAS.md#copias) | Acción del usuario o reloj sonoro |
+| Meses y pausa | `player.js` | Estado | Acción del usuario o avance automático (12 s por mes) |
 
 ### Mes y región: dos recorridos distintos
 
 El bloque de calendarios regionales tiene su propio coordinador
 `pages/regional-calendar.js`, estado `state/regional-calendar.js`, repositorio
 `data/regional-calendar.js` y consultas puras en `overview/regional-calendar.js`.
-Su selección de especie y expansión no dependen del reloj sonoro. Reutiliza
+Su selección de especie y expansión no dependen del mes de la portada. Reutiliza
 `data/media.js` para el índice de cantos; sus fallos de carga quedan aislados del resto de
-la portada. Su botón ▶ por región usa `audio/species-year.js` y, mediante
-`shared/audio-focus.js`, pausa el recorrido de la portada sin importarlo. El recorrido y las reglas de lectura están en
+la portada. Su botón ▶ por región usa `audio/species-year.js`. El recorrido y las reglas de lectura están en
 [ESTRUCTURA.md](ESTRUCTURA.md#calendarios-regionales--14-de-octubre-de-2026).
 
 ```mermaid
 sequenceDiagram
-    participant U as Usuario / reloj sonoro
+    participant U as Usuario / avance automático
     participant P as pages/overview.js
     participant S as Estado
     participant V as Vistas
-    participant A as SoundLoop
-    U->>P: Elegir mes / aviso de compás
+    U->>P: Elegir mes / pasan 12 s
     P->>S: Actualizar month
     P->>V: Cursor, puntos, botones y tarjetas
     alt El mes fue elegido por el usuario
-        P->>A: jump(mes)
+        P->>P: Reiniciar el plazo de 12 s
     end
 ```
 
 Elegir una región actualiza el selector y solicita su archivo. Si llega tarde
 una respuesta de una región anterior, el coordinador evita enviarla a
-`region-detail.js`. El
-sonido cambia a esa región **solo si el ámbito sonoro ya es regional**.
+`region-detail.js`.
 
 Los archivos regionales se conservan por código. Un fallo elimina la promesa de
-esa caché para permitir otro intento. La preferencia de silencio se conserva
-con la clave existente `loop-muted` de `localStorage`.
+esa caché para permitir otro intento.
 
 **Los puntos significan cosas distintas:**
 
@@ -191,8 +183,6 @@ explorar.html
     ├── species/controller.js          Coordina el detalle de un ave
     ├── mixer/controller.js            Coordina la mezcla personalizada
     └── audio/
-        ├── atlas-plan.js             Eventos según región, mes y especie
-        ├── atlas-sonifier.js         Reproducción mensual del atlas
         ├── species-year-plan.js      «Escuchar su año»: nivel y volumen por mes
         └── species-year.js           Reproduce el año de una especie
 ```
@@ -245,8 +235,6 @@ Minimizar la barra tampoco la pausa: se conserva el comportamiento anterior.
 
 | Sistema | Plan / selección | Motor | Duración y comportamiento |
 |---|---|---|---|
-| Visualización | `loop.json` + `overview-plan.js` | `year-loop.js` | [4 compases de 3 s](METRICAS.md#tiempo-sonoro) por mes; hasta [4 copias](METRICAS.md#copias) por especie |
-| Explorar | `atlas-plan.js` | `atlas-sonifier.js` | [2,4 s por mes; macrozonas, latitud y especie seleccionada](METRICAS.md#sonificacion-atlas) |
 | Mezcla personalizada | Pistas del usuario | `mixer-engine.js` | [Esperas aleatorias de 0,2–5,2 s o ciclos comunes de 6 s](METRICAS.md#mezclador) |
 | Escuchar su año (calendarios regionales y ficha) | `species-year-plan.js` | `species-year.js` | [1,5 s por mes; una especie, volumen = perfil × años/8](METRICAS.md#ano-especie) |
 
@@ -256,20 +244,19 @@ los otros sistemas.
 
 **Un sonido a la vez.** `shared/audio-focus.js` emite el evento de documento
 `audio:claim` con el nombre de quien empieza a sonar por un gesto del usuario
-(`species-year`, `overview-loop`, `atlas`, `mixer`, `clip`). Cada coordinador
-decide qué pausar: «Escuchar su año» pausa a los demás y se detiene si otro se
-reanuda; el recorrido del atlas y la mezcla siguen pudiendo sonar juntos, como
-antes. Las páginas no se importan entre sí.
+(`species-year`, `mixer`, `clip`). Cada coordinador decide qué pausar: «Escuchar
+su año» pausa la mezcla y el clip, y se detiene si alguno de ellos se reanuda.
+Las páginas no se importan entre sí.
 
-`buffers.js` comparte el mecanismo de carga entre el loop y la sonificación,
-pero cada motor crea su propia caché y contexto. No se comparten por accidente
-buffers ni controles de volumen. El mezclador conserva su carga por pista,
+`buffers.js` es el mecanismo de carga de «Escuchar su año»; cada página crea su
+propio reproductor, caché y contexto. El mezclador conserva su carga por pista,
 porque su ciclo de vida incluye añadir y retirar pistas durante una descarga.
 
-El arranque de la portada conserva el desbloqueo por el primer gesto si el
-navegador suspende el audio. Silenciar conserva el avance temporal. En
-Explorar, el botón general también silencia la mezcla; los volúmenes de sus
-pistas se recuerdan mientras esa página siga abierta.
+El recorrido sonoro de la portada (`year-loop.js`, `overview-plan.js`,
+`data/loop.js`) y la sonificación mensual de Explorar (`atlas-sonifier.js`,
+`atlas-plan.js`) se retiraron; `loop.json` y los granos `audio/*-g.mp3` siguen
+publicados sin uso. En Explorar, el parlante silencia la mezcla; los volúmenes
+de sus pistas se recuerdan mientras esa página siga abierta.
 
 ## 6. Datos: fuentes, preparación y publicación
 
@@ -280,7 +267,7 @@ pistas se recuerdan mientras esa página siga abierta.
 | `meta`, `species`, `typical_year`, `region_month`, `regions.min.geojson` | `atlas/build_web_data.py` | Atlas y partes de la portada |
 | `overview.json` | `overview/build_overview_data.py` | Pulso y puntos por especie |
 | `grid_month.json`, `grid_region/` | `overview/build_grid_data.py` | Mapas de la portada |
-| `loop.json` | `overview/build_loop_data.py` | Recorrido sonoro de portada |
+| `loop.json` | `overview/build_loop_data.py` | Sin uso: era el recorrido sonoro de portada, ya retirado |
 | `sounds.json`, `audio/clips.json` | Preparación de audio + constructor del atlas | Ficha, mezclador y planes sonoros |
 | `images.json` | Recolección y ordenación de imágenes | Ficha y catálogo del mezclador |
 | `game/` | `aviary/build_game_data.py` + `enrich/` | Proyecto externo `3d_aviario` |
@@ -372,7 +359,7 @@ Las reglas específicas de Explorar permanecen en `js/explore/`:
 |---|---|---|
 | Mes de portada | Estado de Visualización | Mientras la página esté abierta |
 | Región y modo de mapas | Estado de mapas de portada | Mientras la página esté abierta |
-| Pausa, ámbito y silencio del loop | Estado sonoro de portada | Sesión; el silencio también en `localStorage` |
+| Pausa del avance automático | Estado de portada | Mientras la página esté abierta |
 | Región, mes, clase y especie de Explorar | Estado del atlas | Mientras la página esté abierta |
 | Pistas, volúmenes y sincronización | Estado del mezclador | Mientras Explorar esté abierto |
 | JSON cargados y promesas en curso | Repositorios de datos | Sesión de la página |
@@ -415,17 +402,17 @@ instalado, puede indicarse su ruta en `CHROME_PATH`.
 **Qué comprueba cada prueba:**
 
 - Arquitectura: imports válidos, ausencia de ciclos y límites entre capas.
-- Reglas: índices del atlas, selección de filas, planes sonoros y selección de
-  la escena del mezclador contra el código original, para regiones y meses.
-- Audio: equivalencia de programación y envolventes de los dos recorridos.
+- Reglas: índices del atlas, selección de filas y selección de la escena del
+  mezclador contra el código original, para regiones y meses.
+- Audio: plan y motor de «Escuchar su año» (niveles, frase, tiempos, detención)
+  y motor del mezclador.
 - Datos: igualdad byte por byte de cinco generadores y sus entradas compatibles;
   las grillas usan un fixture controlado porque los crudos no están versionados.
 - Navegador: contenido y SVG exactos, capturas comparadas perceptualmente,
   controles, ficha, búsqueda, mezcla, silencio y tamaños de pantalla.
 - Cargas asíncronas: fallo de inicio, región lenta, reintento de cantos y retirada
   de una pista mientras se descarga.
-- Reproducción real: decodificación y arranque de los tres sistemas con Web Audio
-  del navegador.
+- Reproducción real: decodificación y arranque con Web Audio del navegador.
 
 Las comparaciones visuales aíslan fuentes e imágenes remotas para que la red
 no introduzca diferencias. Los SVG y el DOM se comparan exactamente; la imagen

@@ -65,34 +65,21 @@ como residentes; el [conteo de presencia](METRICAS.md#riqueza) del gráfico se c
 puede variar ligeramente: en julio registra 213 residentes.
 
 **Qué puedes hacer.** Al pasar el cursor por un mes aparecen sus conteos. Al
-hacer clic se selecciona ese mes para la portada y el recorrido sonoro salta a
-él en el siguiente compás. Pasar el cursor, por sí solo, no cambia la selección.
+hacer clic se selecciona ese mes para la portada y el avance automático sigue
+desde él. Pasar el cursor, por sí solo, no cambia la selección.
 
-### 2.2. El reproductor y los meses: los controles compartidos
-
-![Reproductor, selector de ámbito, meses y lista de voces](interfaz/capturas/03-reproductor-portada.png)
+### 2.2. Los meses: el control compartido
 
 | Control | Qué hace | Qué controla |
 |---|---|---|
-| **❚❚ / ▶** | Pausa o reanuda el recorrido del año | Sonido y avance automático del mes |
-| **Parlante** | Silencia o activa el sonido | El volumen del recorrido; el mes sigue avanzando si no está pausado |
-| **Cuatro pequeñas barras** | Indican el [compás actual](METRICAS.md#tiempo-sonoro) | Son un indicador, no un selector |
-| **Chile** | Escucha especies seleccionadas para el país | El ámbito sonoro |
-| **Nombre de la región** | Escucha especies de la región elegida abajo | El ámbito sonoro; no transforma los gráficos nacionales en gráficos regionales |
-| **Botones jul…jun** | Seleccionan un mes | Cursor del pulso, posición de las especies, resaltado de mapas y recorrido sonoro |
-| **«Suenan»** | Enumera las especies y sus [copias](METRICAS.md#copias) | Describe la composición; no es una lista de botones para activar pistas |
+| **❚❚ / ▶** | Pausa o reanuda el avance automático del año | El mes cambia solo cada 12 s; es silencioso |
+| **Botones jul…jun** | Seleccionan un mes | Cursor del pulso, posición de las especies y resaltado de mapas |
 
-Cada mes dura [**12 segundos**](METRICAS.md#tiempo-sonoro): cuatro compases de tres segundos. El año completo
-dura **2 minutos y 24 segundos** y vuelve a empezar. Se seleccionan hasta seis
-especies muy extendidas según sus [lugar-días](METRICAS.md#lugar-dias) y hasta tres visitantes adicionales; cada canto puede
-aparecer entre una y cuatro veces por compás. [«×4»](METRICAS.md#copias) significa cuatro copias
-sonoras, no cuatro individuos observados.
-
-La preferencia del parlante se recuerda para la próxima visita. Si el navegador
-bloquea el arranque, el primer clic o tecla habilita el sonido. Si más abajo se
-pulsa ▶ para [escuchar el año de una especie](#23-bis-la-misma-ave-distintos-calendarios),
-el recorrido queda en pausa: suena una cosa a la vez. La barra
-espaciadora también pausa o reanuda cuando el foco no está en otro control.
+El avance automático empieza al abrir la página y recorre el año completo en
+2 minutos y 24 segundos. Elegir un mes a mano reinicia ese plazo de 12 s. La
+barra espaciadora también pausa o reanuda cuando el foco no está en otro
+control. La portada ya no tiene un recorrido sonoro: el sonido está en
+[«La misma ave, distintos calendarios»](#23-bis-la-misma-ave-distintos-calendarios).
 
 ### 2.3. «Una silueta, una especie»
 
@@ -148,11 +135,10 @@ volumen. Ver el [cálculo del volumen](METRICAS.md#ano-especie).
 
 | Control | Qué hace |
 |---|---|
-| **▶** de una región | Escucha el año de la especie en esa región; pausa el recorrido de la portada |
+| **▶** de una región | Escucha el año de la especie en esa región |
 | **■** (el mismo botón mientras suena) | Detiene la escucha |
 | **▶** de otra región | Detiene la actual y empieza la nueva |
 | Cambiar de especie o ampliar a 16 regiones | Detiene la escucha |
-| **❚❚ / ▶** del reproductor de la portada | Reanudar el recorrido detiene la escucha |
 
 Mientras suena, la línea bajo la matriz describe el mes en curso (perfil, años
 con registro y presencia), y en pantallas angostas la matriz se desplaza para
@@ -205,8 +191,7 @@ Un tono neutro indica equilibrio entre ambas olas. No representa directamente
 abundancia de individuos ni el porcentaje de residentes.
 
 **Qué cambia el interruptor.** Cambia solo esta representación nacional y su
-leyenda. Conserva el mes, el detalle regional, los otros gráficos y el ámbito
-del sonido. Un contorno punteado señala regiones con [poco esfuerzo de registro](METRICAS.md#esfuerzo).
+leyenda. Conserva el mes, el detalle regional y los otros gráficos. Un contorno punteado señala regiones con [poco esfuerzo de registro](METRICAS.md#esfuerzo).
 
 ### 2.6. «Una región de cerca»
 
@@ -232,27 +217,22 @@ no son el peso ponderado de visitantes que aparece en Explorar.
 | Clic en una tarjeta mensual | Selecciona ese mes para toda la portada |
 | **Ocultar residentes** | Oculta los puntos verdes solo en este detalle |
 
-Elegir una región también cambia el nombre del botón regional del reproductor.
-Si se está escuchando ese ámbito regional, cambia su selección de cantos. Si
-el sonido está en Chile, sigue en Chile.
-
 ![Detalle regional con las residentes ocultas](interfaz/capturas/08-ocultar-residentes.png)
 
 Ocultar residentes permite ver mejor las visitantes. **No elimina especies de
-los datos, no recalcula los porcentajes y no quita sus cantos del recorrido.**
+los datos ni recalcula los porcentajes.**
 El pulso nacional y el gráfico «Una silueta, una especie» conservan sus valores.
 
-### 2.7. La tabla y la explicación del sonido
+### 2.7. La tabla y la nota «Cómo suena»
 
 ![Tabla de conteos mensuales](interfaz/capturas/09-tabla.png)
 
 **Ver los datos en tabla** despliega los mismos [conteos nacionales de presencia](METRICAS.md#riqueza) del pulso.
 Sirve para leer cifras exactas por mes y clase. Abrirla o cerrarla no cambia los
-filtros ni el sonido.
+filtros.
 
-**Cómo se compone el sonido**, al final de la página, explica selección de
-especies, [copias](METRICAS.md#copias), [tiempos y posición estéreo](METRICAS.md#tiempo-sonoro) y controles. Es información
-explicativa; no configura la composición.
+**Cómo suena**, al final de la página, explica «Escuchar su año». Es
+información explicativa; no configura nada.
 
 ## 3. Explorar: comparar regiones y consultar especies
 
@@ -269,16 +249,13 @@ región.
 
 | Control | Qué hace |
 |---|---|
-| **▶ / ❚❚** | Inicia o pausa la [sonificación mensual del atlas](METRICAS.md#sonificacion-atlas), de 2,4 segundos por mes |
-| **Parlante** | Silencia la sonificación y la mezcla personalizada, sin borrar sus selecciones |
+| **Parlante** | Silencia la mezcla personalizada, sin borrar sus pistas ni sus volúmenes |
 | **Mezcla** | Abre o minimiza el mezclador inferior; el número indica sus pistas |
 | **Deslizador Mes** | Cambia el mapa, las estadísticas y el mes resaltado de las grillas y el perfil de especie |
 | **Buscador Especie** | Abre una ficha al elegir una sugerencia o confirmar un nombre común o científico |
 
-El deslizador recorre julio–junio. Durante la reproducción, el reloj sonoro
-sigue avanzando y puede volver a mover el marcador: **pausa primero si quieres
-examinar un mes fijo**. A diferencia de la portada, arrastrar el deslizador no
-reinicia el reloj sonoro en ese mes.
+El deslizador recorre julio–junio. A diferencia de la portada, el mes no avanza
+solo.
 
 El buscador admite una coincidencia exacta o el inicio de un nombre. Una especie
 seleccionada puede cambiar automáticamente la pestaña para mostrar su clase en
@@ -300,7 +277,7 @@ el ámbito actual: Chile o la región seleccionada.
 
 | Acción | Resultado |
 |---|---|
-| Clic en una región | Filtra calendario y estadísticas a esa región y cambia el ámbito del recorrido sonoro |
+| Clic en una región | Filtra calendario y estadísticas a esa región |
 | Clic de nuevo en la misma región | Vuelve a Chile |
 | **← Chile** | Restablece el ámbito nacional |
 | Cambiar de pestaña | Cambia la clase representada por el color del mapa |
@@ -406,8 +383,10 @@ diciembre (1,5 s por mes) y reproduce el canto de la especie una vez por mes,
 más fuerte cuanto más lejos del centro llega el perfil y más regular es el
 registro, y en silencio cuando casi no se registra. Usa el mismo ámbito que el
 gráfico. Pulsarlo de nuevo («Detener»), cambiar de especie o de región, o cerrar
-la ficha lo detiene. Al empezar pausa la sonificación del atlas, la mezcla y el
-clip de la ficha; si alguno de ellos se reanuda, la escucha se detiene. Sin
+la ficha lo detiene. Al empezar pausa la mezcla y el clip de la ficha; si
+alguno de ellos se reanuda, la escucha se detiene. Se nota más en especies que
+vienen y se van: en una residente, cuyo perfil es casi plano, suena casi igual
+todo el año, y eso también es el dato. Sin
 grabación, el botón lo indica y queda desactivado. Ver el
 [cálculo del volumen](METRICAS.md#ano-especie).
 
@@ -443,9 +422,8 @@ incluye autor, licencia y enlace a la grabación original.
 el botón muestra **✓ En la mezcla** y evita duplicarla.
 
 El reproductor del clip tiene controles propios: el parlante general de
-Explorar actúa sobre el recorrido sonoro y el mezclador, no sobre este
-reproductor nativo. Abrir una ficha, además, enfoca en esa especie el recorrido
-mensual si este está reproduciéndose. Si no hay grabación, la ficha lo indica.
+Explorar actúa sobre el mezclador, no sobre este reproductor nativo. Si no hay
+grabación, la ficha lo indica.
 
 ### 4.5. Fotografías
 
@@ -463,7 +441,7 @@ aparece la galería habitual.
 
 ![Mezclador abierto con su catálogo de especies](interfaz/capturas/19-mezclador-catalogo.png)
 
-El mezclador es una barra inferior independiente del recorrido mensual. Puede
+El mezclador es una barra inferior independiente del resto de la página. Puede
 reunir especies de distintas clases o regiones; no es necesario que todas estén
 en el calendario visible.
 
@@ -506,23 +484,22 @@ Cambiar Sincronizar durante la reproducción reinicia la programación de la
 mezcla. Retirar la última pista la deja detenida. El parlante general silencia
 las pistas conservando sus volúmenes individuales.
 
-La sonificación del atlas y la mezcla tienen botones de reproducción distintos:
-pausar una no pausa automáticamente la otra. Los enlaces **XC…** y **CC** llevan
-a la fuente y licencia de cada grabación.
+«Escuchar su año» pausa la mezcla mientras suena. Los enlaces **XC…** y **CC**
+llevan a la fuente y licencia de cada grabación.
 
 ## 6. Resumen: qué controla cada selección
 
 | Selección | Afecta a… | Conserva… |
 |---|---|---|
-| Mes de Visualización | Cursor, siluetas por especie, tarjeta mensual y reloj sonoro | Datos anuales completos y región elegida |
-| Región de Visualización | Detalle regional y botón de ámbito; sonido si el ámbito es regional | Gráficos nacionales |
+| Mes de Visualización | Cursor, siluetas por especie y tarjeta mensual | Datos anuales completos y región elegida |
+| Región de Visualización | Detalle regional | Gráficos nacionales |
 | Zonas / Regiones | Los doce mapas nacionales y su leyenda | Resto de la portada |
-| Ocultar residentes | Puntos verdes del detalle regional | Datos, porcentajes y sonido |
-| Región de Explorar | Calendario, estadísticas, ficha y ámbito de la sonificación | Resumen nacional, grilla comparativa y pistas de mezcla |
+| Ocultar residentes | Puntos verdes del detalle regional | Datos y porcentajes |
+| Región de Explorar | Calendario, estadísticas, ficha y ámbito de «Escuchar su año» | Resumen nacional, grilla comparativa y pistas de mezcla |
 | Clase de Explorar | Filas, color del calendario y conteos del mapa | Región, mes y pistas de mezcla |
 | Mes de Explorar | Mapa, estadísticas y marcadores mensuales | Curvas anuales, filas elegidas y pistas de mezcla |
-| Especie de Explorar | Ficha, fila resaltada y foco del recorrido mensual | Pistas que ya estaban en la mezcla |
-| ▶ de una región / «Escuchar su año» | Pausa los demás sonidos de la página mientras suena | Selecciones de mes, región, especie y mezcla |
+| Especie de Explorar | Ficha y fila resaltada | Pistas que ya estaban en la mezcla |
+| «Escuchar su año» en la ficha | Pausa la mezcla y el clip mientras suena | Selecciones de mes, región, especie y mezcla |
 | Filtros del mezclador | Tarjetas disponibles en su catálogo | Pistas seleccionadas y filtros del atlas |
 | Volumen de pista | Una sola especie del mezclador | Las demás pistas |
 
@@ -530,7 +507,9 @@ a la fuente y licencia de cada grabación.
 
 **Entender las estaciones.** En Visualización, pausa el año y alterna enero y
 julio. Compara el pulso y los puntos de visitantes. Cambia los mapas entre Zonas
-y Regiones para distinguir detalle espacial de patrón regional.
+y Regiones para distinguir detalle espacial de patrón regional. En «La misma
+ave, distintos calendarios», escucha el año del Fío-fío en Metropolitana y luego
+en Arica y Parinacota.
 
 **Investigar una región.** En Explorar, selecciona una región y cambia entre
 Residentes, De verano y De invierno. Compara el calendario con la grilla. Abre

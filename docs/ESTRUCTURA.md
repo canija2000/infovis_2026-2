@@ -47,7 +47,7 @@ El módulo de página se inicia independientemente de `pages/overview.js`: un
 fallo de fotografías o perfiles no impide usar los gráficos ni el reproductor.
 Cambiar especie o expandir regiones devuelve una acción al coordinador; este
 modifica su estado y entrega un nuevo resultado a la vista. La matriz muestra
-el año completo, sin seguir el mes del reloj sonoro.
+el año completo, sin seguir el mes de la portada.
 
 ### Cómo se lee y qué se conserva
 

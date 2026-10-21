@@ -69,8 +69,8 @@ GBIF (11 descargas anuales, Aves, Chile)
   región). Necesitan `shapely` y las descargas en `gbif/downloads/` (se bajan por DOI). Orden:
   `python3 python_scripts/gbif/grid_aggregate.py --res 0.2 0.05 && python3 python_scripts/build_grid_data.py`.
 - `python_scripts/gbif/loop_aggregate.py` + `python_scripts/build_loop_data.py`: lugar-días por especie, región
-  y mes (celdas de ~5 km × fechas) → `web/data/loop.json`, qué especies suenan y cuántas copias en el loop de
-  la portada.
+  y mes (celdas de ~5 km × fechas) → `web/data/loop.json`, qué especies sonaban y cuántas copias en el loop de
+  la portada (retirado; el archivo sigue publicado sin uso en la web).
 - Revisión de cantos: `python_scripts/analizar_audio_loop.py` mide cada clip (banda propia, contraste canto/fondo,
   mejores tramos de 2 s → `python_scripts/audio_review/analisis.json`); `python_scripts/recortar_audio_banda.py`
   vuelve a recortar desde la grabación original los clips débiles (p. ej. palomas y tórtolas, de voz grave) y lo
@@ -164,15 +164,13 @@ conexión a internet.
   general región × mes: cuánto se aleja cada mes del promedio anual de
   visitantes de la región.
 - **Zoom & filter:** clic en una región (mapa o grilla), pestañas por clase,
-  "mostrar todas", buscador de especie y scrubber de mes con ▶ (también con la
-  barra espaciadora).
+  "mostrar todas", buscador de especie y scrubber de mes.
 - **Detalle:** ficha de especie con perfil anual radial, mapa de frecuencia
   por región, clip de canto (si hay) y galería de hasta ocho fotos (si hay).
-- **Sonificación:** cada mes (2,4 s) recorre Chile de norte a sur en cinco
-  macrozonas. Residentes = colchón sostenido; visitantes = cantos reales
-  (Fío-fío en verano, Picaflor chico en invierno). Densidad ← la ola de cada
-  zona respecto de su propio año; tono ← latitud; volumen ← cantidad. El audio
-  parte solo después de pulsar Play.
+- **Sonificación:** «Escuchar su año», en la ficha de especie: una aguja
+  recorre el perfil radial y el canto de esa especie suena una vez por mes, más
+  fuerte cuanto más presente está (la misma idea que el ▶ por región de la
+  portada). La sonificación mensual por macrozonas se retiró.
 - **Mezclador:** grilla con foto, búsqueda y filtro estacional para elegir
   especies; volumen individual y reproducción simultánea, desincronizada por
   defecto o sincronizada con la casilla. Ver
@@ -197,7 +195,7 @@ python3 python_scripts/preparar_audio_mixer.py           # crea pistas con menos
 expandir (232: top por pestaña en Chile y en cada región). Junta candidatas
 locales (`sounds/`) y de Xeno-canto (Chile primero, calidad A/B) y elige la
 mejor (Chile, canto o llamado, calidad, priorizando licencias sin ND). De cada una publica
-un clip de 6 s y un grano de 0,9 s para la sonificación, tomados del tramo con
+un clip de 6 s y un grano de 0,9 s (este último lo usaba la sonificación ya retirada), tomados del tramo con
 más energía en la banda de las aves (1,5–9 kHz) ponderada por tonalidad, para
 evitar viento o ruido de fondo. Hoy: 231 de 232 especies (falta el Guanay, sin
 grabaciones en Xeno-canto), ~13 MB. Los ajustes a mano (excluir una grabación,

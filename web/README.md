@@ -26,15 +26,17 @@ cd web
 python3 -m http.server 8000
 ```
 
-La portada solicita `overview.json`, datos espaciales y `loop.json`. Los
-archivos de `grid_region/` se cargan al elegir una región. Su audio usa
-`js/audio/year-loop.js`: cada mes tiene cuatro compases de tres segundos.
+La portada solicita `overview.json` y los datos espaciales. Los archivos de
+`grid_region/` se cargan al elegir una región. Su único audio es «Escuchar su
+año» en los calendarios regionales (`js/audio/species-year.js`), que pide
+`sounds.json` y el clip al pulsar ▶. `loop.json` sigue publicado, pero ya no se
+usa.
 
 Explorar solicita los cinco archivos base: `meta.json`, `species.json`,
 `typical_year.json`, `region_month.json` y `regions.min.geojson`. Los índices
 `sounds.json` e `images.json` se solicitan al abrir una ficha o el mezclador,
-y se reutilizan. La sonificación del atlas usa `atlas-sonifier.js`; la mezcla
-personalizada tiene su propio `mixer-engine.js`.
+y se reutilizan. «Escuchar su año», en la ficha, usa `species-year.js`; la
+mezcla personalizada tiene su propio `mixer-engine.js`.
 
 Los datos publicados se conservan en `data/` y los clips en `audio/`.
 `observations-*.json`, `metadata.json` y `regions.geojson` son entradas de los

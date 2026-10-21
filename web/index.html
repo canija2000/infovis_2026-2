@@ -66,34 +66,8 @@
             <path id="play-icon" d="M4 2.5h3v11H4zM9 2.5h3v11H9z" />
           </svg>
         </button>
-        <button id="mute" class="ghost icon-btn" type="button" aria-pressed="false" aria-label="Silenciar"
-          title="Silenciar">
-          <svg viewBox="0 0 20 20" aria-hidden="true">
-            <path class="speaker" d="M3 7.5h3l4-3.5v12l-4-3.5H3z" />
-            <path class="waves" d="M13 7a4 4 0 0 1 0 6M15.5 4.5a7.5 7.5 0 0 1 0 11" />
-            <path class="cross" d="M13 7.5l5 5M18 7.5l-5 5" />
-          </svg>
-        </button>
-        <div class="bars" id="bars" title="Compás del mes" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-        <div id="sound-scope" class="seg" role="group" aria-label="Ámbito sonoro">
-          <button type="button" data-scope="chile">Chile</button>
-          <button type="button" data-scope="region"><span id="sound-region-name">Metropolitana</span></button>
-        </div>
-        <div id="sound-mode" class="seg" role="group" aria-label="Modo de sonificación">
-          <button type="button" data-mode="wave" title="Sonifica el pulso estacional: visitantes en primer plano según la ola del mes y residentes como base suave">Pulso</button>
-          <button type="button" data-mode="visitors" title="Aísla solo las especies visitantes del mes para oír la ola pura">Solo viajeras</button>
-          <button type="button" data-mode="all" title="Todas las voces extendidas del mes por lugar-días">Todas</button>
-        </div>
-        <div id="sound-speed" class="seg" role="group" aria-label="Velocidad del recorrido">
-          <button type="button" data-speed="1" title="4 compases por mes (12 s/mes)">1×</button>
-          <button type="button" data-speed="2" title="2 compases por mes (6 s/mes)">2×</button>
-        </div>
       </div>
       <div class="months" id="months" role="group" aria-label="Mes"></div>
-      <p class="sound-data-line"><span class="np-label">Dato sonificado:</span> <span id="sound-data-summary"></span></p>
-      <p class="now-playing"><span class="np-label">Suenan:</span> <span id="now-playing"></span></p>
-      <p id="sound-hint" class="sound-hint" hidden>El año ya está sonando: haz clic en cualquier parte para escucharlo
-        (el navegador no deja reproducir audio sin un gesto). <a href="#como-suena">Cómo se compone</a></p>
     </div>
 
     <!-- B · Siluetas que viajan -->
@@ -211,20 +185,11 @@
   </main>
 
   <section id="como-suena" class="como-suena" aria-labelledby="cs-title">
-    <h2 id="cs-title">Cómo se compone el sonido</h2>
-    <p class="metrics-reading">Ver las fórmulas de <a href="metricas.html#lugar-dias" data-metric="lugar-dias">lugar-días</a>, <a href="metricas.html#copias" data-metric="copias">copias del canto</a> y <a href="metricas.html#tiempo-sonoro" data-metric="tiempo-sonoro">tiempos y ganancias</a>.</p>
-    <p>La página sonifica el pulso estacional de cada mes como una pieza en bucle. Cada mes dura <b>4 compases de 3 segundos</b>
-      en velocidad <b>1×</b> (12 s/mes, 2 min 24 s el año) o <b>2 compases</b> en <b>2×</b> (6 s/mes, 1 min 12 s el año). Un golpe grave al inicio de cada mes sube de tono con la riqueza total del mes.</p>
-    <ul>
-      <li><b>Qué dato codifica la densidad:</b> en el modo <b>Pulso</b> (por defecto), la cantidad de cantos de aves visitantes de verano y de invierno por compás (0 a 4 repeticiones por especie) y su presencia en primer plano crecen y bajan en proporción directa al tamaño real de cada ola estacional ese mes. Las aves residentes actúan como una base estable y suave acompañada de un colchón armónico continuo cuyo timbre se abre hacia el verano.</li>
-      <li><b>Qué dato codifica el espacio estéreo:</b> las <b>visitantes de verano</b> entran por el canal izquierdo, las <b>residentes</b> permanecen al centro y las <b>visitantes de invierno</b> entran por el canal derecho, respetando la clasificación estacional de Chile o de la región elegida.</li>
-      <li><b>Modos de escucha:</b> <b>Pulso</b> combina la ola de visitantes en primer plano con el piso residente; <b>Solo viajeras</b> silencia a las residentes para escuchar únicamente la entrada y salida de especies migratorias; <b>Todas</b> reproduce todas las copias por extensión territorial (<i>lugar-días</i>).</li>
-      <li><b>Arranque y controles:</b> <b>❚❚</b> pausa el año; el parlante silencia sin detenerlo; elegir un mes salta directamente a escuchar ese punto del ciclo.</li>
-    </ul>
+    <h2 id="cs-title">Cómo suena</h2>
     <p><b>Escuchar el año de una especie.</b> En «La misma ave, distintos calendarios», el botón <b>▶</b> de cada región
       recorre su fila de julio a junio: suena el canto de esa especie una vez por mes, más fuerte cuanto más se registra
       y con más regularidad, y en silencio cuando casi no está. No hace falta reconocer el canto: solo comparar cuándo
-      suena en cada región. Mientras suena, el recorrido de arriba queda en pausa.
+      suena en cada región. En Explorar, la ficha de cada especie ofrece lo mismo bajo su perfil anual.
       <a href="metricas.html#ano-especie" data-metric="ano-especie">Cómo se calcula el volumen</a>.</p>
   </section>
 
