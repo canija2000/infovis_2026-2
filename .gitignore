@@ -44,3 +44,5 @@ cache_images/
 # Local verification dependencies and artifacts
 node_modules/
 test-results/
+_site/
+.pages-build-*/

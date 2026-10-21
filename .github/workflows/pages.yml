@@ -1,11 +1,16 @@
-# Publica web/ en GitHub Pages (sitio estático, sin build step).
+# Publica el sitio actual y copias históricas de web/ en GitHub Pages.
 # Requiere Settings → Pages → Source: "GitHub Actions".
 name: Pages
 
 on:
   push:
     branches: [main, v1-rediseno]
-    paths: ["web/**", ".github/workflows/pages.yml"]
+    paths:
+      - "web/**"
+      - "scripts/build-pages.py"
+      - "scripts/pages-versions.json"
+      - "tests/pages-build.py"
+      - ".github/workflows/pages.yml"
   workflow_dispatch:
 
 permissions:
@@ -28,12 +33,12 @@ jobs:
         with:
           fetch-depth: 0
       - uses: actions/configure-pages@v5
-      - name: Añadir vista de prueba anterior al PR 27
-        run: |
-          mkdir web/prueba-antes-pr27
-          git archive e216501cf252605a9913a64f8336791be26a1c16:web | tar -x -C web/prueba-antes-pr27
+      - name: Preparar sitio actual y versiones históricas
+        run: python3 scripts/build-pages.py
+      - name: Comprobar integridad de todas las copias
+        run: python3 tests/pages-build.py
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: web
+          path: _site
       - id: deployment
         uses: actions/deploy-pages@v4
