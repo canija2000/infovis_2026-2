@@ -37,15 +37,9 @@ def verify_tree(commit: str, directory: Path, excluded: set[str]) -> None:
 
 if __name__ == "__main__":
     versions = json.loads((ROOT / "scripts/pages-versions.json").read_text())
-    for version in versions:
-        reference = version.get("commit", version.get("ref"))
-        version["commit"] = subprocess.check_output(
-            ["git", "rev-parse", "--verify", reference + "^{commit}"], cwd=ROOT
-        ).decode().strip()
     published = json.loads((SITE / "versions.json").read_text())
     current = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT).decode().strip()
     assert published["current"] == current
-    assert next(v["commit"] for v in published["versions"] if v["path"] == "v4/") == current
     assert [(v["path"], v["commit"]) for v in published["versions"]] == [
         (v["path"] + "/", v["commit"]) for v in versions
     ]

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Package historical web trees and the latest site for GitHub Pages."""
+"""Package committed web trees for Pages without changing historical files."""
 
 import io
 import json
@@ -32,20 +32,16 @@ def extract_web(commit: str, target: Path) -> None:
 
 def build() -> None:
     current = git("rev-parse", "HEAD").decode().strip()
-    configured = json.loads(MANIFEST.read_text(encoding="utf-8"))
-    versions = []
+    versions = json.loads(MANIFEST.read_text(encoding="utf-8"))
     paths = set()
-    for version in configured:
-        path = version["path"]
-        reference = version.get("commit", version.get("ref"))
-        commit = current if path == "v4" and reference == "HEAD" else reference
+    for version in versions:
+        path, commit = version["path"], version["commit"]
         if not re.fullmatch(r"v[1-9]\d*", path) or path in paths:
             raise ValueError(f"Ruta histórica inválida o repetida: {path}")
         if not re.fullmatch(r"[0-9a-f]{40}", commit):
             raise ValueError(f"{path}: se requiere un SHA completo e inmutable")
         git("cat-file", "-e", f"{commit}:web/index.html")
         paths.add(path)
-        versions.append({"path": path, "commit": commit})
 
     # Only replace the directory created by this publisher, never source files.
     if OUTPUT.exists() and not (OUTPUT / "versions.json").is_file():
