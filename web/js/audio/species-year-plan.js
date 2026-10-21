@@ -1,9 +1,13 @@
 /**
  * «Escuchar su año»: una especie, doce meses, un solo dato.
  *
- * Cada mes suena la misma frase del canto de la especie. Lo único que cambia es su volumen:
- * más fuerte en los meses en que más se registra y con más regularidad, en silencio cuando no está.
- * No hay que reconocer el canto: la persona ya eligió el ave y ve avanzar el cursor sobre el gráfico.
+ * Cada mes suena el canto de la especie. El nivel de presencia del mes se oye de tres maneras
+ * a la vez, todas en la misma dirección (codificación redundante de una sola variable):
+ *   volumen  · más fuerte cuanto más presente;
+ *   densidad · de un canto solitario a un pequeño coro de tres;
+ *   distancia· poco presente suena lejos (apagado y con eco); muy presente, cerca y nítido.
+ * En silencio cuando casi no está. No hay que reconocer el canto: la persona ya eligió el ave
+ * y ve avanzar el cursor sobre el gráfico.
  */
 export const MONTH_SECONDS = 1.5; // un año completo dura 18 s
 export const PHRASE_SECONDS = 1.35; // la frase deja una pausa breve que separa los meses
@@ -11,8 +15,8 @@ export const SILENT_BELOW = 0.05; // nivel bajo el cual el mes queda en silencio
 const LEAD_IN = 0.12; // margen para que el primer mes no quede cortado
 
 // Nivel 0–1 del mes: perfil relativo × fracción de años con registro.
-// Es la misma regla que usa la sonificación de Explorar para una especie (atlas-plan.js):
-// un mes con un solo registro aislado no suena tan fuerte como uno que se repite cada año.
+// Es la regla que usaba la sonificación retirada de Explorar para una especie: un mes con un
+// solo registro aislado no suena tan fuerte como uno que se repite cada año.
 export function stepLevel({ profile, years }) {
   if (profile === null || profile === undefined) return 0;
   const p = Math.min(1, Math.max(0, profile / 100));
@@ -20,23 +24,63 @@ export function stepLevel({ profile, years }) {
   return p * Math.min(1, Math.max(0, y));
 }
 
-// Amplitud de la frase. El exponente 1,3 abre la diferencia entre niveles medios y altos,
-// para que «más presente» se oiga claramente más fuerte (50 % ≈ −8 dB, 25 % ≈ −16 dB).
+// Amplitud del mes, proporcional al nivel (50 % ≈ −6 dB, 25 % ≈ −12 dB). La distancia (filtro)
+// y la densidad ya agrandan la diferencia: con un exponente mayor, los meses débiles se perdían.
 export function stepGain(level) {
   if (!(level >= SILENT_BELOW)) return 0;
-  return Math.pow(Math.min(1, level), 1.3);
+  return Math.min(1, level);
 }
+
+// Densidad: cuántas aves cantan ese mes. Umbrales parejos sobre el nivel (0–1).
+export function stepVoices(level) {
+  if (!(level >= SILENT_BELOW)) return 0;
+  return level >= 0.75 ? 3 : level >= 0.4 ? 2 : 1;
+}
+
+// Distancia: un ave lejana suena más apagada (filtro pasa-bajos) y con más eco (reverberación).
+// cutoff va de 1,5 kHz (lejos) a 16 kHz (cerca, sin filtrar en la práctica); el exponente 1,5
+// deja apagados también los meses intermedios (nivel 0,33 ≈ 2,4 kHz; 0,68 ≈ 5,3 kHz), porque los
+// cantos suelen estar entre 2 y 8 kHz. wet (eco) va de 0,55 a 0.
+export function stepDistance(level) {
+  const l = Math.min(1, Math.max(0, level || 0));
+  return {
+    cutoff: Math.round(1500 * Math.pow(16000 / 1500, Math.pow(l, 1.5))),
+    wet: 0.55 * (1 - l),
+  };
+}
+
+// Cada voz extra entra un poco después, desde otro punto del canto, algo desafinada y hacia un
+// lado: así suenan como aves distintas y no como un eco de la primera. Todas terminan antes del mes siguiente.
+const VOICES = [
+  { delay: 0, shift: 0, rate: 1, pan: 0 },
+  { delay: 0.17, shift: 0.12, rate: 1.03, pan: -0.35 },
+  { delay: 0.34, shift: 0.24, rate: 0.97, pan: 0.35 },
+];
 
 // steps: [{ month, profile, years }] en el orden en que se recorren.
 export function planSpeciesYear(steps, start = 0) {
   return steps.map((step, index) => {
     const level = stepLevel(step);
+    const gain = stepGain(level);
+    const count = stepVoices(level);
+    const at = start + LEAD_IN + index * MONTH_SECONDS;
+    // Voces no correlacionadas suman energía: se reparte para que el volumen total siga a `gain`.
+    const each = count ? gain / Math.sqrt(count) : 0;
     return {
       index,
       month: step.month,
-      at: start + LEAD_IN + index * MONTH_SECONDS,
+      at,
       level,
-      gain: stepGain(level),
+      gain,
+      ...stepDistance(level),
+      voices: VOICES.slice(0, count).map((voice) => ({
+        at: at + voice.delay,
+        duration: PHRASE_SECONDS - voice.delay,
+        shift: voice.shift,
+        rate: voice.rate,
+        pan: voice.pan,
+        gain: each,
+      })),
     };
   });
 }

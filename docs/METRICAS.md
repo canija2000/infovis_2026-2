@@ -733,22 +733,36 @@ Está en «La misma ave, distintos calendarios» (un botón ▶ por región) y e
 ficha de especie de Explorar (bajo el perfil radial). A diferencia de las
 sonificaciones retiradas, **no hay que reconocer qué ave canta**: la persona
 ya eligió la especie y ve avanzar un cursor sobre el gráfico. El sonido
-codifica **una sola variable**: qué tan presente está la especie cada mes.
+codifica **una sola variable**: qué tan presente está la especie cada mes. Se
+oye de tres maneras a la vez, todas en la misma dirección (codificación
+redundante): **volumen**, **densidad** (cuántas aves cantan) y **distancia**
+(un ave lejana suena apagada y con eco).
 
 ```text
-nivel(m)    = perfil(m)/100 × años con registro(m)/8      (0…1)
-amplitud(m) = nivel(m)^1,3      silencio si nivel(m) < 0,05
+nivel(m)     = perfil(m)/100 × años con registro(m)/8      (0…1)
+silencio       si nivel(m) < 0,05
+volumen(m)   = nivel(m)                         (0,5 ≈ −6 dB; 0,25 ≈ −12 dB)
+aves(m)      = 1 si nivel < 0,4 · 2 si nivel < 0,75 · 3 en otro caso
+pasa-bajos   = 1500 Hz × (16000/1500)^(nivel^1,5)   (lejos 1,5 kHz → cerca 16 kHz)
+eco (envío)  = 0,55 × (1 − nivel)                (lejos 0,55 → cerca 0)
 ```
 
 | Parámetro | Valor | Interpretación |
 |---|---|---|
 | Duración de un mes | 1,5 s; el año completo, 18 s | Tiempo de reproducción |
-| Frase | La misma en todos los meses: el tramo de 1,35 s con más energía del clip | Al repetir la misma frase, solo cambia el volumen y la comparación es directa |
+| Frase | El tramo de 1,35 s con más energía del clip, en todos los meses | La comparación entre meses es directa: no cambia la grabación |
+| Voces del coro | La 2.ª entra 0,17 s después, 3 % más aguda y a la izquierda; la 3.ª, 0,34 s después, 3 % más grave y a la derecha; cada una desde un punto algo posterior del canto | Suenan como aves distintas, no como un eco de la primera; todas terminan antes del mes siguiente |
+| Volumen del coro | Cada voz lleva `volumen / √aves` | El coro suma energía como voces independientes: el volumen total sigue al nivel |
 | Igualación | Cada clip se lleva a un RMS común antes de aplicar el nivel | Una grabación más fuerte no parece una especie más presente |
-| Exponente 1,3 | Nivel 0,5 ≈ −8 dB; 0,25 ≈ −16 dB | Hace audible la diferencia entre meses medios y altos |
+| Eco | Ruido estéreo que decae en 1,6 s (respuesta al impulso sintética) | Sugiere espacio abierto; se apaga en 0,15 s al detener |
+| Exponente 1,5 del pasa-bajos | Nivel 0,33 ≈ 2,4 kHz; 0,68 ≈ 5,3 kHz | Los cantos suelen estar entre 2 y 8 kHz: los meses intermedios también suenan algo lejanos |
 | Orden | Julio a junio en la matriz regional; enero a diciembre en la ficha (la aguja gira desde arriba) | Sigue el orden de cada gráfico |
 | Clip | Pista con menos ruido de fondo (`audio/mixer/`) si existe; si no, el clip de la ficha | Misma grabación que se puede oír en la ficha |
 | Salida | Ganancia 0,9 y solo un limitador (−3 dBFS, 20:1) | Sin compresor: el volumen es el dato y no se aplana |
+
+Medido al renderizar el Fío-fío en Metropolitana: febrero (nivel 1, tres aves,
+seco) suena a −25 dB; abril (nivel 0,33, un ave, filtrada a 2,4 kHz y con eco)
+a −35 dB, con una cola de eco de −27 dB respecto del canto; julio, en silencio.
 
 `años con registro / 8` (la misma ponderación que usaba la sonificación
 retirada de Explorar para una especie) evita que un registro aislado, que en el perfil relativo puede

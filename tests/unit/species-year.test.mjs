@@ -7,8 +7,10 @@ import {
   SILENT_BELOW,
   bestWindow,
   planSpeciesYear,
+  stepDistance,
   stepGain,
   stepLevel,
+  stepVoices,
 } from "../../web/js/audio/species-year-plan.js";
 import { createRegionalCalendarRepository } from "../../web/js/data/regional-calendar.js";
 import { queryRegionalCalendar } from "../../web/js/overview/regional-calendar.js";
@@ -30,8 +32,7 @@ test("level follows profile and regularity; gain grows with it and is silent nea
     last = gain;
   }
   assert.equal(stepGain(1), 1);
-  // Medio nivel suena a menos de la mitad de la amplitud: la diferencia se oye.
-  assert.ok(stepGain(0.5) < 0.45);
+  assert.equal(stepGain(0.5), 0.5, "volume is proportional to the level");
 });
 
 test("one step per month, evenly spaced", () => {
@@ -45,6 +46,36 @@ test("one step per month, evenly spaced", () => {
   );
   assert.ok(Math.abs(plan[1].at - plan[0].at - MONTH_SECONDS) < 1e-9);
   assert.ok(plan[0].at > 10);
+});
+
+test("density and distance follow the same level: more present means more birds and closer", () => {
+  assert.equal(stepVoices(0.02), 0);
+  assert.equal(stepVoices(0.2), 1);
+  assert.equal(stepVoices(0.5), 2);
+  assert.equal(stepVoices(0.9), 3);
+  let last = { voices: 0, cutoff: 0, wet: Infinity };
+  for (let level = SILENT_BELOW; level <= 1; level += 0.05) {
+    const voices = stepVoices(level);
+    const { cutoff, wet } = stepDistance(level);
+    assert.ok(voices >= last.voices, `voices never drop at ${level}`);
+    assert.ok(cutoff > last.cutoff, `brighter (closer) at ${level}`);
+    assert.ok(wet < last.wet, `less echo (closer) at ${level}`);
+    last = { voices, cutoff, wet };
+  }
+  const [step] = planSpeciesYear([{ month: 0, profile: 100, years: 8 }]);
+  assert.equal(step.voices.length, 3);
+  assert.ok(
+    step.voices.every(
+      (voice) => voice.at + voice.duration <= step.at + 1.35 + 1e-9,
+    ),
+    "every voice ends before the next month",
+  );
+  assert.ok(
+    Math.abs(
+      Math.hypot(...step.voices.map((voice) => voice.gain)) - step.gain,
+    ) < 1e-9,
+    "the chorus keeps the month's overall level",
+  );
 });
 
 test("best window finds the song inside a mostly quiet clip", () => {

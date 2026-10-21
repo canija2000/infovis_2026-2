@@ -78,8 +78,15 @@ function environment(code, name) {
     createBufferSource() {
       return node("source");
     }
-    createBuffer() {
-      return { duration: 0 };
+    createBuffer(channels, length) {
+      const data = Array.from(
+        { length: channels },
+        () => new Float32Array(length),
+      );
+      return { duration: 0, getChannelData: (c) => data[c] };
+    }
+    createConvolver() {
+      return node("convolver");
     }
     createOscillator() {
       return node("oscillator");
@@ -140,7 +147,7 @@ function environment(code, name) {
   };
 }
 const cache = source("web/js/audio/buffers.js");
-test("species year: one phrase per audible month, louder with presence, synced callbacks and clean stop", async () => {
+test("species year: one sung month per audible month, more voices and closer with presence, synced callbacks and clean stop", async () => {
   const env = environment(
     cache +
       "\n" +
@@ -153,7 +160,7 @@ test("species year: one phrase per audible month, louder with presence, synced c
   const steps = [
     { month: 6, profile: 100, years: 8 },
     { month: 7, profile: 2, years: 1 },
-    { month: 8, profile: 50, years: 8 },
+    { month: 8, profile: 30, years: 8 },
   ];
   const seen = [];
   let ended = null;
@@ -165,17 +172,21 @@ test("species year: one phrase per audible month, louder with presence, synced c
     onEnd: (info) => (ended = info),
   });
   assert.equal(ok, true);
-  // Las frases llevan offset; el desbloqueo toca una muestra en silencio sin offset.
+  // Las voces llevan offset; el desbloqueo toca una muestra en silencio sin offset.
   const starts = env.trace.filter(
     ([, method, , offset]) => method === "start" && offset !== undefined,
   );
-  assert.equal(starts.length, 2, "the near-silent month does not sound");
+  const julio = starts.filter(([, , at]) => at < 1.5);
+  const septiembre = starts.filter(([, , at]) => at >= 3);
+  assert.equal(julio.length, 3, "a full month is a chorus of three");
+  assert.equal(septiembre.length, 1, "a weak month is a single bird");
+  assert.equal(starts.length, 4, "the near-silent month does not sound");
   assert.ok(
-    starts.every(([, , , offset]) => Math.abs(offset - 3) < 0.05),
-    "each phrase starts where the song is, not in the background",
+    starts.every(([, , , offset]) => offset > 2.9 && offset < 3.35),
+    "every voice starts where the song is, not in the background",
   );
   assert.ok(
-    Math.abs(starts[1][2] - starts[0][2] - 3) < 1e-9,
+    Math.abs(septiembre[0][2] - julio[0][2] - 3) < 1e-9,
     "1,5 s per month",
   );
   const peaks = env.trace
@@ -187,10 +198,10 @@ test("species year: one phrase per audible month, louder with presence, synced c
         value > 0.001,
     )
     .map(([, , , value]) => value);
-  assert.equal(peaks.length, 2);
+  const julioTotal = Math.hypot(...peaks.slice(0, 3));
   assert.ok(
-    peaks[0] > peaks[1] * 2,
-    "a full month is clearly louder than a half month",
+    julioTotal > peaks[3] * 3,
+    "a full month is clearly louder than a weak month",
   );
   env.step(1.7);
   assert.deepEqual(seen, [6, 7]);
@@ -208,9 +219,13 @@ test("species year: one phrase per audible month, louder with presence, synced c
   player.stop();
   assert.equal(ended.completed, false);
   assert.equal(
-    env.trace.slice(before).filter(([, method]) => method === "stop").length,
-    2,
-    "stopping cancels the phrases still to come",
+    env.trace
+      .slice(before)
+      .filter(
+        ([node, method]) => node.startsWith("source") && method === "stop",
+      ).length,
+    4,
+    "stopping cancels every voice still to come",
   );
 });
 

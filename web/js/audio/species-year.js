@@ -8,17 +8,23 @@ import {
 
 /**
  * Motor de «Escuchar su año» (Web Audio, sin dependencias).
- * Programa de una vez las doce frases del canto con su volumen y avisa qué mes suena,
- * para que la página mueva el cursor. Cada página crea su propio reproductor.
+ * Programa de una vez los doce meses del canto (volumen, número de voces y distancia) y avisa
+ * qué mes suena, para que la página mueva el cursor. Cada página crea su propio reproductor.
  * Sin compresor: el volumen es el dato y no debe aplanarse; solo un limitador evita saturar.
+ *
+ * Cadena de un mes:  voz → envolvente → paneo ┐
+ *                    voz → envolvente → paneo ├→ pasa-bajos (distancia) ┬→ seco → salida
+ *                    voz → envolvente → paneo ┘                         └→ eco (reverberación) → salida
  */
 const TARGET_RMS = 0.09; // todas las grabaciones se igualan a este nivel antes de aplicar el dato
 const ATTACK = 0.03;
 const RELEASE = 0.3;
+const REVERB_SECONDS = 1.6; // cola del eco de un ave lejana
 
 export function createSpeciesYearPlayer() {
   let ctx = null;
   let master = null;
+  let impulse = null; // respuesta al impulso del eco, generada una vez por contexto
   let session = null;
   let token = 0;
   const windows = new Map();
@@ -76,27 +82,70 @@ export function createSpeciesYearPlayer() {
     return windows.get(url);
   }
 
-  function phrase(buffer, offset, at, gain) {
+  // Eco sintético: ruido estéreo que decae. Basta para que un canto «lejano» suene en un espacio abierto.
+  function reverbImpulse() {
+    if (impulse) return impulse;
+    const length = Math.round(ctx.sampleRate * REVERB_SECONDS);
+    impulse = ctx.createBuffer(2, length, ctx.sampleRate);
+    for (let c = 0; c < 2; c++) {
+      const data = impulse.getChannelData(c);
+      for (let i = 0; i < length; i++)
+        data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, 3);
+    }
+    return impulse;
+  }
+
+  // Un mes: pasa-bajos y mezcla seco/eco según la distancia; devuelve dónde conectar sus voces.
+  function monthBus(step, reverb) {
+    const filter = ctx.createBiquadFilter();
+    filter.type = "lowpass";
+    filter.frequency.value = step.cutoff;
+    filter.Q.value = 0.5;
+    const dry = ctx.createGain();
+    dry.gain.value = 1;
+    filter.connect(dry).connect(master);
+    if (step.wet > 0) {
+      const send = ctx.createGain();
+      send.gain.value = step.wet;
+      filter.connect(send).connect(reverb);
+    }
+    return filter;
+  }
+
+  function voice(buffer, offset, spec, bus) {
+    const { at, duration, gain, rate, pan, shift } = spec;
     const env = ctx.createGain();
+    const release = Math.min(RELEASE, duration / 2);
     env.gain.setValueAtTime(0.0001, at);
     env.gain.exponentialRampToValueAtTime(gain, at + ATTACK);
-    env.gain.setValueAtTime(gain, at + PHRASE_SECONDS - RELEASE);
-    env.gain.exponentialRampToValueAtTime(0.0001, at + PHRASE_SECONDS);
+    env.gain.setValueAtTime(gain, at + duration - release);
+    env.gain.exponentialRampToValueAtTime(0.0001, at + duration);
     const src = ctx.createBufferSource();
     src.buffer = buffer;
-    src.connect(env).connect(master);
-    const length = Math.min(PHRASE_SECONDS, buffer.duration - offset);
-    src.start(at, offset, length + 0.02);
+    src.playbackRate.value = rate;
+    src.connect(env);
+    if (pan && ctx.createStereoPanner) {
+      const panner = ctx.createStereoPanner();
+      panner.pan.value = pan;
+      env.connect(panner).connect(bus);
+    } else env.connect(bus);
+    const start = Math.min(offset + shift, Math.max(0, buffer.duration - 0.2));
+    const length = Math.min(duration * rate, buffer.duration - start);
+    src.start(at, start, length + 0.02);
     return { src, env, at };
   }
 
   function stop() {
     token += 1;
     if (!session) return;
-    const { sources, timer, onEnd } = session;
+    const { sources, timer, onEnd, echo } = session;
     session = null;
     clearInterval(timer);
     const now = ctx.currentTime;
+    // La cola del eco también se apaga, en vez de seguir sonando 1,6 s.
+    echo.gain.cancelScheduledValues(now);
+    echo.gain.setValueAtTime(echo.gain.value, now);
+    echo.gain.linearRampToValueAtTime(0, now + 0.15);
     for (const { src, env, at } of sources) {
       if (at > now) {
         src.stop();
@@ -130,9 +179,19 @@ export function createSpeciesYearPlayer() {
     if (ctx.state !== "running") ctx.resume().catch(() => {});
     const { start, norm } = windowOf(url, buffer);
     const plan = planSpeciesYear(steps, ctx.currentTime);
+    const reverb = ctx.createConvolver();
+    reverb.buffer = reverbImpulse();
+    const echo = ctx.createGain();
+    echo.gain.value = 1;
+    reverb.connect(echo).connect(master);
     const sources = plan
-      .filter((step) => step.gain > 0)
-      .map((step) => phrase(buffer, start, step.at, step.gain * norm));
+      .filter((step) => step.voices.length)
+      .flatMap((step) => {
+        const bus = monthBus(step, reverb);
+        return step.voices.map((v) =>
+          voice(buffer, start, { ...v, gain: v.gain * norm }, bus),
+        );
+      });
     const end = ctx.currentTime + yearDuration(steps.length) + 0.05;
     let next = 0;
     const tick = () => {
@@ -151,6 +210,7 @@ export function createSpeciesYearPlayer() {
     session = {
       token: mine,
       sources,
+      echo,
       onEnd,
       timer: setInterval(tick, 25),
     };

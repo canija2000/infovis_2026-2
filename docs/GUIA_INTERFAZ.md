@@ -125,12 +125,13 @@ El año se muestra completo y no cambia con el mes del reproductor.
 
 **Qué puedes escuchar.** Cada región tiene un botón **▶** junto a su nombre. Al
 pulsarlo, un marco recorre su fila de julio a junio, un mes cada 1,5 segundos
-(18 s el año), y suena el canto de la especie una vez por mes: **más fuerte
-cuanto más intenso es el color y más regular el registro, en silencio cuando
-casi no está**. Así se oye, por ejemplo, que el Fío-fío calla en el invierno de
+(18 s el año), y cada mes suena el canto de la especie. Cuanto más intenso es
+el color y más regular el registro, **más fuerte, más aves (de un canto
+solitario a un coro de tres) y más cerca** (nítido; lejos suena apagado y con
+eco); **en silencio cuando casi no está**. Así se oye, por ejemplo, que el Fío-fío calla en el invierno de
 Metropolitana y canta todo el año en Arica y Parinacota. No hace falta
-reconocer el canto: es siempre la misma ave y la misma frase; solo cambia el
-volumen. Ver el [cálculo del volumen](METRICAS.md#ano-especie).
+reconocer el canto: es siempre la misma ave; volumen, número de aves y
+distancia dicen lo mismo de tres maneras. Ver el [cálculo](METRICAS.md#ano-especie).
 
 | Control | Qué hace |
 |---|---|
@@ -374,9 +375,9 @@ muestra mes, perfil y frecuencia. Cambiar el mes resalta su etiqueta; no cambia
 la curva anual completa.
 
 **Escuchar su año.** El botón bajo el gráfico hace girar una aguja de enero a
-diciembre (1,5 s por mes) y reproduce el canto de la especie una vez por mes,
-más fuerte cuanto más lejos del centro llega el perfil y más regular es el
-registro, y en silencio cuando casi no se registra. Usa el mismo ámbito que el
+diciembre (1,5 s por mes) y reproduce el canto de la especie: cuanto más lejos
+del centro llega el perfil y más regular es el registro, más fuerte, más aves y
+más cerca suena; en silencio cuando casi no se registra. Usa el mismo ámbito que el
 gráfico. Pulsarlo de nuevo («Detener»), cambiar de especie o de región, o cerrar
 la ficha lo detiene. Al empezar pausa el clip de la ficha; si el clip se
 reanuda, la escucha se detiene. Se nota más en especies que
