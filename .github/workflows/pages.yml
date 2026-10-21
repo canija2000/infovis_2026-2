@@ -25,7 +25,13 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/configure-pages@v5
+      - name: Añadir vista de prueba anterior al PR 27
+        run: |
+          mkdir web/prueba-antes-pr27
+          git archive e216501cf252605a9913a64f8336791be26a1c16:web | tar -x -C web/prueba-antes-pr27
       - uses: actions/upload-pages-artifact@v3
         with:
           path: web
