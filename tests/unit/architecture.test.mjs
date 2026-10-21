@@ -56,7 +56,7 @@ test("data and audio do not render DOM; views never load files or create AudioCo
       );
   }
 });
-test("published data and audio are unchanged", () => {
+test("published data, audio and deployment configuration are unchanged", () => {
   execFileSync(
     "git",
     [
@@ -67,6 +67,7 @@ test("published data and audio are unchanged", () => {
       "web/data",
       "web/audio",
       "wrangler.jsonc",
+      ".github/workflows/pages.yml",
     ],
     { cwd: root },
   );

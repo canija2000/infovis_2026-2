@@ -1,16 +1,11 @@
-# Publica el sitio actual y copias históricas de web/ en GitHub Pages.
+# Publica web/ en GitHub Pages (sitio estático, sin build step).
 # Requiere Settings → Pages → Source: "GitHub Actions".
 name: Pages
 
 on:
   push:
     branches: [main, v1-rediseno]
-    paths:
-      - "web/**"
-      - "scripts/build-pages.py"
-      - "scripts/pages-versions.json"
-      - "tests/pages-build.py"
-      - ".github/workflows/pages.yml"
+    paths: ["web/**", ".github/workflows/pages.yml"]
   workflow_dispatch:
 
 permissions:
@@ -30,15 +25,9 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - uses: actions/configure-pages@v5
-      - name: Preparar sitio actual y versiones históricas
-        run: python3 scripts/build-pages.py
-      - name: Comprobar integridad de todas las copias
-        run: python3 tests/pages-build.py
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: _site
+          path: web
       - id: deployment
         uses: actions/deploy-pages@v4
