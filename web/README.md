@@ -58,4 +58,12 @@ npm run test:browser
 ```
 
 Node y las dependencias npm solo se necesitan para verificar el proyecto.
-La publicación sigue sirviendo la carpeta `web/` directamente.
+La publicación prepara `_site/` mediante `python3 scripts/build-pages.py`.
+La raíz contiene `web/` del commit actual; `/v1/`, `/v2/`, `/v3/` y `/v4/`
+contienen copias completas de los commits fijados en
+`scripts/pages-versions.json`. No se modifican sus HTML, datos, estilos ni
+audios. GitHub Actions descarga el historial completo para reconstruirlas en
+cada publicación. `versions.json`, en la raíz publicada, identifica sus commits.
+
+Los enlaces y cortes de cada versión se documentan en
+[versiones publicadas](../docs/proceso/versiones-publicadas.md).
