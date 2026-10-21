@@ -4,15 +4,14 @@
  * Cada mes suena el canto de la especie. El nivel de presencia del mes elige una de tres escenas
  * bien distintas, para que se reconozcan sin explicación (codificación redundante de una sola
  * variable: número de aves, distancia y volumen dicen lo mismo):
- *   cerca · muchas aves (4), cantos separados que se pueden contar, nítidos y de lado a lado;
- *   medio · dos aves, algo apagadas y con un poco de eco;
+ *   cerca · un coro de cinco aves que cantan juntas el canto completo, de lado a lado;
+ *   medio · dos aves cantando juntas, algo apagadas y con un poco de eco;
  *   lejos · un ave sola, muy apagada y con mucho eco, como desde el otro lado de un valle.
  * En silencio cuando casi no está. No hay que reconocer el canto: la persona ya eligió el ave
  * y ve avanzar el cursor sobre el gráfico.
  */
 export const MONTH_SECONDS = 1.5; // un año completo dura 18 s
-export const PHRASE_SECONDS = 1.35; // tramo del clip del que salen los cantos
-export const CALL_SECONDS = 0.55; // cada ave canta un fragmento corto: así se distinguen y se cuentan
+export const PHRASE_SECONDS = 1.35; // cada ave canta este tramo completo del clip, sin cortarlo
 export const SILENT_BELOW = 0.05; // nivel bajo el cual el mes queda en silencio
 const LEAD_IN = 0.12; // margen para que el primer mes no quede cortado
 
@@ -36,11 +35,11 @@ export function stepLevel({ profile, years }) {
 //     (sin compensar, un canto agudo filtrado quedaba ~30 dB abajo: inaudible).
 export const SCENES = {
   near: {
-    label: "muchas aves, cerca",
-    birds: 4,
+    label: "un coro de aves, cerca",
+    birds: 5,
     muffle: null,
     dry: 1,
-    wet: 0,
+    wet: 0.12, // un poco de aire común: une al coro en un mismo lugar
     db: 0,
   },
   mid: {
@@ -81,17 +80,21 @@ export function stepGain(level) {
   return 0.45 + 0.55 * Math.min(1, level);
 }
 
-// Cada ave entra en su momento, desde otro punto del canto, con su propia afinación y posición:
-// así suenan como aves distintas que se pueden contar, no como un eco de la primera.
-// El orden es fijo para que cada vuelta del año suene igual. Todas terminan antes del mes siguiente.
+// El coro: todas las aves cantan a la vez el canto completo, como al amanecer. Para que suene a
+// muchas aves y no a una sola duplicada, cada una entra apenas desfasada (menos de 0,15 s), canta
+// desde otro punto de la grabación (así se cruzan notas distintas), con una afinación levemente
+// propia (±1,5–3,5 %), en otro lugar del espacio estéreo y algo más cerca o más atrás (level).
+// Antes, con fragmentos cortos, entradas muy separadas y ±5–8 % de afinación, sonaba entrecortado.
+// El orden es fijo para que cada vuelta del año suene igual.
 const BIRDS = [
-  { delay: 0, shift: 0, rate: 1, pan: 0 },
-  { delay: 0.6, shift: 0.4, rate: 1.05, pan: 0.6 },
-  { delay: 0.3, shift: 0.2, rate: 0.95, pan: -0.7 },
-  { delay: 0.85, shift: 0.6, rate: 1.08, pan: -0.25 },
+  { delay: 0, shift: 0, rate: 1, pan: 0, level: 1 },
+  { delay: 0.07, shift: 0.45, rate: 1.02, pan: -0.75, level: 0.85 },
+  { delay: 0.13, shift: 0.9, rate: 0.98, pan: 0.75, level: 0.85 },
+  { delay: 0.04, shift: 0.25, rate: 1.035, pan: -0.4, level: 0.7 },
+  { delay: 0.1, shift: 0.65, rate: 0.97, pan: 0.4, level: 0.7 },
 ];
-// Con un ave o dos, el ave se queda al centro o se reparte suave entre ambos lados.
-const PANS = { 1: [0], 2: [-0.35, 0.35], 4: null };
+// Con un ave o dos, se quedan al centro o se reparten suave entre ambos lados.
+const PANS = { 1: [0], 2: [-0.35, 0.35], 5: null };
 
 // steps: [{ month, profile, years }] en el orden en que se recorren.
 export function planSpeciesYear(steps, start = 0) {
@@ -112,8 +115,9 @@ export function planSpeciesYear(steps, start = 0) {
     const { birds, muffle, dry, wet, db } = SCENES[scene];
     const gain = stepGain(level);
     const pans = PANS[birds];
+    const chorus = BIRDS.slice(0, birds);
     // Voces no correlacionadas suman energía: se reparte para que el volumen total siga a `gain`.
-    const each = gain / Math.sqrt(birds);
+    const scale = gain / Math.hypot(...chorus.map((bird) => bird.level));
     return {
       index,
       month: step.month,
@@ -125,13 +129,13 @@ export function planSpeciesYear(steps, start = 0) {
       dry,
       wet,
       db,
-      voices: BIRDS.slice(0, birds).map((bird, i) => ({
+      voices: chorus.map((bird, i) => ({
         at: at + bird.delay,
-        duration: CALL_SECONDS,
+        duration: PHRASE_SECONDS - bird.delay,
         shift: bird.shift,
         rate: bird.rate,
         pan: pans ? pans[i] : bird.pan,
-        gain: each,
+        gain: bird.level * scale,
       })),
     };
   });

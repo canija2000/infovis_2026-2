@@ -14,13 +14,14 @@ import {
  * mes suena, para que la página mueva el cursor. Cada página crea su propio reproductor.
  * Sin compresor: el volumen es parte del dato y no debe aplanarse; solo un limitador evita saturar.
  *
- * Cadena de un mes:  ave → envolvente → paneo ┐
+ * Cadena de un mes (cerca: un coro de cinco aves que cantan juntas):
+ *                    ave → envolvente → paneo ┐
  *                    ave → envolvente → paneo ├→ pasa-bajos (distancia) ┬→ directo → salida
  *                    ave → envolvente → paneo ┘                         └→ retardo → eco → salida
  */
 const TARGET_RMS = 0.09; // todas las grabaciones se igualan a este nivel antes de aplicar el dato
-const ATTACK = 0.015;
-const RELEASE = 0.15;
+const ATTACK = 0.05; // entradas suaves: el coro no debe sonar a golpes
+const RELEASE = 0.3;
 const REVERB_SECONDS = 2.2; // cola del eco de un ave lejana
 const PRE_DELAY = 0.04; // el eco llega un poco después que el sonido directo, como en un valle
 
@@ -151,8 +152,14 @@ export function createSpeciesYearPlayer() {
       panner.pan.value = pan;
       env.connect(panner).connect(bus);
     } else env.connect(bus);
-    const start = Math.min(offset + shift, Math.max(0, buffer.duration - 0.2));
-    const length = Math.min(duration * rate, buffer.duration - start);
+    // Cada ave canta su tramo completo: si desde su punto del canto no alcanza el clip, empieza
+    // antes, en vez de cortarse a mitad de nota.
+    const want = duration * rate;
+    const start = Math.max(
+      0,
+      Math.min(offset + shift, buffer.duration - want - 0.02),
+    );
+    const length = Math.min(want, buffer.duration - start);
     src.start(at, start, length + 0.02);
     return { src, env, at };
   }

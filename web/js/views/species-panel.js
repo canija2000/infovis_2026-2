@@ -243,7 +243,7 @@ export function createSpeciesPanel({
       );
   }
   // Mueve la aguja al mes que suena y resalta su punto; month = null deja la aguja oculta.
-  // sound: cómo suena ese mes («muchas aves, cerca»…), escrito bajo el botón.
+  // sound: cómo suena ese mes («un coro de aves, cerca»…), escrito bajo el botón.
   function setYearPlayback(playing, month = null, sound = "") {
     yearNow.textContent =
       playing && month !== null ? `♪ ${MONTHS[month]}: ${sound}` : "";

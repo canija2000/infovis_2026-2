@@ -150,7 +150,7 @@ function environment(code, name) {
   };
 }
 const cache = source("web/js/audio/buffers.js");
-test("species year: one scene per audible month, countable birds, synced callbacks and clean stop", async () => {
+test("species year: one scene per audible month, a chorus when present, synced callbacks and clean stop", async () => {
   const env = environment(
     cache +
       "\n" +
@@ -181,12 +181,16 @@ test("species year: one scene per audible month, countable birds, synced callbac
   );
   const julio = starts.filter(([, , at]) => at < 1.5);
   const septiembre = starts.filter(([, , at]) => at >= 3);
-  assert.equal(julio.length, 4, "a full month is four birds");
+  assert.equal(julio.length, 5, "a full month is a chorus of five birds");
   assert.equal(septiembre.length, 1, "a weak month is a single bird");
-  assert.equal(starts.length, 5, "the near-silent month does not sound");
+  assert.equal(starts.length, 6, "the near-silent month does not sound");
   assert.ok(
-    starts.every(([, , , offset]) => offset > 2.9 && offset < 3.65),
+    starts.every(([, , , offset]) => offset > 2.9 && offset < 4),
     "every bird sings from the song, not from the background",
+  );
+  assert.ok(
+    starts.every(([, , , offset, length]) => offset + length <= 6.02),
+    "no bird is cut off by the end of the clip",
   );
   env.step(1.7);
   assert.deepEqual(seen, [
@@ -212,7 +216,7 @@ test("species year: one scene per audible month, countable birds, synced callbac
       .filter(
         ([node, method]) => node.startsWith("source") && method === "stop",
       ).length,
-    5,
+    6,
     "stopping cancels every bird still to come",
   );
 });

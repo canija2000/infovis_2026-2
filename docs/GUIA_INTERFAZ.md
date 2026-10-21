@@ -126,7 +126,7 @@ El año se muestra completo y no cambia con el mes del reproductor.
 **Qué puedes escuchar.** Cada región tiene un botón **▶** junto a su nombre. Al
 pulsarlo, un marco recorre su fila de julio a junio, un mes cada 1,5 segundos
 (18 s el año), y cada mes suena el canto de la especie en una de tres escenas:
-**muchas aves cerca** (color intenso y registro regular), **dos aves a media
+**un coro de aves cerca** (color intenso y registro regular), **dos aves a media
 distancia** o **un ave sola, lejos y con eco** (poca presencia); **silencio**
 cuando casi no está. Bajo la matriz se escribe la escena del mes que suena. Así se oye, por ejemplo, que el Fío-fío calla en el invierno de
 Metropolitana y canta todo el año en Arica y Parinacota. No hace falta
@@ -378,7 +378,7 @@ la curva anual completa.
 **Escuchar su año.** El botón bajo el gráfico hace girar una aguja de enero a
 diciembre (1,5 s por mes) y reproduce el canto de la especie: cuanto más lejos
 del centro llega el perfil y más regular es el registro, más aves y más cerca
-(cuatro nítidas, dos, o una sola lejana con eco); en silencio cuando casi no se
+(un coro de cinco nítido, dos, o una sola lejana con eco); en silencio cuando casi no se
 registra. Bajo el botón se escribe la escena del mes («♪ julio: un ave sola,
 lejos») y «Así suena: Mucha / Media / Poca» toca un ejemplo de cada escena. Usa el mismo ámbito que el
 gráfico. Pulsarlo de nuevo («Detener»), cambiar de especie o de región, o cerrar
