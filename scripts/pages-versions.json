@@ -13,6 +13,10 @@
   },
   {
     "path": "v4",
+    "ref": "HEAD"
+  },
+  {
+    "path": "prueba-antes-pr27",
     "commit": "e216501cf252605a9913a64f8336791be26a1c16"
   }
 ]

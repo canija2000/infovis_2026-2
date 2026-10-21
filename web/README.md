@@ -59,11 +59,16 @@ npm run test:browser
 
 Node y las dependencias npm solo se necesitan para verificar el proyecto.
 La publicación prepara `_site/` mediante `python3 scripts/build-pages.py`.
-La raíz contiene `web/` del commit actual; `/v1/`, `/v2/`, `/v3/` y `/v4/`
-contienen copias completas de los commits fijados en
-`scripts/pages-versions.json`. No se modifican sus HTML, datos, estilos ni
-audios. GitHub Actions descarga el historial completo para reconstruirlas en
-cada publicación. `versions.json`, en la raíz publicada, identifica sus commits.
+La raíz y `/v4/` contienen `web/` del último commit publicado de `main`.
+`/v1/`, `/v2/` y `/v3/` contienen copias completas de los commits históricos
+fijados en `scripts/pages-versions.json`. La referencia `HEAD` de V4 se resuelve
+al SHA completo durante cada publicación. No se modifican los HTML, datos,
+estilos ni audios de ninguna copia. GitHub Actions descarga el historial
+completo para reconstruirlas. `versions.json`, en la raíz publicada, identifica
+los commits realmente usados.
+
+`/prueba-antes-pr27/` conserva además el sitio del 19 de octubre de 2026,
+anterior al PR #27, con el sonido y el avance automático originales.
 
 Los enlaces y cortes de cada versión se documentan en
 [versiones publicadas](../docs/proceso/versiones-publicadas.md).

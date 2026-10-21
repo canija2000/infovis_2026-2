@@ -1,17 +1,22 @@
-# Versiones históricas publicadas
+# Versiones publicadas
 
-Las cuatro versiones del informe se publican en rutas independientes:
+Las cuatro versiones se publican en rutas independientes. V1--V3 conservan los
+cortes anteriores a las revisiones; V4 sigue la versión más reciente de `main`.
 
 | Versión | Corte del informe | Commit | Página |
 | --- | --- | --- | --- |
 | V1 | 30 de septiembre de 2026, antes de R1 | `4b834bfaf7cad8b3d01cde916a0e29225de75a9e` | [Abrir V1](https://canija2000.github.io/infovis_2026-2/v1/) |
 | V2 | 7 de octubre de 2026, antes de R2 | `37c53d46ba8e928de165d5cb40f1206b5231a618` | [Abrir V2](https://canija2000.github.io/infovis_2026-2/v2/) |
 | V3 | 14 de octubre de 2026, antes de R3 | `bf631bb687b606d9b33553e33ebf075f9dee5692` | [Abrir V3](https://canija2000.github.io/infovis_2026-2/v3/) |
-| V4 | 19 de octubre de 2026, cierre documentado | `e216501cf252605a9913a64f8336791be26a1c16` | [Abrir V4](https://canija2000.github.io/infovis_2026-2/v4/) |
+| V4 | Último commit publicado de `main` | `HEAD`, resuelto al SHA completo en `versions.json` | [Abrir V4](https://canija2000.github.io/infovis_2026-2/v4/) |
 
-La página principal conserva la versión actual de `main`. Las rutas históricas
-se reconstruyen desde los mismos commits en cada despliegue, por lo que no
-cambian cuando se actualiza la página principal.
+La página principal y V4 se reconstruyen desde el mismo commit en cada
+despliegue. Las rutas históricas V1--V3 se reconstruyen desde sus commits fijos.
+V4 se actualiza junto con la página principal.
+
+También se conserva la [prueba anterior al PR #27](https://canija2000.github.io/infovis_2026-2/prueba-antes-pr27/),
+fijada en `e216501cf252605a9913a64f8336791be26a1c16` (19 de octubre de 2026).
+Esta copia mantiene el recorrido sonoro y el avance automático originales.
 
 Cada copia incluye toda la carpeta `web/` de su commit: páginas, módulos,
 estilos, datos y audios. Las rutas relativas siguen funcionando dentro de su
