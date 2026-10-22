@@ -4,11 +4,15 @@
 import hashlib
 import json
 from pathlib import Path
+import re
 import subprocess
 
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "_site"
+# Blocks added by scripts/build-pages.py (version menu); removing them must
+# give back the exact bytes stored in Git.
+INJECTED = re.compile(rb"<!-- versiones:inicio -->.*?<!-- versiones:fin -->", re.DOTALL)
 
 
 def verify_tree(commit: str, directory: Path, excluded: set[str]) -> None:
@@ -29,6 +33,9 @@ def verify_tree(commit: str, directory: Path, excluded: set[str]) -> None:
     assert actual.keys() == expected.keys(), f"Archivos faltantes o adicionales: {directory}"
     for name, digest in expected.items():
         content = actual[name].read_bytes()
+        if name.endswith(".html") and "/" not in name:
+            assert b'class="project-versions"' in content, f"Falta el menú de versiones: {actual[name]}"
+            content = INJECTED.sub(b"", content)
         header = f"blob {len(content)}\0".encode()
         assert hashlib.sha1(header + content).hexdigest() == digest, str(actual[name])
         assert not actual[name].is_symlink(), str(actual[name])

@@ -38,6 +38,19 @@
   border-color: var(--ink-3);
 }
 
+.version-links a[aria-current] {
+  background: var(--c0-ink);
+  border-color: var(--c0-ink);
+  color: var(--bg);
+  font-weight: 600;
+}
+
+.version-links a span,
+.version-current span {
+  font-weight: 400;
+  opacity: 0.8;
+}
+
 .version-links a:focus-visible {
   outline: 2px solid var(--c0-ink);
   outline-offset: 3px;
