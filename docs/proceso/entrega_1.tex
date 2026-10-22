@@ -1,0 +1,513 @@
+% !TeX program = xelatex
+
+% Entrega 1. Fuente editable: completar primero los datos y enlaces de este bloque.
+% Compilar desde la raíz del repositorio con:
+% tectonic docs/proceso/entrega_1.tex --outdir output/pdf --keep-logs
+% Las capturas están en docs/proceso/capturas/entrega1/.
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=22mm]{geometry}
+\usepackage{fontspec}
+\setsansfont{texgyreheros-regular.otf}[BoldFont=texgyreheros-bold.otf,ItalicFont=texgyreheros-italic.otf,BoldItalicFont=texgyreheros-bolditalic.otf]
+\setmonofont{lmmono10-regular.otf}[Scale=MatchLowercase]
+\usepackage[spanish,es-noshorthands]{babel}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx,xcolor,booktabs,tabularx,longtable,array}
+\usepackage{enumitem,titlesec,caption,needspace}
+\usepackage[unicode,hidelinks]{hyperref}
+\renewcommand{\familydefault}{\sfdefault}
+\definecolor{acento}{HTML}{24634F}
+\definecolor{pendiente}{HTML}{8A4B08}
+\definecolor{gris}{HTML}{555555}
+\hypersetup{pdftitle={Entrega 1 - Nómadas y sedentarios},pdfauthor={Joaquín Andrés Bächler Díaz; Matías Valentín Morales Apablaza; Franco Andrés Moya Aravena}}
+\titleformat{\section}{\Large\bfseries\color{acento}}{}{0pt}{}
+\titleformat{\subsection}{\normalsize\bfseries}{}{0pt}{}
+\titlespacing*{\section}{0pt}{0pt}{11pt}
+\titlespacing*{\subsection}{0pt}{10pt}{4pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.18}
+\setlist[itemize]{leftmargin=*,nosep,topsep=3pt}
+\setlist[enumerate]{leftmargin=*,nosep,topsep=3pt}
+\captionsetup{font=small,labelfont=bf,justification=raggedright,singlelinecheck=false,hypcap=false}
+\graphicspath{{capturas/entrega1/}{docs/proceso/capturas/entrega1/}}
+\emergencystretch=2em
+\raggedbottom
+
+% DATOS POR COMPLETAR. Una URL vacía se muestra como un pendiente visible.
+\newcommand{\NumeroGrupo}{17}
+\newcommand{\NombreFranco}{Franco Andrés Moya Aravena}
+\newcommand{\VideoGeneral}{}
+\newcommand{\VideoVUno}{}
+\newcommand{\VideoVDos}{}
+\newcommand{\VideoVTres}{}
+\newcommand{\VideoVCuatro}{}
+\newcommand{\Repo}{https://github.com/canija2000/infovis_2026-2}
+\newcommand{\Sitio}{https://canija2000.github.io/infovis_2026-2/}
+\newcommand{\falta}[1]{\par{\small\color{pendiente}\textbf{Pendiente.} #1}\par}
+\newcommand{\campo}[1]{\par\needspace{3\baselineskip}\textbf{#1}\par\nopagebreak}
+\newcommand{\commit}[2]{\href{\Repo/commit/#1}{\texttt{#2}}}
+\newcommand{\versionweb}[1]{\par\textbf{Versión publicada:} \href{\Sitio v#1/}{\textcolor{acento}{Abrir V#1 en el navegador}}\quad{\small\texttt{/v#1/}}\par}
+\newcommand{\video}[2]{\begingroup\edef\videourl{#1}\ifx\videourl\empty
+  \falta{Agregar el enlace público al video #2, con interacción y sonido.}
+  \else\par\href{#1}{Video #2: interacción y sonificación.}\par\fi\endgroup}
+\newcommand{\captura}[3]{\par\medskip\noindent\begin{minipage}{\linewidth}\centering\includegraphics[width=#2\linewidth]{#1}\captionof{figure}{#3}\end{minipage}\par\medskip}
+\newcommand{\seccion}[1]{\clearpage\section*{#1}}
+% Los conceptos remiten al anexo; las URL de la ficha conservan sus anclas públicas.
+\DeclareRobustCommand{\concepto}[2]{\hyperlink{concepto:#1}{\textcolor{acento}{#2}}}
+\newcommand{\defconcepto}[3]{\par\needspace{6\baselineskip}\hypertarget{concepto:#1}{}\textbf{#2}\hfill\href{\Sitio metricas.html\##3}{\textcolor{acento}{\footnotesize Ficha web}}\par\nopagebreak}
+\newcommand{\defhistorico}[3]{\par\needspace{6\baselineskip}\hypertarget{concepto:#1}{}\textbf{#2}\hfill\href{\Sitio prueba-antes-pr27/metricas.html\##3}{\textcolor{acento}{\footnotesize Ficha del 19 de octubre}}\par\nopagebreak}
+\newcommand{\volverconceptos}{\par\medskip{\footnotesize\hyperlink{anexo:conceptos}{\textcolor{acento}{Volver al índice de conceptos}} · \hyperlink{texto:contexto}{\textcolor{acento}{Volver al contexto del proyecto}}}}
+
+\begin{document}
+
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+{\small PONTIFICIA UNIVERSIDAD CATÓLICA DE CHILE\par
+IIC2026 · Visualización de Información · 2026-2\par}
+\vspace{24mm}
+{\Large Entrega 1\par}
+\vspace{5mm}
+{\Huge\bfseries\color{acento} Nómadas \&\par sedentarios\par}
+\vspace{6mm}
+{\Large Atlas sonoro de aves de Chile continental\par}
+\vspace{22mm}
+\textbf{Grupo:} \NumeroGrupo\par
+\textbf{Integrantes}\par
+Joaquín Andrés Bächler Díaz\par
+Matías Valentín Morales Apablaza\par
+\NombreFranco\par
+\vspace{10mm}
+\textbf{Visualización publicada}\par
+\url{https://canija2000.github.io/infovis_2026-2/}\par
+\textbf{Repositorio y su historial}\par
+\url{https://github.com/canija2000/infovis_2026-2}\par
+\textbf{Video general con audio}\par
+\video{\VideoGeneral}{general}
+\vfill
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+\section*{1. Contexto general}
+\hypertarget{texto:contexto}{}
+\subsection*{Mensaje principal}
+Chile continental tiene aves registradas de manera relativamente estable a lo largo del año y otras cuyo \concepto{perfil}{perfil} cambia con las estaciones: \concepto{clases}{residentes y visitantes}, respectivamente. A nivel país, el \concepto{contexto}{año típico} 2017--2024 reúne 366 especies regulares: 214 residentes, 121 visitantes de verano y 31 de invierno. Sobre la base relativamente estable de residentes se superponen un pulso mayor de visitantes en verano y otro menor en invierno. La visualización compara esa composición entre meses y regiones. Una especie puede ser residente en una región y visitante en otra: la \concepto{ola-estacional}{ola estacional} se comprende a escala nacional y regional. En la versión final, el \concepto{coro-estaciones}{coro de las estaciones} permite escuchar el cambio de los grupos sobre el gráfico de áreas. La escucha individual complementa esa vista con el ciclo de una especie en un ámbito elegido.
+
+\subsection*{Origen y procesamiento de los datos}
+Se descargaron 6.739.197 registros de GBIF en once archivos anuales (2016--2026), mayoritariamente de eBird. Se asignaron sus coordenadas a las 16 regiones de BCN y grillas de 0,2° y 0,05°. Se calcularon \concepto{dias-especie}{días-especie} por región y mes. El \concepto{contexto}{año típico} usa solo 2017--2024: se promedia la \concepto{participacion}{participación de cada especie} en el \concepto{esfuerzo}{esfuerzo mensual} y se normaliza su \concepto{perfil}{perfil} respecto de su \concepto{pico}{mes pico}. La web integra cantos de Xeno-canto para 231 especies y 4.247 fotografías CC de GBIF/iNaturalist, puntuadas con un detector SSD MobileNet v1 y curadas manualmente.
+
+\subsection*{Versiones del proyecto}
+V1--V3 corresponden al último commit de \texttt{main} del día anterior a cada revisión. V4 es el cierre publicado el 21 de octubre a las 22:07, con los ajustes posteriores a R3. Cada sección enlaza su página y el commit descrito.
+
+\begin{tabularx}{\linewidth}{@{}l l l X@{}}
+\toprule
+Versión & Corte & Commit & Cambio principal\\
+\midrule
+\href{\Sitio v1/}{V1} & 30 septiembre & \commit{4b834bfaf7cad8b3d01cde916a0e29225de75a9e}{4b834bf} & Atlas exploratorio completo.\\
+\href{\Sitio v2/}{V2} & 7 octubre & \commit{37c53d46ba8e928de165d5cb40f1206b5231a618}{37c53d4} & Portada narrativa y \concepto{tiempo-sonoro}{loop} de cantos.\\
+\href{\Sitio v3/}{V3} & 14 octubre & \commit{bf631bb687b606d9b33553e33ebf075f9dee5692}{bf631bb} & Año completo y comparación regional.\\
+\href{\Sitio v4/}{V4} & 21 octubre & \commit{1d1a487fe85f888175b8eab92dab85885c407f73}{1d1a487} & Coro estacional y escucha por especie.\\
+\bottomrule
+\end{tabularx}
+
+\seccion{2. V1 · La idea completa}
+\textbf{Periodo:} 17--30 de septiembre de 2026.\par
+\textbf{Estado previo a R1:} \commit{4b834bfaf7cad8b3d01cde916a0e29225de75a9e}{4b834bf}, 30 de septiembre, 18:58.\par
+\versionweb{1}
+\textbf{Evidencia:} figura \ref{fig:v1general}.
+\video{\VideoVUno}{de V1}
+
+\campo{Decisiones iniciales}
+Se reemplazaron los registros de eBird por GBIF y un \concepto{contexto}{año típico} corregido por \concepto{esfuerzo}{esfuerzo de registro}. El atlas reúne mapa regional, calendario especie por mes y matriz región por mes, enlazados con pestañas estacionales, búsqueda y reproducción anual. Al elegir una especie se abre su \concepto{perfil}{perfil radial}, distribución, canto y fotografías. El calendario se ordena por estación para hacer visibles los periodos compartidos, centrando en verano o invierno según la clase de visitantes. La sonificación combina una base de \concepto{clases}{residentes} con cantos visitantes que cambian según estación, latitud y presencia de visitantes, reproduciendo un representante por tipo de visitante. Un \concepto{mezclador}{mezclador independiente} permite escuchar múltiples especies a elección.
+\campo{Por qué se diseñó así · justificación}
+La primera pregunta era dónde y cuándo aparece cada especie. GBIF permitió obtener estos datos de manera práctica a través de la descarga de registros acumulados, evitando las miles de consultas necesarias en la API de eBird. Se eligió 2017--2024 para analizar patrones anuales con cobertura amplia. Dividir por el total mensual de \concepto{dias-especie}{días-especie} y \concepto{perfil}{normalizar al pico} reduce el efecto de meses con más observación y permite comparar perfiles estacionales. Ordenar las visitantes por su \concepto{llegada}{periodo de mayor presencia} y centrar el verano austral facilita reconocer patrones en la matriz. Mapa, filtros y ficha siguen el recorrido general--filtro--detalle de Shneiderman. La sonificación permite entender la ola estacional, representando el periodo estacional mediante la cantidad de cantos en cada grupo, la cantidad de visitantes mediante el volumen, y la latitud mediante la tonalidad. La idea era que el sonido acompañara la visualización describiendo múltiples variables a la vez.
+
+\campo{Qué se descartó}
+Se descartaron cuatro mapas estacionales como vista general: la matriz región por mes conserva más detalle temporal. Tampoco se eligió un calendario limitado a las especies más frecuentes, porque habría privilegiado residentes comunes y ocultado visitantes. En sonido se probó una voz sintética por región con ritmo según riqueza absoluta; sus variaciones eran casi inaudibles, por lo que se abandonó ese mapeo.
+
+\captura{v1-general.jpg}{0.95}{V1. Mapa, controles y calendario; el calendario muestra \concepto{clases}{visitantes de verano}.\label{fig:v1general}}
+
+\needspace{11\baselineskip}
+\section*{3. R1 · Revisión con el equipo docente}
+\textbf{Fecha:} 1 de octubre de 2026.\par
+El profesor señaló que la página funcionaba más como herramienta exploratoria que como visualización expositiva, que el mensaje no era claro, la interfaz era poco minimalista y la sonificación confusa. También se mencionó que se podría utilizar más aves para sonificar. Se adoptó una portada con una afirmación para mejorar la claridad del mensaje, y gráficos agregados que comuniquen sin usar filtros, llevando el proyecto hacia algo más expositivo y minimalista. La idea es que la portada comunique un mensaje inmediatamente, sin necesidad de interactuar antes. El atlas se conservó en \textit{Explorar}: permite profundizar después de entender la vista general, siguiendo a Shneiderman. Se descartó sustituirlo por completo o acumular todas las funciones en la entrada, porque se perdería detalle.
+
+\seccion{4. V2 · Primera iteración de diseño}
+\textbf{Periodo:} 1--7 de octubre de 2026.\par
+\textbf{Estado previo a R2:} \commit{37c53d46ba8e928de165d5cb40f1206b5231a618}{37c53d4}, 7 de octubre, 09:12.\par
+\versionweb{2}
+\textbf{Evidencia:} figuras \ref{fig:v2portada} y \ref{fig:v2mapas}.
+\video{\VideoVDos}{de V2}
+
+\campo{Qué cambió}
+Tras R1 se creó una portada expositiva y el atlas pasó a \textit{Explorar}, el titular se cambió por una tesis mas clara. La visualización principal consiste en áreas apiladas por \concepto{clases}{clase}, de julio a junio y eje vertical desde cero. Debajo, \concepto{unidad-visual}{un punto por especie} entra o sale del conjunto según su \concepto{presente}{presencia mensual}. Se añadieron mapas nacionales por mes, en modos \concepto{ola-zonas}{Zonas} y \concepto{ola-regiones}{Regiones}. El \concepto{tiempo-sonoro}{loop} recorre el año con cantos reales seleccionados por \concepto{lugar-dias}{lugar-días}; seleccionando las seis especies más extendidas de cualquier clase, más las tres visitantes más extendidas sin incluir a las seis anteriores. La lista «Suenan» identifica especies y \concepto{copias}{repeticiones}. Cada mes dura doce segundos.
+
+\campo{Por qué cambió · justificación}
+La respuesta a R1 fue comunicar primero la magnitud del fenómeno y ofrecer después su detalle. Las áreas permiten comparar el aporte visitante con la base \concepto{clases}{residente} sin interpretar numerosos \concepto{perfil}{perfiles normalizados}; julio--junio deja el verano en el centro. \concepto{unidad-visual}{Una unidad por especie} permite seguir el cambio de composición entre meses (cuantas especies hay presentes en cada mes). Los mapas incorporan el espacio: Zonas compara la composición con una \concepto{ola-zonas}{referencia regional}, evitando presentar toda una región como homogénea. El tamaño se rotula como \concepto{por-punto}{volumen de registro}, porque no mide abundancia de aves. En el sonido, los \concepto{lugar-dias}{lugar-días} distinguen especies extendidas que ya empataban en días regionales; las repeticiones buscan hacer audible esa diferencia. La lista de nombres y la selección de \concepto{calidad-audio}{ventanas con canto} explicitan qué se escucha. Los mapas contiguos permiten comparar los meses visibles.
+
+\campo{Qué se descartó}
+Se descartó asignar repeticiones mediante la frecuencia regional: las especies comunes empataban aunque tuvieran distinta extensión territorial. También se abandonó el inicio aleatorio del fragmento de audio, que podía reproducir viento o silencio. Se descartó usar únicamente mapas coropléticos, porque ocultaban diferencias dentro de cada región; quedaron como alternativa al mapa por celdas.
+
+\captura{v2-portada.jpg}{0.78}{V2, el mensaje abre con la magnitud de los grupos en una vista anual.\label{fig:v2portada}}
+\captura{v2-mapas.jpg}{0.78}{V2, la franja nacional muestra cuatro mapas a la vez.\label{fig:v2mapas}}
+
+\needspace{11\baselineskip}
+\section*{5. R2 · Revisión entre pares}
+\textbf{Fecha:} 8 de octubre de 2026.\par
+El registro de proceso identifica una dificultad: ver cuatro mapas y desplazar la franja impedía comparar el año completo. Se adoptó mostrar los doce mapas de Chile en una fila en pantalla, con el mismo orden julio--junio del pulso. La decisión reduce la comparación basada en memoria. Se descartó imponer doce columnas al detalle regional: las regiones más anchas perderían legibilidad. En móvil se conservó el desplazamiento. La revisión fue hecha junto al grupo 27.
+
+\seccion{6. V3 · Segunda iteración de diseño}
+\textbf{Periodo:} 14 de octubre de 2026.\par
+\textbf{Estado previo a R3:} \commit{bf631bb687b606d9b33553e33ebf075f9dee5692}{bf631bb}, 14 de octubre, 23:45.\par
+\versionweb{3}
+\textbf{Evidencia:} figuras \ref{fig:v3mapas} y \ref{fig:v3calendarios}.
+\video{\VideoVTres}{de V3}
+
+\campo{Qué cambió}
+La franja nacional pasó de cuatro mapas a los doce meses simultáneos en pantalla; se retiró la paginación cuando caben todos. Se ajustaron proporciones y radios de los puntos para conservar la silueta de Chile sin saturarla. En móvil se mantiene el desplazamiento; el detalle regional conserva cuatro mapas. Se añadieron definiciones de métricas enlazadas desde la web. «La misma ave, distintos calendarios» compara Picaflor chico, Chorlito chileno y Fío-fío: muestra siete regiones y permite ampliar a dieciséis. Se conservó el loop de V2.
+
+\campo{Por qué cambió · justificación}
+V2 ya mostraba el mensaje al entrar, pero su franja de cuatro mapas escondía parte de la evidencia. Tras R2, y en coincidencia con la dificultad consignada en la evaluación de usuarios, se priorizó comparar el año sin depender de la memoria (pequeños múltiplos). La forma larga y angosta de Chile permite doce mapas completos y un orden compartido con el gráfico de áreas. Las regiones más anchas y las pantallas pequeñas requieren otra distribución para conservar detalle. Los calendarios regionales desarrollan una parte del mensaje que el promedio nacional ocultaba: una misma especie puede cambiar de \concepto{clases}{clase} entre regiones. Filas de norte a sur y meses alineados hacen comparable esa diferencia. Enlazar \concepto{perfil}{perfil}, \concepto{frecuencia}{frecuencia} y \concepto{presente}{presencia} a la ficha de métricas permite consultar sus significados sin llenar los gráficos de fórmulas. 
+
+\campo{Qué se descartó}
+Para mostrar el año completo se consideraron dos filas de seis mapas, pero se prefirió una fila: reduce la altura y permite recorrer julio--junio sin saltos. Se descartó aplicar esa misma distribución de doce columnas al detalle regional, porque las geometrías anchas y sus puntos se volvían ilegibles al reducirlos. Se mantuvieron distribuciones distintas según la vista y el espacio disponible.
+
+\captura{v3-mapas.jpg}{0.82}{V3, los doce meses de Chile se pueden comparar simultáneamente, de julio a junio.\label{fig:v3mapas}}
+\captura{v3-calendarios.jpg}{0.82}{V3, el Picaflor chico tiene un \concepto{perfil}{perfil} invernal en Metropolitana y \concepto{clases}{residente} en varias regiones del sur. La clase y el perfil tienen referencias distintas. Fotografía: Cristhoffer Rodríguez, CC BY 4.0, vía GBIF.\label{fig:v3calendarios}}
+
+\needspace{12\baselineskip}
+\section*{7. R3 · Revisión con el equipo docente}
+\textbf{Fecha:} 15 de octubre de 2026.\par
+Los ayudantes sugirieron revisar el valor de los puntos sin interacción y cómo interpretar el sonido sin conocer los cantos; consideraron el Aviario 3D más decorativo. Se adoptaron siluetas para aclarar la unidad por especie. La respuesta sonora tuvo varias etapas: se probaron modos de escucha, se retiró la mezcla general y reforzó la escucha individual, y se añadió un coro ligado directamente a las bandas del gráfico. Se mantuvo el aviario como complemento. Las siluetas muestran nombres, pero no abren fichas: la observación sobre su interacción quedó resuelta parcialmente, pero de esta forma se mantienen separadas las resposabilidades de la portada expositiva y el atlas explorativo.
+
+\seccion{8. V4 · La versión final}
+\textbf{Periodo:} 15--21 de octubre de 2026.\par
+\textbf{Commit de cierre:} \commit{1d1a487fe85f888175b8eab92dab85885c407f73}{1d1a487}, 21 de octubre, 22:07.\par
+\versionweb{4}
+\textbf{Evidencia:} figuras \ref{fig:v4coro}, \ref{fig:v4sonido} y \ref{fig:v4siluetas}.
+\video{\VideoVCuatro}{de V4}
+
+\campo{Qué cambió}
+Tras retirar el loop multiespecie y el mezclador, V4 incorpora \concepto{coro-estaciones}{«El coro de las estaciones»} al gráfico de áreas. Tortolita cuyana, Picaflor cordillerano y Viudita representan residentes, verano e invierno. Al crecer una banda visitante aumentan voces y repeticiones y el canto se oye más cercano. Cada ave abre el pico con su propia voz; «Así suena» permite reconocer los grupos. Se modifican las siluetas y se sonifica el calendario de la portada \concepto{ano-especie}{«Escuchar su año»} para el detalle individual. Un menú permite recorrer V1--V4 desde todas las páginas.
+
+\campo{Por qué cambió · justificación}
+En R3 se mencionó una escucha que exigía reconocer aves y atender a varias variables. En respuesta el coro asocia a cada clase de ave con un sonido característico fácil de distinguir; y la sonificación del calendario aporta una representación auditiva de la información que da más detalle individual. Las especies visitantes representan su presencia en cada mes mediante cantidad de voces y distancia aparente. El contraste entre los cantos de cada clase de ave y el pico sincronizado asocian cada clase a su grupo sin exigir conocimientos de aves. La escucha individual da a entender de una forma más intuitiva como cambia la clase de un ave según la zona geográfica de referencia. El cambio de las siluetas permite un entendimiento más sencillo de que representa cada unidad. El menú de versiones facilita revisar la evolución.
+
+\campo{Qué se descartó}
+Se descartó la primera propuesta del nuevo coro, con cuatro especies por grupo: sus voces se parecían y confundían las clases. El loop multiespecie anterior se desestimó por completo.
+
+\captura{v4-coro-principal.jpg}{0.98}{V4, cambio en la sonificación principal. Coro de tres voces distintas en función de las bandas del gráfico.\label{fig:v4coro}}
+\captura{v4-final-sonido.jpg}{0.98}{V4, el calendario de la portada sonificado. Perfil del Picaflor chico en una dimensión auditiva, según distintas regiones.\label{fig:v4sonido}}
+\captura{v4-final-siluetas.jpg}{0.98}{V4, \concepto{unidad-visual}{una silueta por especie}. La posición responde al \concepto{presente}{umbral de presencia mensual}.\label{fig:v4siluetas}}
+
+\needspace{16\baselineskip}
+\section*{9. El feedback al otro grupo}
+\campo{Proyecto evaluado}
+Se evaluó el proyecto del grupo 27, a la fecha de 8 de octubre de 2026.
+
+\campo{Feedback que dimos}
+
+\campo{Lo que nos llevamos}
+
+
+\seccion{10. Evaluación con usuarios · Hoja del observador}
+\subsection*{Ronda 1 · V2 y su transición hacia V3}
+
+\textbf{Usuario participante:} Fecha 13 de octubre de 2026.\par
+\textbf{Integrante observador:} Joaquín Andrés Bächler Díaz.
+
+\subsection*{Bitácora · tiempo, cita literal y acción}
+{\small
+\begin{longtable}{@{}p{12mm}p{77mm}p{65mm}@{}}
+\toprule
+Tiempo & Lo que dice · cita registrada & Lo que hace · acción registrada\\
+\midrule
+\endfirsthead
+\toprule Tiempo & Lo que dice & Lo que hace\\\midrule
+\endhead
+00:00 & «Dice Nómadas y sedentarios\ldots{} 214 especies se quedan en Chile todo el año y cada verano llegan como 100 más». & Lee el titular y observa las áreas apiladas.\\[4pt]
+00:40 & «Aquí se ve que la franja verde es pareja todo el año y la naranja sube fuerte en primavera y verano. Parte en julio para que el verano quede al medio». & Recorre el pulso con el cursor y se detiene en noviembre.\\[4pt]
+01:20 & «Al cambiar de mes los puntitos naranjos entran y salen del cuadro de Chile y los verdes no se mueven». & Alterna junio y diciembre y observa los puntos por especie.\\[4pt]
+02:05 & «Suenan varios cantos y un golpe bajito cuando cambia el mes\ldots{} acá dice qué pájaros están sonando y cuántos por especie». & Escucha el loop y mira el indicador de compás y la lista «Suenan».\\[4pt]
+02:55 & «Abajo dice La ola recorre todo el país, pero veo cuatro mapas no más: julio, agosto, septiembre y octubre, todos medio azules\ldots{} ¿dónde está el verano?» & Baja a los mapas y busca los meses de verano.\\[4pt]
+03:30 & «Ah, acá arriba a la derecha hay un botón de siguientes\ldots{} si aprieto dos veces recién llego a enero y febrero, pero ya dejé de ver julio». & Pulsa dos veces «siguientes» para desplazar la franja.\\[4pt]
+04:15 & «En el mapa de la Metropolitana los puntos verdes tapan casi todo\ldots{} si marco Ocultar residentes ahí sí se ven claros los naranjos». & Activa «Ocultar residentes» en el detalle regional.\\
+\bottomrule
+\end{longtable}}
+
+\campo{Qué dijo del sonido}
+Identificó el pulso grave como marcador de cambio de mes y utilizó la lista <<Suenan>> para reconocer qué especies cantaban en cada momento y cuáles tenían más repeticiones.
+
+\subsection*{Heurísticas que fallaron · Zuk--Carpendale}
+\begin{tabularx}{\linewidth}{@{}p{69mm} X@{}}
+\toprule
+Heurística & Lo que permite decir el registro\\
+\midrule
+12. Ofrece varios niveles de detalle & Los mapas requerían navegar primero para entender el patrón anual. Falla porque primero debe poder verse la vista general, y luego bajar hacia el detalle. Hacía falta una vista general del año. \\
+6. Usa los atributos preatentivos con criterio & En los mapas de la región Metropolitana, los puntos verdes de \concepto{clases}{residentes} tapaban a los visitantes. Falla porque hay que hacer un esfuerzo adicional para distinguir clases.\\
+9. Más datos en menos espacio & Los mapas ocupaban mucho espacio, por lo que era necesario deslizar para ver todo el año. Falla porque es mejor una vista más compacta que muestre el patrón completo, permitiendo comparar sin necesidad de memorizar. \\
+\bottomrule
+\end{tabularx}
+
+\subsection*{Las tres preguntas de cierre}
+\begin{enumerate}
+\item \textbf{¿Dónde se atascó más tiempo?} En la comparación de mapas de invierno y verano: primero buscó los meses que no estaban visibles y después tuvo que recordar los que había dejado atrás.
+\item \textbf{¿Qué hipótesis fue equivocada?} Por un momento creyó que no se mostraban los mapas de verano, porque no eran visibles sin deslizar. Luego de un rato notó que si existían.
+\item \textbf{¿Qué cambio concreto surgió?} Mostrar el año completo en los mapas nacionales y retirar la navegación redundante. En regiones se conserva el desplazamiento para mantener legibilidad.
+\end{enumerate}
+
+\campo{Efecto en el proceso}
+Se cambia el tamaño de los mapas nacionales para mostrar los doce simultáneamente en V3. No se modificaron los puntos de los mapas por región, pues el problema ya se soluciona con el filtro de Ocultar residentes. 
+
+\seccion{Anexo A · Conceptos y notación}
+\hypertarget{anexo:conceptos}{}
+Este anexo reúne los conceptos de datos y sonido mencionados en el documento. Las letras, los índices y las fórmulas siguen la \href{\Sitio metricas.html}{\textcolor{acento}{ficha de métricas publicada}}. «Ficha web» abre la definición vigente. Los conceptos sonoros retirados remiten a la ficha archivada del 19 de octubre y se identifican como históricos; no describen la escucha final.
+
+\textbf{Índices.}
+$s$: especie · $r$: ámbito (0 en Chile y 1--16 en regiones) · $a$: año (2017--2024) · $m$: mes (0--11, 0 en enero y 11 en diciembre) · $j$: otro mes usado para comparar · $c$: clase estacional · $D_{a,m}$: cantidad real de días del mes · $g$: grupo sonoro (residentes, verano o invierno) · $t$: instante del recorrido sonoro
+
+\textbf{Índice de consulta.}
+\concepto{contexto}{Año típico} · \concepto{dias-especie}{días-especie} · \concepto{esfuerzo}{esfuerzo} · \concepto{frecuencia}{frecuencia} · \concepto{participacion}{participación} · \concepto{perfil}{perfil} · \concepto{anios-registro}{años con registro} · \concepto{presente}{presencia} · \concepto{amplitud}{amplitud} · \concepto{fase}{fase y pico} · \concepto{clases}{clases} · \concepto{riqueza}{riqueza} · \concepto{llegada}{calendario} · \concepto{ola-zonas}{ola por zona} · \concepto{ola-regiones}{ola por región} · \concepto{por-punto}{puntos del mapa} · \concepto{coro-estaciones}{coro de las estaciones} · \concepto{ano-especie}{Escuchar su año} · \concepto{lugar-dias}{lugar-días} · \concepto{copias}{copias del canto} · \concepto{tiempo-sonoro}{compás y velocidad} · \concepto{parametros-sonoros}{parámetros sonoros} · \concepto{calidad-audio}{fragmentos de canto} · \concepto{mezclador}{mezclador}.
+
+\subsection*{A.1 · Contar y resumir los registros}
+
+\defconcepto{contexto}{Año típico · 2017--2024}{contexto}
+Se calcula cada indicador para el mismo mes de cada año y luego se promedia. Los años sin registro aportan cero.
+\[
+\bar{x}_m=\frac{1}{8}\sum_{a=2017}^{2024}x_{a,m}.
+\]
+
+\defconcepto{dias-especie}{Días-especie · $d$}{dias-especie}
+Una especie registrada en una fecha y región cuenta una vez, aunque tenga varios registros ese día.
+\[
+d_{s,r,a,m}=\bigl|\{\text{fechas distintas de }s\text{ en }r,a,m\}\bigr|.
+\]
+Chile suma las regiones: una especie registrada el mismo día en dos regiones aporta dos días-especie.
+
+\defconcepto{esfuerzo}{Esfuerzo de registro · $E$}{esfuerzo}
+Suma de los días-especie de todas las especies. Aproxima cuánto registro hay disponible en un mes y ámbito.
+\[
+E_{r,a,m}=\sum_s d_{s,r,a,m}.
+\]
+
+\defconcepto{frecuencia}{Frecuencia · $F$}{frecuencia}
+Fracción de días del mes con registro de una especie, promediada entre los ocho años. Se publica como \texttt{freq}, en una escala de 0 a 1.000.
+\[
+F_{s,r,m}=\frac{1}{8}\sum_{a=2017}^{2024}\frac{d_{s,r,a,m}}{D_{a,m}},
+\qquad \text{freq}=1000F.
+\]
+En Chile se promedian las frecuencias de las 16 regiones.
+
+\clearpage
+\subsection*{A.2 · Leer el ciclo de una especie}
+
+\defconcepto{participacion}{Participación · $R$}{participacion}
+Parte del esfuerzo mensual que corresponde a la especie. Se corrige cada año por el esfuerzo y luego se promedia.
+\[
+R_{s,r,m}=\frac{1}{8}\sum_{a=2017}^{2024}\frac{d_{s,r,a,m}}{E_{r,a,m}}.
+\]
+
+\defconcepto{perfil}{Perfil relativo · $p$}{perfil}
+Compara cada mes con el mes de mayor participación de esa misma especie y ámbito.
+\[
+p_{s,r,m}=\frac{R_{s,r,m}}{\max_j R_{s,r,j}},
+\qquad \text{prof}=\operatorname{redondear}(100p).
+\]
+El calendario y el perfil radial muestran esta forma relativa del ciclo.
+
+\defconcepto{anios-registro}{Años con registro y opacidad · $Y$, $\alpha$}{anios-registro}
+$Y_{s,r,m}$ cuenta cuántos de los ocho años tienen algún registro de la especie en ese mes y ámbito. La opacidad $\alpha$ expresa esa repetición entre años:
+\[
+Y_{s,r,m}\in\{0,\ldots,8\},
+\qquad \alpha=0{,}3+0{,}7\frac{Y}{8}.
+\]
+En los calendarios, la transparencia se controla por $\alpha$.
+
+\defconcepto{presente}{Presencia mensual · $P$}{presente}
+Variable de decisión que modela la presencia de una especie en un mes y ámbito. Una especie está presente si tiene registros en al menos cuatro años y su participación relativa supera el 20\%.
+\[
+P_{s,r,m}=1\quad\Longleftrightarrow\quad
+Y_{s,r,m}\geq4\ \text{ y }\ p_{s,r,m}\geq0{,}20;
+\qquad P=0\text{ en otro caso}.
+\]
+
+\clearpage
+\subsection*{A.3 · Clasificar y comparar las estaciones}
+
+\defconcepto{amplitud}{Amplitud estacional · $A$}{amplitud}
+Resume cuánto baja la participación entre los meses altos y bajos del ciclo. $H$ es la media de los tres meses con mayor $R$ y $L$, la de los tres con menor $R$.
+\[
+A=1-\frac{L}{H}.
+\]
+Va de 0, un ciclo plano, a 1, un ciclo cuyos meses bajos tienen participación cero. Si $H=0$, se fija $A=0$.
+
+\defconcepto{fase}{Fase circular · $\phi$ y mejor mes}{fase}
+La fase es el centro del ciclo sobre un círculo de meses, donde diciembre y enero son vecinos. Para una misma especie y ámbito se abrevian los índices de $R$:
+\[
+X=\sum_m R_m\cos\!\left(\frac{2\pi m}{12}\right),
+\qquad Z=\sum_m R_m\sin\!\left(\frac{2\pi m}{12}\right),
+\]
+\[
+\phi=\left(\operatorname{atan2}(Z,X)\,\frac{12}{2\pi}\right)\operatorname{mod}12.
+\]
+Así, 0 corresponde a enero y 6 a julio.
+\hypertarget{concepto:pico}{}El \textbf{mejor mes o pico} es $\text{pico}=\arg\max_m R_m$: el mes con mayor participación. En empate se elige el primero de enero a diciembre.
+
+\defconcepto{clases}{Clase estacional o anual · $A+\phi$}{clases}
+Se calcula por separado para Chile y para cada región. Primero se considera \textbf{ocasional} a una especie si $\max_m Y_m<4$: ningún mes tiene registro en cuatro años. Las demás son \textbf{regulares} y se clasifican así:
+\begin{itemize}
+\item \textbf{Residente:} $A<0{,}6$.
+\item \textbf{Visitante de verano:} $A\geq0{,}6$ y $\cos(2\pi\phi/12)\geq0$.
+\item \textbf{Visitante de invierno:} $A\geq0{,}6$ y $\cos(2\pi\phi/12)<0$.
+\end{itemize}
+Una especie puede cambiar de clase entre regiones. Ser residente describe un ciclo relativamente estable.
+
+\defconcepto{riqueza}{Riqueza · $N$}{riqueza}
+Número de especies que cumplen la presencia mensual en el ámbito y la clase elegidos:
+\[
+N_{r,m}=\sum_{s\text{ de la clase}}P_{s,r,m}.
+\]
+La suma de las tres clases regulares da el total mensual del pulso; las ocasionales se excluyen.
+
+\defconcepto{llegada}{Llegada, salida y orden del calendario}{llegada}
+Son los extremos del tramo contiguo más largo con perfil publicado $\text{prof}_m\geq50$. Se recorre julio--junio para visitantes de verano y enero--diciembre para las de invierno, sin unir los extremos. Sirven para ordenar las filas por su periodo de mayor presencia; no son fechas de llegada o salida observadas.
+\volverconceptos
+
+\clearpage
+\subsection*{A.4 · Leer los mapas y la ola estacional}
+\hypertarget{concepto:ola-estacional}{}La ola estacional resume cómo cambia el balance entre visitantes de verano e invierno a lo largo del año. En los mapas se representa con dos indicadores distintos, según el modo elegido.
+
+\defconcepto{ola-zonas}{Ola por zona · $\omega$}{ola-zonas}
+Compara la composición de días-especie espaciales de una celda y mes con la composición anual de su región:
+\[
+\omega=(v-V)-(i-I).
+\]
+$v$ e $i$ son las proporciones de visitantes de verano e invierno de la celda-mes; $V$ e $I$ son las proporciones de referencia de la región, acumuladas en el año. El total incluye ocasionales. Un valor positivo indica un balance más estival que la referencia; uno negativo, más invernal. Se admiten celdas con al menos 50 días-especie y tres años con registro. El color se satura en el percentil 95 de $|\omega|$; no es una probabilidad ni una medida de abundancia.
+
+\defconcepto{ola-regiones}{Ola por región · $n_{\text{verano}}-n_{\text{invierno}}$}{ola-regiones}
+El modo Regiones o coroplético colorea cada región completa. Compara las riquezas de verano e invierno, llevando cada clase a su propio rango anual entre 0 y 1:
+\[
+n_{c,m}=\frac{N_{c,m}-\min_jN_{c,j}}{\max_jN_{c,j}-\min_jN_{c,j}},
+\qquad \omega_{r,m}=n_{\text{verano},m}-n_{\text{invierno},m}.
+\]
+Si una serie es constante, su nivel es cero. El balance va de $-1$ a $1$. Este cálculo usa riqueza mensual, mientras Zonas usa composición de registros espaciales: los dos modos no representan la misma magnitud.
+
+\defconcepto{por-punto}{Especie-días por punto y volumen de registro · $k$}{por-punto}
+En el detalle regional, cada punto resume una cantidad $k$ de especie-días espaciales. Se busca alrededor de 1.200 puntos en el mes con más registro de cada región. Si $T_m$ es el total del mes:
+\[
+k=\text{siguiente valor de }\{1,2,5\}\times10^n
+\text{ a partir de }\frac{\max_mT_m}{1200}.
+\]
+Por celda y clase se dibujan $\lfloor d/k\rfloor$ puntos y uno adicional con probabilidad igual a la fracción restante. La semilla es fija. Las posiciones son aproximaciones dentro de las celdas de 0,05°, no ubicaciones individuales. $k$ se mantiene entre meses de una región, pero puede cambiar entre regiones. El tamaño o la cantidad de puntos expresa volumen de registro.
+
+\hypertarget{concepto:unidad-visual}{}\textbf{Unidad visual por especie.} Los puntos de V2--V3 y las siluetas de la sección «Una silueta, una especie» de V4 representan una especie cada uno. Esta unidad es distinta de los puntos del mapa, que resumen especie-días espaciales, y de las aves posadas sobre el gráfico de áreas, que representan voces del coro. El vuelo de una silueta es una transición visual; no representa una ruta observada.
+\volverconceptos
+
+\clearpage
+\subsection*{A.5 · Sonificaciones de la versión final}
+
+\defconcepto{coro-estaciones}{El coro de las estaciones · sonificación principal}{coro-estaciones}
+El coro representa el número de especies de cada grupo en Chile sobre «Especies presentes en Chile, mes a mes». El dato sonificado es la \concepto{riqueza}{riqueza del grupo}, no el \concepto{perfil}{perfil} de su ave representante. Cada grupo conserva un canto reconocible durante el recorrido:
+
+\begin{tabularx}{\linewidth}{@{}p{31mm}p{43mm}X@{}}
+\toprule
+Grupo & Especie representante & Identidad sonora\\
+\midrule
+Residentes & Tortolita cuyana & Arrullo grave y parejo, al centro y de fondo.\\
+Verano & Picaflor cordillerano & Chillidos agudos y rápidos, a la izquierda.\\
+Invierno & Viudita & Silbido largo que desciende, a la derecha.\\
+\bottomrule
+\end{tabularx}
+
+\textbf{Qué determina el sonido.} $n_g(t)$ es el grosor de la banda del grupo donde está la barra; en cada mes coincide con el conteo publicado. Entre meses se usa la misma interpolación de los bordes que dibuja el gráfico, no conteos diarios observados. $n_{g,\text{pico}}$ es el máximo mensual anual del grupo. Para las visitantes, con conteo positivo:
+\[
+\text{nivel}_g(t)=0{,}1+0{,}9
+\left(\frac{n_g(t)}{n_{g,\text{pico}}}\right)^{1{,}6}.
+\]
+La razón se limita entre 0 y 1; si el conteo es cero, el nivel es cero. El exponente amplifica el contraste entre meses bajos y altos; el piso de 0,1 evita largos silencios cuando aún hay especies visitantes. Es una elección de diseño, no una transformación biológica. Cada grupo se compara con su propio pico: un nivel igual en verano e invierno no significa igual cantidad de especies.
+
+Por ejemplo, verano pasa de 34 especies en julio a 106 en noviembre: el nivel aumenta de aproximadamente 0,25 a 1, y la capacidad pasa de una a cuatro voces. No se reproducen 34 ni 106 cantos. El nivel controla cuántas voces pueden coincidir y con qué frecuencia se programan nuevas entradas:
+\[
+B_g(t)=\max\!\left(1,\operatorname{redondear}
+\bigl(\text{nivel}_g(t)\,B_{g,\max}\bigr)\right),
+\qquad
+\lambda_g(t)=\text{nivel}_g(t)\,\lambda_{g,\text{pico}}.
+\]
+
+\begin{tabularx}{\linewidth}{@{}l p{40mm} X@{}}
+\toprule
+Grupo & Voces permitidas & Tasa máxima programada\\
+\midrule
+Verano & De 1 a 4 & 2,2 entradas por segundo.\\
+Invierno & De 1 a 3 & 2 entradas por segundo.\\
+Residentes & Una voz fija & Un arrullo tras otro, con pausas breves.\\
+\bottomrule
+\end{tabularx}
+
+$B_g$ es una capacidad, no un número de voces que deban cantar permanentemente. Las entradas visitantes se distribuyen al azar y requieren una voz libre. Más repeticiones y más voces refuerzan el mismo dato; ninguna equivale a individuos observados. La diferencia entre los límites de cuatro y tres voces conserva una distinción entre los tamaños de ambos grupos, sin ser una escala proporcional exacta de sus riquezas.
+
+\textbf{Volumen y distancia aparente.} Dentro de cada capa visitante, la ganancia relativa sigue $0{,}55+0{,}45\,\text{nivel}$ y la distancia base sigue $0{,}55(1-\text{nivel})$. Al aumentar el nivel, el canto se oye más cercano y nítido; al disminuir, más filtrado y con más eco. Las grabaciones se igualan y las capas tienen ajustes propios para que un clip más fuerte no parezca un grupo más numeroso. La base residente conserva una voz y un patrón estable durante el año; no reproduce la pequeña variación entre 212 y 214 especies. Se atenúa hasta un 30\% cuando destacan las visitantes. El estéreo identifica grupos, no latitud ni ubicaciones reales.
+
+\par\needspace{8\baselineskip}
+\textbf{Qué se ve al escuchar.} Un ave se posa en el borde de cada banda, junto a la barra. Las voces adicionales aparecen a su lado mientras cantan; son más pequeñas y tenues cuando suenan más lejos. El pico sigue la envolvente de su propia grabación en el instante audible, compensando la latencia que informa el navegador. Las notas nacen con las sílabas: una corchea por arrullo, pares para los chillidos y una blanca para el silbido. Las pequeñas variaciones entre copias dan separación a las voces; no codifican otra variable. «Así suena» permite escuchar cada grupo por separado y aprender su correspondencia visual.
+
+\textbf{Recorrido y controles.} La barra recorre once intervalos entre doce meses, de julio a junio: tres segundos entre meses consecutivos y 33 segundos en total. Se puede pausar y reanudar desde la misma posición; al llegar a junio se detiene, y la siguiente reproducción parte de julio. No se repite automáticamente. Arrastrar la barra produce sonido incluso con el recorrido detenido; las flechas, con el control enfocado, cambian la posición en pasos de un cuarto de mes.
+
+Al avanzar se marca el mes más cercano en el selector superior y en los mapas nacionales y regionales. Las siluetas y los calendarios de especies mantienen sus controles propios. El coro es nacional: elegir una región en el detalle cartográfico no cambia sus cantos ni su ámbito. La escucha por región se realiza con la función siguiente. Iniciar el coro detiene otras escuchas, y activar otro audio pausa el coro; también se pausa al ocultar la pestaña.
+\volverconceptos
+
+\defconcepto{ano-especie}{Escuchar su año · detalle de una especie}{ano-especie}
+Reproduce una especie en un ámbito elegido. Cada mes dura 1,5 segundos; el recorrido anual, unos 18 segundos. El nivel combina el perfil publicado, \texttt{prof} entre 0 y 100, con la proporción de años con registro:
+\[
+\text{nivel}_m=\frac{\text{prof}_{s,r,m}}{100}\,\frac{Y_{s,r,m}}{8}.
+\]
+Si el nivel es menor que 0,05 hay silencio; de 0,05 a menos de 0,4 suena una voz lejana; de 0,4 a menos de 0,75, dos a media distancia; desde 0,75, seis cercanas. Se reutiliza el canto de la especie con copias, filtros, eco y posiciones estéreo. Las voces y la distancia aparente refuerzan el mismo nivel: no representan cantidades de aves ni distancias observadas. La marca del mes y los ejemplos «Así suena» relacionan la escucha con el gráfico. En los calendarios recorre julio--junio; en la ficha radial de Explorar, enero--diciembre.
+
+\volverconceptos
+
+\clearpage
+\subsection*{A.6 · Sonificaciones anteriores y preparación de cantos}
+Los siguientes términos explican V1--V3 y los ajustes intermedios de V4 anteriores al PR \#27. La preparación de fragmentos también aporta materiales a las escuchas vigentes.
+
+\defhistorico{lugar-dias}{Lugar-días y peso de selección · $\text{peso}_{s,m}$}{lugar-dias}
+Cuenta combinaciones de celda de 0,05° y fecha con registro de una especie. Varias observaciones en esa misma celda y fecha cuentan una vez; celdas distintas aportan por separado. Mide extensión del registro. Para seleccionar cantos se usa:
+\[
+\text{peso}_{s,m}=\frac{\text{lugar-días acumulados en 2017--2024}}{8}.
+\]
+Si falta este agregado, el respaldo es $\text{freq}\times Y/8$. Ninguno de los dos pesos cuenta aves.
+
+\defhistorico{copias}{Copias del canto · $\text{copias}_s$}{copias}
+Son eventos de reproducción de un fragmento, no individuos. La selección por lugar-días admite hasta seis especies de mayor peso y tres visitantes adicionales, entre especies presentes, regulares y con audio admitido. La regla base de la ficha es:
+\[
+\text{copias}_s=\operatorname{limitar}\!\left(
+\left\lceil4\frac{\text{peso}_s}{\max\text{peso}}\right\rceil,1,4\right).
+\]
+Limitar significa mantener el resultado entre 1 y 4. V2--V3 conservaron esta selección. El estado intermedio del 19 de octubre la mantuvo en \textbf{Todas}; \textbf{Pulso} ajustaba las repeticiones visitantes al nivel estacional y limitaba la base residente; \textbf{Solo viajeras} omitía esa base. Los tres modos fueron retirados en el cierre de V4. Esta fórmula no gobierna «Escuchar su año» ni el coro de las estaciones; sus reglas se describen en A.5.
+
+\defhistorico{tiempo-sonoro}{Loop, compás y velocidad · $t_{\text{año}}$}{tiempo-sonoro}
+El loop es la reproducción cíclica del año. Un compás es un bloque de tres segundos en el que se programan cantos. A velocidad 1×, cuatro compases representan un mes:
+\[
+t_{\text{año}}=12\times4\times3\,\text{s}=144\,\text{s}.
+\]
+El estado intermedio del 19 de octubre añadió 2×: dos compases por mes, seis segundos mensuales y 72 segundos por año. La antigua reproducción anual de \textit{Explorar} usaba 2,4 segundos por mes. Estas escalas organizaban la escucha, no tiempos biológicos. El cierre usa dos recorridos distintos: 33 segundos para el coro nacional y unos 18 para el año de una especie; ninguno conserva el loop anterior de 144 segundos.
+
+\defhistorico{parametros-sonoros}{Nivel estacional y parámetros sonoros}{sonificacion-atlas}
+El \textbf{nivel estacional} lleva la riqueza de cada clase a su propio rango anual entre 0 y 1, como $n_{c,m}$ en la \concepto{ola-regiones}{ola por región}.
+
+\textbf{Densidad} es la cantidad de eventos sonoros en un intervalo. \textbf{Timbre} es el carácter de una voz o fondo que permite distinguirlos. \textbf{Tono} es su altura, grave o aguda. \textbf{Volumen o ganancia} controla la intensidad de reproducción. \textbf{Estéreo} distribuye el sonido entre izquierda y derecha.
+
+La correspondencia dependía de la vista y la versión. En el estado intermedio del 19 de octubre, el golpe mensual cambiaba de tono con la riqueza y el fondo de timbre con la estación; el estéreo ubicaba verano a la izquierda, residentes al centro e invierno a la derecha. En la antigua sonificación de \textit{Explorar}, el nivel estacional controlaba los eventos y la latitud modificaba el tono. El coro final conserva la separación estéreo por grupo, pero sus cambios de voces, ritmo y distancia refuerzan un único conteo. No usa la latitud para modificar el tono. La escucha de una especie sigue su propio perfil y años con registro; estas reglas actuales se explican en A.5.
+
+\defconcepto{calidad-audio}{Fragmento, ventana y banda vocal}{calidad-audio}
+Un fragmento o recorte es el tramo de una grabación que se reproduce. Una ventana es un intervalo candidato para elegirlo; para el antiguo loop se preparaban hasta tres de dos segundos. La banda vocal es el rango de frecuencias donde se concentra la voz del ave. El coro actual usa un tramo fijo por representante: 1,45 segundos de Tortolita cuyana, dos de Picaflor cordillerano y 0,85 de Viudita, con filtros propios. Estas decisiones conservan canto y reducen ruido o silencio; no definen el perfil estacional ni la presencia de la especie.
+
+\defhistorico{mezclador}{Mezclador, volumen y sincronía}{mezclador}
+Permitía combinar hasta seis especies con audio; se ordenaban por frecuencia del mes y el lector controlaba el volumen de cada pista:
+\[
+\text{ganancia}_{\text{pista}}=\frac{\text{volumen en \%}}{100}.
+\]
+No exigía la regla de presencia mensual. Sin sincronía, los cantos esperaban intervalos aleatorios de 0,2 a 5,2 segundos; con sincronía, se organizaban en ciclos de seis segundos. Era una herramienta de escucha distinta del mapeo automático de la portada. Se retiró con el PR \#27.
+\volverconceptos
+
+\end{document}
