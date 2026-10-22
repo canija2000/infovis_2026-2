@@ -38,11 +38,11 @@
 % DATOS POR COMPLETAR. Una URL vacía se muestra como un pendiente visible.
 \newcommand{\NumeroGrupo}{17}
 \newcommand{\NombreFranco}{Franco Andrés Moya Aravena}
-\newcommand{\VideoGeneral}{}
-\newcommand{\VideoVUno}{}
-\newcommand{\VideoVDos}{}
-\newcommand{\VideoVTres}{}
-\newcommand{\VideoVCuatro}{}
+\newcommand{\VideoGeneral}{https://youtu.be/O594xobzQpM}
+\newcommand{\VideoVUno}{https://youtu.be/m3iTBNRhfv8}
+\newcommand{\VideoVDos}{https://youtu.be/2PFX-cPDULg}
+\newcommand{\VideoVTres}{https://youtu.be/F8OnahE_7II}
+\newcommand{\VideoVCuatro}{https://youtu.be/Lij2mQrFBYE}
 \newcommand{\Repo}{https://github.com/canija2000/infovis_2026-2}
 \newcommand{\Sitio}{https://canija2000.github.io/infovis_2026-2/}
 \newcommand{\falta}[1]{\par{\small\color{pendiente}\textbf{Pendiente.} #1}\par}
@@ -155,7 +155,7 @@ Se descartó asignar repeticiones mediante la frecuencia regional: las especies 
 \needspace{11\baselineskip}
 \section*{5. R2 · Revisión entre pares}
 \textbf{Fecha:} 8 de octubre de 2026.\par
-El registro de proceso identifica una dificultad: ver cuatro mapas y desplazar la franja impedía comparar el año completo. Se adoptó mostrar los doce mapas de Chile en una fila en pantalla, con el mismo orden julio--junio del pulso. La decisión reduce la comparación basada en memoria. Se descartó imponer doce columnas al detalle regional: las regiones más anchas perderían legibilidad. En móvil se conservó el desplazamiento. La revisión fue hecha junto al grupo 27.
+El grupo 27 dijo que la portada se entendía rápido, pero que en la franja de cuatro mapas había que desplazarse para llegar al verano y así no se podía comparar el año completo. También preguntaron qué medía el tamaño de los puntos y qué eran los «lugar-días», y comentaron que el loop costaba seguirlo con tantos cantos a la vez. Se adoptó mostrar los doce mapas de Chile en una fila en pantalla, con el mismo orden julio--junio del pulso. La decisión reduce la comparación basada en memoria. Se descartó imponer doce columnas al detalle regional: las regiones más anchas perderían legibilidad. En móvil se conservó el desplazamiento. Para los términos se agregó una ficha de métricas enlazada desde la web. El loop se mantuvo en V3, porque era la única forma de oír el año completo; lo replanteamos después de R3.
 
 \seccion{6. V3 · Segunda iteración de diseño}
 \textbf{Periodo:} 14 de octubre de 2026.\par
@@ -204,11 +204,13 @@ Se descartó la primera propuesta del nuevo coro, con cuatro especies por grupo:
 \needspace{16\baselineskip}
 \section*{9. El feedback al otro grupo}
 \campo{Proyecto evaluado}
-Se evaluó el proyecto del grupo 27, a la fecha de 8 de octubre de 2026.
+Evaluamos al grupo 27 el 8 de octubre. Su visualización trata la transición energética en América y parte de la pregunta de qué países avanzan hacia las renovables y cuáles siguen dependiendo del carbón y el gas. Muestra un globo con 19 países y, al elegir uno, la evolución de su generación renovable y fósil entre 2000 y 2025, con sonido. Estaba completa y funcionando, con ranking, desglose por fuente y sonificación.
 
 \campo{Feedback que dimos}
+Lo principal fue que la vista general no responde la pregunta: el globo pinta a todos los países del mismo azul, así que solo dice cuáles participan, y la respuesta (Nicaragua y Chile avanzan, Perú y Bolivia retroceden) queda escondida en el Top 5, detrás de un clic. El globo en 3D además tapa parte del continente sin aportar datos. Les sugerimos algo ordenado por el cambio en la participación renovable, como un gráfico de mancuernas, donde un clic en cada país abra el detalle. En el detalle, la métrica por defecto es TWh con el eje reescalado por país, así que no se pueden comparar; propusimos usar porcentaje con eje fijo de 0 a 100 y dejar los otros países en gris de fondo. También mencionamos que falta citar la fuente, que la nuclear se omite sin avisar, que los «+40,9 \%» son puntos porcentuales y que el rojo/verde complica a los daltónicos. Del sonido nos gustó que el timbre áspero represente una matriz sucia, pero mezcla tres mapeos, uno de ellos (las emisiones) no está en el gráfico, y termina siendo un zumbido continuo sin referencia. Les recomendamos conservar la leyenda Renovables/Fósiles y el ranking.
 
 \campo{Lo que nos llevamos}
+Nos hizo mirar nuestra portada con la misma pregunta: ¿se entiende sin tocar nada? Ver que en su caso había que memorizar un país para compararlo con otro reforzó el cambio de V3 a los doce mapas visibles a la vez. También revisamos que cada clase mantuviera su color en todas las vistas y que quedara claro qué mide cada cosa, que terminó en la ficha de métricas.
 
 
 \seccion{10. Evaluación con usuarios · Hoja del observador}
