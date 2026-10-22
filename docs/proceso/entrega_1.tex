@@ -51,7 +51,7 @@
 \newcommand{\versionweb}[1]{\par\textbf{Versión publicada:} \href{\Sitio v#1/}{\textcolor{acento}{Abrir V#1 en el navegador}}\quad{\small\texttt{/v#1/}}\par}
 \newcommand{\video}[2]{\begingroup\edef\videourl{#1}\ifx\videourl\empty
   \falta{Agregar el enlace público al video #2, con interacción y sonido.}
-  \else\par\href{#1}{Video #2: interacción y sonificación.}\par\fi\endgroup}
+  \else\par\href{#1}{\textcolor{acento}{$\blacktriangleright$\ \underline{Video #2: interacción y sonificación}}}\quad{\small\url{#1}}\par\fi\endgroup}
 \newcommand{\captura}[3]{\par\medskip\noindent\begin{minipage}{\linewidth}\centering\includegraphics[width=#2\linewidth]{#1}\captionof{figure}{#3}\end{minipage}\par\medskip}
 \newcommand{\seccion}[1]{\clearpage\section*{#1}}
 % Los conceptos remiten al anexo; las URL de la ficha conservan sus anclas públicas.
