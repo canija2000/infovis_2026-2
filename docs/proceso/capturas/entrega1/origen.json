@@ -1,0 +1,24 @@
+{
+  "fecha_capturas": "2026-10-20",
+  "zona_horaria": "America/Santiago",
+  "nota": "Reproducciones de estados históricos; no capturas tomadas antes de las revisiones. Recortes de capturas completas, sin alterar gráficos ni datos.",
+  "versiones": {
+    "v1": "4b834bfaf7cad8b3d01cde916a0e29225de75a9e",
+    "v2": "37c53d46ba8e928de165d5cb40f1206b5231a618",
+    "v3": "bf631bb687b606d9b33553e33ebf075f9dee5692",
+    "v4": "d88f90664c1996104f5b30c71b0bd32e9e724189"
+  },
+  "navegador": "Codex In-app Browser",
+  "ancho_css": 1280,
+  "actualizacion_v4": {
+    "fecha": "2026-10-21",
+    "url": "https://canija2000.github.io/infovis_2026-2/v4/",
+    "navegador": "Google Chrome",
+    "ancho_css": 1280,
+    "archivos": [
+      "v4-final-sonido.jpg",
+      "v4-final-siluetas.jpg"
+    ],
+    "nota": "Capturas de la versión pública de main, sin contenido de la rama experimental. Las capturas antiguas v4-sonido.jpg y v4-siluetas.jpg corresponden al 19 de octubre y ya no se usan en el PDF."
+  }
+}
