@@ -241,6 +241,14 @@ export const groups = [
         `${v("nivel", "m")}${eq}${f(p, "<mn>100</mn>")}${mul}${f(Y, "<mn>8</mn>")}`,
         "Lejos (1 ave, mucho eco) si el nivel es menor que 0,4; medio (2 aves) hasta 0,75; cerca (coro de 6 aves que cantan a la vez) desde ahí. Silencio bajo 0,05. 1,5 s por mes; 18 s el año.",
       ),
+      def(
+        "coro-estaciones",
+        "El coro de las estaciones",
+        "3 s/mes",
+        "Una barra recorre «Especies presentes en Chile, mes a mes» sin saltos. Cada grupo tiene un canto propio: el arrullo de la Tortolita cuyana (residentes, siempre igual y de fondo), los chillidos del Picaflor cordillerano (verano) y el silbido de la Viudita (invierno). Las visitantes suman aves, cantan más seguido y más cerca cuanto más gruesa es su banda en ese punto.",
+        `${v("nivel", "g")}${eq}<mn>0,1</mn>${plus}<mn>0,9</mn>${mul}<msup><mrow><mo>(</mo>${f(v("n", "g"), v("n", "g, pico"))}<mo>)</mo></mrow><mn>1,6</mn></msup>`,
+        "n: especies del grupo donde está la barra (grosor de su banda en la curva dibujada). Aves a la vez: hasta 4 en verano y 3 en invierno (nivel × máximo), y cada una se ve junto a la barra mientras canta; cantos por segundo: hasta 2,2 y 2. Verano a la izquierda del estéreo, invierno a la derecha; residentes, una sola ave atrás. Cada pico se abre con su propio canto, en el instante que se oye. 33 s de julio a junio.",
+      ),
     ],
   },
   {

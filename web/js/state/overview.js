@@ -9,3 +9,9 @@ export function createFlockState() {
 export function createMapState() {
   return { mode: "zones", region: 7 };
 }
+// «El coro de las estaciones»: estado del recorrido sonoro del gráfico de arriba.
+// position: dónde está la barra (0 = julio … 11 = junio); null = sigue al mes elegido.
+export function createChorusState() {
+  // status: "idle" | "loading" | "playing" | "preview" (un canto suelto de «Así suena»).
+  return { status: "idle", position: null, scrubbing: false, preview: null };
+}

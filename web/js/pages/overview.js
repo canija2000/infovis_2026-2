@@ -12,6 +12,7 @@ import { createMapStrips } from "../views/overview/map-strip.js";
 import { createMonthlyMaps } from "../views/overview/monthly-maps.js";
 import { createRegionDetail } from "../views/overview/region-detail.js";
 import { createMonthSelector } from "../views/overview/month-selector.js";
+import { createSeasonChorusController } from "./season-chorus.js";
 
 /**
  * Compose the overview. The upper month selector drives the monthly chart (and the
@@ -25,12 +26,20 @@ async function main() {
   const maps = {};
   const loadRegion = createRegionLoader();
   const { showTip, hideTip } = createTooltip();
+  // «El coro de las estaciones»: una barra recorre el gráfico de arriba y un ave canta en cada curva.
+  const chorus = createSeasonChorusController({
+    months: data.months,
+    species: data.species,
+    getMonth: () => state.month,
+    showMonth,
+  });
   const { drawPulse, updatePulse, drawTable } = createPulse({
     data,
     state,
     setMonth,
     showTip,
     hideTip,
+    onDrawn: (geom) => chorus.attach(geom),
   });
   const { drawFlock, updateFlock } = createSpeciesDots({
     data,
@@ -80,7 +89,13 @@ async function main() {
     getMonth: () => flock.month,
     onSelect: setFlockMonth,
   });
+  // Mes elegido por la persona (selector o clic en el gráfico).
   function setMonth(m) {
+    showMonth(m);
+    chorus.monthSelected(m);
+  }
+  // Marca el mes en el gráfico, el selector y los mapas (también al pasar la barra del coro).
+  function showMonth(m) {
     state.month = m;
     updatePulse();
     months.update();
