@@ -172,6 +172,46 @@ conexión a internet.
   fuerte cuanto más presente está (la misma idea que el ▶ por región de la
   portada). La sonificación mensual por macrozonas y el mezclador se retiraron.
 
+## Prototipo físico (Entrega 2)
+
+`web/fisico/` es la prueba de servos de «Los que llegan y los que se quedan»:
+un Arduino Leonardo mueve dos brazos según los visitantes de cada mes
+(`data/overview.json`). Servo del pin 5: visitantes de verano; pin 6: de
+invierno, con la misma escala (0 → 106 especies). Los residentes no tienen
+servo. La página habla con la placa por WebUSB mediante
+[Protobject](https://framework.protobject.com/components/arduino.html), así que
+solo funciona en Chrome o Edge.
+
+Cableado de cada servo: naranjo/amarillo → pin 5 (o 6), rojo → 5V,
+café/negro → GND.
+
+**Cargar el firmware de Protobject en el Leonardo** (una sola vez por placa):
+
+```bash
+brew install arduino-cli
+arduino-cli core install arduino:avr
+arduino-cli lib install Servo "ArduinoJson@6.21.5"
+git clone --depth 1 https://github.com/webusb/arduino.git /tmp/webusb-arduino
+mkdir -p /tmp/protobject-leonardo
+curl -fsSL https://app.protobject.com/framework/firmware/protobject-leonardo.ino \
+  -o /tmp/protobject-leonardo/protobject-leonardo.ino
+arduino-cli compile --fqbn arduino:avr:leonardo \
+  --library /tmp/webusb-arduino/library/WebUSB \
+  --build-property "compiler.cpp.extra_flags=-DUSB_VERSION=0x210" \
+  --build-property "compiler.c.extra_flags=-DUSB_VERSION=0x210" \
+  --output-dir /tmp/protobject-leonardo/build /tmp/protobject-leonardo
+arduino-cli upload --fqbn arduino:avr:leonardo -p "$(ls /dev/cu.usbmodem* | head -1)" \
+  --input-dir /tmp/protobject-leonardo/build
+```
+
+WebUSB exige que la placa se anuncie como USB 2.1; la bandera `USB_VERSION`
+lo hace sin editar `USBCore.h` del core. Si la carga falla, se repite el
+`upload` o se aprieta el reset del Leonardo justo antes.
+
+**Probar:** servir `web/` (ver arriba), abrir `/fisico/` en Chrome,
+**Conectar Arduino** → **Confirm** → elegir el Leonardo, y partir por
+**Centro** antes de fijar el brazo al servo.
+
 ## Publicación
 
 GitHub Pages: publicar la carpeta `web/` como raíz del sitio (por ejemplo, con
