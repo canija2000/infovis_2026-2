@@ -46,7 +46,7 @@ const html = `<!doctype html>
   <link rel="stylesheet" href="css/site.css?v=refactor-1"><link rel="stylesheet" href="css/metrics.css">
 </head>
 <body class="metrics-page">
-  <nav class="site-nav" aria-label="Secciones"><a class="brand" href="index.html">Atlas sonoro · Aves de Chile</a><ul><li><a class="site-tab" href="index.html">Visualización</a></li><li><a class="site-tab" href="explorar.html">Explorar</a></li><li><a class="site-tab" href="metricas.html" aria-current="page">Ficha de métricas</a></li></ul></nav>
+  <nav class="site-nav" aria-label="Secciones"><a class="brand" href="index.html">Atlas sonoro · Aves de Chile</a><ul><li><a class="site-tab" href="index.html">Visualización</a></li><li><a class="site-tab" href="explorar.html">Explorar</a></li><li><a class="site-tab" href="metricas.html" aria-current="page">Ficha de métricas</a></li><li><a class="site-tab" href="propuesta.html">Propuesta física</a></li></ul></nav>
   <main class="metrics-main">
     <header class="metrics-hero"><p class="kicker">2017–2024 · Un ejemplo real</p><h1>Ficha de métricas</h1><p>Una especie. Distintas formas de leer sus registros.</p></header>
     <section id="ejemplo" class="metrics-example" aria-labelledby="example-title" tabindex="-1">

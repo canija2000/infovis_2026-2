@@ -1,0 +1,7 @@
+# Intermedios: se regeneran con escena_blender.py --render y montaje.py
+render/animacion.mp4
+render/parche_*.mp4
+*.blend1
+# La voz se regenera con narracion.py (necesita GEMINI_API_KEY)
+audio/*.wav
+audio/cache.json

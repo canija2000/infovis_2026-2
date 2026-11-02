@@ -1,0 +1,150 @@
+{
+ "total": 221.62,
+ "escenas": [
+  {
+   "id": "intro",
+   "titulo": "Una perilla, dos brazos",
+   "inicio": 0.0,
+   "habla": 0.6,
+   "duracion": 14.75,
+   "marcas": {
+    "perilla": 2.24,
+    "brazos": 3.24,
+    "pieza": 10.08
+   }
+  },
+  {
+   "id": "leonardo",
+   "titulo": "El Arduino Leonardo",
+   "inicio": 14.75,
+   "habla": 15.35,
+   "duracion": 17.87,
+   "marcas": {
+    "usb": 22.03,
+    "pines": 25.96,
+    "puerta": 27.08
+   }
+  },
+  {
+   "id": "tipos",
+   "titulo": "Tres grupos de pines",
+   "inicio": 32.62,
+   "habla": 33.22,
+   "duracion": 31.19,
+   "marcas": {
+    "digitales": 36.63,
+    "pwm": 42.77,
+    "analogicos": 53.37,
+    "energia": 60.11
+   }
+  },
+  {
+   "id": "cinco",
+   "titulo": "Los cinco pines que usamos",
+   "inicio": 63.81,
+   "habla": 64.41,
+   "duracion": 13.63,
+   "marcas": {
+    "energia": 68.71,
+    "a0": 70.06,
+    "pines56": 72.4
+   }
+  },
+  {
+   "id": "circuito",
+   "titulo": "Ida, vuelta y colores",
+   "inicio": 77.44,
+   "habla": 78.04,
+   "duracion": 26.23,
+   "marcas": {
+    "ida": 80.03,
+    "vuelta": 85.34,
+    "rojo": 87.89,
+    "negro": 90.09,
+    "senal": 93.07
+   }
+  },
+  {
+   "id": "protoboard",
+   "titulo": "La protoboard reparte la energía",
+   "inicio": 103.67,
+   "habla": 104.27,
+   "duracion": 23.23,
+   "marcas": {
+    "tres": 107.84,
+    "laminas": 114.33,
+    "fila1": 120.62,
+    "fila3": 124.12
+   }
+  },
+  {
+   "id": "servo",
+   "titulo": "El servo: el ancho del pulso es el ángulo",
+   "inicio": 126.91,
+   "habla": 127.51,
+   "duracion": 26.79,
+   "marcas": {
+    "cafe": 129.47,
+    "rojo": 130.57,
+    "naranjo": 132.17,
+    "pulso": 136.62,
+    "corto": 141.79,
+    "largo": 144.34,
+    "centro": 146.6,
+    "queda": 151.85
+   }
+  },
+  {
+   "id": "servo2",
+   "titulo": "El segundo servo",
+   "inicio": 153.7,
+   "habla": 154.3,
+   "duracion": 9.11,
+   "marcas": {
+    "pin6": 158.36,
+    "orden": 160.95
+   }
+  },
+  {
+   "id": "perilla",
+   "titulo": "La perilla: un divisor de voltaje",
+   "inicio": 162.81,
+   "habla": 163.41,
+   "duracion": 20.03,
+   "marcas": {
+    "extremos": 168.76,
+    "centro": 171.87,
+    "giremos": 175.26,
+    "a0": 177.05,
+    "numero": 179.75
+   }
+  },
+  {
+   "id": "programa",
+   "titulo": "El programa: leer, convertir, mover",
+   "inicio": 182.84,
+   "habla": 183.44,
+   "duracion": 19.35,
+   "marcas": {
+    "lee": 187.64,
+    "convierte": 188.54,
+    "escribe": 192.74,
+    "rango": 196.64
+   }
+  },
+  {
+   "id": "cierre",
+   "titulo": "El camino completo",
+   "inicio": 202.19,
+   "habla": 202.79,
+   "duracion": 19.43,
+   "marcas": {
+    "mano": 204.67,
+    "viaja": 206.4,
+    "decide": 208.56,
+    "pulsos": 210.09,
+    "consejo": 214.19
+   }
+  }
+ ]
+}

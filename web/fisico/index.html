@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prueba de servos</title>
+  <link rel="stylesheet" href="../css/base.css">
+  <style>
+    body { background: var(--bg); color: var(--ink); font-family: var(--font); margin: 0; }
+    main { max-width: 760px; margin: 0 auto; padding: 24px 16px 48px; }
+    h1 { color: var(--title); font-size: 1.4rem; margin: 0 0 4px; }
+    p { color: var(--ink-2); line-height: 1.45; }
+    .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 16px 0; }
+    button { font: inherit; padding: 6px 12px; border: 1px solid var(--rule); border-radius: 6px;
+             background: var(--surface); color: var(--ink); cursor: pointer; }
+    button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+    #status { font-family: var(--mono); font-size: .85rem; color: var(--ink-3); }
+    .months { display: grid; grid-template-columns: repeat(12, 1fr); gap: 4px; }
+    .months button { padding: 6px 0; font-size: .85rem; }
+    .arm { margin: 14px 0; }
+    .arm-head { display: flex; justify-content: space-between; font-size: .9rem; }
+    .track { height: 14px; background: var(--empty); border-radius: 7px; overflow: hidden; margin-top: 4px; }
+    .fill { height: 100%; width: 0; transition: width .6s ease; }
+    .summer .fill { background: var(--c1); }
+    .winter .fill { background: var(--c2); }
+    .mono { font-family: var(--mono); color: var(--ink-3); font-size: .8rem; }
+    @media (max-width: 520px) { .months { grid-template-columns: repeat(6, 1fr); } }
+  </style>
+</head>
+<body>
+  <script src="https://app.protobject.com/framework/p.js"></script>
+  <script src="config.js"></script>
+
+  <main>
+    <h1>Los que llegan y los que se quedan · prueba de servos</h1>
+    <p>Servo del pin 5: bandada de verano. Servo del pin 6: bandada de invierno.
+      Los dos usan la misma escala (0 → 106 especies), así que el brazo de invierno
+      se mueve mucho menos. Los 214 residentes no tienen servo: se quedan quietos.</p>
+
+    <div class="row">
+      <button id="connect">Conectar Arduino</button>
+      <span id="status">sin conectar</span>
+    </div>
+
+    <div class="months" id="months"></div>
+
+    <div class="row">
+      <button id="play" aria-pressed="false">▶ Recorrer el año</button>
+      <button data-test="-1">Brazos fuera</button>
+      <button data-test="0">Centro</button>
+      <button data-test="1">Brazos dentro</button>
+    </div>
+
+    <div class="arm summer">
+      <div class="arm-head"><span>Visitantes de verano (pin 5)</span><span id="summer-n">–</span></div>
+      <div class="track"><div class="fill" id="summer-fill"></div></div>
+    </div>
+    <div class="arm winter">
+      <div class="arm-head"><span>Visitantes de invierno (pin 6)</span><span id="winter-n">–</span></div>
+      <div class="track"><div class="fill" id="winter-fill"></div></div>
+    </div>
+    <p class="mono" id="pulses"></p>
+    <p class="mono" id="knob">perilla A0: sin datos</p>
+  </main>
+
+  <script>
+    // Año austral: julio a junio. overview.json trae los meses de enero a diciembre.
+    const MONTHS = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+    const AUSTRAL = [6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5];
+    const MAX_VISITORS = 106; // pico de verano (noviembre); escala común a los dos brazos
+    const RANGE = 800;        // offset de pulso en µs: -800 = brazo fuera de Chile, +800 = dentro
+    // Protobject envía 1500 + value al pin 5 y 1500 − value al pin 6. Con 1 el pin 6 gira en
+    // espejo del 5, como en la maqueta (un servo a cada lado de Chile); con -1, en el mismo sentido.
+    const PIN6_SIGN = 1;
+    const STEP_MS = 50, EASE_MS = 900, PLAY_MS = 2500;
+    // Perilla: potenciómetro en A0 (0–1023), dividido en 12 tramos iguales de julio a junio.
+    // KNOB_INVERT = true si al girar a la derecha los meses retroceden. KNOB_HYSTERESIS: cuentas
+    // que hay que pasar del borde de un tramo para cambiar de mes (evita que tiemble entre dos).
+    const KNOB_INVERT = false, KNOB_HYSTERESIS = 12, KNOB_SMOOTH = 0.3;
+    // KNOB_LOG = true si el potenciómetro es logarítmico (código A, p. ej. «A10K»): entrega ~10 %
+    // del valor en la primera mitad del giro, y se deshace esa curva para que los meses queden parejos.
+    const KNOB_LOG = false;
+    const unLog = (f) => (f <= 0.1 ? f / 0.1 * 0.5 : 0.5 + (f - 0.1) / 0.9 * 0.5);
+
+    let months = null, connected = false, current = 6, playTimer = null;
+    let knobValue = null, knobStep = null;
+    const pos = { 5: -RANGE, 6: -RANGE };
+    let anim = null;
+
+    const $ = (id) => document.getElementById(id);
+    const status = (t) => { $("status").textContent = t; };
+    const offsetFor = (n) => Math.round(-RANGE + (n / MAX_VISITORS) * 2 * RANGE);
+
+    function write(pin, value) {
+      if (!connected) return;
+      Protobject.Arduino.servoWrite({ pin, value: pin === 6 ? PIN6_SIGN * value : value });
+    }
+
+    // Mueve los dos servos suavemente hasta el objetivo: la bandada "llega", no salta.
+    function moveTo(target) {
+      clearInterval(anim);
+      const from = { ...pos }, t0 = performance.now();
+      anim = setInterval(() => {
+        const k = Math.min(1, (performance.now() - t0) / EASE_MS);
+        const e = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+        for (const pin of [5, 6]) {
+          pos[pin] = Math.round(from[pin] + (target[pin] - from[pin]) * e);
+          write(pin, pos[pin]);
+        }
+        $("pulses").textContent = `pin 5: ${1500 + pos[5]} µs · pin 6: ${1500 - PIN6_SIGN * pos[6]} µs`;
+        if (k === 1) clearInterval(anim);
+      }, STEP_MS);
+    }
+
+    function selectMonth(m) {
+      current = m;
+      const [, summer, winter] = months[m];
+      document.querySelectorAll("#months button").forEach((b) =>
+        b.setAttribute("aria-pressed", String(Number(b.dataset.m) === m)));
+      $("summer-n").textContent = `${summer} especies`;
+      $("winter-n").textContent = `${winter} especies`;
+      $("summer-fill").style.width = `${(summer / MAX_VISITORS) * 100}%`;
+      $("winter-fill").style.width = `${(winter / MAX_VISITORS) * 100}%`;
+      moveTo({ 5: offsetFor(summer), 6: offsetFor(winter) });
+    }
+
+    function togglePlay() {
+      const on = !playTimer;
+      $("play").setAttribute("aria-pressed", String(on));
+      $("play").textContent = on ? "❚❚ Pausar" : "▶ Recorrer el año";
+      if (!on) { clearInterval(playTimer); playTimer = null; return; }
+      playTimer = setInterval(() => {
+        selectMonth(AUSTRAL[(AUSTRAL.indexOf(current) + 1) % 12]);
+      }, PLAY_MS);
+    }
+
+    $("connect").addEventListener("click", async () => {
+      status("conectando… (elige el Leonardo en la ventana de Chrome)");
+      try {
+        await Protobject.Arduino.start(); // se resuelve cuando la placa queda conectada
+        connected = true;
+        status("conectado: gira la perilla");
+        if (months) selectMonth(current);
+      } catch (e) {
+        status("no se pudo conectar: " + e);
+      }
+    });
+    Protobject.Arduino.onReceiveError(() => { connected = false; status("desconectado: vuelve a conectar"); });
+
+    // La placa manda a0..a2 y d7..d9 cada 60 ms. A0 = perilla → mes austral (0 = julio … 11 = junio).
+    Protobject.Arduino.onData((data) => {
+      if (!months || playTimer) return;
+      // primero se corrige el sentido (cables de los extremos cruzados) y después la curva
+      let raw = KNOB_INVERT ? 1023 - data.a0 : data.a0;
+      if (KNOB_LOG) raw = unLog(raw / 1023) * 1023;
+      knobValue = knobValue === null ? raw : knobValue + KNOB_SMOOTH * (raw - knobValue);
+      const span = 1024 / 12;
+      const step = Math.min(11, Math.floor(knobValue / span));
+      // solo cambia de mes si la perilla se alejó KNOB_HYSTERESIS cuentas del borde del tramo actual
+      if (knobStep !== null && step !== knobStep) {
+        const lo = knobStep * span - KNOB_HYSTERESIS, hi = (knobStep + 1) * span + KNOB_HYSTERESIS;
+        if (knobValue > lo && knobValue < hi) return;
+      }
+      $("knob").textContent = `perilla A0: ${Math.round(knobValue)} → ${MONTHS[AUSTRAL[step]]}`;
+      if (step !== knobStep) {
+        knobStep = step;
+        selectMonth(AUSTRAL[step]);
+      }
+    });
+
+    $("play").addEventListener("click", togglePlay);
+    document.querySelectorAll("[data-test]").forEach((b) => b.addEventListener("click", () => {
+      const v = Number(b.dataset.test) * RANGE;
+      moveTo({ 5: v, 6: v });
+    }));
+
+    fetch("../data/overview.json").then((r) => r.json()).then((d) => {
+      months = d.months;
+      $("months").innerHTML = AUSTRAL.map((m) => `<button data-m="${m}">${MONTHS[m]}</button>`).join("");
+      $("months").addEventListener("click", (e) => {
+        const b = e.target.closest("button");
+        if (b) selectMonth(Number(b.dataset.m));
+      });
+      selectMonth(current);
+    }).catch(() => status("no se pudo leer ../data/overview.json"));
+  </script>
+</body>
+</html>

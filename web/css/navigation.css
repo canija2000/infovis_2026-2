@@ -21,6 +21,7 @@
 }
 .site-nav ul {
   display: flex;
+  flex-wrap: wrap;
   gap: 4px;
   margin: 0;
   padding: 0;
