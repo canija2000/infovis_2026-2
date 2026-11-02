@@ -1,0 +1,180 @@
+1
+00:00:00,600 --> 00:00:04,091
+En este prototipo, una perilla mueve dos brazos:
+
+2
+00:00:04,091 --> 00:00:08,935
+uno para las aves que llegan en verano y otro para las de invierno.
+
+3
+00:00:08,935 --> 00:00:13,851
+Veamos qué hace cada pieza, cómo se conecta y por qué se conecta así.
+
+4
+00:00:15,351 --> 00:00:17,389
+Este es el Arduino Leonardo:
+
+5
+00:00:17,389 --> 00:00:21,534
+un pequeño computador que lee sensores y controla motores.
+
+6
+00:00:21,534 --> 00:00:24,836
+Por el cable USB recibe energía y el programa.
+
+7
+00:00:24,836 --> 00:00:27,085
+Alrededor tiene filas de pines:
+
+8
+00:00:27,085 --> 00:00:31,722
+cada pin es una puerta por donde entra o sale una señal eléctrica.
+
+9
+00:00:33,222 --> 00:00:36,024
+Los pines se ordenan en tres grupos.
+
+10
+00:00:36,024 --> 00:00:37,766
+Arriba, los digitales:
+
+11
+00:00:37,766 --> 00:00:41,326
+solo conocen dos estados, encendido o apagado.
+
+12
+00:00:41,326 --> 00:00:51,855
+Los que llevan una virgulilla, como el cinco y el seis, además pueden emitir pulsos muy rápidos, que es justo lo que entienden los servos.
+
+13
+00:00:51,855 --> 00:00:56,172
+Abajo a la derecha, los analógicos, de A cero a A cinco:
+
+14
+00:00:56,172 --> 00:00:58,293
+miden voltajes intermedios.
+
+15
+00:00:58,293 --> 00:01:01,322
+Y abajo a la izquierda, los de energía:
+
+16
+00:01:01,322 --> 00:01:02,913
+cinco volts y tierra.
+
+17
+00:01:04,413 --> 00:01:07,125
+De todos ellos usaremos solo cinco:
+
+18
+00:01:07,125 --> 00:01:16,544
+cinco volts y tierra para dar energía, A cero para leer la perilla, y los pines cinco y seis para darle órdenes a cada servo.
+
+19
+00:01:18,044 --> 00:01:22,225
+La electricidad necesita un camino de ida y uno de vuelta:
+
+20
+00:01:22,225 --> 00:01:26,760
+sale por cinco volts, pasa por el aparato y regresa por tierra.
+
+21
+00:01:26,760 --> 00:01:36,610
+Por convención, el rojo marca los cinco volts, el negro o el café marcan la tierra, y un tercer color, naranjo o amarillo, lleva la señal.
+
+22
+00:01:36,610 --> 00:01:42,775
+Gracias a esa convención podemos conectar piezas de distintos fabricantes sin adivinar.
+
+23
+00:01:44,275 --> 00:01:49,789
+El Leonardo tiene un solo pin de cinco volts, pero hay tres piezas que lo necesitan.
+
+24
+00:01:49,789 --> 00:01:52,254
+Para repartirlo usamos la protoboard.
+
+25
+00:01:52,254 --> 00:01:57,184
+Por dentro, cada fila tiene una lámina de metal que une sus cinco agujeros:
+
+26
+00:01:57,184 --> 00:02:00,297
+lo que entra por uno sale por los otros cuatro.
+
+27
+00:02:00,297 --> 00:02:06,006
+Así, la fila uno se vuelve nuestra línea de cinco volts, y la fila tres, nuestra tierra.
+
+28
+00:02:07,506 --> 00:02:09,474
+El servo trae tres cables:
+
+29
+00:02:09,474 --> 00:02:15,159
+café a tierra, rojo a cinco volts, y naranjo, la señal, directo al pin cinco.
+
+30
+00:02:15,159 --> 00:02:21,572
+El Arduino le manda un pulso cada veinte milisegundos, y lo que importa es cuánto dura.
+
+31
+00:02:21,572 --> 00:02:29,444
+Un pulso corto lo lleva a un extremo, uno largo al otro, y uno de un milisegundo y medio lo deja al centro.
+
+32
+00:02:29,444 --> 00:02:32,797
+El servo gira hasta ese ángulo y se queda ahí.
+
+33
+00:02:34,297 --> 00:02:39,100
+El segundo servo se conecta igual, pero su señal va al pin seis.
+
+34
+00:02:39,100 --> 00:02:41,908
+Así cada brazo recibe su propia orden.
+
+35
+00:02:43,408 --> 00:02:45,249
+La perilla es un potenciómetro:
+
+36
+00:02:45,249 --> 00:02:48,530
+una resistencia con un cursor que se desliza al girarla.
+
+37
+00:02:48,530 --> 00:02:56,356
+Sus patas de los extremos van a cinco volts y a tierra, y la del centro entrega un voltaje entre cero y cinco, según cuánto la giremos.
+
+38
+00:02:56,356 --> 00:03:01,939
+Ese voltaje entra por A cero, y el Arduino lo convierte en un número entre cero y mil veintitrés.
+
+39
+00:03:03,439 --> 00:03:07,639
+El programa repite tres pasos muchas veces por segundo:
+
+40
+00:03:07,639 --> 00:03:15,439
+lee A cero, convierte ese número en un ángulo con la función map, y le escribe ese ángulo a cada servo.
+
+41
+00:03:15,439 --> 00:03:21,290
+El de verano va de veinte a ciento sesenta grados, y el de invierno, al revés.
+
+42
+00:03:22,790 --> 00:03:24,666
+Ese es el camino completo:
+
+43
+00:03:24,666 --> 00:03:33,979
+la mano gira la perilla, el voltaje viaja hasta A cero, el programa decide, y los pulsos de los pines cinco y seis mueven los brazos.
+
+44
+00:03:33,979 --> 00:03:35,300
+Un último consejo:
+
+45
+00:03:35,300 --> 00:03:40,721
+conecta siempre con el USB desenchufado, y revisa dos veces el rojo y el café.
+

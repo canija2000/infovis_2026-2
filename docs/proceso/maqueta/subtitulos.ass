@@ -1,0 +1,21 @@
+[Script Info]
+Title: Maqueta V1 · Los que llegan y los que se quedan
+ScriptType: v4.00+
+PlayResX: 1280
+PlayResY: 720
+WrapStyle: 0
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Nota,Helvetica Neue,30,&H00F4F3EF,&H00F4F3EF,&H96141413,&H96141413,0,0,0,0,100,100,0,0,3,10,0,2,80,80,36,1
+Style: Titulo,Helvetica Neue,44,&H00F4F3EF,&H00F4F3EF,&H96141413,&H96141413,1,0,0,0,100,100,0,0,3,14,0,8,80,80,40,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:02.60,Titulo,,0,0,0,,{\fad(0,300)}Los que llegan y los que se quedan\N{\fs28\b0}maqueta V1 · simulación del prototipo físico
+Dialogue: 0,0:00:02.70,0:00:06.80,Nota,,0,0,0,,{\fad(250,250)}La perilla elige el mes. Cada brazo es un servo:\Nel ángulo marca cuántas especies visitantes hay
+Dialogue: 0,0:00:06.90,0:00:11.20,Nota,,0,0,0,,{\fad(250,250)}Octubre y noviembre: la bandada de verano\Nentra a Chile (hasta 106 especies)
+Dialogue: 0,0:00:11.30,0:00:15.60,Nota,,0,0,0,,{\fad(250,250)}Las 214 especies residentes (aves verdes)\Nno se mueven en todo el año
+Dialogue: 0,0:00:15.70,0:00:20.00,Nota,,0,0,0,,{\fad(250,250)}El celular hace sonar el coro:\Nmás voces cuantas más especies
+Dialogue: 0,0:00:20.10,0:00:24.40,Nota,,0,0,0,,{\fad(250,250)}Invierno: el brazo azul usa la misma escala\Ny apenas se mueve (máximo 26 especies)
+Dialogue: 0,0:00:24.50,0:00:29.70,Nota,,0,0,0,,{\fad(250,400)}En el sonido, los residentes van al centro,\Nel verano a la izquierda y el invierno a la derecha

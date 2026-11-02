@@ -1,0 +1,79 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1280
+PlayResY: 720
+WrapStyle: 0
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Sub,Helvetica Neue,28,&H00F4F3EF,&H00F4F3EF,&H9E141413,&H9E141413,0,0,0,0,100,100,0,0,3,9,0,2,90,90,30,1
+Style: Titulo,Helvetica Neue,46,&H00F4F3EF,&H00F4F3EF,&H9E141413,&H9E141413,1,0,0,0,100,100,0,0,3,16,0,8,80,80,46,1
+Style: Escena,Helvetica Neue,30,&H00F4F3EF,&H00F4F3EF,&HA0141413,&HA0141413,1,0,0,0,100,100,0,0,3,11,0,7,36,36,30,1
+Style: Leyenda,Helvetica Neue,28,&H00F4F3EF,&H00F4F3EF,&HA0141413,&HA0141413,1,0,0,0,100,100,0,0,3,10,0,7,36,36,30,1
+Style: Codigo,Menlo,21,&H00F4F3EF,&H00F4F3EF,&HB0141413,&HB0141413,0,0,0,0,100,100,0,0,3,14,0,9,36,36,36,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.20,0:00:04.20,Titulo,,0,0,0,,{\fad(300,300)}Cómo se conecta\N{\fs26}Arduino · protoboard · servos · perilla
+Dialogue: 0,0:00:15.05,0:00:18.35,Escena,,0,0,0,,{\fad(250,250)}El Arduino Leonardo
+Dialogue: 0,0:00:32.92,0:00:36.22,Escena,,0,0,0,,{\fad(250,250)}Tres grupos de pines
+Dialogue: 0,0:01:04.11,0:01:07.41,Escena,,0,0,0,,{\fad(250,250)}Los cinco pines que usamos
+Dialogue: 0,0:01:17.74,0:01:21.04,Escena,,0,0,0,,{\fad(250,250)}Ida, vuelta y colores
+Dialogue: 0,0:01:43.97,0:01:47.27,Escena,,0,0,0,,{\fad(250,250)}La protoboard reparte la energía
+Dialogue: 0,0:02:07.21,0:02:10.51,Escena,,0,0,0,,{\fad(250,250)}El servo: el ancho del pulso es el ángulo
+Dialogue: 0,0:02:34.00,0:02:37.30,Escena,,0,0,0,,{\fad(250,250)}El segundo servo
+Dialogue: 0,0:02:43.11,0:02:46.41,Escena,,0,0,0,,{\fad(250,250)}La perilla: un divisor de voltaje
+Dialogue: 0,0:03:03.14,0:03:06.44,Escena,,0,0,0,,{\fad(250,250)}El programa: leer, convertir, mover
+Dialogue: 0,0:03:22.49,0:03:25.79,Escena,,0,0,0,,{\fad(250,250)}El camino completo
+Dialogue: 0,0:00:00.60,0:00:04.09,Sub,,0,0,0,,En este prototipo, una perilla mueve dos brazos:
+Dialogue: 0,0:00:04.09,0:00:08.94,Sub,,0,0,0,,uno para las aves que llegan en verano y otro para las de invierno.
+Dialogue: 0,0:00:08.94,0:00:13.85,Sub,,0,0,0,,Veamos qué hace cada pieza, cómo se conecta y por qué se conecta así.
+Dialogue: 0,0:00:15.35,0:00:17.39,Sub,,0,0,0,,Este es el Arduino Leonardo:
+Dialogue: 0,0:00:17.39,0:00:21.53,Sub,,0,0,0,,un pequeño computador que lee sensores y controla motores.
+Dialogue: 0,0:00:21.53,0:00:24.84,Sub,,0,0,0,,Por el cable USB recibe energía y el programa.
+Dialogue: 0,0:00:24.84,0:00:27.09,Sub,,0,0,0,,Alrededor tiene filas de pines:
+Dialogue: 0,0:00:27.09,0:00:31.72,Sub,,0,0,0,,cada pin es una puerta por donde entra o sale una señal eléctrica.
+Dialogue: 0,0:00:33.22,0:00:36.02,Sub,,0,0,0,,Los pines se ordenan en tres grupos.
+Dialogue: 0,0:00:36.02,0:00:37.77,Sub,,0,0,0,,Arriba, los digitales:
+Dialogue: 0,0:00:37.77,0:00:41.33,Sub,,0,0,0,,solo conocen dos estados, encendido o apagado.
+Dialogue: 0,0:00:41.33,0:00:51.85,Sub,,0,0,0,,Los que llevan una virgulilla, como el cinco y el seis, además pueden emitir pulsos muy rápidos, que es justo lo que entienden los servos.
+Dialogue: 0,0:00:51.85,0:00:56.17,Sub,,0,0,0,,Abajo a la derecha, los analógicos, de A cero a A cinco:
+Dialogue: 0,0:00:56.17,0:00:58.29,Sub,,0,0,0,,miden voltajes intermedios.
+Dialogue: 0,0:00:58.29,0:01:01.32,Sub,,0,0,0,,Y abajo a la izquierda, los de energía:
+Dialogue: 0,0:01:01.32,0:01:02.91,Sub,,0,0,0,,cinco volts y tierra.
+Dialogue: 0,0:01:04.41,0:01:07.12,Sub,,0,0,0,,De todos ellos usaremos solo cinco:
+Dialogue: 0,0:01:07.12,0:01:16.54,Sub,,0,0,0,,cinco volts y tierra para dar energía, A cero para leer la perilla, y los pines cinco y seis para darle órdenes a cada servo.
+Dialogue: 0,0:01:18.04,0:01:22.22,Sub,,0,0,0,,La electricidad necesita un camino de ida y uno de vuelta:
+Dialogue: 0,0:01:22.22,0:01:26.76,Sub,,0,0,0,,sale por cinco volts, pasa por el aparato y regresa por tierra.
+Dialogue: 0,0:01:26.76,0:01:36.61,Sub,,0,0,0,,Por convención, el rojo marca los cinco volts, el negro o el café marcan la tierra, y un tercer color, naranjo o amarillo, lleva la señal.
+Dialogue: 0,0:01:36.61,0:01:42.78,Sub,,0,0,0,,Gracias a esa convención podemos conectar piezas de distintos fabricantes sin adivinar.
+Dialogue: 0,0:01:44.28,0:01:49.79,Sub,,0,0,0,,El Leonardo tiene un solo pin de cinco volts, pero hay tres piezas que lo necesitan.
+Dialogue: 0,0:01:49.79,0:01:52.25,Sub,,0,0,0,,Para repartirlo usamos la protoboard.
+Dialogue: 0,0:01:52.25,0:01:57.18,Sub,,0,0,0,,Por dentro, cada fila tiene una lámina de metal que une sus cinco agujeros:
+Dialogue: 0,0:01:57.18,0:02:00.30,Sub,,0,0,0,,lo que entra por uno sale por los otros cuatro.
+Dialogue: 0,0:02:00.30,0:02:06.01,Sub,,0,0,0,,Así, la fila uno se vuelve nuestra línea de cinco volts, y la fila tres, nuestra tierra.
+Dialogue: 0,0:02:07.51,0:02:09.47,Sub,,0,0,0,,El servo trae tres cables:
+Dialogue: 0,0:02:09.47,0:02:15.16,Sub,,0,0,0,,café a tierra, rojo a cinco volts, y naranjo, la señal, directo al pin cinco.
+Dialogue: 0,0:02:15.16,0:02:21.57,Sub,,0,0,0,,El Arduino le manda un pulso cada veinte milisegundos, y lo que importa es cuánto dura.
+Dialogue: 0,0:02:21.57,0:02:29.44,Sub,,0,0,0,,Un pulso corto lo lleva a un extremo, uno largo al otro, y uno de un milisegundo y medio lo deja al centro.
+Dialogue: 0,0:02:29.44,0:02:32.80,Sub,,0,0,0,,El servo gira hasta ese ángulo y se queda ahí.
+Dialogue: 0,0:02:34.30,0:02:39.10,Sub,,0,0,0,,El segundo servo se conecta igual, pero su señal va al pin seis.
+Dialogue: 0,0:02:39.10,0:02:41.91,Sub,,0,0,0,,Así cada brazo recibe su propia orden.
+Dialogue: 0,0:02:43.41,0:02:45.25,Sub,,0,0,0,,La perilla es un potenciómetro:
+Dialogue: 0,0:02:45.25,0:02:48.53,Sub,,0,0,0,,una resistencia con un cursor que se desliza al girarla.
+Dialogue: 0,0:02:48.53,0:02:56.36,Sub,,0,0,0,,Sus patas de los extremos van a cinco volts y a tierra, y la del centro entrega un voltaje entre cero y cinco, según cuánto la giremos.
+Dialogue: 0,0:02:56.36,0:03:01.94,Sub,,0,0,0,,Ese voltaje entra por A cero, y el Arduino lo convierte en un número entre cero y mil veintitrés.
+Dialogue: 0,0:03:03.44,0:03:07.64,Sub,,0,0,0,,El programa repite tres pasos muchas veces por segundo:
+Dialogue: 0,0:03:07.64,0:03:15.44,Sub,,0,0,0,,lee A cero, convierte ese número en un ángulo con la función map, y le escribe ese ángulo a cada servo.
+Dialogue: 0,0:03:15.44,0:03:21.29,Sub,,0,0,0,,El de verano va de veinte a ciento sesenta grados, y el de invierno, al revés.
+Dialogue: 0,0:03:22.79,0:03:24.67,Sub,,0,0,0,,Ese es el camino completo:
+Dialogue: 0,0:03:24.67,0:03:33.98,Sub,,0,0,0,,la mano gira la perilla, el voltaje viaja hasta A cero, el programa decide, y los pulsos de los pines cinco y seis mueven los brazos.
+Dialogue: 0,0:03:33.98,0:03:35.30,Sub,,0,0,0,,Un último consejo:
+Dialogue: 0,0:03:35.30,0:03:40.72,Sub,,0,0,0,,conecta siempre con el USB desenchufado, y revisa dos veces el rojo y el café.
+Dialogue: 0,0:01:27.89,0:01:43.67,Leyenda,,0,0,0,,{\an7\pos(36,96)\fad(200,250)}{\1c&H3B3BE8&}■ {\1c&HEFF3F4&}rojo = 5 volts
+Dialogue: 0,0:01:30.09,0:01:43.67,Leyenda,,0,0,0,,{\an7\pos(36,140)\fad(200,250)}{\1c&H22406B&}■ {\1c&HEFF3F4&}negro / café = tierra
+Dialogue: 0,0:01:33.07,0:01:43.67,Leyenda,,0,0,0,,{\an7\pos(36,184)\fad(200,250)}{\1c&H248AF0&}■ {\1c&HEFF3F4&}naranjo / amarillo = señal
+Dialogue: 0,0:03:03.64,0:03:07.64,Codigo,,0,0,0,,{\an7\pos(745,34)}{\fad(250,0)}{\1c&H8C8C8C&}int lectura = analogRead(A0);\N{\1c&H8C8C8C&}int angulo = map(lectura, 40, 985, 20, 160);\N{\1c&H8C8C8C&}verano.write(angulo);\N{\1c&H8C8C8C&}invierno.write(180 - angulo);
+Dialogue: 0,0:03:07.64,0:03:08.54,Codigo,,0,0,0,,{\an7\pos(745,34)}{\1c&H5ECFFF&}int lectura = analogRead(A0);\N{\1c&H8C8C8C&}int angulo = map(lectura, 40, 985, 20, 160);\N{\1c&H8C8C8C&}verano.write(angulo);\N{\1c&H8C8C8C&}invierno.write(180 - angulo);
+Dialogue: 0,0:03:08.54,0:03:12.74,Codigo,,0,0,0,,{\an7\pos(745,34)}{\1c&H8C8C8C&}int lectura = analogRead(A0);\N{\1c&H5ECFFF&}int angulo = map(lectura, 40, 985, 20, 160);\N{\1c&H8C8C8C&}verano.write(angulo);\N{\1c&H8C8C8C&}invierno.write(180 - angulo);
+Dialogue: 0,0:03:12.74,0:03:22.19,Codigo,,0,0,0,,{\an7\pos(745,34)}{\fad(0,250)}{\1c&H8C8C8C&}int lectura = analogRead(A0);\N{\1c&H8C8C8C&}int angulo = map(lectura, 40, 985, 20, 160);\N{\1c&H5ECFFF&}verano.write(angulo);\N{\1c&H5ECFFF&}invierno.write(180 - angulo);

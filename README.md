@@ -208,6 +208,18 @@ WebUSB exige que la placa se anuncie como USB 2.1; la bandera `USB_VERSION`
 lo hace sin editar `USBCore.h` del core. Si la carga falla, se repite el
 `upload` o se aprieta el reset del Leonardo justo antes.
 
+**Probar sin navegador:** [`arduino/perilla_servos`](arduino/perilla_servos/perilla_servos.ino)
+mueve los brazos directo con la perilla (A0): de tope a tope, cada servo va de un extremo al
+otro (verano hacia un lado, invierno hacia el otro, entre 20° y 160°). Escribe la lectura y los
+ángulos en el monitor serie (9600 baudios). Reemplaza el firmware de
+Protobject: para volver a la página hay que cargarlo de nuevo.
+
+```bash
+arduino-cli compile --fqbn arduino:avr:leonardo arduino/perilla_servos
+arduino-cli upload --fqbn arduino:avr:leonardo -p "$(ls /dev/cu.usbmodem* | head -1)" arduino/perilla_servos
+arduino-cli monitor -p "$(ls /dev/cu.usbmodem* | head -1)" -c baudrate=9600
+```
+
 **Probar:** servir `web/` (ver arriba), abrir `/fisico/` en Chrome,
 **Conectar Arduino** → **Confirm** → elegir el Leonardo, y partir por
 **Centro** antes de fijar el brazo al servo.

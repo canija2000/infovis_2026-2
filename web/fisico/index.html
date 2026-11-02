@@ -60,6 +60,7 @@
       <div class="track"><div class="fill" id="winter-fill"></div></div>
     </div>
     <p class="mono" id="pulses"></p>
+    <p class="mono" id="knob">perilla A0: sin datos</p>
   </main>
 
   <script>
@@ -68,12 +69,21 @@
     const AUSTRAL = [6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5];
     const MAX_VISITORS = 106; // pico de verano (noviembre); escala común a los dos brazos
     const RANGE = 800;        // offset de pulso en µs: -800 = brazo fuera de Chile, +800 = dentro
-    // Protobject envía 1500 + value al pin 5 y 1500 − value al pin 6. Con -1 el pin 6
-    // gira en el mismo sentido que el 5; cambiar a 1 si el brazo va montado en espejo.
-    const PIN6_SIGN = -1;
+    // Protobject envía 1500 + value al pin 5 y 1500 − value al pin 6. Con 1 el pin 6 gira en
+    // espejo del 5, como en la maqueta (un servo a cada lado de Chile); con -1, en el mismo sentido.
+    const PIN6_SIGN = 1;
     const STEP_MS = 50, EASE_MS = 900, PLAY_MS = 2500;
+    // Perilla: potenciómetro en A0 (0–1023), dividido en 12 tramos iguales de julio a junio.
+    // KNOB_INVERT = true si al girar a la derecha los meses retroceden. KNOB_HYSTERESIS: cuentas
+    // que hay que pasar del borde de un tramo para cambiar de mes (evita que tiemble entre dos).
+    const KNOB_INVERT = false, KNOB_HYSTERESIS = 12, KNOB_SMOOTH = 0.3;
+    // KNOB_LOG = true si el potenciómetro es logarítmico (código A, p. ej. «A10K»): entrega ~10 %
+    // del valor en la primera mitad del giro, y se deshace esa curva para que los meses queden parejos.
+    const KNOB_LOG = false;
+    const unLog = (f) => (f <= 0.1 ? f / 0.1 * 0.5 : 0.5 + (f - 0.1) / 0.9 * 0.5);
 
     let months = null, connected = false, current = 6, playTimer = null;
+    let knobValue = null, knobStep = null;
     const pos = { 5: -RANGE, 6: -RANGE };
     let anim = null;
 
@@ -124,14 +134,39 @@
       }, PLAY_MS);
     }
 
-    $("connect").addEventListener("click", () => {
-      Protobject.Arduino.start();
-      connected = true;
+    $("connect").addEventListener("click", async () => {
       status("conectando… (elige el Leonardo en la ventana de Chrome)");
-      // Protobject no avisa cuando la conexión queda lista: el estado solo recuerda qué hacer.
-      setTimeout(() => { status("si elegiste el Leonardo, prueba «Centro»"); selectMonth(current); }, 1500);
+      try {
+        await Protobject.Arduino.start(); // se resuelve cuando la placa queda conectada
+        connected = true;
+        status("conectado: gira la perilla");
+        if (months) selectMonth(current);
+      } catch (e) {
+        status("no se pudo conectar: " + e);
+      }
     });
     Protobject.Arduino.onReceiveError(() => { connected = false; status("desconectado: vuelve a conectar"); });
+
+    // La placa manda a0..a2 y d7..d9 cada 60 ms. A0 = perilla → mes austral (0 = julio … 11 = junio).
+    Protobject.Arduino.onData((data) => {
+      if (!months || playTimer) return;
+      // primero se corrige el sentido (cables de los extremos cruzados) y después la curva
+      let raw = KNOB_INVERT ? 1023 - data.a0 : data.a0;
+      if (KNOB_LOG) raw = unLog(raw / 1023) * 1023;
+      knobValue = knobValue === null ? raw : knobValue + KNOB_SMOOTH * (raw - knobValue);
+      const span = 1024 / 12;
+      const step = Math.min(11, Math.floor(knobValue / span));
+      // solo cambia de mes si la perilla se alejó KNOB_HYSTERESIS cuentas del borde del tramo actual
+      if (knobStep !== null && step !== knobStep) {
+        const lo = knobStep * span - KNOB_HYSTERESIS, hi = (knobStep + 1) * span + KNOB_HYSTERESIS;
+        if (knobValue > lo && knobValue < hi) return;
+      }
+      $("knob").textContent = `perilla A0: ${Math.round(knobValue)} → ${MONTHS[AUSTRAL[step]]}`;
+      if (step !== knobStep) {
+        knobStep = step;
+        selectMonth(AUSTRAL[step]);
+      }
+    });
 
     $("play").addEventListener("click", togglePlay);
     document.querySelectorAll("[data-test]").forEach((b) => b.addEventListener("click", () => {
