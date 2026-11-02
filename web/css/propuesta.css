@@ -1,0 +1,51 @@
+/* -------------------------------------------------------------- propuesta.html (Propuesta física) */
+.propuesta {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 28px 24px 56px;
+  font-family: var(--font);
+  color: var(--ink);
+}
+.propuesta .kicker {
+  margin: 0 0 6px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.propuesta h1 {
+  margin: 0 0 10px;
+  color: var(--title);
+  font-size: clamp(26px, 4vw, 38px);
+  line-height: 1.1;
+}
+.propuesta header p:not(.kicker) {
+  max-width: 68ch;
+  margin: 0 0 22px;
+  color: var(--ink-2);
+  line-height: 1.5;
+}
+.propuesta figure {
+  margin: 0;
+}
+.propuesta video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;
+  background: #000;
+}
+.propuesta figcaption {
+  margin-top: 10px;
+  max-width: 72ch;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--ink-3);
+}
+@media (max-width: 600px) {
+  .propuesta {
+    padding: 20px 16px 40px;
+  }
+}

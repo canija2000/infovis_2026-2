@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Propuesta física · Nómadas &amp; sedentarios</title>
+  <meta name="description"
+    content="Maqueta animada de la propuesta físico-digital: una perilla recorre el año y dos servos mueven las bandadas de verano e invierno sobre un Chile de cartón.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/site.css?v=refactor-1">
+  <link rel="stylesheet" href="css/propuesta.css">
+</head>
+
+<body>
+  <nav class="site-nav" aria-label="Secciones">
+    <a class="brand" href="index.html">Atlas sonoro · Aves de Chile</a>
+    <ul>
+      <li><a class="site-tab" href="index.html">Visualización</a></li>
+      <li><a class="site-tab" href="explorar.html">Explorar</a></li>
+      <li><a class="site-tab" href="metricas.html#ejemplo" data-metric="ejemplo">Ficha de métricas</a></li>
+      <li><a class="site-tab" href="propuesta.html" aria-current="page">Propuesta física</a></li>
+      <li><a class="site-tab" href="https://canija2000.github.io/3d_aviario/" title="El juego: un aviario 3D con las aves de cada región">Aviario 3D ↗</a></li>
+    </ul>
+  </nav>
+
+  <main class="propuesta">
+    <header>
+      <p class="kicker">Entrega 2 · Maqueta V1 (simulación)</p>
+      <h1>Los que llegan y los que se quedan</h1>
+      <p>Una perilla recorre el año. A cada lado de un Chile de cartón, un servo mueve una bandada: el
+        de verano entra al mapa en primavera y el de invierno apenas se asoma, con la misma escala.
+        Las aves verdes, los residentes, no se mueven.</p>
+    </header>
+
+    <figure>
+      <video controls preload="metadata" playsinline poster="video/propuesta-maqueta-v1.jpg"
+        aria-describedby="video-nota">
+        <source src="video/propuesta-maqueta-v1.mp4" type="video/mp4">
+        Tu navegador no reproduce video: <a href="video/propuesta-maqueta-v1.mp4">descárgalo aquí</a>.
+      </video>
+      <figcaption id="video-nota">Simulación en Blender con los datos del año típico 2017–2024. El sonido
+        es el coro de cantos reales: residentes al centro, verano a la izquierda e invierno a la derecha.
+        30 s.</figcaption>
+    </figure>
+  </main>
+</body>
+
+</html>
