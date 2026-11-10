@@ -1,0 +1,30 @@
+{
+ "_nota": "Props (vegetación y elementos) por escena de Magallanes. Tabla manual basada en los pisos vegetacionales de Luebert & Pliscoff (bosque caducifolio de Nothofagus pumilio, estepa de Festuca gracillima, matorral de Mulinum/Chiliotrichum) y observación de los lugares. 'cover' = índices de legend en terrain-CL-MA.json.",
+ "estepa": [
+  {"id": "coiron", "nombre": "Coirón (Festuca)", "tipo": "pasto", "cover": [2, 5], "nativo": true},
+  {"id": "mata_negra", "nombre": "Mata negra", "tipo": "arbusto", "cover": [2, 1], "nativo": true},
+  {"id": "calafate", "nombre": "Calafate", "tipo": "arbusto", "cover": [2, 1, 0], "nativo": true},
+  {"id": "nirre", "nombre": "Ñirre", "tipo": "arbol", "cover": [0], "nativo": true},
+  {"id": "roca", "nombre": "Roca", "tipo": "roca", "cover": [5], "nativo": null}
+ ],
+ "bosque": [
+  {"id": "lenga", "nombre": "Lenga", "tipo": "arbol", "cover": [0], "nativo": true},
+  {"id": "nirre", "nombre": "Ñirre", "tipo": "arbol", "cover": [0, 2], "nativo": true},
+  {"id": "calafate", "nombre": "Calafate", "tipo": "arbusto", "cover": [2, 0], "nativo": true},
+  {"id": "tronco_caido", "nombre": "Tronco caído de lenga", "tipo": "roca", "cover": [0], "nativo": true},
+  {"id": "coiron", "nombre": "Coirón", "tipo": "pasto", "cover": [2], "nativo": true}
+ ],
+ "costa": [
+  {"id": "coiron", "nombre": "Coirón", "tipo": "pasto", "cover": [2], "nativo": true},
+  {"id": "madriguera", "nombre": "Madriguera de pingüino", "tipo": "roca", "cover": [2], "nativo": null},
+  {"id": "mata_negra", "nombre": "Mata negra", "tipo": "arbusto", "cover": [2], "nativo": true},
+  {"id": "bolones", "nombre": "Bolones de la playa", "tipo": "roca", "cover": [5, 7, 2], "nativo": null}
+ ],
+ "fiordo": [
+  {"id": "coiron", "nombre": "Coirón", "tipo": "pasto", "cover": [2, 3], "nativo": true},
+  {"id": "calafate", "nombre": "Calafate", "tipo": "arbusto", "cover": [2, 3], "nativo": true},
+  {"id": "muelle", "nombre": "Muelle viejo", "tipo": "objeto", "cover": [4, 2], "nativo": null},
+  {"id": "casa_color", "nombre": "Casa de chapa", "tipo": "edificio", "cover": [4], "nativo": null},
+  {"id": "bolones", "nombre": "Bolones de la orilla", "tipo": "roca", "cover": [5, 2], "nativo": null}
+ ]
+}

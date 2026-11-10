@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Códigos del Mirador</title>
+<meta name="description" content="Un código QR por región para abrir el Mirador en el teléfono. Para imprimir y pegar junto a cada visor.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Pixelify+Sans:wght@600&display=swap">
+<style>
+  :root { --ink: #101421; --dim: #5b6278; --paper: #fff; --edge: #d5d9e3; }
+  body { margin: 0; padding: 16px; background: var(--paper); color: var(--ink); font-family: 'Atkinson Hyperlegible', system-ui, sans-serif; }
+  header { max-width: 900px; margin: 0 auto 16px; }
+  h1 { font-family: 'Pixelify Sans', sans-serif; margin: 0 0 4px; }
+  header p { margin: 4px 0; color: var(--dim); }
+  label { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 8px; }
+  input { flex: 1; min-width: 240px; font: inherit; padding: 6px 8px; border: 1px solid var(--edge); border-radius: 6px; }
+  .grid { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+  .card { border: 2px solid var(--ink); border-radius: 12px; padding: 16px; text-align: center; break-inside: avoid; }
+  .card h2 { font-family: 'Pixelify Sans', sans-serif; margin: 0; font-size: 26px; }
+  .card .qr { display: grid; place-items: center; margin: 12px auto; width: 200px; height: 200px; }
+  .card .qr img, .card .qr canvas { width: 200px; height: 200px; image-rendering: pixelated; }
+  .card p { margin: 4px 0; font-size: 14px; }
+  .card code { font-size: 11px; color: var(--dim); word-break: break-all; }
+  @media print { header label, header .tip { display: none; } body { padding: 0; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Mirador · códigos por región</h1>
+  <p>Escanea con la cámara del teléfono, elige una zona y pon el teléfono en el visor.</p>
+  <label>Dirección del Mirador <input id="base" spellcheck="false"></label>
+  <p class="tip">Cambia la dirección si el Mirador está publicado en otro lugar: tiene que ser https para que funcione el giroscopio. Imprime con Cmd/Ctrl + P.</p>
+</header>
+<main class="grid" id="grid"></main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+  const REGIONS = [['CL-AP', 'Arica y Parinacota'], ['CL-VS', 'Valparaíso'], ['CL-RM', 'Metropolitana'], ['CL-LR', 'Los Ríos'], ['CL-MA', 'Magallanes']];
+  const DEFAULT = new URL('./', location.href).href; // la carpeta del Mirador (web/mirador/)
+  const base = document.getElementById('base');
+  base.value = new URLSearchParams(location.search).get('base') || DEFAULT;
+  function draw() {
+    const grid = document.getElementById('grid');
+    grid.innerHTML = '';
+    for (const [code, name] of REGIONS) {
+      const url = `${base.value.split('?')[0]}?r=${code}`;
+      const card = document.createElement('section');
+      card.className = 'card';
+      card.innerHTML = `<h2>${name}</h2><div class="qr"></div><p>Aves de 2024</p><code>${url}</code>`;
+      grid.appendChild(card);
+      new QRCode(card.querySelector('.qr'), { text: url, width: 400, height: 400, correctLevel: QRCode.CorrectLevel.M });
+    }
+  }
+  base.addEventListener('change', draw);
+  draw();
+</script>
+</body>
+</html>
