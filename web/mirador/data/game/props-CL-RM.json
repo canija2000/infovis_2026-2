@@ -1,0 +1,36 @@
+{
+ "_nota": "Props (vegetación y elementos) por escena de la RM, para decorar el terreno según la cobertura. Tabla manual basada en los pisos vegetacionales de Luebert & Pliscoff (bosque y matorral esclerófilo mediterráneo andino/costero) y observación de los lugares. 'cover' = índices de legend en terrain-CL-RM.json donde se ubican.",
+ "ciudad": [
+  {"id": "platano_oriental", "nombre": "Plátano oriental", "tipo": "arbol", "cover": [0, 4], "nativo": false},
+  {"id": "palma_chilena", "nombre": "Palma chilena", "tipo": "arbol", "cover": [0], "nativo": true},
+  {"id": "pimiento", "nombre": "Pimiento", "tipo": "arbol", "cover": [0, 2], "nativo": false},
+  {"id": "cesped", "nombre": "Césped de plaza", "tipo": "suelo", "cover": [2], "nativo": false},
+  {"id": "banca_farol", "nombre": "Banca y farol", "tipo": "objeto", "cover": [4], "nativo": null},
+  {"id": "roca_cerro", "nombre": "Roca del cerro Santa Lucía", "tipo": "roca", "cover": [5], "nativo": null}
+ ],
+ "matorral": [
+  {"id": "espino", "nombre": "Espino", "tipo": "arbusto", "cover": [1, 2], "nativo": true},
+  {"id": "quillay", "nombre": "Quillay", "tipo": "arbol", "cover": [0, 1], "nativo": true},
+  {"id": "litre", "nombre": "Litre", "tipo": "arbol", "cover": [0, 1], "nativo": true},
+  {"id": "peumo", "nombre": "Peumo", "tipo": "arbol", "cover": [0], "nativo": true},
+  {"id": "boldo", "nombre": "Boldo", "tipo": "arbusto", "cover": [1], "nativo": true},
+  {"id": "quisco", "nombre": "Quisco (cactus)", "tipo": "cactus", "cover": [1, 5], "nativo": true},
+  {"id": "roca", "nombre": "Roca", "tipo": "roca", "cover": [1, 5], "nativo": null}
+ ],
+ "rio": [
+  {"id": "sauce_chileno", "nombre": "Sauce chileno", "tipo": "arbol", "cover": [0, 7], "nativo": true},
+  {"id": "maiten", "nombre": "Maitén", "tipo": "arbol", "cover": [0], "nativo": true},
+  {"id": "totora", "nombre": "Totora", "tipo": "junco", "cover": [7, 8], "nativo": true},
+  {"id": "zarzamora", "nombre": "Zarzamora", "tipo": "arbusto", "cover": [1], "nativo": false},
+  {"id": "pradera", "nombre": "Pradera con cardos", "tipo": "suelo", "cover": [2, 3], "nativo": null},
+  {"id": "bolones", "nombre": "Bolones del lecho", "tipo": "roca", "cover": [5], "nativo": null}
+ ],
+ "cordillera": [
+  {"id": "llareta", "nombre": "Llareta", "tipo": "cojin", "cover": [2, 5], "nativo": true},
+  {"id": "coiron", "nombre": "Coirón", "tipo": "pasto", "cover": [2], "nativo": true},
+  {"id": "hierba_blanca", "nombre": "Hierba blanca", "tipo": "arbusto", "cover": [2, 5], "nativo": true},
+  {"id": "flores_altura", "nombre": "Flores de altura (añañuca, azulillo)", "tipo": "flor", "cover": [2], "nativo": true},
+  {"id": "roca_andina", "nombre": "Roca y pedrero", "tipo": "roca", "cover": [5], "nativo": null},
+  {"id": "manchon_nieve", "nombre": "Manchón de nieve (invierno)", "tipo": "nieve", "cover": [5, 6], "nativo": null}
+ ]
+}
