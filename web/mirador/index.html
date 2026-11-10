@@ -5,6 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
 <title>Mirador · Aviario de Chile</title>
 <meta name="description" content="Mirador de aves para los binoculares de cartón: elige una región y una zona, gira para buscar aves de 2024, escúchalas y fotografíalas.">
+<!-- Instalable en la pantalla de inicio: así abre sin la barra del navegador (en iPhone es la única forma). -->
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#05060b">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Mirador">
+<link rel="apple-touch-icon" href="img/icono-180.png">
+<link rel="icon" href="img/icono-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Pixelify+Sans:wght@400;600;700&display=swap">
@@ -35,6 +44,7 @@
   <h1>MIRADOR<small id="pick-sub">aves de Chile · 2024</small></h1>
   <p class="hint" id="pick-status">Cargando datos…</p>
   <div id="pick-list" class="pick-list"></div>
+  <p class="install" id="install" hidden></p>
   <details class="setup-box win" id="lens-box">
     <summary>Ajustar el visor</summary>
     <label class="row"><input type="checkbox" id="opt-bino"> Dos lentes (binoculares)</label>
