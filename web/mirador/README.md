@@ -55,6 +55,14 @@ de three.js). Condiciones:
 - En iPhone el permiso se pide con un toque (por eso se pide al elegir la zona).
 - Si el permiso se niega o no hay sensor, aparece «Entrar sin sensores» y se gira con el dedo o las flechas.
 
+## Pantalla completa (sin barra de dirección)
+
+- **Android:** se activa sola al tocar la zona.
+- **iPhone:** Safari no deja que una página ocupe toda la pantalla (solo los videos). Hay que instalarla:
+  Compartir → «Agregar a inicio», y abrir el Mirador desde ese ícono. La pantalla de zonas lo explica.
+- Instalado (`manifest.webmanifest`) abre sin barras en los dos. Como el QR abre el navegador y no la app,
+  la app instalada recuerda la última región elegida y deja cambiarla.
+
 ## Visor
 
 En la pantalla de zonas, «Ajustar el visor» cambia la separación y el tamaño de los dos círculos (en % del

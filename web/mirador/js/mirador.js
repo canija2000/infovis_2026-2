@@ -152,12 +152,32 @@ $('pick-list').addEventListener('click', e => {
 // la pantalla siempre encendida, la pantalla completa y la orientación horizontal.
 let sensorsAsked = false;
 function wakeUp() {
+  goFullscreen(); // primero: el navegador solo lo permite justo en el toque
   unlockAudio(); blip(660, 0.08);
   if (!sensorsAsked) { sensorsAsked = true; startGyro(); }
   navigator.wakeLock?.request('screen').catch(() => {});
-  if (S.phone && !document.fullscreenElement) {
-    document.documentElement.requestFullscreen?.().then(() => screen.orientation?.lock?.('landscape')).catch(() => {});
-  }
+}
+// Pantalla completa (sin barra de dirección). Funciona en Android; en iPhone Safari no lo permite para
+// páginas, así que ahí se instala en la pantalla de inicio (ver installHint).
+const standalone = () => matchMedia('(display-mode: fullscreen), (display-mode: standalone)').matches || navigator.standalone === true;
+function goFullscreen() {
+  if (!S.phone || standalone() || document.fullscreenElement || document.webkitFullscreenElement) return;
+  const el = document.documentElement, req = el.requestFullscreen || el.webkitRequestFullscreen;
+  if (!req) return;
+  try {
+    Promise.resolve(req.call(el, { navigationUI: 'hide' })).catch(() => {}); // sin bloquear la orientación: vertical = sacó el teléfono (pausa)
+  } catch { /* sin pantalla completa */ }
+}
+const isIOS = /iP(hone|od|ad)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+function installHint() {
+  const el = $('install');
+  if (!S.phone || standalone()) { el.hidden = true; return; }
+  el.hidden = false;
+  el.innerHTML = isIOS
+    ? '<b>Para verlo sin la barra de Safari:</b> toca Compartir ⬆︎ → «Agregar a inicio» y abre el Mirador desde ese ícono.'
+    : (document.documentElement.requestFullscreen
+      ? '<b>Pantalla completa:</b> se activa al elegir la zona. También puedes instalarlo: menú ⋮ → «Agregar a la pantalla principal».'
+      : '<b>Para verlo sin la barra:</b> menú ⋮ → «Agregar a la pantalla principal» y ábrelo desde ese ícono.');
 }
 async function pickZone(key) {
   wakeUp();
@@ -196,6 +216,7 @@ function zoneSids(key) {
 async function enterRegion(code) {
   $('pick-status').textContent = 'Cargando la región…';
   S.reg = await loadRegion(S.index, code);
+  store('mirador.region', code);
   try { S.props = await loadJSON(DATA_BASE + `props-${code}.json`); } catch { S.props = null; }
   featuredIn(S.index, S.reg.region); // deja la paleta de cada especie destacada
   rememberRegion(code, Object.keys(S.reg.region.featured || {}).map(Number));
@@ -680,7 +701,9 @@ Promise.all([loadWorld(), loadKit()]).then(async ([index]) => {
   if (r && CFG.regions.includes(r)) {
     await enterRegion(r);
     if (z && S.reg.terrain.scenes[z]) { await enterZone(z); if (q.has('auto')) { unlockAudio(); go(); } else toPlace(); }
-  } else regionList();
+  } else if (standalone() && CFG.regions.includes(store('mirador.region'))) await enterRegion(store('mirador.region')); // app instalada: la última región
+  else regionList();
+  installHint();
 }).catch(err => { $('pick-status').textContent = 'No se pudieron cargar los datos: ' + err.message; });
 
 window.M = S; window.dbg = { setMonth, enterRegion, enterZone, pause, go, setLock, takePhoto, gyro, camera, CFG }; // para depurar desde la consola

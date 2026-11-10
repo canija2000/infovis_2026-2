@@ -1,0 +1,15 @@
+{
+  "name": "Mirador · Aves de Chile 2024",
+  "short_name": "Mirador",
+  "description": "Mirador de aves para los binoculares de cartón.",
+  "lang": "es",
+  "start_url": "./",
+  "scope": "./",
+  "display": "fullscreen",
+  "background_color": "#05060b",
+  "theme_color": "#05060b",
+  "icons": [
+    { "src": "img/icono-180.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "img/icono-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
