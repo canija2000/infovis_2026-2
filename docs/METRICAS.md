@@ -8,13 +8,12 @@ localizar sus responsabilidades, consulta la [arquitectura](ARQUITECTURA.md).
 
 El cuerpo principal explica las medidas de Visualización y Explorar. Después
 se documentan las medidas del sonido, los datos preparados para el aviario
-externo, la selección de fotos y audio y el análisis independiente de minería.
+externo y la selección de fotos y audio.
 Los scripts históricos archivados no definen la metodología actual.
 
 Para ir directamente a los bloques complementarios: [sonido](#ano-especie),
 [aviario](#aviario), [morfología](#rasgos), [relieve y paleta](#terreno-paleta),
-[calidad de fotos](#calidad-fotos), [calidad de audio](#calidad-audio) y
-[minería](#mineria).
+[calidad de fotos](#calidad-fotos) y [calidad de audio](#calidad-audio).
 
 ## 1. Consulta rápida: qué significa cada cifra
 
@@ -1079,61 +1078,7 @@ Resultados de revisión: [analisis.json](../python_scripts/audio_review/analisis
 y el archivo opcional `python_scripts/audio_review/decisiones.json`, cuando se
 guarden decisiones humanas. Ese segundo archivo no está presente en esta copia.
 
-<a id="mineria"></a>
-## 16. Métricas del análisis independiente de minería
-
-[mineria/](../mineria/) estudia los ciclos de **2024**. No se ejecuta en la web
-ni sustituye sus clases. Emplea una unidad de esfuerzo distinta de la del atlas.
-
-### 16.1. Salidas, tasa de detección y forma del ciclo
-
-Una «salida» se aproxima como **celda de 0,05° × fecha con algún registro**.
-No representa necesariamente una salida real identificada de un observador.
-La misma celda-fecha se cuenta una vez en el esfuerzo, aunque incluya muchas
-especies.
-
-```text
-esfuerzo mensual de minería = número de celdas-fechas distintas con algún registro
-tasa de detección especie   = salidas con esa especie / salidas totales del mes
-forma del ciclo             = tasa mensual / máximo de las doce tasas de la especie
-```
-
-Por ejemplo, 20 salidas con Chincol entre 100 salidas dan tasa 0,20. Esto no
-equivale a 20 % de los días regionales ni a 20 % de los días-especie. Se conservan
-especies con al menos 30 salidas con registro en el año.
-
-### 16.2. Silueta, BIC, ARI, centroides y varianza PCA
-
-| Medida | Qué significa | Uso aquí |
-|---|---|---|
-| `k` | Número de grupos propuesto; parámetro, no resultado ecológico observado | Se comparan 2…8 grupos; las figuras detalladas usan 5 |
-| Silueta | Media de `(b−a)/max(a,b)`; `a` es distancia media al propio grupo y `b` al grupo alternativo más cercano; va de −1 a 1 | Mayor valor indica mejor separación; selecciona el k de máximo score de K-means |
-| BIC | Criterio que combina ajuste del modelo y penalización de complejidad; menor es preferible | Evalúa mezclas gaussianas, no el score de K-means |
-| ARI | Acuerdo entre agrupaciones corregido por azar; 1 es coincidencia, alrededor de 0 es acuerdo esperado por azar; puede ser negativo | Compara grupos con las clases nacionales por reglas |
-| Centroide | Media de los perfiles de las especies asignadas a un grupo | Describe el ciclo medio del grupo, no el de un ave individual |
-| Tabla de contingencia | Número de especies en cada cruce grupo × clase por reglas | Permite ver qué clases se mezclan en los grupos |
-| Varianza explicada PCA | Fracción de variación de los perfiles retenida en cada componente | Indica cuánto resume la proyección de doce meses en dos ejes |
-| Cargas PCA | Coeficientes de los doce meses en cada componente | Indican qué meses participan en cada eje; no son tasas ni porcentajes de presencia |
-
-El orden visual de los grupos usa la diferencia `máximo − mínimo` de cada
-centroide y luego su mes pico. Esa amplitud de ordenación es distinta de la
-amplitud `1 − L/H` que clasifica las especies del atlas. El ARI se informa
-tanto con todas las especies como excluyendo las de clase nacional ocasional.
-
-Definiciones de las funciones empleadas: [silueta](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.silhouette_score.html),
-[BIC de GaussianMixture](https://scikit-learn.org/stable/modules/generated/sklearn.mixture.GaussianMixture.html#sklearn.mixture.GaussianMixture.bic),
-[ARI](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.adjusted_rand_score.html)
-y [PCA](https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html).
-
-Los resultados guardados incluyen 66.064 salidas y 321 especies. La silueta
-elige dos grupos; la exploración visual conserva cinco. Estos scores comparan
-modelos y reglas; no validan por sí solos una categoría biológica de migración.
-
-Origen: [fenologia_2024.py](../mineria/fenologia_2024.py),
-[resultados_2024.json](../mineria/resultados_2024.json),
-[explicación del estudio](../mineria/README.md).
-
-## 17. Guía para evitar comparaciones equivocadas
+## 16. Guía para evitar comparaciones equivocadas
 
 | Comparación | Lectura correcta |
 |---|---|
@@ -1149,7 +1094,7 @@ Origen: [fenologia_2024.py](../mineria/fenologia_2024.py),
 | ×4 cantos frente a cuatro aves | Son cuatro copias de audio seleccionadas por un peso de datos |
 | `yearRichness` frente a especies distintas de todo un año | El campo guarda el máximo mensual, no la unión anual |
 
-## 18. Dónde vive cada familia de medidas
+## 17. Dónde vive cada familia de medidas
 
 | Archivo de datos | Medidas principales | Quién las calcula / representa |
 |---|---|---|
@@ -1164,10 +1109,8 @@ Origen: [fenologia_2024.py](../mineria/fenologia_2024.py),
 | `game/index.json`, `game/region-*.json` | Shares, lifts, índices anuales, riqueza y elencos | `aviary/build_game_data.py` → datos para proyecto externo |
 | `game/enrich/*.json`, `game/terrain-*.json` | Rasgos, proporciones, paletas, relieve y cobertura | Scripts `enrich/` → preparación de modelos y escenas |
 | Cachés y `audio_review/*.json` | Scores de fotos, medidas de audio y decisiones de revisión | Scripts `media/` → selección de materiales |
-| `mineria/resultados_2024.json` | Scores y resumen del estudio de agrupamientos | `mineria/fenologia_2024.py` → figuras de investigación |
 
-Los paths de los productores de esta tabla parten de `python_scripts/`, salvo
-`mineria/`. Los entrypoints antiguos en la raíz de `python_scripts/` son
+Los paths de los productores de esta tabla parten de `python_scripts/`. Los entrypoints antiguos en la raíz de `python_scripts/` son
 compatibilidad; las implementaciones están en las carpetas indicadas.
 
 Para navegar por lo que ve el usuario, vuelve a la [guía con capturas y
