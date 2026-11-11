@@ -49,7 +49,6 @@ Repositorio
 ├── gbif/                Datos y configuración del trabajo con GBIF
 ├── Regiones/            Fuente geográfica original
 ├── docs/                EXPLICACIÓN del proyecto y su proceso
-├── mineria/             INVESTIGACIÓN independiente de la web
 ├── scripts/             PREPARACIÓN opcional de la ficha estática
 └── tests/               VERIFICACIÓN de arquitectura y equivalencia
 ```

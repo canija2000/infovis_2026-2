@@ -304,14 +304,6 @@ export const groups = [
         `${v("contraste")}${eq}${v("P", "95")}${moLevel()}${minus}${v("P", "20")}${moLevel()}<mspace width="1em"/>${v("planitud")}${eq}${f(t("media geométrica"), t("media aritmética"))}`,
         "Nivel = 10 log₁₀(energía). Actividad: cuadros > P20 + 10 dB. Rumble = 10 log₁₀(E40–200 / Ebanda). Puntuación de tramo = energía × (1−planitud)². Se eligen hasta tres ventanas de 2 s. Son medidas del clip, sin calibración de presión sonora.",
       ),
-      def(
-        "mineria",
-        "Análisis de ciclos de 2024",
-        "tasa / grupos",
-        "Usa salidas aproximadas por celda-fecha, una unidad distinta del esfuerzo del atlas.",
-        `${v("tasa", "s,m")}${eq}${f(t("salidas con la especie"), t("salidas totales"))}<mspace width="1em"/>${v("silueta")}${eq}${f(v("b") + minus + v("a"), "<mo>máx</mo><mo>(</mo>" + v("a") + "<mo>,</mo>" + v("b") + "<mo>)</mo>")}`,
-        "Forma = tasa mensual / máximo anual; se exigen ≥30 salidas con la especie. a y b son distancias al grupo propio y al alternativo más cercano. BIC penaliza complejidad; ARI compara agrupaciones corregidas por azar; PCA resume variación. No reemplaza las clases de la web.",
-      ),
     ],
   },
 ];
