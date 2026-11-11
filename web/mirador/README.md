@@ -50,8 +50,9 @@ queda libre para lo que el ave «dice», una frase a la vez, sacada de los datos
 - si en 2024 la vieron más o menos que de costumbre;
 - qué come y cuánto pesa.
 
-Al entrar en la mira se ve la primera; a los 1,2 s se abre la ficha (las frases pasan cada `CFG.lineSecs`
-segundos, con la franja de los 12 meses) y a los 5 s se toma la foto.
+Al entrar en la mira se ve la primera; a los 0,8 s se abre la ficha (las frases pasan cada `CFG.lineSecs`
+segundos, con la franja de los 12 meses) y a los 2,2 s se toma la foto. La foto no abre ningún aviso: se ve
+el destello, aparecen las estrellas en la ficha («nueva» si es la primera) y sube el contador de arriba.
 
 El pato (`img/pato.png`) está recortado de `cambios.png`.
 
@@ -60,8 +61,8 @@ El pato (`img/pato.png`) está recortado de `cambios.png`.
 | Qué hago | Qué pasa |
 | --- | --- |
 | Girar | la mira toma el ave más cercana al centro: canta y aparece su nombre y clase |
-| Mantener el ave en la mira 1,2 s | se abre su ficha: el zoom la acerca y van pasando sus frases |
-| Seguir mirándola hasta 5 s | se toma la foto (el anillo de la mira muestra cuánto falta) |
+| Mantener el ave en la mira 0,8 s | se abre su ficha: el zoom la acerca y van pasando sus frases |
+| Seguir mirándola hasta 2,2 s | se toma la foto (el anillo de la mira muestra cuánto falta) |
 | Mirar al cielo 2 s | pasa al mes siguiente |
 | Mirar al suelo | libreta de la zona |
 | Sacar el teléfono / tocar la pantalla | pausa |

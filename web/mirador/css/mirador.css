@@ -62,7 +62,7 @@ body.mono .eye { border-radius: 0; left: 50% !important; top: 0 !important; widt
 .e-card, .e-toast, .e-book, .e-sky { background: var(--ink); color: #fff; border: 0.16em solid var(--amber); border-radius: 0.7em; padding: 0.5em 0.8em; text-align: center; }
 .e-card { top: auto; bottom: 10%; width: 64%; padding: 1em 0.7em 0.5em; overflow: visible; }
 .e-card .tab { position: absolute; left: 0.5em; top: -0.85em; max-width: calc(100% - 1em); display: flex; border: 0.12em solid var(--ink); border-radius: 0.45em; overflow: hidden;
-  font-weight: 700; font-size: 0.95em; line-height: 1.35; white-space: nowrap; }
+  font-weight: 700; font-size: 0.85em; line-height: 1.4; white-space: nowrap; }
 .e-card .tab b { background: var(--amber); color: var(--ink); padding: 0 0.5em; overflow: hidden; text-overflow: ellipsis; }
 .e-card .tab span { background: var(--k); color: var(--ink); padding: 0 0.5em; border-left: 0.12em solid var(--ink); }
 .e-card .say { min-height: 2.5em; display: grid; place-items: center; font-size: 1em; line-height: 1.2; }
@@ -74,8 +74,10 @@ body.mono .eye { border-radius: 0; left: 50% !important; top: 0 !important; widt
 .e-card .months i { font-style: normal; width: 1.25em; border-radius: 0.25em; background: #4b3713; color: #b89b63; }
 .e-card .months i.in { background: var(--k); color: var(--ink); }
 .e-card .months i.now { box-shadow: 0 0 0 0.14em #fff; }
-.e-card .stars { position: absolute; right: 0.6em; top: -0.75em; background: var(--ink); border: 0.12em solid var(--amber); border-radius: 99em; padding: 0 0.45em; font-size: 0.8em; }
+.e-card .stars { position: absolute; right: 0.6em; top: auto; bottom: -0.8em; background: var(--ink); border: 0.12em solid var(--amber); border-radius: 99em; padding: 0 0.45em; font-size: 0.8em; }
 .stars { color: var(--amber); letter-spacing: 0.05em; }
+.e-card .stars.recien { background: var(--amber); color: var(--ink); letter-spacing: 0; font-weight: 700; animation: recien 0.5s ease-out; }
+@keyframes recien { from { transform: scale(1.5); } to { transform: scale(1); } }
 
 .e-toast { top: 30%; width: 60%; font-size: 0.9em; }
 .e-toast b { color: var(--amber); }
