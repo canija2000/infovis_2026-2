@@ -30,7 +30,7 @@ const CFG = {
   resing: 8, // s entre cantos mientras el ave sigue en la mira
   bookPitch: -0.8, // rad: mirar al suelo abre la libreta
   skyPitch: 0.75, skyHold: 2.0, // rad y s: mirar al cielo ese tiempo pasa al mes siguiente
-  dwellCard: 1.2, dwellPhoto: 5.0, // s con el ave en la mira hasta abrir la ficha y hasta tomar la foto
+  dwellCard: 0.8, dwellPhoto: 2.2, // s con el ave en la mira hasta abrir la ficha y hasta tomar la foto
   lineSecs: 2.6, // s que dura cada frase del ave en la caja de diálogo
   frame: 0.3, // con la ficha abierta, el zoom deja el ave en esta fracción del campo visual
   placeHold: 1.2, // s de lado y quieto para empezar
@@ -497,7 +497,7 @@ function sky(dt) {
 }
 
 function setLock(b) {
-  if (S.locked) S.locked.m.setOutline?.(null);
+  if (S.locked) { S.locked.m.setOutline?.(null); S.locked.recien = ''; }
   S.locked = b; S.lockT = 0; S.cardOpen = false; S.dwell = 0; S.shotDone = false; S.manualZoom = false;
   all('.e-reticle', el => { el.classList.toggle('on', !!b); if (b) el.style.setProperty('--k', b.color); });
   if (b) { b.m.setOutline?.(b.color); blip(880, 0.04); sing(b); }
@@ -546,7 +546,7 @@ function renderCard() {
   all('.e-card', el => { el.style.setProperty('--k', b.color); el.classList.toggle('full', S.cardOpen); });
   const months = S.index.months.map((m, k) => `<i class="${presentIn(sp, k) ? 'in' : ''}${k === S.month ? ' now' : ''}">${m[0].toUpperCase()}</i>`).join('');
   html('.e-card', `<div class="tab"><b>${sp.comName}</b><span>${CLASS_LABEL[b.cls] || b.cls}</span></div>
-    ${ph ? `<span class="stars">${starText(ph.stars)}</span>` : ''}
+    ${ph ? `<span class="stars${b.recien ? ' recien' : ''}">${starText(ph.stars)}${b.recien ? ` ${b.recien}` : ''}</span>` : ''}
     <div class="say"><span>${b.lines[i]}</span></div>
     ${S.cardOpen ? `<div class="more">${b.lines.map((_, k) => `<i class="${k === i ? 'on' : ''}"></i>`).join('')}</div>
     <div class="months" title="Meses en que se registra">${months}</div>` : ''}`);
@@ -579,9 +579,9 @@ function takePhoto() {
   const res = savePhoto(b.sp.id, { img, score: best.score, stars: best.stars, region: code, month: S.month, year: YEAR, tags: best.tags });
   markSeen(code, b.sp.id);
   const book = new Set(store('aviario.libreta') || []); book.add(b.sp.id); store('aviario.libreta', [...book]); // libreta del Aviario
-  const got = S.zoneSpecies.filter(sp => progress.album[sp.id]).length;
-  const msg = res === 'nueva' ? `¡Nueva en tu libreta! ${got} de ${S.zoneSpecies.length} en esta zona` : res === 'mejor' ? '¡Tu mejor foto de esta especie!' : 'Ya tenías una foto mejor. Prueba con más zoom.';
-  toast(`<img src="${img}" alt=""><b>${b.sp.comName}</b> <span class="stars">${starText(best.stars)}</span><br>${msg}`, 4);
+  // Sin aviso encima de la vista: el destello, las estrellas en la ficha y el contador de arriba bastan.
+  b.recien = res === 'nueva' ? 'nueva' : res === 'mejor' ? 'mejor' : '';
+  if (res === 'nueva') setTimeout(() => blip(1500, 0.08), 140);
   syncMarks(); renderCard(); updateTop();
 }
 function renderBook() {
