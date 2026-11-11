@@ -1,29 +1,46 @@
-/* Mirador: todo lo que se lee va dentro de cada lente (.eye) y se mide en em = 4 % del diámetro del lente,
-   para que se vea igual en cualquier teléfono. */
-body.mirador { background: #000; }
+/* Mirador. Regla de materiales:
+   - lo que se toca para jugar es sólido: tinta café, ámbar, borde grueso y sombra dura (barra, interruptor,
+     flechas, botón Entrar, diálogos del visor);
+   - lo que se observa y colecciona es papel: fotos pegadas con cinta, letra a mano y sellos (niveles, notas).
+   Dentro del visor todo se mide en em = 4 % del diámetro del lente, para que se vea igual en cualquier teléfono. */
+body.mirador {
+  --ink: #2a1c08;      /* tinta café: bordes, sombras y fondo de los diálogos */
+  --amber: #f2b84b;    /* acento: lo activo */
+  --ocre: #e2a84d;
+  --paper: #f6ecd2; --paper-ink: #3b2810; --paper-dim: #7a5a2c; --paper-rule: #b89b63; --stamp: #a8541a;
+  --bg: linear-gradient(180deg, #3a2d0f 0%, #7a5a16 30%, #c48c22 100%);
+  --title-font: "Righteous", "Courier Prime", system-ui, sans-serif;
+  --font: "Courier Prime", "Courier New", ui-monospace, monospace;
+  --hand: "Caveat", "Courier Prime", cursive;
+  --k: #fff;
+  background: #000;
+}
+
+/* ------------------------------------------------------------------ visor */
 body.mirador #c { cursor: grab; }
 #mask { position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 3; }
 #mask path { fill: #000; }
 #eyes { position: fixed; inset: 0; pointer-events: none; z-index: 4; }
 
 .eye { position: absolute; width: var(--d); height: var(--d); font-size: calc(var(--d) * 0.04); border-radius: 50%; overflow: hidden;
-  font-family: var(--read); color: var(--ink); line-height: 1.25; }
+  font-family: var(--font); color: #fff; line-height: 1.25; }
 body.mono .eye { border-radius: 0; left: 50% !important; top: 0 !important; width: var(--d); height: 100vh; transform: translateX(-50%); overflow: visible; }
 .eye > * { position: absolute; left: 50%; transform: translateX(-50%); }
 
-.e-top { top: 9%; width: 62%; text-align: center; text-shadow: 0 0 0.3em #000, 0 0 0.15em #000; }
-.e-place { font-family: var(--pix); font-size: 1.05em; color: var(--yes); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.e-date { font-size: 0.9em; }
+/* Arriba: una píldora con zona y mes, y el contador de la zona. */
+.e-top { top: 11%; display: flex; align-items: center; gap: 0.4em; white-space: nowrap; }
+.e-place { background: var(--ink); color: var(--amber); border-radius: 99em; padding: 0.15em 0.8em; font-weight: 700; font-size: 0.9em; letter-spacing: 0.04em; text-transform: uppercase; }
+.e-date { background: var(--amber); color: var(--ink); border: 0.12em solid var(--ink); border-radius: 0.5em; padding: 0 0.4em; font-weight: 700; font-size: 0.9em; }
 
 /* Brújula: lo que hay a un cuarto de vuelta a cada lado. Puntos = aves (color = clase; relleno = ya fotografiada). */
-.e-compass { top: 20%; width: 66%; height: 2.2em; }
-.e-strip { position: absolute; inset: 0; border-bottom: 0.12em solid rgba(238, 241, 248, 0.55); }
+.e-compass { top: 20.5%; width: 66%; height: 2.2em; }
+.e-strip { position: absolute; inset: 0; border-bottom: 0.12em solid rgba(255, 255, 255, 0.6); }
 .e-needle { position: absolute; left: 50%; bottom: -0.45em; width: 0; height: 0; transform: translateX(-50%);
-  border: 0.35em solid transparent; border-bottom-color: var(--yes); border-top: 0; }
-.e-mark { position: absolute; bottom: 0.15em; transform: translateX(-50%); font-family: var(--pix); font-size: 0.85em; white-space: nowrap;
+  border: 0.35em solid transparent; border-bottom-color: var(--amber); border-top: 0; }
+.e-mark { position: absolute; bottom: 0.15em; transform: translateX(-50%); font-weight: 700; font-size: 0.85em; white-space: nowrap;
   text-shadow: 0 0 0.3em #000, 0 0 0.15em #000; }
 .e-mark.card { color: #fff; }
-.e-mark.zone { color: var(--yes); font-size: 0.7em; bottom: 1.5em; }
+.e-mark.zone { color: var(--amber); font-size: 0.7em; bottom: 1.5em; }
 .e-mark.bird { width: 0.8em; height: 0.8em; bottom: 0.2em; border-radius: 50%; border: 0.18em solid var(--k); box-shadow: 0 0 0 0.08em #000; }
 .e-mark.bird.got { background: var(--k); }
 .e-mark.bird.far { opacity: 0.55; transform: translateX(-50%) scale(0.75); }
@@ -33,72 +50,137 @@ body.mono .eye { border-radius: 0; left: 50% !important; top: 0 !important; widt
 .e-reticle i { position: absolute; inset: 0; border: 0.1em solid rgba(255, 255, 255, 0.7); border-radius: 50%; transition: inset 0.15s, border-color 0.15s; }
 .e-reticle i::after { content: ""; position: absolute; left: 50%; top: 50%; width: 0.2em; height: 0.2em; margin: -0.1em; background: #fff; border-radius: 50%; }
 .e-reticle.on i { inset: -55%; border-width: 0.16em; border-color: var(--k, #fff); border-style: dashed; }
-.e-zoom { top: 57%; font-family: var(--pix); font-size: 0.8em; opacity: 0.8; text-shadow: 0 0 0.3em #000; }
-
-.e-card, .e-toast, .e-book, .e-sky { background: rgba(8, 10, 16, 0.88); border: 0.12em solid var(--panel-edge); border-radius: 0.5em; padding: 0.5em 0.7em; }
-.e-card { top: 66%; width: 58%; text-align: center; }
-.e-card.full { top: auto; bottom: 9%; width: 56%; padding: 0.35em 0.6em; }
-.e-card h3 { margin: 0; font-family: var(--pix); font-size: 1.25em; font-weight: 600; line-height: 1.1; }
-.e-card .sci { font-style: italic; font-size: 0.8em; color: #b4bbd4; }
-.e-card .chip { display: inline-block; margin: 0.25em 0 0.1em; padding: 0.05em 0.6em; border-radius: 1em; background: var(--k); color: #05060b; font-weight: 700; font-size: 0.85em; }
-.e-card .ln { font-size: 0.85em; }
-.e-card b { color: var(--yes); }
-.e-card .months { display: flex; justify-content: center; gap: 0.12em; margin-top: 0.3em; font-family: var(--pix); font-size: 0.72em; }
-.e-card .months i { font-style: normal; width: 1.25em; padding: 0.05em 0; border-radius: 0.2em; background: #262b3c; color: #6f7697; }
-.e-card .months i.in { background: var(--k); color: #05060b; }
-.e-card .months i.now { box-shadow: 0 0 0 0.14em #fff; }
-.stars { color: var(--yes); letter-spacing: 0.05em; }
-
-.e-toast { top: 31%; width: 58%; text-align: center; font-size: 0.9em; }
-.e-toast img { display: block; width: 45%; margin: 0 auto 0.3em; border: 0.12em solid #fff; image-rendering: pixelated; }
-.e-toast b { color: var(--yes); }
-
-.e-book { top: 22%; width: 64%; text-align: center; }
-.e-book h3 { margin: 0 0 0.3em; font-family: var(--pix); font-size: 1.05em; color: var(--yes); }
-.e-book .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.3em; }
-.e-book .cell { font-size: 0.62em; line-height: 1.1; }
-.e-book .cell img, .e-book .cell .none { display: block; width: 100%; aspect-ratio: 4 / 3; border: 0.15em solid #fff; image-rendering: pixelated; }
-.e-book .cell .none { display: grid; place-content: center; background: #1a1f30; border-color: #4a516c; color: #6f7697; font-family: var(--pix); font-size: 2em; }
-
-/* Mirar el cielo: cambia de mes. */
-.e-sky { top: 26%; width: 50%; text-align: center; }
-.e-sky b { display: block; font-family: var(--pix); font-size: 1.2em; color: var(--yes); }
-.e-sky small { font-size: 0.75em; color: #b4bbd4; }
-
+.e-zoom { top: 57%; font-weight: 700; font-size: 0.8em; opacity: 0.85; text-shadow: 0 0 0.3em #000; }
 /* Anillo de la mira: se llena mientras se mantiene un ave en el centro (ficha → foto) o se mira el cielo. */
 .e-reticle .ring { position: absolute; inset: -80%; border-radius: 50%; opacity: 0; transition: opacity 0.2s;
-  background: conic-gradient(var(--k, #fff) calc(var(--p, 0) * 1turn), rgba(255, 255, 255, 0.15) 0);
+  background: conic-gradient(var(--amber) calc(var(--p, 0) * 1turn), rgba(255, 255, 255, 0.25) 0);
   -webkit-mask: radial-gradient(circle, transparent 60%, #000 61.5%, #000 68%, transparent 69.5%);
   mask: radial-gradient(circle, transparent 60%, #000 61.5%, #000 68%, transparent 69.5%); }
 .e-reticle.ringing .ring { opacity: 1; }
 
-/* Inicio */
-.setup { cursor: default; overflow: auto; padding: 16px; }
-.setup h1 { font-size: clamp(34px, 8vw, 72px); }
-.setup-box { max-width: 560px; margin: 8px auto 0; text-align: left; display: grid; gap: 8px; }
-.setup-box .row { display: flex; align-items: center; gap: 10px; }
-.setup-box input[type=range] { flex: 1; }
-.setup-box output { width: 3.5em; text-align: right; font-variant-numeric: tabular-nums; }
-.setup-box p { margin: 0; }
-.btn.big { font-size: 22px; padding: 10px 18px; justify-self: center; }
-.btn:disabled { opacity: 0.4; }
-.install { max-width: 560px; margin: 8px auto; padding: 10px 14px; border-radius: 10px; border: 2px dashed var(--yes); color: var(--ink); font-size: 15px; text-align: left; }
-.install b { color: var(--yes); }
-.btn.ghost { background: none; border-color: transparent; text-decoration: underline; }
-.setup h2 { font-family: var(--pix); color: var(--yes); margin: 0.4em 0 0.2em; font-size: clamp(24px, 6vw, 40px); }
+/* Diálogos del visor: caja de RPG. Tinta café, borde ámbar; la pestaña lleva «nombre | clase». */
+.e-card, .e-toast, .e-book, .e-sky { background: var(--ink); color: #fff; border: 0.16em solid var(--amber); border-radius: 0.7em; padding: 0.5em 0.8em; text-align: center; }
+.e-card { top: auto; bottom: 10%; width: 64%; padding: 1em 0.7em 0.5em; overflow: visible; }
+.e-card .tab { position: absolute; left: 0.5em; top: -0.85em; max-width: calc(100% - 1em); display: flex; border: 0.12em solid var(--ink); border-radius: 0.45em; overflow: hidden;
+  font-weight: 700; font-size: 0.95em; line-height: 1.35; white-space: nowrap; }
+.e-card .tab b { background: var(--amber); color: var(--ink); padding: 0 0.5em; overflow: hidden; text-overflow: ellipsis; }
+.e-card .tab span { background: var(--k); color: var(--ink); padding: 0 0.5em; border-left: 0.12em solid var(--ink); }
+.e-card .say { min-height: 2.5em; display: grid; place-items: center; font-size: 1em; line-height: 1.2; }
+.e-card .say b { color: var(--amber); }
+.e-card .more { display: flex; justify-content: center; gap: 0.3em; margin-top: 0.25em; }
+.e-card .more i { width: 0.4em; height: 0.4em; border-radius: 50%; background: #6b5216; }
+.e-card .more i.on { background: var(--amber); }
+.e-card .months { display: flex; justify-content: center; gap: 0.12em; margin-top: 0.35em; font-weight: 700; font-size: 0.68em; }
+.e-card .months i { font-style: normal; width: 1.25em; border-radius: 0.25em; background: #4b3713; color: #b89b63; }
+.e-card .months i.in { background: var(--k); color: var(--ink); }
+.e-card .months i.now { box-shadow: 0 0 0 0.14em #fff; }
+.e-card .stars { position: absolute; right: 0.6em; top: -0.75em; background: var(--ink); border: 0.12em solid var(--amber); border-radius: 99em; padding: 0 0.45em; font-size: 0.8em; }
+.stars { color: var(--amber); letter-spacing: 0.05em; }
+
+.e-toast { top: 30%; width: 60%; font-size: 0.9em; }
+.e-toast b { color: var(--amber); }
+.e-toast img { display: block; width: 46%; margin: 0 auto 0.3em; border: 0.25em solid #fff; border-bottom-width: 0.6em; image-rendering: pixelated; transform: rotate(-3deg); box-shadow: 0.1em 0.2em 0 rgba(0, 0, 0, 0.5); }
+
+.e-book { top: 22%; width: 64%; }
+.e-book h3 { margin: 0 0 0.3em; font-size: 1.05em; color: var(--amber); }
+.e-book .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.3em; }
+.e-book .cell { font-size: 0.62em; line-height: 1.1; }
+.e-book .cell img, .e-book .cell .none { display: block; width: 100%; aspect-ratio: 4 / 3; border: 0.15em solid #fff; border-radius: 0.2em; image-rendering: pixelated; }
+.e-book .cell .none { display: grid; place-content: center; background: #4b3713; border: 0.15em dashed #b89b63; color: #b89b63; font-size: 2em; }
+
+.e-sky { top: 26%; width: 50%; }
+.e-sky b { display: block; font-size: 1.25em; color: var(--amber); }
+.e-sky small { font-size: 0.75em; color: #e6cf9f; }
+
+/* ------------------------------------------------------------------ pantallas (fuera del visor) */
+.setup { cursor: default; overflow: auto; padding: 16px; font-family: var(--font); color: #fff; background: var(--bg); }
+.setup h2 { font-family: var(--title-font); margin: 0.4em 0 0.2em; font-size: clamp(26px, 7vw, 44px); font-weight: 400; }
 .setup > p { max-width: 520px; margin: 0.3em auto; text-align: center; }
-#place, #pause { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; text-align: center; }
+.mirador .btn { font-family: var(--title-font); font-size: 18px; letter-spacing: 0.04em; color: var(--ink); background: var(--amber); border: 3px solid var(--ink); border-radius: 14px; padding: 9px 20px; box-shadow: 0 4px 0 var(--ink); }
+.mirador .btn:hover, .mirador .btn:focus-visible { background: #ffd27a; color: var(--ink); border-color: var(--ink); }
+.mirador .btn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
+.mirador .btn.big { font-size: 22px; padding: 11px 24px; }
+.mirador .btn.ghost { font-family: var(--font); font-size: 15px; background: none; border-color: transparent; box-shadow: none; text-decoration: underline; color: #fff; }
+#place, #pause { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; text-align: center; }
 #place[hidden], #pause[hidden], #pick[hidden] { display: none; }
-.pick-list { max-width: 560px; margin: 10px auto; display: grid; gap: 10px; }
-.pick-list button { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 2px 10px; width: 100%; text-align: left;
-  padding: 12px 14px; border-radius: 10px; border: 2px solid var(--panel-edge); background: rgba(8, 10, 16, 0.85); color: var(--ink);
-  font: inherit; cursor: pointer; }
-.pick-list button:active, .pick-list button:focus-visible { border-color: var(--yes); }
-.pick-list b { font-family: var(--pix); font-size: 22px; color: var(--yes); font-weight: 600; }
-.pick-list small { grid-column: 1; color: #b4bbd4; font-size: 14px; }
-.pick-list .n { grid-row: 1 / 3; grid-column: 2; font-family: var(--pix); font-size: 18px; }
-#lens-box summary { cursor: pointer; font-weight: 700; }
+
+/* Inicio: selector de niveles. Barra, mundo (región), niveles (zonas) y botón Entrar al alcance del pulgar. */
+#pick { display: flex; flex-direction: column; text-align: left; padding: 0; }
+#pick > * { width: 100%; max-width: 560px; margin-inline: auto; flex: none; }
+.bar { display: flex; align-items: center; gap: 10px; padding: max(14px, env(safe-area-inset-top)) 14px 10px; }
+.logo { font-family: var(--title-font); font-size: clamp(24px, 7.5vw, 34px); letter-spacing: 0.05em; margin-right: auto; }
+.sw { display: inline-flex; background: var(--ink); border: 2px solid var(--ink); border-radius: 99px; }
+.sw button { font-family: var(--font); font-weight: 700; font-size: 12px; color: var(--ocre); background: none; border: 0; border-radius: 99px; padding: 6px 10px; cursor: pointer; }
+.sw button[aria-checked="true"] { background: var(--amber); color: var(--ink); }
+.sw button[disabled] { opacity: 0.4; cursor: not-allowed; }
+.gear { width: 34px; height: 34px; border-radius: 50%; background: var(--ink); color: var(--amber); border: 0; font-size: 18px; line-height: 1; cursor: pointer; }
+.world { display: grid; grid-template-columns: auto 1fr auto; align-items: center; text-align: center; background: var(--ink); border-radius: 14px; padding: 8px 6px; width: calc(100% - 28px) !important; }
+.world button { background: none; border: 0; color: var(--amber); font-size: 30px; line-height: 1; padding: 0 12px; cursor: pointer; }
+.world small { display: block; color: var(--ocre); font-size: 11px; letter-spacing: 0.14em; }
+.world b { display: block; font-family: var(--hand); font-size: clamp(26px, 8vw, 34px); line-height: 1; }
+.dots { display: flex; gap: 5px; justify-content: center; margin-top: 5px; }
+.dots i { width: 6px; height: 6px; border-radius: 50%; background: #6b5216; }
+.dots i.on { background: var(--amber); }
+#pick .hint { margin: 6px auto 0; padding: 0 14px; font-size: 12px; color: var(--ink); font-weight: 700; min-height: 1.3em; text-align: center; }
+
+.levels { flex: 1 0 auto !important; display: grid; grid-template-columns: 1fr 1fr; gap: 18px 14px; align-content: start; padding: 16px 18px 8px; }
+.lv { position: relative; display: block; text-align: left; font-family: var(--font); background: var(--paper); color: var(--paper-ink); border: 0; padding: 6px 6px 9px; border-radius: 3px;
+  box-shadow: 2px 4px 0 rgba(42, 28, 8, 0.55); cursor: pointer; transition: transform 0.12s; min-width: 0; }
+.lv:nth-child(odd) { transform: rotate(-1.5deg); }
+.lv:nth-child(even) { transform: rotate(1.2deg); }
+.lv::before { content: ""; position: absolute; left: 50%; top: -8px; width: 44px; height: 15px; margin-left: -22px; background: rgba(242, 222, 160, 0.78); transform: rotate(-3deg); }
+.lv .art { display: block; height: clamp(54px, 17vw, 84px); border-radius: 2px; }
+.lv b { display: block; font-size: clamp(15px, 4.6vw, 19px); margin-top: 5px; }
+.lv em { display: block; font-family: var(--hand); font-size: clamp(16px, 4.8vw, 20px); line-height: 1; color: var(--paper-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lv .st { display: flex; gap: 3px; margin-top: 6px; flex-wrap: wrap; }
+.lv .st i { width: 14px; height: 14px; border-radius: 50%; border: 1.5px dashed var(--paper-rule); background: center / cover no-repeat; }
+.lv .st i.g { border: 1.5px solid var(--stamp); image-rendering: pixelated; }
+.lv.sel { transform: translateY(-3px) scale(1.04); box-shadow: 0 0 0 3px #fff, 0 0 0 6px var(--ink), 2px 10px 0 4px rgba(42, 28, 8, 0.5); z-index: 1; }
+.lv:focus-visible { outline: 3px dashed #fff; outline-offset: 6px; }
+/* Paisaje de cada tipo de zona, en tres franjas: cielo, horizonte y suelo o agua. */
+.art { background: linear-gradient(180deg, #a9c3d6 0 42%, #7f9a58 42% 55%, #6f8f4e 55%); }
+.art.humedal { background: linear-gradient(180deg, #a9c3d6 0 45%, #6f8f4e 45% 58%, #5f86b5 58%); }
+.art.valle { background: linear-gradient(180deg, #d9c7a0 0 40%, #8a6a3a 40% 55%, #6f8f4e 55%); }
+.art.bofedal { background: linear-gradient(180deg, #9cb4d8 0 35%, #e8ecf0 35% 48%, #7f9a58 48%); }
+.art.lago { background: linear-gradient(180deg, #9cb4d8 0 30%, #c9d2dc 30% 44%, #3f6ea0 44%); }
+.art.costa { background: linear-gradient(180deg, #a4b8c8 0 40%, #4f7fae 40% 72%, #d8c79a 72%); }
+.art.ciudad { background: linear-gradient(180deg, #bfc6c4 0 38%, #8c8f96 38% 62%, #6f8f4e 62%); }
+.art.matorral { background: linear-gradient(180deg, #c9d6dc 0 40%, #7a8a4a 40% 60%, #b79a5a 60%); }
+.art.rio { background: linear-gradient(180deg, #bfc6c4 0 36%, #6f8f4e 36% 52%, #6a94b8 52% 78%, #a89a7a 78%); }
+.art.cordillera { background: linear-gradient(180deg, #9cb4d8 0 30%, #f1f4f7 30% 50%, #8e8a86 50%); }
+.art.bosque { background: linear-gradient(180deg, #acc4b4 0 28%, #2f5d3a 28% 66%, #4d3a22 66%); }
+.art.estepa { background: linear-gradient(180deg, #a4b8c8 0 44%, #c2a85e 44% 60%, #a08c4e 60%); }
+.art.fiordo { background: linear-gradient(180deg, #8e98a8 0 30%, #e6eaee 30% 42%, #3a5f52 42% 58%, #2f5878 58%); }
+.art.desierto, .art.altiplano { background: linear-gradient(180deg, #9cb4d8 0 40%, #c9a66b 40% 58%, #b88a4a 58%); }
+.art.pradera { background: linear-gradient(180deg, #acc4b4 0 42%, #6f9a4e 42%); }
+
+.go { position: relative; padding: 46px 14px 0; }
+.go #b-go { width: 100%; font-family: var(--title-font); font-size: clamp(19px, 5.6vw, 24px); letter-spacing: 0.04em; color: var(--ink); background: var(--amber); border: 3px solid var(--ink); border-radius: 16px;
+  padding: 13px; box-shadow: 0 5px 0 var(--ink); cursor: pointer; }
+.go #b-go:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--ink); }
+.go #b-go:disabled { opacity: 0.5; }
+.go small { display: block; text-align: center; margin-top: 11px; color: var(--ink); font-weight: 700; font-size: 12px; }
+.go img { position: absolute; right: 14px; top: -8px; width: 58px; pointer-events: none; }
+.go .say { position: absolute; right: 76px; top: 6px; background: var(--paper); color: var(--paper-ink); border-radius: 3px; padding: 2px 9px; font-family: var(--hand); font-size: 20px; line-height: 1.1;
+  transform: rotate(-3deg); box-shadow: 1px 2px 0 rgba(42, 28, 8, 0.5); }
+.go .say:empty { display: none; }
+.foot { padding: 10px 14px max(12px, env(safe-area-inset-bottom)); font-size: 10.5px; letter-spacing: 0.03em; color: var(--ink); text-align: center; }
+
+/* Ajustes (engranaje): lentes del visor e instalación. */
+.sheet { position: fixed; left: 0; right: 0; bottom: 0; margin: 0 auto; max-width: 560px; z-index: 5; background: var(--ink); color: #fff; border-radius: 20px 20px 0 0; padding: 14px 18px max(18px, env(safe-area-inset-bottom));
+  display: grid; gap: 12px; box-shadow: 0 -6px 0 rgba(0, 0, 0, 0.25); }
+.sheet h2 { margin: 0; font-size: 22px; color: var(--amber); }
+.sheet .btn { justify-self: center; box-shadow: 0 4px 0 #000; }
+.install { margin: 0; padding: 10px 12px; border-radius: 10px; border: 2px dashed var(--amber); font-size: 14px; }
+.install b { color: var(--amber); }
+.setup-box { display: grid; gap: 8px; }
+.setup-box .row { display: flex; align-items: center; gap: 10px; }
+.setup-box input[type=range] { flex: 1; accent-color: var(--amber); }
+.setup-box output { width: 3.5em; text-align: right; font-variant-numeric: tabular-nums; }
+.setup-box p { margin: 0; font-size: 13px; color: #e6cf9f; }
+
 /* Teléfono girándose de vertical a horizontal */
 .place-art { width: 120px; height: 120px; display: grid; place-items: center; }
-.place-art i { width: 44px; height: 80px; border: 4px solid var(--ink); border-radius: 9px; animation: tumbar 2.4s ease-in-out infinite; }
+.place-art i { width: 44px; height: 80px; border: 4px solid #fff; border-radius: 9px; animation: tumbar 2.4s ease-in-out infinite; }
 @keyframes tumbar { 0%, 25% { transform: rotate(0); } 50%, 100% { transform: rotate(-90deg); } }
+@media (prefers-reduced-motion: reduce) { .place-art i { animation: none; transform: rotate(-90deg); } .lv { transition: none; } }
