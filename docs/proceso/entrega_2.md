@@ -106,7 +106,7 @@ construye el Mirador. Se documenta completa, con sus pasos internos, porque la p
 | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Versión**                   | V2 · Mirador con binoculares                                                                                                                                                                        |
 | **Fecha**                     | 2026-11-05 al 2026-11-12 (después de la R1; los commits son del 10 y 11 de noviembre; estado que se presenta en la R2)                                                                             |
-| **Commit / Tag**              | `e579a5d` (Mirador, PR #34), `9f8fd02` (pantalla completa, PR #35), `258a3b1` (selector de niveles, diálogo y modo Caminar, PR #36) · Plano del visor: `fisico/visor_laser/` _\[commit pendiente\]_ |
+| **Commit / Tag**              | `e579a5d` (Mirador, PR #34), `9f8fd02` (pantalla completa, PR #35), `258a3b1` (selector de niveles, diálogo y modo Caminar, PR #36), `ec79fd8` (foto más rápida y sin aviso) · Plano del visor: `f89910c` (`fisico/visor_laser/`, PR #37) |
 | **Evidencia visual y sonora** | Sitio: <https://canija2000.github.io/infovis_2026-2/mirador/> · Plano de corte: `fisico/visor_laser/visor_guia.png` · Capturas: _\[inicio y visor\]_ · Fotos del visor: _\[prueba en cartón o MDF\]_ · Video con manipulación y sonido: _\[enlace\]_ |
 
 ### Qué cambió
@@ -261,7 +261,7 @@ _\[pendiente\]_
       servos. De la V2: la primera prueba del visor, aunque sea en cartón.
 - [ ] Video corto de la V2 con manipulación y sonido, y el video demostrativo final.
 - [ ] Capturas del Mirador (inicio y visor) en `docs/proceso/capturas/`.
-- [ ] Commit del plano del visor (`fisico/visor_laser/`), para que la V2 tenga un commit que lo respalde.
+- [x] Commit del plano del visor (`fisico/visor_laser/`): `f89910c`, PR #37.
 
 **Contenido que solo tiene el grupo**
 
