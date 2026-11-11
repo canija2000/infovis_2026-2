@@ -30,9 +30,13 @@ const CFG = {
   resing: 8, // s entre cantos mientras el ave sigue en la mira
   bookPitch: -0.8, // rad: mirar al suelo abre la libreta
   skyPitch: 0.75, skyHold: 2.0, // rad y s: mirar al cielo ese tiempo pasa al mes siguiente
-  dwellCard: 1.2, dwellPhoto: 3.4, // s con el ave en la mira hasta abrir la ficha y hasta tomar la foto
+  dwellCard: 1.2, dwellPhoto: 5.0, // s con el ave en la mira hasta abrir la ficha y hasta tomar la foto
+  lineSecs: 2.6, // s que dura cada frase del ave en la caja de diálogo
   frame: 0.3, // con la ficha abierta, el zoom deja el ave en esta fracción del campo visual
   placeHold: 1.2, // s de lado y quieto para empezar
+  // Modo caminar: se camina en el lugar (el acelerómetro cuenta los pasos) y se avanza hacia donde se mira.
+  stepLen: 0.75, stepThr: 1.3, stepGap: 0.28, // m por paso · m/s² sobre la gravedad para contar un paso · s mínimos entre pasos
+  walkSpeed: 1.4, walkR: 0.8, // m/s mientras se camina · fracción del mapa (desde el centro) que se puede recorrer
 };
 const SEASON_OF = ['verano', 'verano', 'otoño', 'otoño', 'otoño', 'invierno', 'invierno', 'invierno', 'primavera', 'primavera', 'primavera', 'verano'];
 const LIGHT = {
@@ -62,6 +66,8 @@ const S = {
   month: q.has('m') ? clamp(+q.get('m'), 0, 11) : new Date().getMonth(), monthT: 0,
   heading: 0, pitch: 0, fov: CFG.fovWide, fovGoal: CFG.fovWide,
   locked: null, cand: null, candT: 0, lockT: 0, cardOpen: false, bookKey: false, bookOn: false, shot: false,
+  zoneSel: null, lineI: 0, lineT: 0,
+  walk: (q.get('modo') || store('mirador.modo')) === 'caminar', walkLeft: 0, steps: 0,
   dwell: 0, shotDone: false, manualZoom: false, skyT: 0, placeT: 0, placeLast: null, phone: matchMedia('(pointer: coarse)').matches,
   bino: q.has('mono') ? false : q.has('bino') ? true : matchMedia('(pointer: coarse)').matches,
   lens: Object.assign({ sep: 41, dia: 36 }, store('mirador.lentes')), // % del ancho de la pantalla
@@ -121,32 +127,56 @@ function showScreen(id) { // pick | place | pause | null (explorando)
 }
 function showHud(on) { for (const sel of ['.e-top', '.e-compass', '.e-reticle', '.e-zoom']) show(sel, on); if (!on) for (const sel of ['.e-card', '.e-book', '.e-sky', '.e-toast']) show(sel, false); }
 
-function regionList() {
+// Selector de niveles: la región es el «mundo» (flechas; el QR la deja puesta) y sus zonas son los niveles.
+// Tocar un nivel lo marca; se entra con el botón de abajo.
+const FEM = new Set(['ciudad', 'costa', 'cordillera', 'estepa', 'pradera']);
+function renderPick(status) {
   S.mode = 'pick'; showScreen('pick');
-  $('pick-sub').textContent = `aves de Chile · ${YEAR}`;
-  $('pick-status').textContent = 'Elige una región (o escanea su código QR).';
-  $('pick-list').innerHTML = CFG.regions.map(code => {
-    const meta = S.index.regions.find(r => r.code === code), feat = progress.regions[code];
-    const n = feat ? feat.filter(sid => progress.album[sid]).length : 0;
-    return `<button data-r="${code}"><b>${meta.name}</b><small>${feat ? 'visitada' : 'sin visitar'}</small><span class="n">${feat ? `${n}/${feat.length}` : ''}</span></button>`;
+  const cur = S.reg?.meta.code, i = CFG.regions.indexOf(cur);
+  $('pick-status').textContent = status || '';
+  $('world-n').textContent = i < 0 ? 'MUNDO' : `MUNDO ${i + 1} DE ${CFG.regions.length}`;
+  $('world-name').textContent = S.reg ? S.reg.meta.name : '…';
+  $('world-dots').innerHTML = CFG.regions.map((_, k) => `<i class="${k === i ? 'on' : ''}"></i>`).join('');
+  if (!S.reg) { $('zone-list').innerHTML = ''; $('b-go').disabled = true; return; }
+  const scenes = S.reg.terrain.scenes, keys = Object.keys(scenes), last = store('mirador.zona.' + cur);
+  if (!keys.includes(S.zoneSel)) S.zoneSel = keys.includes(last) ? last : keys[0];
+  $('zone-list').innerHTML = keys.map(key => {
+    const stamps = zoneSids(key).map(sid => { const ph = progress.album[sid]; return ph ? `<i class="g" style="background-image:url(${ph.img})"></i>` : '<i></i>'; }).join('');
+    return `<button class="lv${key === S.zoneSel ? ' sel' : ''}" data-z="${key}" aria-pressed="${key === S.zoneSel}">
+      <span class="art ${key}"></span><b>${SCENE_LABEL[key] || cap(key)}</b><em>${scenes[key].name}</em><span class="st">${stamps}</span></button>`;
   }).join('');
+  const sids = zoneSids(S.zoneSel), left = sids.length - sids.filter(sid => progress.album[sid]).length;
+  $('b-go').disabled = false;
+  $('b-go').textContent = `ENTRAR ${FEM.has(S.zoneSel) ? 'A LA' : 'AL'} ${(SCENE_LABEL[S.zoneSel] || S.zoneSel).toUpperCase()}`;
+  $('say').textContent = !sids.length ? '' : left === 0 ? '¡zona completa!' : left === sids.length ? `${left} aves por conocer` : `¡te falta${left > 1 ? 'n' : ''} ${left}!`;
 }
-function zoneList() {
-  S.mode = 'pick'; showScreen('pick');
-  const scenes = S.reg.terrain.scenes;
-  $('pick-sub').textContent = `${S.reg.meta.name} · ${YEAR}`;
-  $('pick-status').textContent = 'Elige una zona. Después vas a poner el teléfono en el visor.';
-  $('pick-list').innerHTML = Object.keys(scenes).map(key => {
-    const sids = zoneSids(key), n = sids.filter(sid => progress.album[sid]).length;
-    return `<button data-z="${key}"><b>${SCENE_LABEL[key] || cap(key)}</b><small>${scenes[key].name}</small><span class="n">${n}/${sids.length}</span></button>`;
-  }).join('') + (q.get('r') ? '' : '<button data-back="1"><small>← Otra región</small></button>');
-}
-$('pick-list').addEventListener('click', e => {
-  const b = e.target.closest('button'); if (!b) return;
-  if (b.dataset.r) { history.replaceState(null, '', `?r=${b.dataset.r}`); enterRegion(b.dataset.r); }
-  else if (b.dataset.z) pickZone(b.dataset.z);
-  else if (b.dataset.back) { history.replaceState(null, '', location.pathname); regionList(); }
+$('zone-list').addEventListener('click', e => {
+  const b = e.target.closest('button[data-z]'); if (!b) return;
+  S.zoneSel = b.dataset.z; store('mirador.zona.' + S.reg.meta.code, S.zoneSel); blip(700, 0.03);
+  renderPick();
 });
+$('b-go').onclick = () => { if (S.reg && S.zoneSel) pickZone(S.zoneSel); };
+function stepRegion(d) {
+  const n = CFG.regions.length, i = Math.max(0, CFG.regions.indexOf(S.reg?.meta.code));
+  const code = CFG.regions[(i + d + n) % n];
+  history.replaceState(null, '', `?r=${code}`); S.zoneSel = null; enterRegion(code);
+}
+$('b-prev').onclick = () => stepRegion(-1);
+$('b-next').onclick = () => stepRegion(1);
+function toggleGear(on = $('ajustes').hidden) { $('ajustes').hidden = !on; $('b-gear').setAttribute('aria-expanded', on); if (on) layout(); }
+$('b-gear').onclick = () => toggleGear();
+$('b-gear-ok').onclick = () => toggleGear(false);
+
+// Modo: mirar (de pie, girando) o caminar (caminando en el lugar). Caminar solo si el teléfono tiene acelerómetro.
+const canWalk = () => typeof DeviceMotionEvent !== 'undefined' || !S.phone; // en el computador: teclas W / S
+function renderOpts() {
+  if (!canWalk()) S.walk = false;
+  for (const b of $('opt-modo').querySelectorAll('button')) {
+    b.setAttribute('aria-checked', (b.dataset.modo === 'caminar') === S.walk);
+    if (b.dataset.modo === 'caminar') b.disabled = !canWalk();
+  }
+}
+$('opt-modo').addEventListener('click', e => { const b = e.target.closest('button'); if (b && !b.disabled) { S.walk = b.dataset.modo === 'caminar'; store('mirador.modo', S.walk ? 'caminar' : 'mirar'); blip(700, 0.03); renderOpts(); } });
 
 // El toque en la zona es el gesto que el navegador exige para pedir el giroscopio (iPhone), el sonido,
 // la pantalla siempre encendida, la pantalla completa y la orientación horizontal.
@@ -181,7 +211,7 @@ function installHint() {
 }
 async function pickZone(key) {
   wakeUp();
-  $('pick-status').textContent = 'Cargando la zona…';
+  $('pick-status').textContent = 'Cargando la zona…'; $('b-go').disabled = true;
   await enterZone(key);
   toPlace();
 }
@@ -195,7 +225,9 @@ function go() { // entrar al mundo; el rumbo actual del teléfono pasa a ser el 
   S.heading = S.startHeading; S.pitch = gyro.have ? gyro.p : -0.2;
   if (gyro.have) gyro.off = S.heading - gyro.h;
   blip(990, 0.08);
-  toast(`<b>${S.reg.terrain.scenes[S.sceneKey].name}</b><br>Gira para buscar aves. Mantén una en la mira para conocerla y fotografiarla.`, 6);
+  toast(`<b>${S.reg.terrain.scenes[S.sceneKey].name}</b><br>` + (S.walk
+    ? 'Camina en el lugar para avanzar hacia donde miras. Mantén un ave en la mira para conocerla y fotografiarla.'
+    : 'Gira para buscar aves. Mantén una en la mira para conocerla y fotografiarla.'), 6);
 }
 function pause(msg = '') {
   if (S.mode !== 'look') return;
@@ -204,7 +236,7 @@ function pause(msg = '') {
 }
 $('b-enter').onclick = () => { wakeUp(); go(); };
 $('b-resume').onclick = () => { wakeUp(); toPlace(); };
-$('b-back1').onclick = $('b-back2').onclick = () => { leaveZone(); zoneList(); };
+$('b-back1').onclick = $('b-back2').onclick = () => { leaveZone(); renderPick(); };
 
 // ------------------------------------------------------------------ región y zona
 function zoneSids(key) {
@@ -214,14 +246,14 @@ function zoneSids(key) {
 }
 
 async function enterRegion(code) {
-  $('pick-status').textContent = 'Cargando la región…';
+  renderPick('Cargando la región…');
   S.reg = await loadRegion(S.index, code);
   store('mirador.region', code);
   try { S.props = await loadJSON(DATA_BASE + `props-${code}.json`); } catch { S.props = null; }
   featuredIn(S.index, S.reg.region); // deja la paleta de cada especie destacada
   rememberRegion(code, Object.keys(S.reg.region.featured || {}).map(Number));
   S.sceneKey = null;
-  zoneList();
+  renderPick();
 }
 
 function leaveZone() {
@@ -346,7 +378,7 @@ function setMonth(m, silent = false) {
       S.birds.push(b); arriving.push(b);
       if (c.sp.clip) loadClip(c.sp.clip.grain);
     }
-    b.pr = c.pr; b.freq = c.pr.freq;
+    b.pr = c.pr; b.freq = c.pr.freq; b.lines = null;
   }
   S.birds.sort((a, b) => a.bearing - b.bearing);
   // estación
@@ -366,9 +398,8 @@ function setMonth(m, silent = false) {
 }
 
 function updateTop() {
-  html('.e-place', `${S.reg.meta.name} · ${SCENE_LABEL[S.sceneKey] || S.sceneKey}`);
-  const n = S.birds.length;
-  html('.e-date', `${cap(S.index.months[S.month])} de ${YEAR} · ${n ? `${n} ave${n > 1 ? 's' : ''}` : 'sin aves destacadas este mes'}`);
+  html('.e-place', `${SCENE_LABEL[S.sceneKey] || S.sceneKey} · ${S.index.months[S.month]} ${YEAR}`);
+  html('.e-date', `${S.zoneSpecies.filter(sp => progress.album[sp.id]).length}/${S.zoneSpecies.length}`);
 }
 
 // ------------------------------------------------------------------ brújula
@@ -405,6 +436,7 @@ function syncMarks() { // un punto por ave presente
 const SPAN = Math.PI / 2;
 function updateMarks() {
   for (const m of S.marks) {
+    if (m.bird) m.bearing = bearingOf(m.bird.pos.x - eye.x, m.bird.pos.z - eye.z);
     const d = wrap(m.bearing - S.heading), far = Math.abs(d) > SPAN;
     const x = 50 + clamp(d / SPAN, -1, 1) * 50;
     for (const el of m.els) {
@@ -482,30 +514,50 @@ async function sing(b, full = false) {
   if (dur) duckAmbience(dur);
 }
 
-function recordLine(b) {
-  const e = S.reg.region.years[YEAR][S.month].cast.find(c => c[0] === b.sp.id);
-  const days = new Date(+YEAR, S.month + 1, 0).getDate(), mes = S.index.months[S.month];
-  if (e) return `${cap(mes)} de ${YEAR}: registrada <b>${e[1]} de ${days}</b> días${b.pr.offSeason ? ' (fuera de su temporada habitual)' : ''}`;
-  return `${cap(mes)} de ${YEAR}: ${b.pr.scarce ? 'ese mes escaseó' : 'pocos registros'} (fuera de las 30 más registradas)`;
+// Lo que el ave «dice» de sí misma, en frases cortas sacadas de los datos. La primera se ve apenas entra en
+// la mira; con la ficha abierta van pasando de a una.
+const DIET = { invertebrados: 'bichos', semillas: 'semillas', 'fruta/néctar': 'néctar y frutos', 'omnívoro': 'de todo', 'vertebrados/peces/carroña': 'peces y otros animales' };
+function birdLines(b) {
+  const sp = b.sp, months = S.index.months, code = S.reg.meta, lines = [];
+  const e = S.reg.region.years[YEAR][S.month].cast.find(c => c[0] === sp.id), days = new Date(+YEAR, S.month + 1, 0).getDate();
+  lines.push(e ? `En ${months[S.month]} me vieron <b>${e[1]} de ${days}</b> días.` : b.pr.scarce ? `Este ${months[S.month]} casi no me vieron.` : `En ${months[S.month]} me ven poco.`);
+  if (b.cls === 'residente') lines.push('Vivo aquí <b>todo el año</b>.');
+  else {
+    const here = [...Array(12).keys()].filter(m => presentIn(sp, m));
+    const first = here.find(m => !here.includes((m + 11) % 12)), last = here.find(m => !here.includes((m + 1) % 12));
+    if (first != null && last != null && here.length < 12) lines.push(`Llego en <b>${months[first]}</b> y me voy en <b>${months[last]}</b>.`);
+  }
+  if (sp.peakMonth != null) lines.push(`Prefiero ${SEASON_OF[sp.peakMonth] === 'primavera' ? 'la' : 'el'} <b>${SEASON_OF[sp.peakMonth]}</b>.`);
+  const top = S.index.regions.find(r => r.id === sp.topRegions?.[0]);
+  if (top) lines.push(top.id === code.id ? 'Donde más me ven es <b>justo aquí</b>.' : `Me gusta la región de <b>${top.name}</b>.`);
+  const yi = sp.yearIndex?.[S.index.years.indexOf(+YEAR)];
+  if (yi) lines.push(yi >= 115 ? `En ${YEAR} me vieron <b>más</b> que de costumbre.` : yi <= 85 ? `En ${YEAR} me vieron <b>menos</b> que de costumbre.` : `En ${YEAR} me vieron como siempre.`);
+  const mo = sp.morphology;
+  if (mo?.diet) lines.push(`Como <b>${DIET[mo.diet] || mo.diet}</b>${mo.mass ? ` y peso ${mo.mass >= 1000 ? (mo.mass / 1000).toFixed(1).replace('.', ',') + ' kilos' : Math.round(mo.mass) + ' gramos'}` : ''}.`);
+  return lines;
 }
 function renderCard() {
   const b = S.locked;
   show('.e-card', !!b && !S.bookOn);
   if (!b) return;
   const sp = b.sp, ph = progress.album[sp.id];
-  const head = `<h3>${sp.comName}</h3>`;
-  const chip = `<span class="chip">${CLASS_LABEL[b.cls] || b.cls}</span>`;
+  b.lines ||= birdLines(b);
+  const i = S.cardOpen ? S.lineI % b.lines.length : 0;
   all('.e-card', el => { el.style.setProperty('--k', b.color); el.classList.toggle('full', S.cardOpen); });
-  if (!S.cardOpen) { html('.e-card', `${head}${chip} ${ph ? `<span class="stars">${starText(ph.stars)}</span>` : ''}`); return; }
-  const months = S.index.months.map((m, i) => `<i class="${presentIn(sp, i) ? 'in' : ''}${i === S.month ? ' now' : ''}">${m[0].toUpperCase()}</i>`).join('');
-  html('.e-card', `${head}<div class="sci">${sp.sciName}</div>${chip} ${ph ? `<span class="stars">${starText(ph.stars)}</span>` : ''}
-    <div class="ln">${S.reg.meta.name} · ${S.reg.terrain.scenes[S.sceneKey].name}</div>
-    <div class="ln">${recordLine(b)}</div>
-    <div class="months" title="Meses en que se registra">${months}</div>`);
+  const months = S.index.months.map((m, k) => `<i class="${presentIn(sp, k) ? 'in' : ''}${k === S.month ? ' now' : ''}">${m[0].toUpperCase()}</i>`).join('');
+  html('.e-card', `<div class="tab"><b>${sp.comName}</b><span>${CLASS_LABEL[b.cls] || b.cls}</span></div>
+    ${ph ? `<span class="stars">${starText(ph.stars)}</span>` : ''}
+    <div class="say"><span>${b.lines[i]}</span></div>
+    ${S.cardOpen ? `<div class="more">${b.lines.map((_, k) => `<i class="${k === i ? 'on' : ''}"></i>`).join('')}</div>
+    <div class="months" title="Meses en que se registra">${months}</div>` : ''}`);
+}
+function tickCard(dt) { // con la ficha abierta, las frases van pasando solas
+  if (!S.locked || !S.cardOpen || S.bookOn) return;
+  if ((S.lineT += dt) > CFG.lineSecs) { S.lineT = 0; S.lineI++; renderCard(); }
 }
 function toggleCard() {
   if (!S.locked) { toast('Pon un ave en la mira para ver su ficha.', 2); return; }
-  S.cardOpen = !S.cardOpen; blip(S.cardOpen ? 780 : 560, 0.04);
+  S.cardOpen = !S.cardOpen; S.lineI = 0; S.lineT = 0; blip(S.cardOpen ? 780 : 560, 0.04);
   renderCard();
   if (S.cardOpen) sing(S.locked, true);
 }
@@ -530,7 +582,7 @@ function takePhoto() {
   const got = S.zoneSpecies.filter(sp => progress.album[sp.id]).length;
   const msg = res === 'nueva' ? `¡Nueva en tu libreta! ${got} de ${S.zoneSpecies.length} en esta zona` : res === 'mejor' ? '¡Tu mejor foto de esta especie!' : 'Ya tenías una foto mejor. Prueba con más zoom.';
   toast(`<img src="${img}" alt=""><b>${b.sp.comName}</b> <span class="stars">${starText(best.stars)}</span><br>${msg}`, 4);
-  syncMarks(); renderCard();
+  syncMarks(); renderCard(); updateTop();
 }
 function renderBook() {
   const cells = S.zoneSpecies.map(sp => {
@@ -564,12 +616,32 @@ const gyro = { have: false, h: 0, p: 0, off: 0 };
   };
 }
 async function startGyro() {
+  // En iPhone los dos permisos se piden en el mismo toque, antes de cualquier await.
+  const askO = typeof DeviceOrientationEvent !== 'undefined' && DeviceOrientationEvent.requestPermission?.();
+  const askM = typeof DeviceMotionEvent !== 'undefined' && DeviceMotionEvent.requestPermission?.();
   try {
-    if (typeof DeviceOrientationEvent === 'undefined') return;
-    if (DeviceOrientationEvent.requestPermission && await DeviceOrientationEvent.requestPermission() !== 'granted') return; // iPhone
-    window.addEventListener('deviceorientation', gyro.onEvent);
+    if (typeof DeviceOrientationEvent !== 'undefined' && (!askO || await askO === 'granted')) window.addEventListener('deviceorientation', gyro.onEvent);
   } catch { /* sin sensor o sin permiso: quedan las flechas y el arrastre */ }
+  try {
+    if (typeof DeviceMotionEvent !== 'undefined' && (!askM || await askM === 'granted')) window.addEventListener('devicemotion', steps.onEvent);
+  } catch { /* sin acelerómetro: en modo caminar quedan las teclas */ }
 }
+
+// Pasos: caminar en el lugar mueve el teléfono arriba y abajo. Se resta la gravedad (promedio lento de la
+// aceleración total) y se cuenta un paso en cada subida sobre CFG.stepThr, con un mínimo de tiempo entre pasos.
+const steps = { g: 9.81, armed: true, last: 0, have: false };
+steps.onEvent = ev => {
+  const a = ev.accelerationIncludingGravity; if (!a || a.x == null) return;
+  steps.have = true;
+  const m = Math.hypot(a.x, a.y, a.z), now = performance.now() / 1000;
+  steps.g += (m - steps.g) * 0.02;
+  const dyn = m - steps.g;
+  if (dyn < 0.2) steps.armed = true;
+  else if (steps.armed && dyn > CFG.stepThr && now - steps.last > CFG.stepGap) {
+    steps.armed = false; steps.last = now;
+    if (S.walk && S.mode === 'look') { S.walkLeft = Math.min(S.walkLeft + CFG.stepLen, 2.2); S.steps++; }
+  }
+};
 
 // ------------------------------------------------------------------ teclado (Arduino) y puntero
 const keys = new Set();
@@ -584,7 +656,7 @@ window.addEventListener('keydown', e => {
   if (k === '[' || k === ']') { S.lens.sep = clamp(S.lens.sep + (k === ']' ? 0.5 : -0.5), 25, 50); saveLens(); return; }
   if (k === '-' || k === '=') { S.lens.dia = clamp(S.lens.dia + (k === '=' ? 0.5 : -0.5), 15, 50); saveLens(); return; }
   if (S.mode !== 'look') return;
-  if (k.startsWith('arrow')) { keys.add(k); return; }
+  if (k.startsWith('arrow') || k === 'w' || k === 's') { keys.add(k); return; }
   if (k === 'z') zoom(1);
   else if (k === 'x') zoom(-1);
   if (e.repeat) return;
@@ -609,6 +681,29 @@ canvas.addEventListener('pointermove', e => {
 });
 canvas.addEventListener('pointerup', () => { if (drag && drag.moved < 5 && S.mode === 'look') { if (gyro.have) pause(); else S.shot = true; } drag = null; });
 canvas.addEventListener('wheel', e => { if (S.mode === 'look') { e.preventDefault(); zoom(e.deltaY < 0 ? 1 : -1); } }, { passive: false });
+
+// ------------------------------------------------------------------ caminar
+// Avanza en la dirección de la mirada (solo en horizontal). No se entra al agua, a los obstáculos, a menos de
+// 1,2 m de un ave ni más allá de CFG.walkR del mapa; el ojo sigue la altura del terreno.
+const _w = new THREE.Vector3();
+function walkStep(dt) {
+  const key = (keys.has('w') ? 1 : 0) - (keys.has('s') ? 1 : 0);
+  let d = 0;
+  if (key) d = key * CFG.walkSpeed * dt;
+  else if (S.walkLeft > 0) { d = Math.min(S.walkLeft, CFG.walkSpeed * dt); S.walkLeft -= d; }
+  S.walking = d !== 0;
+  if (!d) return;
+  const sc = S.sc, x = eye.x + Math.sin(S.heading) * d, z = eye.z - Math.cos(S.heading) * d;
+  const lim = sc.half * CFG.walkR, y = sc.heightAt(x, z);
+  const wet = (px, pz, py) => sc.coverAt(px, pz) === 7 || (sc.seaY != null && py < sc.seaY + 0.1);
+  // No se entra al agua desde tierra; si el mirador mismo está en el agua (algunos humedales), se puede salir.
+  const blocked = Math.hypot(x, z) > lim || (wet(x, z, y) && !wet(eye.x, eye.z, sc.heightAt(eye.x, eye.z)))
+    || sc.obstacles.some(o => Math.hypot(o.x - x, o.z - z) < o.r + 0.4)
+    || S.birds.some(b => Math.hypot(b.pos.x - x, b.pos.z - z) < 1.2);
+  if (blocked) { S.walkLeft = 0; return; }
+  eye.x = x; eye.z = z;
+  eye.y += (y + CFG.eyeHeight - eye.y) * Math.min(1, dt * 8);
+}
 
 // ------------------------------------------------------------------ bucle
 let last = performance.now(), acc = 0;
@@ -635,6 +730,7 @@ function frame(now) {
     }
   }
   S.heading = wrap(S.heading);
+  if (S.walk) walkStep(dt);
   if (Math.abs(S.fov - S.fovGoal) > 0.02) S.fov += (S.fovGoal - S.fov) * Math.min(1, dt * 10);
   camera.fov = S.fov; camera.updateProjectionMatrix();
   const cp = Math.cos(S.pitch);
@@ -650,6 +746,7 @@ function frame(now) {
   S.sc.animate?.(now / 1000);
   setBook(S.bookKey || S.pitch < CFG.bookPitch);
   aim(dt);
+  tickCard(dt);
   sky(dt);
   autoZoom();
   if (CFG.monthSeconds && !S.locked && !S.bookOn && (S.monthT += dt) > CFG.monthSeconds) setMonth(S.month + 1);
@@ -664,7 +761,8 @@ function frame(now) {
   }
   if (S.shot) { S.shot = false; if (!S.bookOn) takePhoto(); }
   updateMarks();
-  html('.e-zoom', S.fov < CFG.fovWide - 0.5 ? `${(CFG.fovWide / S.fov).toFixed(1)}×` : '');
+  const zt = S.fov < CFG.fovWide - 0.5 ? `${(CFG.fovWide / S.fov).toFixed(1)}×` : '';
+  html('.e-zoom', S.walk && S.walking ? `${zt} · caminando` : zt);
 }
 
 // ------------------------------------------------------------------ inicio
@@ -693,17 +791,16 @@ function placeCheck(dt) {
 
 buildEyes();
 syncSetup();
+renderOpts();
 showScreen('pick');
 requestAnimationFrame(frame);
 Promise.all([loadWorld(), loadKit()]).then(async ([index]) => {
   S.index = index;
-  const r = q.get('r'), z = q.get('z');
-  if (r && CFG.regions.includes(r)) {
-    await enterRegion(r);
-    if (z && S.reg.terrain.scenes[z]) { await enterZone(z); if (q.has('auto')) { unlockAudio(); go(); } else toPlace(); }
-  } else if (standalone() && CFG.regions.includes(store('mirador.region'))) await enterRegion(store('mirador.region')); // app instalada: la última región
-  else regionList();
+  const z = q.get('z'), saved = store('mirador.region');
+  const r = CFG.regions.includes(q.get('r')) ? q.get('r') : CFG.regions.includes(saved) ? saved : CFG.regions[0];
+  await enterRegion(r);
+  if (z && S.reg.terrain.scenes[z]) { await enterZone(z); if (q.has('auto')) { unlockAudio(); go(); } else toPlace(); }
   installHint();
 }).catch(err => { $('pick-status').textContent = 'No se pudieron cargar los datos: ' + err.message; });
 
-window.M = S; window.dbg = { setMonth, enterRegion, enterZone, pause, go, setLock, takePhoto, gyro, camera, CFG }; // para depurar desde la consola
+window.M = S; window.dbg = { setMonth, enterRegion, enterZone, pause, go, steps, setLock, takePhoto, gyro, camera, CFG }; // para depurar desde la consola

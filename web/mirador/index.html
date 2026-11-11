@@ -16,7 +16,7 @@
 <link rel="icon" href="img/icono-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Pixelify+Sans:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Pixelify+Sans:wght@400;600;700&family=Righteous&display=swap">
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/mirador.css">
 </head>
@@ -39,21 +39,42 @@
   </div>
 </template>
 
-<!-- 1. Elegir zona (se llega con el QR de la región: web/mirador/?r=CL-AP). Fuera del visor. -->
+<!-- 1. Inicio: selector de niveles. El QR de la región abre web/mirador/?r=CL-AP con ese «mundo» puesto. Fuera del visor. -->
 <div id="pick" class="screen setup">
-  <h1>MIRADOR<small id="pick-sub">aves de Chile · 2024</small></h1>
+  <header class="bar">
+    <span class="logo">AVIARIO</span>
+    <span class="sw" id="opt-modo" role="radiogroup" aria-label="Modo de juego">
+      <button data-modo="mirar" role="radio">MIRAR</button><button data-modo="caminar" role="radio">CAMINAR</button>
+    </span>
+    <button class="gear" id="b-gear" aria-label="Ajustes" aria-expanded="false">⚙</button>
+  </header>
+  <div class="world">
+    <button id="b-prev" aria-label="Región anterior">‹</button>
+    <div><small id="world-n">MUNDO</small><b id="world-name">…</b><span class="dots" id="world-dots"></span></div>
+    <button id="b-next" aria-label="Región siguiente">›</button>
+  </div>
   <p class="hint" id="pick-status">Cargando datos…</p>
-  <div id="pick-list" class="pick-list"></div>
-  <p class="install" id="install" hidden></p>
-  <details class="setup-box win" id="lens-box">
-    <summary>Ajustar el visor</summary>
-    <label class="row"><input type="checkbox" id="opt-bino"> Dos lentes (binoculares)</label>
-    <div id="lens-opts">
-      <label class="row">Separación <input type="range" id="opt-sep" min="25" max="50" step="0.5"><output id="out-sep"></output></label>
-      <label class="row">Tamaño <input type="range" id="opt-dia" min="15" max="50" step="0.5"><output id="out-dia"></output></label>
-      <p class="dim">Ajusta hasta que cada círculo quede centrado en su tubo (los centros van a 62 mm).</p>
+  <div class="levels" id="zone-list"></div>
+  <div class="go">
+    <span class="say" id="say"></span><img src="img/pato.png" alt="">
+    <button id="b-go" disabled>ENTRAR</button>
+    <small>después pon el teléfono en el visor</small>
+  </div>
+  <footer class="foot">basado en datos pertenecientes a avistamientos en año 2024</footer>
+
+  <div class="sheet" id="ajustes" hidden>
+    <h2>Ajustes</h2>
+    <p class="install" id="install" hidden></p>
+    <div class="setup-box" id="lens-box">
+      <label class="row"><input type="checkbox" id="opt-bino"> Dos lentes (binoculares)</label>
+      <div id="lens-opts">
+        <label class="row">Separación <input type="range" id="opt-sep" min="25" max="50" step="0.5"><output id="out-sep"></output></label>
+        <label class="row">Tamaño <input type="range" id="opt-dia" min="15" max="50" step="0.5"><output id="out-dia"></output></label>
+        <p class="dim">Ajusta hasta que cada círculo quede centrado en su tubo (los centros van a 62 mm).</p>
+      </div>
     </div>
-  </details>
+    <button class="btn" id="b-gear-ok">Listo</button>
+  </div>
 </div>
 
 <!-- 2. Poner el teléfono en el visor: empieza solo cuando el teléfono queda de lado y quieto. -->

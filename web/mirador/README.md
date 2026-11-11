@@ -17,13 +17,51 @@ de pie en el centro y gira.
 5. **Sacar el teléfono** (queda vertical) o tocar la pantalla pausa: desde ahí se vuelve al visor o se
    elige otra zona.
 
+## Pantalla de inicio: selector de niveles
+
+Pensada como la pantalla de inicio de un juego (la referencia fue `cambios.png`):
+
+- **Barra:** logo, interruptor **Mirar / Caminar** y un engranaje con lo técnico (lentes del visor e
+  instrucciones para instalar la app).
+- **Mundo:** la región, con flechas para cambiarla. El QR de cada visor la deja puesta.
+- **Niveles:** las zonas de la región, como fotos pegadas con cinta: paisaje, nombre, lugar a mano y un
+  sello por ave (cuando la fotografías, el sello es tu foto).
+- **Entrar:** tocar un nivel solo lo marca; se entra con el botón de abajo. El pato dice cuántas faltan.
+
+Regla de materiales (está al principio de `css/mirador.css`): lo que se toca para jugar es sólido (tinta
+café y ámbar, borde grueso, sombra dura); lo que se observa y colecciona es papel (fotos, cinta, sellos,
+letra a mano).
+
+**Modos.** *Mirar*: de pie en el centro de la zona, se gira. *Caminar*: se **camina en el lugar** y se
+avanza hacia donde se mira; el acelerómetro cuenta los pasos (`devicemotion`, `CFG.stepLen` m por paso). No
+se entra al agua desde tierra, ni a obstáculos, ni a menos de 1,2 m de un ave. Solo se activa si el teléfono
+tiene acelerómetro; en el computador se camina con W / S. Para probar: `?modo=mirar|caminar`.
+
+## Diálogo del ave (dentro del visor)
+
+Caja de diálogo de juego de rol: la pestaña lleva **nombre | clase** (el color de la clase) y el cuerpo
+queda libre para lo que el ave «dice», una frase a la vez, sacada de los datos (`birdLines` en
+`js/mirador.js`):
+
+- cuántos días del mes la registraron en 2024 («En enero me vieron 18 de 31 días.»);
+- si vive todo el año o cuándo llega y se va;
+- su estación preferida (la del mes con más registros);
+- la región donde más la registran («Me gusta la región de Los Ríos.»);
+- si en 2024 la vieron más o menos que de costumbre;
+- qué come y cuánto pesa.
+
+Al entrar en la mira se ve la primera; a los 1,2 s se abre la ficha (las frases pasan cada `CFG.lineSecs`
+segundos, con la franja de los 12 meses) y a los 5 s se toma la foto.
+
+El pato (`img/pato.png`) está recortado de `cambios.png`.
+
 ## Gestos (solo con el teléfono)
 
 | Qué hago | Qué pasa |
 | --- | --- |
 | Girar | la mira toma el ave más cercana al centro: canta y aparece su nombre y clase |
-| Mantener el ave en la mira 1,2 s | se abre su ficha y el zoom la acerca |
-| Seguir mirándola hasta 3,4 s | se toma la foto (el anillo de la mira muestra cuánto falta) |
+| Mantener el ave en la mira 1,2 s | se abre su ficha: el zoom la acerca y van pasando sus frases |
+| Seguir mirándola hasta 5 s | se toma la foto (el anillo de la mira muestra cuánto falta) |
 | Mirar al cielo 2 s | pasa al mes siguiente |
 | Mirar al suelo | libreta de la zona |
 | Sacar el teléfono / tocar la pantalla | pausa |
@@ -65,7 +103,7 @@ de three.js). Condiciones:
 
 ## Visor
 
-En la pantalla de zonas, «Ajustar el visor» cambia la separación y el tamaño de los dos círculos (en % del
+En la pantalla de inicio, el engranaje abre los ajustes: ahí se cambian la separación y el tamaño de los dos círculos (en % del
 ancho de la pantalla) hasta que cada uno quede centrado en su tubo. Queda guardado en el teléfono.
 
 ## Teclado y Arduino (opcional)
