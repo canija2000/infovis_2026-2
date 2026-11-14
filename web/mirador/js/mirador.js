@@ -30,6 +30,7 @@ const CFG = {
   resing: 8, // s entre cantos mientras el ave sigue en la mira
   bookPitch: -0.8, // rad: mirar al suelo abre la libreta
   skyPitch: 0.75, skyHold: 2.0, // rad y s: mirar al cielo ese tiempo pasa al mes siguiente
+  signPitch: 0.3, signRow: 0.13, signHold: 2.5, // rad sobre el horizonte de los letreros de viaje · rad entre filas · s de mirada para viajar
   dwellCard: 0.8, dwellPhoto: 2.2, // s con el ave en la mira hasta abrir la ficha y hasta tomar la foto
   lineSecs: 2.6, // s que dura cada frase del ave en la caja de diálogo
   frame: 0.3, // con la ficha abierta, el zoom deja el ave en esta fracción del campo visual
@@ -111,6 +112,7 @@ function layout() {
   });
   camera.aspect = S.rects[0].w / S.rects[0].h; camera.updateProjectionMatrix();
   shared.uSnap.value.set(S.rects[0].w * k / 2, S.rects[0].h * k / 2);
+  if (S.sc && S.signs) buildSigns(); // un letrero por lente
 }
 window.addEventListener('resize', layout);
 
@@ -125,7 +127,7 @@ function showScreen(id) { // pick | place | pause | null (explorando)
   for (const k of ['pick', 'place', 'pause']) $(k).hidden = k !== id;
   showHud(!id);
 }
-function showHud(on) { for (const sel of ['.e-top', '.e-compass', '.e-reticle', '.e-zoom']) show(sel, on); if (!on) for (const sel of ['.e-card', '.e-book', '.e-sky', '.e-toast']) show(sel, false); }
+function showHud(on) { $('signs').hidden = !on; for (const sel of ['.e-top', '.e-compass', '.e-reticle', '.e-zoom']) show(sel, on); if (!on) for (const sel of ['.e-card', '.e-book', '.e-sky', '.e-toast']) show(sel, false); }
 
 // Selector de niveles: la región es el «mundo» (flechas; el QR la deja puesta) y sus zonas son los niveles.
 // Tocar un nivel lo marca; se entra con el botón de abajo.
@@ -227,7 +229,7 @@ function go() { // entrar al mundo; el rumbo actual del teléfono pasa a ser el 
   blip(990, 0.08);
   toast(`<b>${S.reg.terrain.scenes[S.sceneKey].name}</b><br>` + (S.walk
     ? 'Camina en el lugar para avanzar hacia donde miras. Mantén un ave en la mira para conocerla y fotografiarla.'
-    : 'Gira para buscar aves. Mantén una en la mira para conocerla y fotografiarla.'), 6);
+    : 'Gira para buscar aves. Mantén una en la mira para conocerla y fotografiarla.') + '<br>Mira un letrero para viajar a otro lugar.', 7);
 }
 function pause(msg = '') {
   if (S.mode !== 'look') return;
@@ -245,19 +247,19 @@ function zoneSids(key) {
     .filter(([sid, f]) => f.scene === key && S.index.byId.get(+sid)?.regionalClass[rid]).map(([sid]) => +sid).sort((a, b) => a - b);
 }
 
-async function enterRegion(code) {
-  renderPick('Cargando la región…');
+async function enterRegion(code, quiet = false) { // quiet: sin volver al selector (viaje desde dentro del visor)
+  if (!quiet) renderPick('Cargando la región…');
   S.reg = await loadRegion(S.index, code);
   store('mirador.region', code);
   try { S.props = await loadJSON(DATA_BASE + `props-${code}.json`); } catch { S.props = null; }
   featuredIn(S.index, S.reg.region); // deja la paleta de cada especie destacada
   rememberRegion(code, Object.keys(S.reg.region.featured || {}).map(Number));
   S.sceneKey = null;
-  renderPick();
+  if (!quiet) renderPick();
 }
 
 function leaveZone() {
-  setLock(null);
+  setLock(null); clearSigns();
   if (S.world) S.sc.root.traverse(o => o.geometry?.dispose());
   S.world = null; S.sc = null; S.birds = [];
   clearMarks();
@@ -279,6 +281,7 @@ async function enterZone(key) {
   setAmbience(key);
   S.fov = S.fovGoal = CFG.fovWide; S.pitch = -0.2; S.cardOpen = false; S.bookKey = false;
   buildMarks();
+  buildSigns();
   setMonth(S.month, true);
   S.startHeading = S.birds.length ? S.birds[0].bearing - 0.5 : 0; // empezar con un ave cerca, sin tenerla ya en la mira
   S.heading = S.startHeading;
@@ -452,6 +455,82 @@ function updateMarks() {
   }
 }
 
+// ------------------------------------------------------------------ letreros de viaje
+// Cambiar de zona o de región sin sacar el teléfono del visor: sobre el horizonte hay un letrero hacia cada
+// zona vecina (en su rumbo real) y hacia la región del norte y la del sur. Sostener la mirada en uno lleva allá.
+function clearSigns() { for (const g of S.signs || []) for (const el of g.els) el.remove(); S.signs = []; S.signCand = null; S.signT = 0; }
+function buildSigns() {
+  clearSigns();
+  const scenes = S.reg.terrain.scenes, here = scenes[S.sceneKey].center, list = [];
+  for (const [k, o] of Object.entries(scenes)) if (k !== S.sceneKey) {
+    const dx = (o.center[0] - here[0]) * Math.cos(here[1] * Math.PI / 180), dn = o.center[1] - here[1];
+    const km = Math.round(Math.hypot(dx, dn) * 111);
+    list.push({ zone: k, name: SCENE_LABEL[k] || cap(k), where: `a ${km} km`, text: `${SCENE_LABEL[k] || cap(k)} · ${km} km`, bearing: Math.atan2(dx, dn) });
+  }
+  const i = CFG.regions.indexOf(S.reg.meta.code), reg = c => S.index.regions.find(r => r.code === c);
+  if (i > 0) list.push({ region: CFG.regions[i - 1], name: reg(CFG.regions[i - 1]).name, where: 'la región del norte', text: `▲ ${reg(CFG.regions[i - 1]).name}`, bearing: 0 });
+  if (i >= 0 && i < CFG.regions.length - 1) list.push({ region: CFG.regions[i + 1], name: reg(CFG.regions[i + 1]).name, where: 'la región del sur', text: `▼ ${reg(CFG.regions[i + 1]).name}`, bearing: Math.PI });
+  let prev = null, row = 0; // los que quedan hacia el mismo lado se apilan
+  for (const g of list.sort((a, b) => a.bearing - b.bearing)) {
+    row = prev != null && g.bearing - prev < 0.5 ? row + 1 : 0; prev = g.bearing;
+    g.pitch = CFG.signPitch + row * CFG.signRow;
+    g.els = S.rects.map(() => { const el = document.createElement('span'); el.className = 'sign' + (g.region ? ' reg' : ''); el.textContent = g.text; $('signs').appendChild(el); return el; });
+    S.signs.push(g);
+  }
+}
+function signAt() { // el letrero que está en la mira, si hay
+  let best = null, bestA = Infinity;
+  for (const g of S.signs) {
+    const dh = Math.abs(wrap(g.bearing - S.heading)), dv = Math.abs(g.pitch - S.pitch), a = dh + dv;
+    if (dh < (g === S.signCand ? 0.13 : 0.09) && dv < (g === S.signCand ? 0.075 : 0.06) && a < bestA) { best = g; bestA = a; }
+  }
+  return best;
+}
+const _s = new THREE.Vector3();
+function updateSigns() {
+  for (const g of S.signs) {
+    const cp = Math.cos(g.pitch);
+    _s.set(eye.x + Math.sin(g.bearing) * cp * 50, eye.y + Math.sin(g.pitch) * 50, eye.z - Math.cos(g.bearing) * cp * 50).project(camera);
+    g.els.forEach((el, k) => {
+      const r = S.rects[k], on = r && _s.z < 1 && Math.abs(_s.x) < 1.15 && Math.abs(_s.y) < 1.1;
+      el.hidden = !on;
+      if (!on) return;
+      el.style.left = r.x + (_s.x + 1) / 2 * r.w + 'px'; el.style.top = r.y + (1 - _s.y) / 2 * r.h + 'px';
+      el.style.fontSize = Math.min(r.h, r.w * 0.8) * 0.04 + 'px';
+      el.classList.toggle('on', g === S.signCand);
+    });
+  }
+}
+function travelAim(dt) {
+  const g = S.signCand;
+  if (g !== S.signLast) { S.signLast = g; S.signT = 0; if (g) { blip(660, 0.04); show('.e-toast', false); } }
+  all('.e-sky', el => el.classList.toggle('low', !!g)); // debajo de la mira, para no tapar el letrero
+  if (!g) return;
+  S.signT += dt;
+  show('.e-sky', true);
+  html('.e-sky', `<small>sigue mirando el letrero para viajar a</small><b>${g.name}</b><small>${g.where}</small>`);
+  ring(S.signT / CFG.signHold, '#f2d36b');
+  if (S.signT > CFG.signHold) travel(g);
+}
+async function travel(g) { // el mes y el rumbo se conservan: se llega mirando hacia el mismo lado
+  if (S.mode !== 'look') return;
+  const heading = S.heading;
+  S.mode = 'travel'; S.signCand = S.signLast = null; setLock(null); ring(0); show('.e-sky', false);
+  blip(990, 0.08); toast(`Viajando a <b>${g.name}</b>…`, 30);
+  await new Promise(r => setTimeout(r, 60)); // que alcance a pintarse el aviso
+  let key = g.zone;
+  if (g.region) {
+    await enterRegion(g.region, true);
+    const keys = Object.keys(S.reg.terrain.scenes), last = store('mirador.zona.' + g.region);
+    key = keys.includes(last) ? last : keys[0];
+  }
+  await enterZone(key);
+  store('mirador.zona.' + S.reg.meta.code, key); S.zoneSel = key;
+  S.heading = heading; S.pitch = gyro.have ? gyro.p : 0;
+  S.mode = 'look'; updateTop();
+  toast(`<b>${S.reg.terrain.scenes[key].name}</b><br>${S.reg.meta.name} · ${cap(S.index.months[S.month])} de ${YEAR}`, 5);
+}
+
 // ------------------------------------------------------------------ mira, canto y ficha
 function centerOf(b, out) { return out.copy(b.m.group.position).setY(b.m.group.position.y + (b.m.height ?? 2.5) * b.s * 0.5); }
 const _c = new THREE.Vector3();
@@ -466,7 +545,9 @@ function aim(dt) {
     const a = dh + dv * 0.15;
     if (dh < (b === S.locked ? thr * 1.4 : thr) && dv < vmax && a < bestA) { best = b; bestA = a; }
   }
-  if (S.bookOn) best = null;
+  S.signCand = S.bookOn ? null : signAt();
+  if (S.bookOn || S.signCand) best = null; // mirando un letrero no se elige ave
+  if (S.signCand && S.locked) setLock(null);
   if (best !== S.cand) { S.cand = best; S.candT = 0; }
   S.candT += dt;
   if (S.cand !== S.locked && S.candT > (S.cand ? 0.2 : 0.5)) setLock(S.cand);
@@ -753,6 +834,7 @@ function frame(now) {
   aim(dt);
   tickCard(dt);
   sky(dt);
+  travelAim(dt);
   autoZoom();
   if (CFG.monthSeconds && !S.locked && !S.bookOn && (S.monthT += dt) > CFG.monthSeconds) setMonth(S.month + 1);
 
@@ -765,7 +847,7 @@ function frame(now) {
     renderer.render(S.world, camera);
   }
   if (S.shot) { S.shot = false; if (!S.bookOn) takePhoto(); }
-  updateMarks();
+  updateMarks(); updateSigns();
   const zt = S.fov < CFG.fovWide - 0.5 ? `${(CFG.fovWide / S.fov).toFixed(1)}×` : '';
   html('.e-zoom', S.walk && S.walking ? `${zt} · caminando` : zt);
 }
@@ -808,4 +890,4 @@ Promise.all([loadWorld(), loadKit()]).then(async ([index]) => {
   installHint();
 }).catch(err => { $('pick-status').textContent = 'No se pudieron cargar los datos: ' + err.message; });
 
-window.M = S; window.dbg = { setMonth, enterRegion, enterZone, pause, go, steps, setLock, takePhoto, gyro, camera, CFG, visibleFromEye }; // para depurar desde la consola
+window.M = S; window.dbg = { travel, setMonth, enterRegion, enterZone, pause, go, steps, setLock, takePhoto, gyro, camera, CFG, visibleFromEye }; // para depurar desde la consola

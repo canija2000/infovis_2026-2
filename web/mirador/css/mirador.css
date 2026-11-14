@@ -21,6 +21,13 @@ body.mirador #c { cursor: grab; }
 #mask { position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 3; }
 #mask path { fill: #000; }
 #eyes { position: fixed; inset: 0; pointer-events: none; z-index: 4; }
+/* Letreros de viaje: anclados al horizonte, bajo la máscara de los lentes. Control, no dato: tinta y ámbar. */
+#signs { position: fixed; inset: 0; pointer-events: none; z-index: 2; overflow: hidden; font-family: "Pixelify Sans", var(--font); }
+.sign { position: absolute; transform: translate(-50%, -50%); white-space: nowrap; font-weight: 700; padding: 0.15em 0.6em;
+  background: var(--ink); color: var(--amber); border: 0.14em solid var(--amber); border-radius: 0.5em; box-shadow: 0 0.2em 0 rgba(0, 0, 0, 0.45); transition: transform 0.15s; }
+.sign::after { content: ""; position: absolute; left: 50%; top: 100%; width: 0.14em; height: 1.1em; margin-left: -0.07em; background: var(--amber); }
+.sign.reg { background: var(--amber); color: var(--ink); border-color: var(--ink); }
+.sign.on { transform: translate(-50%, -50%) scale(1.25); box-shadow: 0 0 0 0.14em #fff, 0 0.2em 0 rgba(0, 0, 0, 0.45); }
 
 .eye { position: absolute; width: var(--d); height: var(--d); font-size: calc(var(--d) * 0.04); border-radius: 50%; overflow: hidden;
   font-family: var(--font); color: #fff; line-height: 1.25; }
@@ -91,6 +98,7 @@ body.mono .eye { border-radius: 0; left: 50% !important; top: 0 !important; widt
 .e-book .cell .none { display: grid; place-content: center; background: #4b3713; border: 0.15em dashed #b89b63; color: #b89b63; font-size: 2em; }
 
 .e-sky { top: 26%; width: 50%; }
+.e-sky.low { top: 60%; }
 .e-sky b { display: block; font-size: 1.25em; color: var(--amber); }
 .e-sky small { font-size: 0.75em; color: #e6cf9f; }
 

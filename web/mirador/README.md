@@ -77,6 +77,9 @@ Los tiempos están en `CFG` al principio de `js/mirador.js` (`dwellCard`, `dwell
   (las que nadan donde hay agua, las que se posan donde hay perchas); si ese mes no se registra, su lugar
   queda vacío. Cada ave se ubica donde **se ve desde el centro**: no la tapan el relieve, los árboles ni
   los edificios.
+- **Letreros de viaje:** sobre el horizonte hay un letrero hacia cada zona vecina, en su rumbo real y con su
+  distancia, y hacia la región del norte y la del sur. Sostener la mirada en uno 2,5 s lleva allá, sin sacar el
+  teléfono del visor. El mes y el rumbo se conservan.
 - La **ficha**: nombre común y científico, clase (residente, visitante de verano, visitante de invierno),
   región y lugar, cuántos días de ese mes de 2024 se registró y la franja de los 12 meses.
 - La **foto** se puntúa como en el Aviario y se guarda en el mismo álbum (`localStorage`).
