@@ -174,7 +174,7 @@ _Prototipo de la V2 (12 de noviembre de 2026): dos tubos de cartón pegados a un
 > 1.  **Visor de MDF de caja única**, ya armado: fotografiarlo y probar la distancia de enfoque con el teléfono adentro.
 > 2.  ~~Una sola imagen en la pantalla por defecto~~ (hecho el 14 de noviembre).
 > 3.  ~~Aves siempre a la vista~~ (hecho el 14 de noviembre).
-> 4.  **Viajar sin sacar el teléfono:** elegir zona y región desde dentro del visor, con la mirada.
+> 4.  ~~Viajar sin sacar el teléfono~~ (hecho el 14 de noviembre).
 > 5.  **Caminar:** decidir si se corrige o se retira.
 > 6.  **Sonificación:** que algún dato se oiga en el ritmo o el tono, no solo en el timbre (ver «Riesgos»).
 
@@ -183,6 +183,7 @@ _Prototipo de la V2 (12 de noviembre de 2026): dos tubos de cartón pegados a un
 - **Del cartón al MDF cortado en láser:** una caja con careta de dos ventanas octogonales y un solo espacio interior; el teléfono entra por una ranura lateral. Plano: `fisico/visor_laser/` (`f89910c`, dibujado el 11 de noviembre; cortado y armado _\[fecha\]_).
 - **Una sola imagen:** el Mirador ya no dibuja un círculo por ojo; muestra una imagen única que se mira con los dos ojos (14 de noviembre, `15a1025`).
 - **Aves siempre a la vista:** cada ave se ubica en un punto que se ve desde el centro; antes solo se comprobaba el relieve, ahora también árboles, arbustos y edificios (14 de noviembre, `15a1025`).
+- **Letreros de viaje:** sobre el horizonte hay un letrero hacia cada zona vecina, en su rumbo real y con su distancia, y hacia la región del norte y la del sur. Sostener la mirada en uno lleva allá sin sacar el teléfono; se llega en el mismo mes y mirando hacia el mismo lado (14 de noviembre, `fc8ed16`).
 - _\[pendiente: el resto de los cambios, a medida que se hagan\]_
 
 ### Por qué cambió — el rationale
@@ -191,11 +192,14 @@ _Prototipo de la V2 (12 de noviembre de 2026): dos tubos de cartón pegados a un
 - **Ranura lateral:** con la ranura arriba el visor dependía del largo de cada teléfono; por el costado solo importan el ancho y el grosor, que varían mucho menos.
 - **Restricción material:** la plancha de MDF disponible mide 335 × 365 mm, lo que fija el tamaño de la caja (120 × 90 × 122 mm) y la distancia del ojo a la pantalla (unos 12 cm).
 - **Lo que no se puede ver no se puede leer (R2, punto 2):** quien observa está fijo y no puede rodear un árbol. Al revisar las 19 zonas en los 12 meses, 127 de 1303 apariciones de aves quedaban tapadas; después del cambio, ninguna.
+- **Viajar con el mismo gesto que todo lo demás (R2, punto 4):** sacar el teléfono rompía la experiencia. Sostener la mirada ya servía para conocer y fotografiar un ave, así que el viaje no agrega un gesto nuevo.
+- **El viaje también lleva datos:** los letreros están en el rumbo real de cada lugar y Chile se recorre mirando al norte o al sur. Como el mes no cambia al viajar, se puede comparar el mismo mes en dos lugares.
 - _\[pendiente\]_
 
 ### Qué se descartó
 
 - **Visor de dos tubos** (el de cartón de la V2) y **ranura superior** para el teléfono.
+- **Cambiar de región con tarjetas QR leídas por la cámara:** pedía un agujero en la trasera y permiso de cámara; los letreros lo resuelven sin tocar el visor.
 - _\[pendiente\]_
 
 ---
