@@ -1,7 +1,7 @@
-# Mirador (binoculares de cartón)
+# Mirador (binoculares)
 
-`web/mirador/` es el Aviario 3D adaptado para la instalación de los binoculares: un teléfono dentro de dos tubos de
-cartón. **Toda la interacción sale del teléfono** (su giroscopio); el Arduino ya no es necesario, aunque
+`web/mirador/` es el Aviario 3D adaptado para la instalación de los binoculares: un teléfono dentro de un visor de
+MDF (`fisico/visor_laser/`). **Toda la interacción sale del teléfono** (su giroscopio); el Arduino ya no es necesario, aunque
 sus teclas siguen funcionando. No se camina: se elige una región y una de sus zonas ya modeladas, uno queda
 de pie en el centro y gira.
 
@@ -75,7 +75,8 @@ Los tiempos están en `CFG` al principio de `js/mirador.js` (`dwellCard`, `dwell
 - Datos de **un solo año** (`YEAR = '2024'`), mes a mes.
 - Las aves destacadas de la zona están **fijas en un círculo**. Cada especie tiene su sector todo el año
   (las que nadan donde hay agua, las que se posan donde hay perchas); si ese mes no se registra, su lugar
-  queda vacío.
+  queda vacío. Cada ave se ubica donde **se ve desde el centro**: no la tapan el relieve, los árboles ni
+  los edificios.
 - La **ficha**: nombre común y científico, clase (residente, visitante de verano, visitante de invierno),
   región y lugar, cuántos días de ese mes de 2024 se registró y la franja de los 12 meses.
 - La **foto** se puntúa como en el Aviario y se guarda en el mismo álbum (`localStorage`).
@@ -104,8 +105,9 @@ de three.js). Condiciones:
 
 ## Visor
 
-En la pantalla de inicio, el engranaje abre los ajustes: ahí se cambian la separación y el tamaño de los dos círculos (en % del
-ancho de la pantalla) hasta que cada uno quede centrado en su tubo. Queda guardado en el teléfono.
+El Mirador muestra **una sola imagen**, que se mira con los dos ojos a través del visor de caja. Para un visor
+de dos tubos, el engranaje de la pantalla de inicio tiene la opción «Dos círculos», con su separación y tamaño
+(en % del ancho de la pantalla).
 
 ## Teclado y Arduino (opcional)
 
@@ -129,5 +131,5 @@ regeneran los datos del Aviario, hay que volver a copiarlos aquí.
 
 `web/mirador/?r=CL-LR&z=bosque&m=9&auto` entra directo a una zona y un mes (0 = enero) sin pasar por el
 visor. Con el servidor local: `python3 -m http.server 8765 --directory web` y abrir
-`http://localhost:8765/mirador/`. `&mono` fuerza un solo lente y `&bino` dos. En la consola, `M` es el estado y `dbg` trae
+`http://localhost:8765/mirador/`. `&bino` muestra dos círculos en vez de una sola imagen. En la consola, `M` es el estado y `dbg` trae
 `setMonth`, `enterZone`, `pause`, `go`, `gyro`, etc.

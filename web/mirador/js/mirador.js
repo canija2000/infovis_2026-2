@@ -69,7 +69,7 @@ const S = {
   zoneSel: null, lineI: 0, lineT: 0,
   walk: (q.get('modo') || store('mirador.modo')) === 'caminar', walkLeft: 0, steps: 0,
   dwell: 0, shotDone: false, manualZoom: false, skyT: 0, placeT: 0, placeLast: null, phone: matchMedia('(pointer: coarse)').matches,
-  bino: q.has('mono') ? false : q.has('bino') ? true : matchMedia('(pointer: coarse)').matches,
+  bino: q.has('bino'), // una sola imagen para los dos ojos; los dos círculos (visor de tubos) costaban de enfocar
   lens: Object.assign({ sep: 41, dia: 36 }, store('mirador.lentes')), // % del ancho de la pantalla
   eyes: [], rects: [], k: 1,
 };
@@ -217,7 +217,7 @@ async function pickZone(key) {
 }
 function toPlace() {
   S.mode = 'place'; S.placeT = 0; showScreen('place');
-  $('place-msg').textContent = 'Gíralo de lado, con la pantalla hacia los tubos, y míralo como unos binoculares.';
+  $('place-msg').textContent = 'Gíralo de lado, con la pantalla hacia adentro del visor, y míralo como unos binoculares.';
   $('b-enter').hidden = S.phone && gyro.have;
 }
 function go() { // entrar al mundo; el rumbo actual del teléfono pasa a ser el de partida
@@ -272,6 +272,7 @@ async function enterZone(key) {
   const world = new THREE.Scene();
   world.add(sc.root);
   world.updateMatrixWorld(true);
+  S.occluders = sc.root.children.filter(o => o === sc.ground || o.isInstancedMesh);
   Object.assign(S, { sc, world, sceneKey: key, zoneSpecies: zoneSids(key).map(id => S.index.byId.get(id)) });
   eye.set(0, sc.heightAt(0, 0) + CFG.eyeHeight, 0);
   assignSlots();
@@ -313,11 +314,12 @@ class FixedBird extends BirdAgent {
 }
 
 const ray = new THREE.Raycaster();
+// ¿Se ve el cuerpo del ave desde el mirador? Tapan el relieve y también los árboles, arbustos y edificios.
 function visibleFromEye(p) {
-  const d = p.clone().sub(eye), len = d.length();
-  ray.set(eye, d.normalize());
-  const hit = ray.intersectObject(S.sc.ground, false)[0];
-  return !hit || hit.distance > len - 0.4;
+  const d = p.clone().setY(p.y + 0.2).sub(eye), len = d.length();
+  ray.set(eye, d.normalize()); ray.far = len;
+  const hit = ray.intersectObjects(S.occluders, false)[0];
+  return !hit || hit.distance > len - 0.45;
 }
 
 function placeBird(a, slot, taken) {
@@ -325,9 +327,10 @@ function placeBird(a, slot, taken) {
   const ok = (p, r0, r1, wide = 0.8) => {
     const r = Math.hypot(p.x, p.z);
     return r > r0 && r < r1 && Math.abs(wrap(bearingOf(p.x, p.z) - slot.bearing)) < slot.half * wide
-      && (p.y - eye.y) / r < 0.7 && !taken.some(t => t.distanceTo(p) < 1.6) && visibleFromEye(p);
+      && (p.y - eye.y) / r < 0.7 && !taken.some(t => t.distanceTo(p) < 1.6);
   };
-  const nearest = (pts, r0, r1, ideal) => pts.filter(p => ok(p, r0, r1)).sort((p, o) => Math.abs(Math.hypot(p.x, p.z) - ideal) - Math.abs(Math.hypot(o.x, o.z) - ideal))[0];
+  // el rayo de visibilidad es lo caro: se prueba al final y solo hasta encontrar el primero que sirve
+  const nearest = (pts, r0, r1, ideal) => pts.filter(p => ok(p, r0, r1)).sort((p, o) => Math.abs(Math.hypot(p.x, p.z) - ideal) - Math.abs(Math.hypot(o.x, o.z) - ideal)).find(visibleFromEye);
   let p = null;
   a.perch = null; a.swimming = false; a.onTrunk = null;
   if (a.traits.swim && (p = nearest(sc.waterSpots, 4, 24, 9))) { a.perch = p.clone(); a.swimming = true; }
@@ -335,11 +338,13 @@ function placeBird(a, slot, taken) {
   else if (a.traits.trunk && (p = nearest((sc.trunks || []).map(t => Object.assign(t.pos.clone(), { t })), 4, 18, 8))) { a.perch = p.clone(); a.onTrunk = p.t; }
   else if (!a.traits.swim && a.plan !== 'picaflor' && a.groundy < 0.5 && (p = nearest(sc.perches, 4, 20, 8))) a.perch = p.clone();
   if (a.plan === 'picaflor' && !a.perch) { // sin flores a la vista: suspendido frente al mirador
-    a.perch = new THREE.Vector3(Math.sin(slot.bearing) * 5, eye.y - 0.4, -Math.cos(slot.bearing) * 5);
+    const at = (r, da) => { const b = slot.bearing + da * slot.half; return new THREE.Vector3(Math.sin(b) * r, eye.y - 0.4, -Math.cos(b) * r); };
+    const spots = [5, 4, 6, 3, 7].flatMap(r => [0, 0.3, -0.3, 0.6, -0.6].map(da => at(r, da)));
+    a.perch = spots.find(c => !taken.some(t => t.distanceTo(c) < 1.6) && visibleFromEye(c)) || at(5, 0);
   }
   const pos = a.perch ? a.perch.clone() : null;
   if (!pos) { // en el suelo: el punto visible más cercano a 6 m, en tierra firme y fuera de los edificios
-    search: for (const r of [6, 5, 7, 8, 4.5, 9, 10, 12]) for (const da of [0, 0.25, -0.25, 0.5, -0.5]) {
+    search: for (const r of [6, 5, 7, 8, 4.5, 9, 10, 12, 3.5, 14]) for (const da of [0, 0.25, -0.25, 0.5, -0.5, 0.75, -0.75]) {
       const b = slot.bearing + da * slot.half, x = Math.sin(b) * r, z = -Math.cos(b) * r, y = sc.heightAt(x, z);
       if (sc.coverAt(x, z) === 7 || (sc.seaY != null && y < sc.seaY) || sc.obstacles.some(o => Math.hypot(o.x - x, o.z - z) < o.r + 0.3)) continue;
       const c = new THREE.Vector3(x, y, z);
@@ -784,7 +789,7 @@ function placeCheck(dt) {
   S.placeLast = { h: gyro.h, p: gyro.p };
   const ok = !portrait() && Math.abs(gyro.p) < 0.5 && moved < 0.6 * dt * 4;
   S.placeT = ok ? S.placeT + dt : 0;
-  $('place-msg').textContent = portrait() ? 'Gíralo de lado, con la pantalla hacia los tubos, y míralo como unos binoculares.'
+  $('place-msg').textContent = portrait() ? 'Gíralo de lado, con la pantalla hacia adentro del visor, y míralo como unos binoculares.'
     : ok ? 'Quieto… ¡ya casi!' : 'Ahora mira hacia el frente, como con unos binoculares.';
   if (S.placeT > CFG.placeHold) go();
 }
@@ -803,4 +808,4 @@ Promise.all([loadWorld(), loadKit()]).then(async ([index]) => {
   installHint();
 }).catch(err => { $('pick-status').textContent = 'No se pudieron cargar los datos: ' + err.message; });
 
-window.M = S; window.dbg = { setMonth, enterRegion, enterZone, pause, go, steps, setLock, takePhoto, gyro, camera, CFG }; // para depurar desde la consola
+window.M = S; window.dbg = { setMonth, enterRegion, enterZone, pause, go, steps, setLock, takePhoto, gyro, camera, CFG, visibleFromEye }; // para depurar desde la consola
