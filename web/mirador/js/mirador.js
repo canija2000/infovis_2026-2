@@ -17,6 +17,7 @@ import { buildScene } from './scene.js';
 import { loadKit } from './kit.js';
 import { BirdAgent } from './aviary.js';
 import { unlockAudio, loadClip, playAt, playSynth, setListener, setAmbience, duckAmbience, blip } from './audio.js';
+import { createFlocks, YEAR_SECS } from './inmersiva.js';
 import { progress, markSeen, rememberRegion, scorePhoto, starText, savePhoto } from './photo.js';
 
 // ------------------------------------------------------------------ ajustes
@@ -68,6 +69,7 @@ const S = {
   heading: 0, pitch: 0, fov: CFG.fovWide, fovGoal: CFG.fovWide,
   locked: null, cand: null, candT: 0, lockT: 0, cardOpen: false, bookKey: false, bookOn: false, shot: false,
   zoneSel: null, lineI: 0, lineT: 0,
+  view: ['explorar', 'inmersiva'].includes(q.get('vista')) ? q.get('vista') : store('mirador.vista') || 'inmersiva', // inmersiva: el año pasa con bandadas
   walk: (q.get('modo') || store('mirador.modo')) === 'caminar', walkLeft: 0, steps: 0,
   dwell: 0, shotDone: false, manualZoom: false, skyT: 0, placeT: 0, placeLast: null, phone: matchMedia('(pointer: coarse)').matches,
   bino: q.has('bino'), // una sola imagen para los dos ojos; los dos círculos (visor de tubos) costaban de enfocar
@@ -112,7 +114,7 @@ function layout() {
   });
   camera.aspect = S.rects[0].w / S.rects[0].h; camera.updateProjectionMatrix();
   shared.uSnap.value.set(S.rects[0].w * k / 2, S.rects[0].h * k / 2);
-  if (S.sc && S.signs) buildSigns(); // un letrero por lente
+  if (S.sc && S.signs && S.view === 'explorar') buildSigns(); // un letrero por lente
 }
 window.addEventListener('resize', layout);
 
@@ -127,7 +129,7 @@ function showScreen(id) { // pick | place | pause | null (explorando)
   for (const k of ['pick', 'place', 'pause']) $(k).hidden = k !== id;
   showHud(!id);
 }
-function showHud(on) { $('signs').hidden = !on; for (const sel of ['.e-top', '.e-compass', '.e-reticle', '.e-zoom']) show(sel, on); if (!on) for (const sel of ['.e-card', '.e-book', '.e-sky', '.e-toast']) show(sel, false); }
+function showHud(on) { $('signs').hidden = !on; for (const sel of ['.e-top', '.e-compass', '.e-reticle', '.e-zoom', '.e-year']) show(sel, on); if (!on) for (const sel of ['.e-card', '.e-book', '.e-sky', '.e-toast']) show(sel, false); }
 
 // Selector de niveles: la región es el «mundo» (flechas; el QR la deja puesta) y sus zonas son los niveles.
 // Tocar un nivel lo marca; se entra con el botón de abajo.
@@ -150,7 +152,7 @@ function renderPick(status) {
   const sids = zoneSids(S.zoneSel), left = sids.length - sids.filter(sid => progress.album[sid]).length;
   $('b-go').disabled = false;
   $('b-go').textContent = `ENTRAR ${FEM.has(S.zoneSel) ? 'A LA' : 'AL'} ${(SCENE_LABEL[S.zoneSel] || S.zoneSel).toUpperCase()}`;
-  $('say').textContent = !sids.length ? '' : left === 0 ? '¡zona completa!' : left === sids.length ? `${left} aves por conocer` : `¡te falta${left > 1 ? 'n' : ''} ${left}!`;
+  $('say').textContent = S.view === 'inmersiva' ? `un año de bandadas en ${YEAR_SECS} s` : !sids.length ? '' : left === 0 ? '¡zona completa!' : left === sids.length ? `${left} aves por conocer` : `¡te falta${left > 1 ? 'n' : ''} ${left}!`;
 }
 $('zone-list').addEventListener('click', e => {
   const b = e.target.closest('button[data-z]'); if (!b) return;
@@ -173,12 +175,14 @@ $('b-gear-ok').onclick = () => toggleGear(false);
 const canWalk = () => typeof DeviceMotionEvent !== 'undefined' || !S.phone; // en el computador: teclas W / S
 function renderOpts() {
   if (!canWalk()) S.walk = false;
-  for (const b of $('opt-modo').querySelectorAll('button')) {
-    b.setAttribute('aria-checked', (b.dataset.modo === 'caminar') === S.walk);
-    if (b.dataset.modo === 'caminar') b.disabled = !canWalk();
-  }
+  for (const b of $('opt-modo').querySelectorAll('button')) b.setAttribute('aria-checked', b.dataset.vista === S.view);
+  $('opt-walk').checked = S.walk; $('opt-walk').disabled = !canWalk();
+  $('walk-box').hidden = S.view !== 'explorar';
+  document.body.classList.toggle('inm', S.view === 'inmersiva');
+  if (S.mode === 'pick' && S.reg) renderPick();
 }
-$('opt-modo').addEventListener('click', e => { const b = e.target.closest('button'); if (b && !b.disabled) { S.walk = b.dataset.modo === 'caminar'; store('mirador.modo', S.walk ? 'caminar' : 'mirar'); blip(700, 0.03); renderOpts(); } });
+$('opt-modo').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { S.view = b.dataset.vista; store('mirador.vista', S.view); blip(700, 0.03); renderOpts(); } });
+$('opt-walk').onchange = e => { S.walk = e.target.checked; store('mirador.modo', S.walk ? 'caminar' : 'mirar'); };
 
 // El toque en la zona es el gesto que el navegador exige para pedir el giroscopio (iPhone), el sonido,
 // la pantalla siempre encendida, la pantalla completa y la orientación horizontal.
@@ -227,6 +231,7 @@ function go() { // entrar al mundo; el rumbo actual del teléfono pasa a ser el 
   S.heading = S.startHeading; S.pitch = gyro.have ? gyro.p : -0.2;
   if (gyro.have) gyro.off = S.heading - gyro.h;
   blip(990, 0.08);
+  if (S.view === 'inmersiva') { S.flocks.reset(); S.yearDone = 0; toast(`<b>${S.reg.terrain.scenes[S.sceneKey].name}</b><br>Un año de ${S.reg.meta.name} en ${YEAR_SECS} segundos. Gira para mirar alrededor.`, 5); return; }
   toast(`<b>${S.reg.terrain.scenes[S.sceneKey].name}</b><br>` + (S.walk
     ? 'Camina en el lugar para avanzar hacia donde miras. Mantén un ave en la mira para conocerla y fotografiarla.'
     : 'Gira para buscar aves. Mantén una en la mira para conocerla y fotografiarla.') + '<br>Mira un letrero para viajar a otro lugar.', 7);
@@ -234,7 +239,7 @@ function go() { // entrar al mundo; el rumbo actual del teléfono pasa a ser el 
 function pause(msg = '') {
   if (S.mode !== 'look') return;
   S.mode = 'pause'; showScreen('pause'); setLock(null);
-  $('pause-msg').textContent = msg || `${cap(S.index.months[S.month])} de ${YEAR} · ${S.zoneSpecies.filter(sp => progress.album[sp.id]).length} de ${S.zoneSpecies.length} aves fotografiadas aquí`;
+  $('pause-msg').textContent = msg || (S.view === 'inmersiva' ? `${S.reg.meta.name} · ${S.index.months[S.month]} de ${YEAR}` : '') || `${cap(S.index.months[S.month])} de ${YEAR} · ${S.zoneSpecies.filter(sp => progress.album[sp.id]).length} de ${S.zoneSpecies.length} aves fotografiadas aquí`;
 }
 $('b-enter').onclick = () => { wakeUp(); go(); };
 $('b-resume').onclick = () => { wakeUp(); toPlace(); };
@@ -260,6 +265,7 @@ async function enterRegion(code, quiet = false) { // quiet: sin volver al select
 
 function leaveZone() {
   setLock(null); clearSigns();
+  S.flocks?.dispose(); S.flocks = null;
   if (S.world) S.sc.root.traverse(o => o.geometry?.dispose());
   S.world = null; S.sc = null; S.birds = [];
   clearMarks();
@@ -277,6 +283,15 @@ async function enterZone(key) {
   S.occluders = sc.root.children.filter(o => o === sc.ground || o.isInstancedMesh);
   Object.assign(S, { sc, world, sceneKey: key, zoneSpecies: zoneSids(key).map(id => S.index.byId.get(id)) });
   eye.set(0, sc.heightAt(0, 0) + CFG.eyeHeight, 0);
+  if (S.view === 'inmersiva') {
+    S.bandadas ??= await loadJSON('data/bandadas-2024.json');
+    const region = S.bandadas.regions.find(r => r.code === S.reg.meta.code);
+    S.flocks = createFlocks(sc, region, { onArrive: flockSound(true), onLeave: flockSound(false) });
+    world.add(S.flocks.root);
+    setAmbience(key); S.fov = S.fovGoal = CFG.fovWide; S.month = 0; seasonLight(0); updateYear(0, 0);
+    S.heading = S.startHeading = 0;
+    return;
+  }
   assignSlots();
   setAmbience(key);
   S.fov = S.fovGoal = CFG.fovWide; S.pitch = -0.2; S.cardOpen = false; S.bookKey = false;
@@ -389,13 +404,7 @@ function setMonth(m, silent = false) {
     b.pr = c.pr; b.freq = c.pr.freq; b.lines = null;
   }
   S.birds.sort((a, b) => a.bearing - b.bearing);
-  // estación
-  const season = SEASON_OF[S.month], L = LIGHT[season];
-  shared.uLightCol.value.set(L.sun); shared.uAmb.value.set(L.amb);
-  const high = S.sceneKey === 'cordillera' || (S.sc.hMin ?? 0) > 3000;
-  S.fog = high ? 0x9cb4d8 : S.sc.seaY != null ? 0xa4b8c8 : L.fog;
-  shared.uFogColor.value.set(S.fog); shared.uFogNear.value = 18; shared.uFogFar.value = 66;
-  shared.uSnow.value = S.sc.setSeason(season, S.month);
+  const season = seasonLight(S.month);
   updateTop(); syncMarks(); renderCard();
   if (!silent) {
     const names = l => l.map(b => b.sp.comName).join(', ');
@@ -453,6 +462,53 @@ function updateMarks() {
       else el.style.visibility = far ? 'hidden' : 'visible';
     }
   }
+}
+
+// ------------------------------------------------------------------ estación (luz, niebla, nieve)
+function seasonLight(m) {
+  const season = SEASON_OF[m], L = LIGHT[season];
+  shared.uLightCol.value.set(L.sun); shared.uAmb.value.set(L.amb);
+  const high = S.sceneKey === 'cordillera' || (S.sc.hMin ?? 0) > 3000;
+  S.fog = high ? 0x9cb4d8 : S.sc.seaY != null ? 0xa4b8c8 : L.fog;
+  shared.uFogColor.value.set(S.fog);
+  if (S.view === 'inmersiva') { shared.uFogNear.value = 70; shared.uFogFar.value = 140; } // la maqueta se ve entera
+  else { shared.uFogNear.value = 18; shared.uFogFar.value = 66; }
+  shared.uSnow.value = S.sc.setSeason(season, m);
+  return season;
+}
+
+// ------------------------------------------------------------------ vista inmersiva
+// La zona como maqueta vista desde una torre: girar el teléfono da la vuelta alrededor. El año pasa solo.
+const TOWER = { dist: 50, height: 34 };
+const CLS = [['residente', 'residentes'], ['verano', 'de verano'], ['invierno', 'de invierno']];
+// Sonido de cada bandada: las de verano agudas, las de invierno graves y las residentes al medio; al llegar
+// la nota sube y al irse baja, y suena una nota por cada ave de la bandada (más grande, más larga).
+function flockSound(arrive) {
+  const base = { verano: 880, invierno: 330, residente: 550 };
+  return (s, delay) => {
+    if (S.mode !== 'look' || s.clase === 'residente') return;
+    const n = Math.min(5, s.birds.length), f = base[s.clase];
+    for (let i = 0; i < n; i++) setTimeout(() => blip(f * (arrive ? 1 + i * 0.12 : 1.5 - i * 0.12), 0.05), (delay + 0.2 + i * 0.09) * 1000);
+  };
+}
+function updateYear(mi, p) {
+  const m = S.flocks.months[mi];
+  html('.e-place', `${SCENE_LABEL[S.sceneKey] || S.sceneKey} · ${S.index.months[mi]} ${YEAR}`);
+  html('.e-date', `${m.presentes} especies`);
+  html('.e-year', `<div class="bar">${S.index.months.map((n, k) => `<i class="${k === mi ? 'on' : ''}">${n[0].toUpperCase()}</i>`).join('')}<b style="left:${(p * 100).toFixed(1)}%"></b></div>`
+    + `<div class="cls">${CLS.map(([c, l]) => `<span class="${c}">${m[c === 'residente' ? 'residentes' : c]} ${l}</span>`).join('')}</div>`
+    + `<div class="move">llegan ${m.llegan.length} · se van ${m.se_van.length}</div>`);
+}
+function frameInmersiva(dt, now) {
+  const { month, progress: p } = S.flocks.update(dt, now / 1000);
+  if (month !== S.month) { S.month = month; seasonLight(month); blip(month === 0 ? 990 : 520, 0.05); }
+  updateYear(month, p);
+  const h = S.heading, c = new THREE.Vector3(0, S.sc.heightAt(0, 0), 0);
+  camera.position.set(-Math.sin(h) * TOWER.dist, c.y + TOWER.height, Math.cos(h) * TOWER.dist);
+  camera.lookAt(c.x, c.y + 2, c.z); camera.fov = CFG.fovWide; camera.updateProjectionMatrix(); camera.updateMatrixWorld();
+  shared.uLightDir.value.set(0.45, 1, 0.35).normalize().transformDirection(camera.matrixWorldInverse);
+  setListener(camera.position, camera.getWorldDirection(new THREE.Vector3()));
+  S.sc.animate?.(now / 1000);
 }
 
 // ------------------------------------------------------------------ letreros de viaje
@@ -793,6 +849,16 @@ function walkStep(dt) {
 
 // ------------------------------------------------------------------ bucle
 let last = performance.now(), acc = 0;
+function renderEyes() {
+  renderer.setClearColor(S.fog);
+  renderer.setScissorTest(true);
+  const H = innerHeight, k = S.k;
+  for (const r of S.rects) {
+    const v = [r.x * k, (H - r.y - r.h) * k, r.w * k, r.h * k].map(Math.round);
+    renderer.setViewport(...v); renderer.setScissor(...v);
+    renderer.render(S.world, camera);
+  }
+}
 function frame(now) {
   const dt = Math.min(0.1, (now - last) / 1000); last = now;
   requestAnimationFrame(frame);
@@ -816,6 +882,7 @@ function frame(now) {
     }
   }
   S.heading = wrap(S.heading);
+  if (S.view === 'inmersiva' && S.flocks) { if (!gyro.have && !turn) S.heading += dt * 0.08; frameInmersiva(dt, now); renderEyes(); return; }
   if (S.walk) walkStep(dt);
   if (Math.abs(S.fov - S.fovGoal) > 0.02) S.fov += (S.fovGoal - S.fov) * Math.min(1, dt * 10);
   camera.fov = S.fov; camera.updateProjectionMatrix();
@@ -838,14 +905,7 @@ function frame(now) {
   autoZoom();
   if (CFG.monthSeconds && !S.locked && !S.bookOn && (S.monthT += dt) > CFG.monthSeconds) setMonth(S.month + 1);
 
-  renderer.setClearColor(S.fog);
-  renderer.setScissorTest(true);
-  const H = innerHeight, k = S.k;
-  for (const r of S.rects) {
-    const v = [r.x * k, (H - r.y - r.h) * k, r.w * k, r.h * k].map(Math.round);
-    renderer.setViewport(...v); renderer.setScissor(...v);
-    renderer.render(S.world, camera);
-  }
+  renderEyes();
   if (S.shot) { S.shot = false; if (!S.bookOn) takePhoto(); }
   updateMarks(); updateSigns();
   const zt = S.fov < CFG.fovWide - 0.5 ? `${(CFG.fovWide / S.fov).toFixed(1)}×` : '';
@@ -890,4 +950,4 @@ Promise.all([loadWorld(), loadKit()]).then(async ([index]) => {
   installHint();
 }).catch(err => { $('pick-status').textContent = 'No se pudieron cargar los datos: ' + err.message; });
 
-window.M = S; window.dbg = { travel, setMonth, enterRegion, enterZone, pause, go, steps, setLock, takePhoto, gyro, camera, CFG, visibleFromEye }; // para depurar desde la consola
+window.M = S; window.dbg = { createFlocks, travel, setMonth, enterRegion, enterZone, pause, go, steps, setLock, takePhoto, gyro, camera, CFG, visibleFromEye }; // para depurar desde la consola

@@ -176,7 +176,8 @@ _Prototipo de la V2 (12 de noviembre de 2026): dos tubos de cartón pegados a un
 > 3.  ~~Aves siempre a la vista~~ (hecho el 14 de noviembre).
 > 4.  ~~Viajar sin sacar el teléfono~~ (hecho el 14 de noviembre).
 > 5.  **Caminar:** decidir si se corrige o se retira.
-> 6.  **Sonificación:** que algún dato se oiga en el ritmo o el tono, no solo en el timbre (ver «Riesgos»).
+> 6.  **Sonificación:** que algún dato se oiga en el ritmo o el tono, no solo en el timbre (ver «Riesgos»). Primer paso en la vista inmersiva.
+> 7.  **Giro del 16 de noviembre (decisión del grupo):** la vista principal pasa a ser un año de bandadas, acompañado por un servo al costado del visor. Lo anterior queda como «Explorar».
 
 ### Qué cambió
 
@@ -184,6 +185,9 @@ _Prototipo de la V2 (12 de noviembre de 2026): dos tubos de cartón pegados a un
 - **Una sola imagen:** el Mirador ya no dibuja un círculo por ojo; muestra una imagen única que se mira con los dos ojos (14 de noviembre, `15a1025`).
 - **Aves siempre a la vista:** cada ave se ubica en un punto que se ve desde el centro; antes solo se comprobaba el relieve, ahora también árboles, arbustos y edificios (14 de noviembre, `15a1025`).
 - **Letreros de viaje:** sobre el horizonte hay un letrero hacia cada zona vecina, en su rumbo real y con su distancia, y hacia la región del norte y la del sur. Sostener la mirada en uno lleva allá sin sacar el teléfono; se llega en el mismo mes y mirando hacia el mismo lado (14 de noviembre, `fc8ed16`).
+- **Vista inmersiva: un año de bandadas en 36 segundos.** La zona se ve como maqueta desde una torre; girar el teléfono da la vuelta alrededor. Cada especie registrada en la región ese mes de 2024 es una bandada que llega volando (las de verano desde el norte, las de invierno desde el sur), se posa y se va cuando deja de registrarse. Abajo, una barra del año y cuántas especies hay de cada clase (16 de noviembre, _\[commit\]_).
+- **Dos vistas al elegir zona:** «Inmersiva» (la nueva, por defecto) y «Explorar» (la de la V2, intacta). Caminar pasa a los ajustes, solo para Explorar.
+- **Archivo para el servo:** `web/mirador/data/bandadas-2024.csv` (y `.json`), con cuántas especies hay, llegan y se van por región y mes, y un índice de 0 a 100 por clase. Lo genera `scripts/bandadas.mjs` con la misma regla que usa la pantalla.
 - _\[pendiente: el resto de los cambios, a medida que se hagan\]_
 
 ### Por qué cambió — el rationale
@@ -193,12 +197,17 @@ _Prototipo de la V2 (12 de noviembre de 2026): dos tubos de cartón pegados a un
 - **Restricción material:** la plancha de MDF disponible mide 335 × 365 mm, lo que fija el tamaño de la caja (120 × 90 × 122 mm) y la distancia del ojo a la pantalla (unos 12 cm).
 - **Lo que no se puede ver no se puede leer (R2, punto 2):** quien observa está fijo y no puede rodear un árbol. Al revisar las 19 zonas en los 12 meses, 127 de 1303 apariciones de aves quedaban tapadas; después del cambio, ninguna.
 - **Viajar con el mismo gesto que todo lo demás (R2, punto 4):** sacar el teléfono rompía la experiencia. Sostener la mirada ya servía para conocer y fotografiar un ave, así que el viaje no agrega un gesto nuevo.
+- **Del caso a la ola (giro del 16 de noviembre):** mirar ave por ave mostraba cuáles hay, pero no el mensaje de la Entrega 1: que el pulso migratorio vacía y llena el lugar. Ver un año entero en 36 s hace visible ese pulso, y el servo lo saca de la pantalla al objeto.
+- **Por región y no por zona:** las zonas miden ~1,4 km y casi no tienen registros propios (en el bosque de Los Ríos, casi cero en el año). La región en 2024 trae 100 a 150 especies por mes y muestra la ola: en la Metropolitana, los visitantes de verano bajan de 43 especies en enero a 6 en junio.
+- **Vista de torre:** entre la cenital (se cuenta, pero se pierde el lugar) y la del horizonte (fiel al visor, pero no se puede contar), la torre deja ver el lugar y las bandadas a la vez.
+- **Sonido con datos:** cada bandada que llega suena aguda si es de verano y grave si es de invierno; la nota sube al llegar y baja al irse, y suena una nota por ave (rango y ritmo, no solo volumen).
 - **El viaje también lleva datos:** los letreros están en el rumbo real de cada lugar y Chile se recorre mirando al norte o al sur. Como el mes no cambia al viajar, se puede comparar el mismo mes en dos lugares.
 - _\[pendiente\]_
 
 ### Qué se descartó
 
 - **Visor de dos tubos** (el de cartón de la V2) y **ranura superior** para el teléfono.
+- **Vistas cenital y de horizonte** para las bandadas (ver el rationale), y **datos por zona**: demasiado escasos.
 - **Cambiar de región con tarjetas QR leídas por la cámara:** pedía un agujero en la trasera y permiso de cámara; los letreros lo resuelven sin tocar el visor.
 - _\[pendiente\]_
 
