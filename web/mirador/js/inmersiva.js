@@ -1,145 +1,232 @@
-// Vista inmersiva: el año 2024 de una región pasa en ~36 s sobre la zona, vista como maqueta desde una torre.
-// Cada especie registrada ese mes es una bandada; cuando su mes empieza llega volando desde el borde (las de
-// verano desde el norte, las de invierno desde el sur) y se posa; cuando deja de registrarse, se va por donde
-// vino. El tamaño de la bandada sale de cuántos días del mes se registró (data/bandadas-2024.json, que genera
-// scripts/bandadas.mjs; el mismo archivo sirve para el servo).
+// Vista inmersiva: el año 2024 de una región pasa en 72 s (6 s por mes) sobre una maqueta con todas sus zonas,
+// vista desde una torre. Cada especie registrada ese mes en la región es una bandada de su propio modelo (el del
+// Aviario): llega volando (las de verano desde el norte, las de invierno desde el sur), se posa en la zona de su
+// hábitat y se va cuando deja de registrarse. Datos: data/bandadas-2024.json (scripts/bandadas.mjs), el mismo
+// archivo que usa el servo.
+//
+// Estilo «ilustración» (como el mundo InStep): luz en tres bandas (shared.uToon), contorno de tinta en aves y
+// vegetación, cielo en degradé y sombra de contacto bajo cada ave.
 /* global THREE */
-import { mat, texPlain, mulberry32 } from './ps1.js';
+import { shared } from './ps1.js';
+import { buildScene, SCENE_DENSITY, WORLD } from './scene.js';
+import { BirdAgent } from './aviary.js';
 
-export const YEAR_SECS = 36; // un año completo
-const MONTH = YEAR_SECS / 12;
-const FLY = 3.2; // s de vuelo al llegar o irse
-const CLASS_COLOR = { residente: 0x288665, verano: 0xee9b45, invierno: 0x4a7fd0 }; // los de la Entrega 1
-const PER_SPECIES = { residente: 2, verano: 5, invierno: 5 }; // aves por bandada si se registró todos los días
-const MAX_BIRDS = { residente: 220, verano: 260, invierno: 160 };
+export const MONTH_SECS = 6;
+export const YEAR_SECS = MONTH_SECS * 12;
+const GAP = 10; // m entre zonas de la maqueta
+const BOARD_DENSITY = 0.4; // menos vegetación que en Explorar: desde la torre no debe tapar las aves
+const BIRD_ZOOM = 6; // aves exageradas: a su escala no se verían desde la torre
+const PER_SPECIES = { residente: 1, verano: 2, invierno: 2 }; // aves por especie si se registró todos los días
+const MAX_BIRDS = 110; // tope de aves en escena (rendimiento en el teléfono)
+const INK = new THREE.Color(0x1b1611);
 
-// Un ave vista de lejos: dos alas en V y un cuerpo. Se dibuja con instancias, una malla por clase.
-function birdGeometry() {
-  const g = new THREE.BufferGeometry();
-  const v = [
-    0, 0, -0.35, -0.9, 0.12, 0.05, 0, 0, 0.2, // ala izquierda
-    0, 0, -0.35, 0, 0, 0.2, 0.9, 0.12, 0.05, // ala derecha
-    0, 0.05, -0.45, -0.12, -0.04, 0.3, 0.12, -0.04, 0.3, // cuerpo
-  ];
-  g.setAttribute('position', new THREE.Float32BufferAttribute(v, 3));
-  g.setAttribute('uv', new THREE.Float32BufferAttribute(new Array(18).fill(0.5), 2));
-  g.computeVertexNormals();
-  return g;
+// ---------------------------------------------------------------------------- contorno de tinta
+// Casco invertido: la misma malla, inflada hacia afuera en espacio de vista y pintada de tinta por detrás.
+// El grosor es proporcional a la distancia, así se ve igual de ancho en pantalla.
+const outlineMat = new THREE.ShaderMaterial({
+  uniforms: { uThick: { value: 0.0016 }, uInk: { value: INK }, uFogColor: shared.uFogColor, uFogNear: shared.uFogNear, uFogFar: shared.uFogFar },
+  vertexShader: `
+    uniform float uThick; uniform float uFogNear; uniform float uFogFar; varying float vFog;
+    void main() {
+      vec4 local = vec4(position, 1.0); vec3 nrm = normal;
+      #ifdef USE_INSTANCING
+        local = instanceMatrix * local; nrm = mat3(instanceMatrix) * nrm;
+      #endif
+      vec4 mv = modelViewMatrix * local;
+      vec3 n = normalize(normalMatrix * nrm);
+      mv.xyz += n * uThick * -mv.z;
+      vFog = clamp((-mv.z - uFogNear) / (uFogFar - uFogNear), 0.0, 1.0);
+      gl_Position = projectionMatrix * mv;
+    }`,
+  fragmentShader: `
+    uniform vec3 uInk; uniform vec3 uFogColor; varying float vFog;
+    void main() { gl_FragColor = vec4(mix(uInk, uFogColor, vFog * 0.85), 1.0); }`,
+  side: THREE.BackSide,
+});
+function inkOutline(obj) {
+  const add = [];
+  obj.traverse(o => {
+    if (!o.isMesh || o.userData.ink || o.material?.visible === false || !o.geometry?.attributes.normal) return;
+    let ink;
+    if (o.isInstancedMesh) { ink = new THREE.InstancedMesh(o.geometry, outlineMat, o.count); ink.instanceMatrix = o.instanceMatrix; }
+    else ink = new THREE.Mesh(o.geometry, outlineMat);
+    ink.userData.ink = true; ink.frustumCulled = o.frustumCulled; ink.renderOrder = -1;
+    add.push([o, ink]);
+  });
+  for (const [o, ink] of add) o.add(ink);
 }
 
-const ease = t => t * t * (3 - 2 * t);
-const _m = new THREE.Matrix4(), _q = new THREE.Quaternion(), _s = new THREE.Vector3(), _p = new THREE.Vector3(), _e = new THREE.Euler();
+// ---------------------------------------------------------------------------- cielo
+function skyDome() {
+  const m = new THREE.ShaderMaterial({
+    uniforms: { uTop: { value: new THREE.Color(0x8ec5ea) }, uHorizon: shared.uFogColor },
+    vertexShader: 'varying float vY; void main() { vY = normalize(position).y; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+    fragmentShader: 'uniform vec3 uTop; uniform vec3 uHorizon; varying float vY; void main() { gl_FragColor = vec4(mix(uHorizon, uTop, smoothstep(-0.05, 0.55, vY)), 1.0); }',
+    side: THREE.BackSide, depthWrite: false,
+  });
+  const s = new THREE.Mesh(new THREE.SphereGeometry(600, 24, 12), m);
+  s.renderOrder = -10; s.frustumCulled = false;
+  return s;
+}
 
-export function createFlocks(sc, region, { onArrive, onLeave } = {}) {
+// Sombra de contacto: un disco oscuro y suave bajo cada ave (más barato que sombras reales en el teléfono).
+const blobTex = (() => {
+  const c = document.createElement('canvas'); c.width = c.height = 64;
+  const g = c.getContext('2d'), r = g.createRadialGradient(32, 32, 4, 32, 32, 30);
+  r.addColorStop(0, 'rgba(27,22,17,0.45)'); r.addColorStop(1, 'rgba(27,22,17,0)');
+  g.fillStyle = r; g.fillRect(0, 0, 64, 64);
+  return new THREE.CanvasTexture(c);
+})();
+const blobGeo = new THREE.PlaneGeometry(1, 1).rotateX(-Math.PI / 2);
+const blobMat = new THREE.MeshBasicMaterial({ map: blobTex, transparent: true, depthWrite: false });
+
+// ---------------------------------------------------------------------------- aves
+class FlockBird extends BirdAgent {
+  // llega desde el borde norte (−z) o sur (+z) de su zona, alto, y se posa en un lugar de su hábitat
+  arriveFrom(side) {
+    const dest = this.choosePlace(), h = this.scene.half;
+    this.pos.set((Math.random() - 0.5) * h * 1.6, dest.y + 16 + Math.random() * 8, side * h * 2.2);
+    this.leaving = false; this.gone = false;
+    this.fly(dest, 3.2 + Math.random() * 1.6);
+  }
+  leaveTo(side) {
+    if (this.leaving) return;
+    this.leaving = true; this.perch = null; this.swimming = false;
+    const h = this.scene.half;
+    this.fly(new THREE.Vector3(this.pos.x + (Math.random() - 0.5) * 20, this.pos.y + 18, side * h * 2.4), 3.5 + Math.random());
+  }
+}
+
+// En qué zona vive cada especie: la de su hábitat (biomas de AVONET) que exista en la región; si no hay, la de
+// la especie destacada; si tampoco, las acuáticas van a la zona con más agua y el resto se reparte.
+function zoneFor(sp, keys, featured, waterOf) {
+  const biomes = sp.habitat?.biomes || [];
+  const match = keys.filter(k => biomes.includes(k));
+  if (match.length) return match[sp.id % match.length];
+  if (featured[sp.id]?.scene && keys.includes(featured[sp.id].scene)) return featured[sp.id].scene;
+  if (/Marine|Riverine|Wetland/.test(sp.habitat?.avonet || '')) return [...keys].sort((a, b) => waterOf[b] - waterOf[a])[0];
+  return keys[sp.id % keys.length];
+}
+
+// ---------------------------------------------------------------------------- la maqueta de la región
+export function buildBoard({ index, reg, props, bandadas }) {
+  const region = bandadas.regions.find(r => r.code === reg.meta.code);
+  const keys = Object.keys(reg.terrain.scenes);
   const root = new THREE.Group();
-  const R = mulberry32(region.code.split('').reduce((a, c) => a * 31 + c.charCodeAt(0), 7) >>> 0);
-  const half = sc.half ?? 32, land = half * 0.72, edge = half * 1.9;
-  const isWater = (x, z) => sc.coverAt?.(x, z) === 7 || (sc.seaY != null && sc.heightAt(x, z) < sc.seaY);
-  const spot = (water) => { // un lugar donde posarse: tierra firme o agua, dentro de la maqueta
-    if (water && sc.waterSpots?.length) { const w = sc.waterSpots[(R() * sc.waterSpots.length) | 0]; return new THREE.Vector3(w.x, w.y, w.z); }
-    for (let k = 0; k < 40; k++) {
-      const a = R() * Math.PI * 2, r = 3 + Math.sqrt(R()) * land, x = Math.sin(a) * r, z = -Math.cos(a) * r;
-      if (!isWater(x, z) && !sc.obstacles?.some(o => Math.hypot(o.x - x, o.z - z) < o.r + 0.5)) return new THREE.Vector3(x, sc.heightAt(x, z), z);
-    }
-    return new THREE.Vector3(0, sc.heightAt(0, 0), 0);
-  };
+  root.add(skyDome());
 
-  // especies del año: cuántas aves tiene cada bandada y dónde se posa
-  const species = new Map();
+  // zonas en una grilla de 2 columnas (3 zonas: dos arriba y una al centro abajo)
+  const step = WORLD + GAP, cols = 2, rows = Math.ceil(keys.length / cols);
+  const saved = { ...SCENE_DENSITY };
+  for (const k of keys) SCENE_DENSITY[k] = (SCENE_DENSITY[k] ?? 1) * BOARD_DENSITY;
+  const zones = keys.map((key, i) => {
+    const r = Math.floor(i / cols), inRow = Math.min(cols, keys.length - r * cols), c = i % cols;
+    const x = (c - (inRow - 1) / 2) * step, z = (r - (rows - 1) / 2) * step;
+    const sc = buildScene(key, reg.terrain.scenes[key], props, [], 20, reg.meta.lat < -44);
+    const g = new THREE.Group(); g.position.set(x, 0, z);
+    g.add(sc.root);
+    for (const o of sc.root.children) if (o.isInstancedMesh) inkOutline(o); // contorno a la vegetación y casas
+    root.add(g);
+    return { key, sc, g, name: reg.terrain.scenes[key].name, water: sc.waterSpots.length };
+  });
+  Object.assign(SCENE_DENSITY, saved);
+  // base de la maqueta: un tablero de papel bajo todas las zonas, con borde de tinta
+  const W = cols * step + GAP, D = rows * step + GAP;
+  const minY = Math.min(...zones.map(z => z.sc.heightAt(0, 0)));
+  const base = new THREE.Mesh(new THREE.BoxGeometry(W, 4, D), new THREE.MeshBasicMaterial({ color: 0xe4d2aa }));
+  base.position.y = minY - 3;
+  const edges = new THREE.LineSegments(new THREE.EdgesGeometry(base.geometry), new THREE.LineBasicMaterial({ color: INK }));
+  edges.position.copy(base.position);
+  root.add(base, edges);
+
+  // especies: zona, aves por bandada y de qué lado llegan
+  const waterOf = Object.fromEntries(zones.map(z => [z.key, z.water]));
+  const byKey = Object.fromEntries(zones.map(z => [z.key, z]));
+  const info = new Map();
   for (const m of region.months) for (const e of m.especies) {
-    const s = species.get(e.id) || { ...e, peak: 0 };
-    s.peak = Math.max(s.peak, e.freq); species.set(e.id, s);
+    const o = info.get(e.id) || { clase: e.clase, peak: 0 };
+    o.peak = Math.max(o.peak, e.freq); info.set(e.id, o);
   }
-  const counts = { residente: 0, verano: 0, invierno: 0 };
-  const birds = [];
-  for (const s of [...species.values()].sort((a, b) => b.peak - a.peak)) {
-    const n = Math.max(1, Math.round(s.peak * PER_SPECIES[s.clase]));
-    if (counts[s.clase] + n > MAX_BIRDS[s.clase]) continue;
-    counts[s.clase] += n;
-    const home = spot(R() < 0.18), from = s.clase === 'invierno' ? 1 : s.clase === 'verano' ? -1 : (R() < 0.5 ? -1 : 1);
-    s.birds = [];
-    for (let i = 0; i < n; i++) {
-      const b = {
-        sp: s, i, cls: s.clase, idx: counts[s.clase] - n + i,
-        rest: home.clone().add(new THREE.Vector3((R() - 0.5) * 2.4, 0, (R() - 0.5) * 2.4)),
-        // de dónde llega: el borde norte (−z) o sur (+z), algo corrido y en altura
-        out: new THREE.Vector3((R() - 0.5) * half * 1.4, 14 + R() * 10, from * edge),
-        state: 'away', t: 0, delay: i * 0.12 + R() * 0.3, phase: R() * 6.3,
-      };
-      b.rest.y = isWater(b.rest.x, b.rest.z) && sc.seaY != null ? sc.seaY : sc.heightAt(b.rest.x, b.rest.z);
-      s.birds.push(b); birds.push(b);
-    }
-  }
-  const geo = birdGeometry();
-  const meshes = {};
-  for (const c of Object.keys(CLASS_COLOR)) {
-    const m = new THREE.InstancedMesh(geo, mat(texPlain(), { tint: CLASS_COLOR[c], twoSided: true, steady: true }), Math.max(1, counts[c]));
-    m.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
-    m.frustumCulled = false;
-    meshes[c] = m; root.add(m);
+  const flocks = new Map();
+  let total = 0;
+  // primero las visitantes (son las que cuentan la historia), luego las residentes más frecuentes
+  const order = [...info.entries()].sort(([, a], [, b]) => (a.clase === 'residente') - (b.clase === 'residente') || b.peak - a.peak);
+  for (const [id, { clase, peak }] of order) {
+    const sp = index.byId.get(id);
+    if (!sp) continue;
+    const n = Math.max(1, Math.round(peak * PER_SPECIES[clase]));
+    if (total + n > MAX_BIRDS) continue;
+    total += n;
+    const zone = byKey[zoneFor(sp, keys, reg.region.featured || {}, waterOf)];
+    flocks.set(id, { sp, clase, zone, n, birds: [], side: clase === 'invierno' ? 1 : clase === 'verano' ? -1 : (id % 2 ? 1 : -1) });
   }
 
-  let month = -1, t = 0;
-  function enterMonth(mi) {
+  function spawn(f) {
+    const b = new FlockBird(f.sp, f.zone.sc, reg.meta.id);
+    b.m.group.scale.multiplyScalar(BIRD_ZOOM); b.s *= BIRD_ZOOM;
+    inkOutline(b.m.group);
+    b.blob = new THREE.Mesh(blobGeo, blobMat); b.blob.renderOrder = 1;
+    f.zone.g.add(b.m.group, b.blob);
+    return b;
+  }
+
+  let month = -1, t = 0, acc = 0;
+  function setMonth(mi, instant) {
     month = mi;
-    const now = new Map(region.months[mi].especies.map(e => [e.id, e]));
-    for (const s of species.values()) {
-      if (!s.birds) continue;
-      const here = now.has(s.id), delay = (s.id % 7) / 7 * MONTH * 0.6; // no llegan todas juntas
-      const flying = s.birds.filter(b => b.state === 'away' || b.state === 'leaving');
-      if (here && flying.length === s.birds.length) {
-        for (const b of s.birds) { b.state = 'arriving'; b.t = -(delay + b.delay); }
-        onArrive?.(s, delay);
-      } else if (!here && s.birds.some(b => b.state === 'here' || b.state === 'arriving')) {
-        for (const b of s.birds) { b.from = b.state === 'here' ? b.rest.clone() : b.pos?.clone() || b.rest.clone(); b.state = 'leaving'; b.t = -(delay + b.delay); }
-        onLeave?.(s, delay);
+    const now = new Set(region.months[mi].especies.map(e => e.id));
+    const events = [];
+    for (const f of flocks.values()) {
+      const here = now.has(f.sp.id), active = f.birds.filter(b => !b.leaving);
+      if (here && !active.length) {
+        const delay = instant ? 0 : (f.sp.id % 11) / 11 * MONTH_SECS * 0.5; // no llegan todas juntas
+        for (let i = 0; i < f.n; i++) {
+          const b = spawn(f); f.birds.push(b);
+          if (instant) { const p = b.choosePlace(); b.pos.copy(p); b.setState('idle', Math.random() * 2); b.pose(p.y); }
+          else { b.pos.set(0, -999, 0); b.setState('wait', 99); b.pose(-999); b.wake = delay + i * 0.25; }
+        }
+        if (!instant) events.push({ type: 'llega', f, delay });
+      } else if (!here && active.length) {
+        const delay = (f.sp.id % 7) / 7 * MONTH_SECS * 0.4;
+        for (const b of active) b.leaveAt = delay + Math.random() * 0.6;
+        events.push({ type: 'se va', f, delay });
       }
     }
+    return events;
   }
 
-  function place(b, time) {
-    let pos, heading = 0, flap = 1, lift = 0;
-    if (b.state === 'away') { pos = b.out; flap = 0; }
-    else if (b.state === 'here') {
-      const hop = Math.max(0, Math.sin(time * 1.3 + b.phase * 3)) ** 8; // de vez en cuando un salto o un aleteo corto
-      pos = _p.copy(b.rest); lift = hop * 0.5; flap = 0.15 + hop; heading = b.phase;
-    } else {
-      const k = ease(Math.min(1, Math.max(0, b.t / FLY)));
-      const a = b.state === 'arriving' ? b.out : b.from, z = b.state === 'arriving' ? b.rest : b.out;
-      pos = _p.copy(a).lerp(z, k);
-      lift = Math.sin(k * Math.PI) * 6; // arco de vuelo
-      heading = Math.atan2(z.x - a.x, z.z - a.z);
-      if (b.t < 0) pos = a;
-    }
-    b.pos = (b.pos || new THREE.Vector3()).copy(pos);
-    const vis = b.state !== 'away' && !(b.state === 'leaving' && b.t >= FLY);
-    const sc = vis ? 1.5 : 0; // exagerada, como en una maqueta: a escala real no se verían desde la torre
-    _s.set(sc, sc * (0.35 + 0.65 * Math.abs(Math.sin(time * 14 * flap + b.phase))), sc);
-    _q.setFromEuler(_e.set(0, heading, 0));
-    _m.compose(_p.set(pos.x, pos.y + 0.35 + lift, pos.z), _q, _s);
-    meshes[b.cls].setMatrixAt(b.idx, _m);
-  }
-
-  function update(dt, time) {
+  function update(dt) {
     t = (t + dt) % YEAR_SECS;
-    const mi = Math.floor(t / MONTH);
-    if (mi !== month) enterMonth(mi);
-    for (const b of birds) {
-      if (b.state === 'arriving' || b.state === 'leaving') {
-        b.t += dt;
-        if (b.t >= FLY) b.state = b.state === 'arriving' ? 'here' : 'away';
-      }
-      place(b, time);
+    const mi = Math.floor(t / MONTH_SECS);
+    const events = mi !== month ? setMonth(mi, false) : [];
+    for (const f of flocks.values()) for (const b of f.birds) {
+      if (b.wake != null && (b.wake -= dt) <= 0) { b.wake = null; b.arriveFrom(f.side); }
+      if (b.leaveAt != null && (b.leaveAt -= dt) <= 0) { b.leaveAt = null; b.leaveTo(f.side); }
     }
-    for (const m of Object.values(meshes)) m.instanceMatrix.needsUpdate = true;
-    return { month: mi, progress: t / YEAR_SECS };
+    acc += dt; // aves a 15 Hz, como en el Aviario
+    for (let n = 0; acc >= 1 / 15 && n < 4; n++, acc -= 1 / 15) for (const f of flocks.values()) for (const b of f.birds) if (b.state !== 'wait') b.sim(1 / 15);
+    for (const f of flocks.values()) {
+      for (const b of f.birds) {
+        if (b.gone) { f.zone.g.remove(b.m.group, b.blob); continue; }
+        const gy = f.zone.sc.heightAt(b.pos.x, b.pos.z), y = b.m.group.position.y, lift = Math.max(0, y - gy);
+        b.blob.position.set(b.pos.x, (b.swimming ? y : gy) + 0.06, b.pos.z);
+        b.blob.visible = b.state !== 'wait' && lift < 25;
+        b.blob.scale.setScalar(1.6 * b.s * (1 + lift * 0.04));
+      }
+      f.birds = f.birds.filter(b => !b.gone);
+    }
+    return { month: mi, progress: t / YEAR_SECS, events };
   }
 
-  const reset = () => { // el año empieza con las de enero ya posadas
-    t = 0; month = 0;
-    const jan = new Set(region.months[0].especies.map(e => e.id));
-    for (const b of birds) b.state = jan.has(b.sp.id) ? 'here' : 'away';
-  };
+  function reset() { // el año empieza con las de enero ya posadas
+    for (const f of flocks.values()) { for (const b of f.birds) f.zone.g.remove(b.m.group, b.blob); f.birds = []; }
+    t = 0; month = -1; setMonth(0, true); month = 0;
+  }
   reset();
-  return { root, update, reset, counts, months: region.months, dispose: () => { geo.dispose(); for (const m of Object.values(meshes)) m.material.dispose(); } };
+
+  const center = new THREE.Vector3(0, minY, 0);
+  const radius = Math.hypot(W, D) / 2;
+  const animate = time => { for (const z of zones) z.sc.animate?.(time); };
+  const dispose = () => root.traverse(o => { if (!o.userData.ink) o.geometry?.dispose(); });
+  const birds = () => [...flocks.values()].reduce((a, f) => a + f.birds.length, 0);
+  return { root, zones, months: region.months, center, radius, update, reset, animate, dispose, birds, flocks };
 }
