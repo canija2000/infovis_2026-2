@@ -1,4 +1,4 @@
-// Mirador: el Aviario para los binoculares de cartón (teléfono + Arduino como teclado USB).
+// Mirador: el Aviario para el visor de binoculares (solo el teléfono).
 // No se camina: eliges una región y una de sus zonas, quedas de pie en el centro y giras. Las aves
 // destacadas de la zona están fijas en un círculo alrededor, cada especie siempre en el mismo lugar del
 // año; las que no se registran ese mes dejan su lugar vacío. La mira elige el ave más cercana al centro:
@@ -8,7 +8,7 @@
 // en el visor (empieza solo cuando queda de lado y quieto) → se explora solo con el giroscopio:
 // mantener un ave en la mira abre su ficha y la acerca, y si se sigue mirando la fotografía; mirar al
 // cielo pasa al mes siguiente; mirar al suelo abre la libreta; sacar el teléfono (vertical) pausa.
-// El teclado (o el Arduino de arduino/binoculares_teclado) sigue sirviendo: Espacio = foto ·
+// En el computador, el teclado: Espacio = foto ·
 // Enter = ficha · Z / X = zoom · M = mes siguiente · Esc = pausa.
 /* global THREE */
 import { shared, createRenderer } from './ps1.js';

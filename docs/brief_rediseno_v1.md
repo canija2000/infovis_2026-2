@@ -3,6 +3,10 @@
 Documento de contexto para un agente que trabaja en la nube sobre este
 repositorio. Léelo completo antes de escribir código.
 
+> **Nota (16 de noviembre de 2026):** documento histórico de la V1. Las notas de septiembre que cita
+> (`propuesta_mejoras.md`, `refactorizacion_sounds_api.md`, `instrucciones_re_pull_de_datos.md`) se
+> borraron del repo; siguen en el historial de git.
+
 ## 1. El curso y la entrega
 
 Proyecto del curso de Visualización de Información. Pauta:
