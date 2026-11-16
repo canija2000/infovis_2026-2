@@ -497,13 +497,15 @@ function flockSound(ev) {
   const f0 = ev.f.clase === 'verano' ? 880 : 330, n = Math.min(4, ev.f.n + 1), up = ev.type === 'llega';
   for (let i = 0; i < n; i++) setTimeout(() => blip(f0 * (up ? 1 + i * 0.12 : 1.4 - i * 0.12), 0.05), (ev.delay + 0.3 + i * 0.09) * 1000);
 }
-// La barra de arriba: región, mes y año, especies en total y por clase, y el avance del año.
+// La barra de arriba, en una línea: [región | año | E F M A M J J A S O N D | residentes | verano | invierno | total],
+// con una segunda fila chica que nombra los números.
 function updateBar(mi, p) {
   const m = S.board.months[mi];
-  html('.e-bar', `<div class="row"><b>${S.reg.meta.name}</b><span class="when">${S.index.months[mi]} ${YEAR}</span>`
-    + `<span class="n"><em>${m.presentes}</em> especies</span>`
-    + `<span class="k residente"><em>${m.residentes}</em> residentes</span><span class="k verano"><em>${m.verano}</em> verano</span><span class="k invierno"><em>${m.invierno}</em> invierno</span></div>`
-    + `<div class="year">${S.index.months.map((n, k) => `<i class="${k === mi ? 'on' : k < mi ? 'past' : ''}">${n.slice(0, 3)}</i>`).join('')}<u style="width:${(p * 100).toFixed(1)}%"></u></div>`);
+  const months = S.index.months.map((n, k) => `<i class="${k === mi ? 'on' : k < mi ? 'past' : ''}">${n[0].toUpperCase()}</i>`).join('');
+  html('.e-bar', `<b class="reg">${S.reg.meta.name}</b><span class="yr">${YEAR}</span>`
+    + `<span class="mo">${months}<u style="width:${(p * 100).toFixed(1)}%"></u></span>`
+    + `<em class="k residente">${m.residentes}</em><em class="k verano">${m.verano}</em><em class="k invierno">${m.invierno}</em><em class="tot">${m.presentes}</em>`
+    + `<small class="l1">residentes</small><small class="l2">verano</small><small class="l3">invierno</small><small class="l4">total</small>`);
 }
 // Etiqueta de cada zona sobre la maqueta, a mano (como en un cuaderno de campo).
 function clearTags() { for (const g of S.tags || []) for (const el of g.els) el.remove(); S.tags = []; }
