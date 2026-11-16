@@ -1,8 +1,8 @@
 # Mirador (binoculares)
 
 `web/mirador/` es el Aviario 3D adaptado para la instalación de los binoculares: un teléfono dentro de un visor de
-MDF (`fisico/visor_laser/`). **Toda la interacción sale del teléfono** (su giroscopio); el Arduino ya no es necesario, aunque
-sus teclas siguen funcionando. No se camina: se elige una región y una de sus zonas ya modeladas, uno queda
+MDF (`fisico/visor_laser/`). **Toda la interacción sale del teléfono** (su giroscopio). En el computador se prueba
+con el teclado. No se camina: se elige una región y una de sus zonas ya modeladas, uno queda
 de pie en el centro y gira.
 
 ## Dos vistas
@@ -145,17 +145,17 @@ El Mirador muestra **una sola imagen**, que se mira con los dos ojos a través d
 de dos tubos, el engranaje de la pantalla de inicio tiene la opción «Dos círculos», con su separación y tamaño
 (en % del ancho de la pantalla).
 
-## Teclado y Arduino (opcional)
+## Teclado (para probar en el computador)
 
-| Arduino | Tecla | Acción |
-| --- | --- | --- |
-| FOTO, toque corto | Espacio | foto |
-| FOTO, mantener | Esc | pausa |
-| INFO, toque corto | Enter | ficha |
-| INFO, mantener | M (N) | mes siguiente (anterior) |
-| rueda | Z / X | zoom (desactiva el zoom automático hasta cambiar de ave) |
-| | flechas / arrastrar | girar sin giroscopio |
-| | L · C · B | libreta · recentrar · uno o dos lentes |
+| Tecla | Acción |
+| --- | --- |
+| Espacio | foto |
+| Esc | pausa |
+| Enter | ficha |
+| M (N) | mes siguiente (anterior) |
+| Z / X | zoom (desactiva el zoom automático hasta cambiar de ave) |
+| flechas / arrastrar | girar sin giroscopio |
+| L · C · B | libreta · recentrar · uno o dos lentes |
 
 ## Origen
 

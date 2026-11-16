@@ -102,9 +102,8 @@ GBIF (11 descargas anuales, Aves, Chile)
 - `docs/proceso/`: bitácora de versiones (V1 → V4) para la entrega.
 - `python_scripts/python_historicos/`: scripts antiguos, conservados como
   evidencia del proceso (no se usan en la web). Ver «Estructura de scripts».
-  Documentación asociada: `docs/re_pull_regional.md` e
-  `instrucciones_re_pull_de_datos.md` (ruta eBird por región, abandonada por
-  errores 429 sostenidos), `testeo.ipynb`.
+  Documentación asociada: `docs/re_pull_regional.md` (ruta eBird por región,
+  abandonada por errores 429 sostenidos).
 - `CAMBIOS.md`: registro compartido de cambios, ideas e innovaciones del equipo.
 
 ## Estructura de scripts
