@@ -16,7 +16,7 @@
 <link rel="icon" href="img/icono-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Pixelify+Sans:wght@400;600;700&family=Righteous&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Kalam:wght@400;700&family=Mukta:wght@500;700&family=Caveat:wght@500;700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Pixelify+Sans:wght@400;600;700&family=Righteous&display=swap">
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/mirador.css">
 </head>
@@ -37,6 +37,7 @@
     <div class="e-toast" hidden></div>
     <div class="e-book" hidden></div>
     <div class="e-sky" hidden></div>
+    <div class="e-bar"></div>
   </div>
 </template>
 
@@ -44,8 +45,8 @@
 <div id="pick" class="screen setup">
   <header class="bar">
     <span class="logo">AVIARIO</span>
-    <span class="sw" id="opt-modo" role="radiogroup" aria-label="Modo de juego">
-      <button data-modo="mirar" role="radio">MIRAR</button><button data-modo="caminar" role="radio">CAMINAR</button>
+    <span class="sw" id="opt-modo" role="radiogroup" aria-label="Vista">
+      <button data-vista="inmersiva" role="radio">INMERSIVA</button><button data-vista="explorar" role="radio">EXPLORAR</button>
     </span>
     <button class="gear" id="b-gear" aria-label="Ajustes" aria-expanded="false">⚙</button>
   </header>
@@ -66,6 +67,9 @@
   <div class="sheet" id="ajustes" hidden>
     <h2>Ajustes</h2>
     <p class="install" id="install" hidden></p>
+    <div class="setup-box" id="walk-box">
+      <label class="row"><input type="checkbox" id="opt-walk"> Caminar en el lugar para avanzar (solo Explorar)</label>
+    </div>
     <div class="setup-box" id="lens-box">
       <label class="row"><input type="checkbox" id="opt-bino"> Dos círculos (solo para un visor de dos tubos)</label>
       <div id="lens-opts">

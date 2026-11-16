@@ -13,13 +13,15 @@ export const shared = {
   uFogNear: { value: 14 }, uFogFar: { value: 46 },
   uSnow: { value: 0 },
   uCutNear: { value: 0 }, // corte de visión: props a menos de esta distancia de la cámara se disuelven
+  // Estilo ilustración (vista inmersiva, como el mundo InStep): luz en tres bandas, sin trama de color.
+  uToon: { value: 0 },
 };
 
 const VS = `
   uniform vec2 uSnap; uniform float uJitter; uniform float uAffine;
   uniform vec3 uLightDir; uniform vec3 uLightCol; uniform vec3 uAmb;
   uniform float uFogNear; uniform float uFogFar; uniform vec2 uRepeat; uniform vec2 uOffset; uniform float uTwoSided; uniform float uSteady;
-  varying vec3 vUvw; varying vec3 vLight; varying float vFog; varying float vUp; varying float vDepth; varying vec3 vCol;
+  varying vec3 vUvw; varying vec3 vLight; varying float vFog; varying float vUp; varying float vDepth; varying vec3 vCol; varying float vD;
   void main() {
     #ifdef USE_COLOR
       vCol = color.rgb;
@@ -43,7 +45,7 @@ const VS = `
     vUp = normalize(mat3(modelMatrix) * nrm).y;
     float d = dot(n, uLightDir);
     d = uTwoSided > 0.5 ? abs(d) : max(d, 0.0);
-    vLight = uAmb + uLightCol * d;
+    vLight = uAmb + uLightCol * d; vD = d;
     float w = uAffine > 0.5 ? p.w : 1.0;
     vUvw = vec3((uv * uRepeat + uOffset) * w, w);
     vFog = clamp((-mv.z - uFogNear) / (uFogFar - uFogNear), 0.0, 1.0);
@@ -53,9 +55,10 @@ const VS = `
 const FS = `
   uniform sampler2D map; uniform vec3 uTint; uniform float uDither; uniform vec3 uFogColor;
   uniform float uAlphaMode; uniform float uSnow; uniform float uSnowable; uniform float uFlash;
-  uniform float uCutNear; uniform float uCutaway; uniform float uVcol;
+  uniform float uCutNear; uniform float uCutaway; uniform float uVcol; uniform float uToon;
+  uniform vec3 uAmb; uniform vec3 uLightCol;
   uniform sampler2D uDetail; uniform float uDetailAmt; uniform vec2 uDetailRep;
-  varying vec3 vUvw; varying vec3 vLight; varying float vFog; varying float vUp; varying float vDepth; varying vec3 vCol;
+  varying vec3 vUvw; varying vec3 vLight; varying float vFog; varying float vUp; varying float vDepth; varying vec3 vCol; varying float vD;
   float b2(vec2 a) { a = floor(a); return fract(dot(a, vec2(0.5, a.y * 0.75))); }
   float bayer(vec2 a) { return b2(0.5 * a) * 0.25 + b2(a); }
   void main() {
@@ -68,9 +71,14 @@ const FS = `
     base *= mix(vec3(1.0), pow(vCol, vec3(1.0 / 2.2)), uVcol); // sombra horneada en colores por vértice (modelos N64)
     if (uDetailAmt > 0.0) base *= mix(vec3(1.0), texture2D(uDetail, vUvw.xy / vUvw.z * uDetailRep).rgb * 2.0, uDetailAmt); // grano repetido (suelo)
     if (uSnowable > 0.5) base = mix(base, vec3(0.93, 0.95, 1.0), uSnow * smoothstep(0.55, 0.9, vUp) * step(th, 0.85));
-    vec3 c = base * vLight + uFlash;
+    vec3 light = vLight;
+    if (uToon > 0.5) { // tres bandas de luz con bordes suaves: sombra, media luz, luz
+      float band = 0.5 * smoothstep(0.08, 0.16, vD) + 0.5 * smoothstep(0.5, 0.58, vD);
+      light = uAmb * 1.25 + uLightCol * (0.15 + 0.85 * band);
+    }
+    vec3 c = base * light + uFlash;
     c = mix(c, uFogColor, vFog);
-    if (uDither > 0.5) { c += (th - 0.47) / 40.0; c = floor(c * 31.0 + 0.5) / 31.0; }
+    if (uDither > 0.5 && uToon < 0.5) { c += (th - 0.47) / 40.0; c = floor(c * 31.0 + 0.5) / 31.0; }
     gl_FragColor = vec4(c, 1.0);
   }`;
 

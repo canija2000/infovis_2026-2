@@ -5,6 +5,39 @@ MDF (`fisico/visor_laser/`). **Toda la interacción sale del teléfono** (su gir
 sus teclas siguen funcionando. No se camina: se elige una región y una de sus zonas ya modeladas, uno queda
 de pie en el centro y gira.
 
+## Dos vistas
+
+Al elegir la zona, el interruptor de arriba elige la vista:
+
+- **Inmersiva** (por defecto): no se elige zona. El año 2024 de la región pasa en 72 s (6 s por mes) sobre
+  una maqueta con **todas sus zonas**, vista desde una torre; girar el teléfono da la vuelta alrededor. Cada
+  especie registrada ese mes es una bandada con **su propio modelo** (el del Aviario), que se posa en la zona
+  de su hábitat (biomas de AVONET): llega volando (las de verano desde el norte, las de invierno desde el sur) y
+  se va cuando deja de registrarse. Arriba, una sola barra con región, mes, especies y cuántas son residentes, de
+  verano y de invierno. Estilo de ilustración, como el mundo InStep: luz en tres bandas, contorno de tinta y
+  barra de cuaderno de campo. Hay un tope de 110 aves en escena (primero las visitantes). Código: `js/inmersiva.js`.
+- **Explorar**: la vista de primera persona descrita abajo (mira, ficha, foto, letreros de viaje).
+
+`?vista=inmersiva` o `?vista=explorar` la fija desde la URL.
+
+### Datos de las bandadas y del servo
+
+`data/bandadas-2024.json` y `data/bandadas-2024.csv` salen de `node scripts/bandadas.mjs` (desde la raíz del
+repo). Son por **región**: las zonas casi no tienen registros propios. Una especie cuenta como presente en un mes
+si se registró al menos 3 días de ese mes en 2024.
+
+El CSV tiene una fila por región y mes, para el servo o el Arduino:
+
+| Columna | Qué es |
+| --- | --- |
+| `presentes`, `llegan`, `se_van` | especies presentes ese mes, y cuántas llegan o se van respecto del mes anterior |
+| `residentes`, `verano`, `invierno` | especies presentes de cada clase |
+| `aves_*` | suma de la fracción de días con registro de cada especie: el «tamaño» total de las bandadas |
+| `indice_verano`, `indice_invierno`, `indice_visitantes` | 0 a 100 respecto del mes con más en la región: listo para un ángulo |
+
+El año dura `YEAR_SECS = 72` s (`MONTH_SECS = 6`, en `js/inmersiva.js`): si el servo corre su propio reloj, debe
+usar el mismo.
+
 ## Recorrido
 
 1. **QR de la región.** Cada visor tiene impreso el código de una región (`qr.html` los genera;
