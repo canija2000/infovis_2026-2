@@ -524,17 +524,21 @@ function updateTags() {
       const r = S.rects[k], on = r && _t.z < 1;
       el.hidden = !on; if (!on) return;
       el.style.left = r.x + (_t.x + 1) / 2 * r.w + 'px'; el.style.top = r.y + (1 - _t.y) / 2 * r.h + 'px';
-      el.style.fontSize = Math.min(r.h, r.w * 0.8) * 0.04 + 'px';
+      el.style.fontSize = Math.min(r.h, r.w * 0.8) * 0.022 + 'px';
     });
   }
 }
+const _look = new THREE.Vector3();
 function frameInmersiva(dt, now) {
-  const B = S.board, { month, progress: p, events } = B.update(dt);
+  const B = S.board, { month, progress: p, events } = B.update(dt, camera.position);
   if (month !== S.month) { S.month = month; seasonLight(month); if (S.mode === 'look') blip(month === 0 ? 990 : 520, 0.05); }
   for (const ev of events) flockSound(ev);
   updateBar(month, p);
-  const h = S.heading, c = B.center, d = B.radius * 1.1;
-  camera.position.set(c.x - Math.sin(h) * d, c.y + B.radius * 0.9, c.z + Math.cos(h) * d);
+  // Mirar hacia abajo acerca la torre al terreno (zoom), hacia donde se mira.
+  const zk = clamp((-S.pitch - 0.35) / 0.75, 0, 1), z = zk * zk * (3 - 2 * zk);
+  const h = S.heading, d = B.radius * (1.1 - 0.6 * z), up = B.radius * (0.9 - 0.5 * z), ahead = B.radius * 0.2 * z;
+  const c = _look.set(B.center.x + Math.sin(h) * ahead, B.center.y, B.center.z - Math.cos(h) * ahead);
+  camera.position.set(c.x - Math.sin(h) * d, c.y + up, c.z + Math.cos(h) * d);
   camera.lookAt(c.x, c.y, c.z); camera.fov = CFG.fovWide; camera.far = 1500; camera.updateProjectionMatrix(); camera.updateMatrixWorld();
   shared.uLightDir.value.set(0.45, 1, 0.35).normalize().transformDirection(camera.matrixWorldInverse);
   setListener(camera.position, camera.getWorldDirection(new THREE.Vector3()));
@@ -913,7 +917,7 @@ function frame(now) {
     }
   }
   S.heading = wrap(S.heading);
-  if (S.board) { if (!gyro.have && !turn) S.heading += dt * 0.05; frameInmersiva(dt, now); renderEyes(); return; }
+  if (S.board) { if (!gyro.have && !turn) S.heading += dt * 0.05; if (!gyro.have) S.pitch = clamp(S.pitch, -1.2, 0); frameInmersiva(dt, now); renderEyes(); return; }
   if (S.walk) walkStep(dt);
   if (Math.abs(S.fov - S.fovGoal) > 0.02) S.fov += (S.fovGoal - S.fov) * Math.min(1, dt * 10);
   camera.fov = S.fov; camera.updateProjectionMatrix();

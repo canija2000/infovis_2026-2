@@ -16,6 +16,11 @@ Al elegir la zona, el interruptor de arriba elige la vista:
   se va cuando deja de registrarse. Arriba, una sola barra con región, mes, especies y cuántas son residentes, de
   verano y de invierno. Estilo de ilustración, como el mundo InStep: luz en tres bandas, contorno de tinta y
   barra de cuaderno de campo. Hay un tope de 110 aves en escena (primero las visitantes). Código: `js/inmersiva.js`.
+  - El contorno de cada ave es el color de su clase (verde residente, naranja verano, azul invierno).
+  - Mirar hacia abajo acerca la torre al terreno (zoom); en el computador, flecha abajo.
+  - Cada 2,5 a 5 s un ave posada pasa volando cerca de la torre y vuelve a su lugar.
+  - Las aves se agrandan para verse desde lejos, pero comprimiendo el largo: miden de ~1,9 m (picaflor) a ~3,5 m
+    (cóndor), en vez de multiplicar a todas por lo mismo.
 - **Explorar**: la vista de primera persona descrita abajo (mira, ficha, foto, letreros de viaje).
 
 `?vista=inmersiva` o `?vista=explorar` la fija desde la URL.
