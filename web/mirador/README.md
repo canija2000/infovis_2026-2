@@ -19,6 +19,9 @@ Al elegir la zona, el interruptor de arriba elige la vista:
   - El contorno de cada ave es el color de su clase (verde residente, naranja verano, azul invierno).
   - Mirar hacia abajo acerca la torre al terreno (zoom); en el computador, flecha abajo.
   - Cada 2,5 a 5 s un ave posada pasa volando cerca de la torre y vuelve a su lugar.
+  - Los nombres de las zonas van pintados en el tablero, en el borde de afuera de cada una.
+  - Alrededor, el paisaje sigue: la cordillera de los Andes al este (al oeste en Magallanes) y el mar o los cerros
+    costeros al otro lado. Mirar hacia arriba levanta la vista al horizonte.
   - Las aves se agrandan para verse desde lejos, pero comprimiendo el largo: miden de ~1,9 m (picaflor) a ~3,5 m
     (cóndor), en vez de multiplicar a todas por lo mismo.
 - **Explorar**: la vista de primera persona descrita abajo (mira, ficha, foto, letreros de viaje).

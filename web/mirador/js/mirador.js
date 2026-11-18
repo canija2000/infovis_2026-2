@@ -266,7 +266,7 @@ async function enterRegion(code, quiet = false) { // quiet: sin volver al select
 
 function leaveZone() {
   setLock(null); clearSigns();
-  S.board?.dispose(); S.board = null; shared.uToon.value = 0; clearTags();
+  S.board?.dispose(); S.board = null; shared.uToon.value = 0;
   if (S.world) S.sc.root.traverse(o => o.geometry?.dispose());
   S.world = null; S.sc = null; S.birds = [];
   clearMarks();
@@ -462,7 +462,7 @@ function seasonLight(m) {
   shared.uLightCol.value.set(L.sun); shared.uAmb.value.set(L.amb);
   if (S.board) { // la maqueta entera: niebla lejana y cada zona con su estación
     S.fog = L.fog; shared.uFogColor.value.set(S.fog);
-    shared.uFogNear.value = S.board.radius * 2.2; shared.uFogFar.value = S.board.radius * 4.5;
+    shared.uFogNear.value = S.board.radius * 3; shared.uFogFar.value = S.board.radius * 22; // la cordillera se ve, desvaída
     for (const z of S.board.zones) shared.uSnow.value = Math.max(z.sc.setSeason(season, m) || 0, 0);
     return season;
   }
@@ -488,7 +488,7 @@ async function enterBoard() {
   Object.assign(S, { board, world, sc: board.zones[0].sc, sceneKey: 'region', zoneSpecies: [], birds: [] });
   S.month = -1; S.heading = S.startHeading = 0;
   seasonLight(0); setAmbience(board.zones[0].key);
-  buildTags(); layout();
+  layout();
 }
 // Sonido de cada bandada: las de verano agudas, las de invierno graves; al llegar la nota sube y al irse baja,
 // y suena una nota por ave de la bandada (más grande, más larga).
@@ -507,27 +507,6 @@ function updateBar(mi, p) {
     + `<em class="k residente">${m.residentes}</em><em class="k verano">${m.verano}</em><em class="k invierno">${m.invierno}</em><em class="tot">${m.presentes}</em>`
     + `<small class="l1">residentes</small><small class="l2">verano</small><small class="l3">invierno</small><small class="l4">total</small>`);
 }
-// Etiqueta de cada zona sobre la maqueta, a mano (como en un cuaderno de campo).
-function clearTags() { for (const g of S.tags || []) for (const el of g.els) el.remove(); S.tags = []; }
-function buildTags() {
-  clearTags();
-  for (const z of S.board.zones) {
-    const els = S.rects.map(() => { const el = document.createElement('span'); el.className = 'ztag'; el.textContent = SCENE_LABEL[z.key] || cap(z.key); $('signs').appendChild(el); return el; });
-    S.tags.push({ z, els });
-  }
-}
-const _t = new THREE.Vector3();
-function updateTags() {
-  for (const { z, els } of S.tags) {
-    _t.set(-Math.sin(S.heading) * z.sc.half * 0.9, z.sc.heightAt(0, 0) + 2, Math.cos(S.heading) * z.sc.half * 0.9).applyMatrix4(z.g.matrixWorld).project(camera); // en el borde de la zona más cercano a la torre
-    els.forEach((el, k) => {
-      const r = S.rects[k], on = r && _t.z < 1;
-      el.hidden = !on; if (!on) return;
-      el.style.left = r.x + (_t.x + 1) / 2 * r.w + 'px'; el.style.top = r.y + (1 - _t.y) / 2 * r.h + 'px';
-      el.style.fontSize = Math.min(r.h, r.w * 0.8) * 0.022 + 'px';
-    });
-  }
-}
 const _look = new THREE.Vector3();
 function frameInmersiva(dt, now) {
   const B = S.board, { month, progress: p, events } = B.update(dt, camera.position);
@@ -539,11 +518,12 @@ function frameInmersiva(dt, now) {
   const h = S.heading, d = B.radius * (1.1 - 0.6 * z), up = B.radius * (0.9 - 0.5 * z), ahead = B.radius * 0.2 * z;
   const c = _look.set(B.center.x + Math.sin(h) * ahead, B.center.y, B.center.z - Math.cos(h) * ahead);
   camera.position.set(c.x - Math.sin(h) * d, c.y + up, c.z + Math.cos(h) * d);
-  camera.lookAt(c.x, c.y, c.z); camera.fov = CFG.fovWide; camera.far = 1500; camera.updateProjectionMatrix(); camera.updateMatrixWorld();
+  // Mirar hacia arriba levanta la vista hacia el horizonte: la cordillera o el mar alrededor.
+  const uk = clamp((S.pitch + 0.05) / 0.5, 0, 1), e0 = Math.atan2(-up, d), e = e0 + (0.14 - e0) * uk * uk * (3 - 2 * uk);
+  camera.lookAt(camera.position.x + Math.sin(h) * Math.cos(e), camera.position.y + Math.sin(e), camera.position.z - Math.cos(h) * Math.cos(e)); camera.fov = CFG.fovWide; camera.far = 3000; camera.updateProjectionMatrix(); camera.updateMatrixWorld();
   shared.uLightDir.value.set(0.45, 1, 0.35).normalize().transformDirection(camera.matrixWorldInverse);
   setListener(camera.position, camera.getWorldDirection(new THREE.Vector3()));
   B.animate(now / 1000);
-  updateTags();
 }
 
 // ------------------------------------------------------------------ letreros de viaje
@@ -917,7 +897,7 @@ function frame(now) {
     }
   }
   S.heading = wrap(S.heading);
-  if (S.board) { if (!gyro.have && !turn) S.heading += dt * 0.05; if (!gyro.have) S.pitch = clamp(S.pitch, -1.2, 0); frameInmersiva(dt, now); renderEyes(); return; }
+  if (S.board) { if (!gyro.have && !turn) S.heading += dt * 0.05; if (!gyro.have) S.pitch = clamp(S.pitch, -1.2, 0.6); frameInmersiva(dt, now); renderEyes(); return; }
   if (S.walk) walkStep(dt);
   if (Math.abs(S.fov - S.fovGoal) > 0.02) S.fov += (S.fovGoal - S.fov) * Math.min(1, dt * 10);
   camera.fov = S.fov; camera.updateProjectionMatrix();

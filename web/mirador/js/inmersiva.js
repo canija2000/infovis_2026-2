@@ -7,7 +7,7 @@
 // Estilo «ilustración» (como el mundo InStep): luz en tres bandas (shared.uToon), contorno de tinta en aves y
 // vegetación, cielo en degradé y sombra de contacto bajo cada ave.
 /* global THREE */
-import { shared } from './ps1.js';
+import { shared, mat, texPlain, mulberry32 } from './ps1.js';
 import { buildScene, SCENE_DENSITY, WORLD } from './scene.js';
 import { BirdAgent } from './aviary.js';
 
@@ -22,6 +22,16 @@ const FLYBY_EVERY = [2.5, 5]; // s entre pasadas de un ave cerca de la torre
 const PER_SPECIES = { residente: 1, verano: 2, invierno: 2 }; // aves por especie si se registró todos los días
 const MAX_BIRDS = 110; // tope de aves en escena (rendimiento en el teléfono)
 const INK = new THREE.Color(0x1b1611);
+const MARGIN = 16; // m de tablero alrededor de las zonas: ahí van los nombres pintados
+// Qué hay alrededor de la maqueta en cada región (x+ = este, x− = oeste): la cordillera de los Andes y el mar
+// donde corresponden. En Magallanes los Andes quedan al oeste y el mar (estrecho) al este.
+const SURROUND = {
+  'CL-AP': { east: 'andes', west: 'mar', ground: 0xc9a46a, snow: 0.82 },
+  'CL-VS': { east: 'andes', west: 'mar', ground: 0xa7a35f, snow: 0.6 },
+  'CL-RM': { east: 'andes', west: 'cerros', ground: 0xa7a35f, snow: 0.55 },
+  'CL-LR': { east: 'andes', west: 'mar', ground: 0x6f9a4e, snow: 0.5 },
+  'CL-MA': { east: 'mar', west: 'andes', ground: 0x9aa36a, snow: 0.35 },
+};
 const CLASS_INK = { residente: 0x288665, verano: 0xee9b45, invierno: 0x4a7fd0 }; // contorno de cada ave: el color de su clase
 
 // ---------------------------------------------------------------------------- contorno de tinta
@@ -69,7 +79,7 @@ function skyDome() {
     fragmentShader: 'uniform vec3 uTop; uniform vec3 uHorizon; varying float vY; void main() { gl_FragColor = vec4(mix(uHorizon, uTop, smoothstep(-0.05, 0.55, vY)), 1.0); }',
     side: THREE.BackSide, depthWrite: false,
   });
-  const s = new THREE.Mesh(new THREE.SphereGeometry(600, 24, 12), m);
+  const s = new THREE.Mesh(new THREE.SphereGeometry(2600, 24, 12), m);
   s.renderOrder = -10; s.frustumCulled = false;
   return s;
 }
@@ -84,6 +94,72 @@ const blobTex = (() => {
 })();
 const blobGeo = new THREE.PlaneGeometry(1, 1).rotateX(-Math.PI / 2);
 const blobMat = new THREE.MeshBasicMaterial({ map: blobTex, transparent: true, depthWrite: false });
+
+// ---------------------------------------------------------------------------- nombres en el suelo
+const SCENE_LABEL = { ciudad: 'Ciudad', matorral: 'Matorral', rio: 'Río', cordillera: 'Cordillera', costa: 'Costa',
+  humedal: 'Humedal', desierto: 'Desierto', valle: 'Valle', altiplano: 'Altiplano', bosque: 'Bosque', lago: 'Lago',
+  pradera: 'Pradera', fiordo: 'Fiordo', estepa: 'Estepa', bofedal: 'Bofedal' };
+// Texto pintado sobre el tablero: se lee derecho desde afuera de la maqueta (north = en el borde norte).
+function groundLabel(text, x, y, z, north) {
+  const c = document.createElement('canvas'); c.width = 1024; c.height = 192;
+  const g = c.getContext('2d');
+  g.font = '700 132px Kalam, "Baloo 2", cursive'; g.textAlign = 'center'; g.textBaseline = 'middle';
+  g.lineWidth = 10; g.strokeStyle = '#f3e8cf'; g.strokeText(text.toUpperCase(), 512, 100);
+  g.fillStyle = '#1b1611'; g.fillText(text.toUpperCase(), 512, 100);
+  const tex = new THREE.CanvasTexture(c); tex.anisotropy = 4;
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(WORLD * 0.8, WORLD * 0.15), new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false }));
+  m.rotation.x = -Math.PI / 2; if (north) m.rotation.z = Math.PI; // de cara a quien mira desde ese lado
+  m.position.set(x, y, z); m.renderOrder = 2;
+  return m;
+}
+
+// ---------------------------------------------------------------------------- el paisaje alrededor
+// Un suelo que sigue hasta el horizonte, la cordillera al este (o al oeste en Magallanes) y el mar o cerros
+// costeros al otro lado. Lejos y con niebla: completa la vista sin competir con la maqueta.
+function surround(cfg, W, D, y, seed) {
+  const g = new THREE.Group(), R = mulberry32([...seed].reduce((a, c) => a * 31 + c.charCodeAt(0), 3) >>> 0);
+  const far = 2200;
+  const ground = new THREE.Mesh(new THREE.PlaneGeometry(far * 2, far * 2).rotateX(-Math.PI / 2), mat(texPlain(), { tint: cfg.ground }));
+  ground.position.y = y; g.add(ground);
+  for (const [side, kind] of [[1, cfg.east], [-1, cfg.west]]) {
+    if (kind === 'mar') {
+      const sea = new THREE.Mesh(new THREE.PlaneGeometry(far, far * 2).rotateX(-Math.PI / 2), mat(texPlain(), { tint: 0x3f7fb5 }));
+      sea.position.set(side * (W / 2 + 70 + far / 2), y + 0.3, 0); g.add(sea);
+      const beach = new THREE.Mesh(new THREE.PlaneGeometry(26, far * 2).rotateX(-Math.PI / 2), mat(texPlain(), { tint: 0xe6d3a0 }));
+      beach.position.set(side * (W / 2 + 57), y + 0.2, 0); g.add(beach);
+    } else g.add(ridge(side, kind === 'andes' ? cfg.snow : 1.1, kind === 'andes' ? 1 : 0.28, W, y, R, far));
+  }
+  return g;
+}
+// Una cordillera en franjas: picos de altura variable a lo largo de norte–sur, con nieve sobre una altura.
+function ridge(side, snowAt, scale, W, y, R, far) {
+  const nz = 150, nx = 12, x0 = W / 2 + 420, depth = 700 * scale + 200, H = 300 * scale;
+  const pos = [], col = [], idx = [];
+  // perfil de cumbres a lo largo de norte–sur: suma de ondas con fases al azar, más un ruido por vértice
+  const ph = [...Array(4)].map(() => R() * 6.28);
+  const crest = i => 0.62 + 0.22 * Math.sin(i * 0.11 + ph[0]) + 0.12 * Math.sin(i * 0.37 + ph[1]) + 0.06 * Math.sin(i * 0.9 + ph[2]);
+  // roca oscura: el shader aclara los colores por vértice (gamma)
+  const rock = new THREE.Color(0x3a3029), rock2 = new THREE.Color(0x2a3140), snow = new THREE.Color(0xf6f3ec), c = new THREE.Color();
+  for (let i = 0; i <= nz; i++) for (let j = 0; j <= nx; j++) {
+    const u = j / nx, z = -far + (2 * far) * i / nz;
+    const prof = u < 0.45 ? Math.sin(Math.PI / 2 * u / 0.45) ** 1.6 : 1 - 0.5 * (u - 0.45) / 0.55; // sube a la cumbre y baja un poco
+    const h = H * crest(i) * prof * (0.85 + 0.3 * R()) * (j === 0 ? 0 : 1);
+    pos.push(side * (x0 + u * depth), y + h, z);
+    c.copy(rock).lerp(rock2, u * 0.8); if (h / H > snowAt) c.copy(snow);
+    col.push(c.r, c.g, c.b);
+  }
+  for (let i = 0; i < nz; i++) for (let j = 0; j < nx; j++) {
+    const a = i * (nx + 1) + j, b = a + 1, d = a + nx + 1, e = d + 1;
+    if (side > 0) idx.push(a, d, b, b, d, e); else idx.push(a, b, d, b, e, d);
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  geo.setAttribute('color', new THREE.Float32BufferAttribute(col, 3));
+  geo.setAttribute('uv', new THREE.Float32BufferAttribute(new Array(pos.length / 3 * 2).fill(0.5), 2));
+  geo.setIndex(idx);
+  const flat = geo.toNonIndexed(); flat.computeVertexNormals(); // caras planas: se lee como cordillera low poly
+  return new THREE.Mesh(flat, mat(texPlain(), { vcol: 1, twoSided: true }));
+}
 
 // ---------------------------------------------------------------------------- aves
 class FlockBird extends BirdAgent {
@@ -141,18 +217,25 @@ export function buildBoard({ index, reg, props, bandadas }) {
     const g = new THREE.Group(); g.position.set(x, 0, z);
     g.add(sc.root);
     for (const o of sc.root.children) if (o.isInstancedMesh) inkOutline(o); // contorno a la vegetación y casas
+    if (sc.water) sc.water.scale.set(1 / 1.6, 1, 1 / 1.6); // el mar de cada zona, solo dentro de su cuadro (no inunda el tablero)
     root.add(g);
     return { key, sc, g, name: reg.terrain.scenes[key].name, water: sc.waterSpots.length };
   });
   Object.assign(SCENE_DENSITY, saved);
   // base de la maqueta: un tablero de papel bajo todas las zonas, con borde de tinta
-  const W = cols * step + GAP, D = rows * step + GAP;
+  const W = cols * step - GAP + 2 * MARGIN, D = rows * step - GAP + 2 * MARGIN;
   const minY = Math.min(...zones.map(z => z.sc.heightAt(0, 0)));
   const base = new THREE.Mesh(new THREE.BoxGeometry(W, 4, D), new THREE.MeshBasicMaterial({ color: 0xe4d2aa }));
   base.position.y = minY - 3;
   const edges = new THREE.LineSegments(new THREE.EdgesGeometry(base.geometry), new THREE.LineBasicMaterial({ color: INK }));
   edges.position.copy(base.position);
   root.add(base, edges);
+  // nombres de las zonas pintados en el tablero, en el borde de afuera de cada una (como en una cancha)
+  for (const z of zones) {
+    const north = z.g.position.z < 0 || (rows === 1);
+    root.add(groundLabel(SCENE_LABEL[z.key] || z.key, z.g.position.x, minY - 0.95, z.g.position.z + (north ? -1 : 1) * (WORLD / 2 + MARGIN / 2), north));
+  }
+  root.add(surround(SURROUND[reg.meta.code] || SURROUND['CL-RM'], W, D, minY - 5, reg.meta.code));
 
   const center = new THREE.Vector3(0, minY, 0);
   const radius = Math.hypot(W, D) / 2;
