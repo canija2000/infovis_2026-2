@@ -9,8 +9,11 @@
 import { mat, makeTex, makeVary, mulberry32, texPlain, steady } from './ps1.js';
 
 const TAU = Math.PI * 2;
-const SIDES = 6;
+const SIDES = 12;
 const plain = texPlain();
+const bodyTexCache = new Map();
+const wingTexCache = new Map();
+const foldedTexCache = new Map();
 
 // Perfil del cuerpo a lo largo de su eje (s = −1.25 cola … 0.82 pecho alto): [s, fracción del radio, alza].
 // "alza" sube el centro del anillo (popa levantada del pato). Siluetas tomadas de las referencias
@@ -86,9 +89,10 @@ function skeleton(pl, f, hs, headBase, bl, br, plan) {
     R.push({ c, w: hs * thin, h: hs * (thin + 0.06), zone: 'cuello', wHead: 0.25 + 0.5 * k });
   }
   const hx = new THREE.Vector3(1, 0, 0);
-  R.push({ c: headBase.clone().addScaledVector(hx, -0.6 * hs).add(new THREE.Vector3(0, 0.02, 0)), w: hs * 0.82, h: hs * 0.86, zone: 'cabeza', wHead: 1 });
-  R.push({ c: headBase.clone(), w: hs * 0.95, h: hs * 1.0, zone: 'cabeza', wHead: 1, eye: true });
-  R.push({ c: headBase.clone().add(new THREE.Vector3(0.52 * hs, -0.03, 0)), w: hs * 0.72, h: hs * 0.74, zone: 'cabeza', wHead: 1 });
+  R.push({ c: headBase.clone().addScaledVector(hx, -0.62 * hs).add(new THREE.Vector3(0, 0.04 * hs, 0)), w: hs * 0.82, h: hs * 0.86, zone: 'cabeza', wHead: 1 });
+  R.push({ c: headBase.clone().add(new THREE.Vector3(0, 0.04 * hs, 0)), w: hs * 0.96, h: hs * 1.0, zone: 'cabeza', wHead: 1, eye: true });
+  R.push({ c: headBase.clone().add(new THREE.Vector3(0.45 * hs, 0.01 * hs, 0)), w: hs * 0.78, h: hs * 0.8, zone: 'cabeza', wHead: 1 });
+  R.push({ c: headBase.clone().add(new THREE.Vector3(0.72 * hs, -0.04 * hs, 0)), w: hs * 0.48, h: hs * 0.5, zone: 'cabeza', wHead: 1 });
   // pico: base y punta (la punta es un vértice)
   const beakBase = headBase.clone().add(new THREE.Vector3(0.88 * hs, -0.06, 0));
   if (pl.bill) { // pico ancho y plano (pato, cisne): se mantiene ancho hasta la punta
@@ -104,62 +108,128 @@ function skeleton(pl, f, hs, headBase, bl, br, plan) {
 
 // ---------- textura de la especie: u = a lo largo del ave (cola → pico), v = alrededor (vientre → lomo → vientre) ----------
 function paintSpecies(sp, P, layout) {
+  if (bodyTexCache.has(sp.id)) return bodyTexCache.get(sp.id);
   const R = mulberry32(2000 + sp.id);
   const vary = makeVary(R);
   const pat = sp.palette?.pattern || {};
   const aw = sp.palette?.accentWhere, acc = P.accent;
-  const W = 64, H = 32;
+  const W = 256, H = 128;
   const { uTailEnd, uBodyEnd, uNeckEnd, uEye, uBeak, uHeadFront } = layout;
+  const mul = (c, k) => [c[0] * k, c[1] * k, c[2] * k];
+  const feather = (x, y) => {
+    const row = (y >> 2), shift = (row & 1) * 4;
+    const fx = ((x + shift) & 7) / 7 - 0.5, fy = (y & 3) / 3;
+    return (fx * fx * 4 + fy > 0.95) ? 0.92 : 1.0 + (0.5 - fy) * 0.05;
+  };
   const patt = (zone, c, x, y) => {
     const p = pat[zone];
-    if (p === 'barred') return (x % 3 === 0) ? P.back_dark : vary(c, 9);
-    if (p === 'streaked') return (y % 4 === 0 && R() < 0.8) ? P.back_dark : vary(c, 9);
-    if (p === 'spotted') return (R() < 0.07) ? [30, 26, 28] : vary(c, 8);
-    return vary(c, 7);
+    if (p === 'barred') return (x % 7 < 2) ? vary(P.back_dark, 6) : vary(c, 8);
+    if (p === 'streaked') return (y % 6 < 2 && ((x + y * 3) % 11) < 8) ? vary(P.back_dark, 6) : vary(c, 8);
+    if (p === 'spotted') {
+      const gx = (x % 10) - 5, gy = (y % 8) - 4;
+      return (gx * gx + gy * gy < 4.5 && ((x / 10 | 0) * 7 + (y / 8 | 0) * 13) % 3 === 0) ? [30, 26, 28] : vary(c, 7);
+    }
+    return vary(c, 6);
   };
-  return makeTex(W, H, (x, yy) => {
+  const tex = makeTex(W, H, (x, yy) => {
     const u = (x + 0.5) / W, v = (yy + 0.5) / H;
     const side = Math.abs(v - 0.5) * 2; // 0 = lomo, 1 = vientre
     const up = 1 - side;                 // 1 = lomo
-    if (u > uBeak) return P.beak;
-    if (u < uTailEnd) { // cola: lomo con color de cola; abajo más oscuro
-      if (aw === 'subcaudales' && acc && side > 0.6) return vary(acc, 6);
+    // sombra ambiental suave bajo el vientre para dar volumen al cuerpo
+    const ao = 1 - 0.22 * Math.max(0, side - 0.55) / 0.45;
+    if (u > uBeak) {
+      const ridge = 1 + (up - 0.5) * 0.16;
+      return mul(P.beak, ridge);
+    }
+    if (u < uTailEnd) { // cola: plumas rectrices alargadas
+      if (aw === 'subcaudales' && acc && side > 0.58) return mul(vary(acc, 6), ao);
       const c = patt('tail', aw === 'ala y cola' && acc ? acc : P.tail, x, yy);
-      return side > 0.6 ? c.map(k => k * 0.8) : c;
+      const quill = (yy % 5 === 0) ? 0.88 : 1;
+      return mul(c, (side > 0.6 ? 0.8 : 1) * quill);
     }
-    if (u > uNeckEnd) { // cabeza
+    if (u > uNeckEnd) { // cabeza (los ojos son mallas 3D; aquí solo anillo ocular sutil y máscara)
       const ex = (u - uEye) * W, ey = (Math.min(Math.abs(v - 0.25), Math.abs(v - 0.75))) * H;
-      if (Math.abs(ex) < 1.2 && ey < 1.3) return ex > 0.2 && Math.abs(v - 0.25) < 0.5 / H + 0.02 ? [210, 210, 210] : P.eye;
+      const ed = Math.hypot(ex * 0.9, ey);
+      if (ed > 3.2 && ed < 5.0) return mul(vary(P.throat, 4), 0.96); // anillo ocular sutil
       if (acc) {
-        if (aw === 'bigote' && ey > 1.5 && ey < 3 && side > 0.4 && u > uEye - 0.04) return vary(acc, 5);
-        if (aw === 'frente' && up > 0.7 && u > uHeadFront - 0.02) return vary(acc, 4);
-        if (aw === 'gorguera' && side > 0.7) return (x + yy) % 3 === 0 ? [220, 230, 255] : vary(acc, 8);
-        if (aw === 'collar' && u < uEye - 0.03 && side > 0.3) return vary(acc, 6);
+        if (aw === 'bigote' && ey > 4 && ey < 9 && side > 0.38 && u > uEye - 0.04) return mul(vary(acc, 5), ao);
+        if (aw === 'frente' && up > 0.65 && u > uHeadFront - 0.03) return vary(acc, 4);
+        if (aw === 'gorguera' && side > 0.68) return (x + yy) % 4 === 0 ? [220, 232, 255] : vary(acc, 8);
+        if (aw === 'collar' && u < uEye - 0.03 && side > 0.28) return mul(vary(acc, 6), ao);
       }
-      if (side > 0.72) return vary(P.throat, 5);            // garganta
-      if (pat.head === 'striped' && up > 0.6 && x % 3 === 0) return vary(P.back_dark, 5);
-      return vary(R() < 0.12 ? P.back_dark : P.head, 6);
+      if (side > 0.72) return mul(vary(P.throat, 5), ao);
+      if (pat.head === 'striped' && up > 0.55 && (yy % 6 < 2)) return vary(P.back_dark, 5);
+      return mul(vary(R() < 0.1 ? P.back_dark : P.head, 6), ao * feather(x, yy));
     }
-    if (u > uBodyEnd) { // cuello: transición de cabeza (arriba) a garganta/pecho (abajo)
-      if (aw === 'collar' && acc) return vary(acc, 6);
-      if (side > 0.65) return vary(aw === 'pecho' && acc ? acc : P.throat, 6);
-      return vary(P.head, 6);
+    if (u > uBodyEnd) { // cuello: transición suave cabeza → pecho
+      if (aw === 'collar' && acc) return mul(vary(acc, 6), ao);
+      if (side > 0.64) return mul(vary(aw === 'pecho' && acc ? acc : P.throat, 6), ao);
+      return mul(vary(P.head, 6), ao * feather(x, yy));
     }
-    // cuerpo
-    const bu = (u - uTailEnd) / (uBodyEnd - uTailEnd); // 0 = cola … 1 = pecho
-    if (acc && aw === 'pecho' && side > 0.45 && bu > 0.45) return vary(acc, 7);
-    // ala plegada sobre el costado alto (de la mitad del cuerpo hacia atrás; primarias oscuras atrás)
-    const wingBand = side > 0.18 && side < 0.62;
-    if (wingBand && bu > 0.08 && bu < 0.72) {
-      const wc = aw === 'ala y cola' && acc ? acc : P.wing;
-      if (bu < 0.26) return vary(P.back_dark, 5);                         // primarias
-      if (Math.abs(side - 0.18) < 0.05 || Math.abs(bu - 0.72) < 0.03) return vary(P.back_dark, 5); // borde
-      return patt('wing', wc, x, yy);
-    }
-    if (side > 0.78) return patt('belly', P.belly, x, yy);
-    if (side > 0.55) return patt('flank', P.flank, x, yy);
-    return R() < 0.12 ? vary(P.back_dark, 5) : patt('back', P.back, x, yy);
+    // cuerpo con borde festoneado entre dorso, flanco y vientre
+    const bu = (u - uTailEnd) / (uBodyEnd - uTailEnd);
+    const wave = Math.sin(bu * 22 + side * 6) * 0.03;
+    if (acc && aw === 'pecho' && side > 0.44 + wave && bu > 0.45) return mul(vary(acc, 7), ao * feather(x, yy));
+    if (side > 0.76 + wave) return mul(patt('belly', P.belly, x, yy), ao * feather(x, yy));
+    if (side > 0.52 + wave) return mul(patt('flank', P.flank, x, yy), ao * feather(x, yy));
+    return mul(R() < 0.1 ? vary(P.back_dark, 5) : patt('back', P.back, x, yy), feather(x, yy));
   });
+  bodyTexCache.set(sp.id, tex);
+  return tex;
+}
+
+// ---------- ala plegada 3D: casco ahusado sobre el flanco del cuerpo (se oculta al volar) ----------
+function foldedWing(sp, pl, P) {
+  const B = pl.body;
+  const len = B[0] * 1.45, h = B[1] * 0.56, thick = B[2] * 0.26;
+  // secciones a lo largo del ala (t = 0 hombro adelante → t = 1 punta de primarias atrás)
+  const prof = [[0.0, 0.22, 0.15, 0.0], [0.22, 0.92, 0.95, 0.08], [0.55, 1.0, 1.0, 0.04], [0.82, 0.62, 0.55, -0.05], [1.0, 0.12, 0.08, -0.1]];
+  const M = 8, pos = [], uv = [], idx = [];
+  for (let i = 0; i < prof.length; i++) {
+    const [t, sy, sz, dy] = prof[i];
+    const x = (0.42 - t) * len;
+    for (let k = 0; k <= M; k++) {
+      const a = TAU * k / M;
+      const py = Math.sin(a) * h * sy + dy * h;
+      // cara interna plana pegada al cuerpo, cara externa convexa
+      const outer = Math.cos(a);
+      const pz = (outer > 0 ? outer : outer * 0.25) * thick * sz;
+      pos.push(x, py, pz);
+      uv.push(t, k / M);
+    }
+  }
+  const N = M + 1;
+  for (let i = 0; i < prof.length - 1; i++) for (let k = 0; k < M; k++) {
+    const a = i * N + k, b = a + 1, c = (i + 1) * N + k + 1, d = (i + 1) * N + k;
+    idx.push(a, b, d, b, c, d);
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  geo.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+  geo.setIndex(idx);
+  geo.computeVertexNormals();
+
+  let tex = foldedTexCache.get(sp.id);
+  if (!tex) {
+    const R = mulberry32(4000 + sp.id), vary = makeVary(R);
+    const pat = sp.palette?.pattern || {}, aw = sp.palette?.accentWhere, acc = P.accent;
+    const wc = aw === 'ala y cola' && acc ? acc : P.wing;
+    tex = makeTex(128, 64, (x, y) => {
+      const u = (x + 0.5) / 128, v = (y + 0.5) / 64;
+      const fLine = (y % 7 === 0) ? 0.86 : 1;
+      let c;
+      if (u > 0.68) c = vary(P.back_dark, 6); // primarias oscuras en la punta
+      else if (u < 0.26) c = vary(P.back, 6); // cobertoras menores
+      else if (Math.abs(u - 0.44) < 0.035) c = vary(P.throat, 6); // sutil barra alar
+      else if (pat.wing === 'barred' && x % 8 < 2) c = vary(P.back_dark, 6);
+      else if (pat.wing === 'streaked' && y % 6 < 2) c = vary(P.back_dark, 6);
+      else c = vary(wc, 7);
+      const shade = (1 - Math.abs(v - 0.5) * 0.35) * fLine;
+      return [c[0] * shade, c[1] * shade, c[2] * shade];
+    });
+    foldedTexCache.set(sp.id, tex);
+  }
+  return { geo, tex };
 }
 
 // ---------- alas de vuelo: planta del ala según el tipo de vuelo (solo se ven al volar) ----------
@@ -199,17 +269,30 @@ export function flightWing(sp, plan, P, hwi = 20) {
   const geo = new THREE.ShapeGeometry(shape);
   const pos = geo.attributes.position, uv = geo.attributes.uv;
   const xMax = 0.25 * cRoot, xMin = xMax - cRoot - 0.5 * span * 0.3;
-  for (let i = 0; i < pos.count; i++) uv.setXY(i, Math.min(1, pos.getY(i) / span), (pos.getX(i) - xMin) / (xMax - xMin));
+  for (let i = 0; i < pos.count; i++) {
+    const u = Math.min(1, pos.getY(i) / span), v = (pos.getX(i) - xMin) / (xMax - xMin);
+    uv.setXY(i, u, v);
+    // leve arqueo aerodinámico (camber) para captar luz
+    pos.setZ(i, Math.sin(Math.max(0, Math.min(1, v)) * Math.PI) * 0.08 * (1 - 0.5 * u));
+  }
+  geo.computeVertexNormals();
   // textura: cobertoras (borde de ataque) del color del dorso, ala al medio, primarias oscuras en la mano
-  const R = mulberry32(3000 + sp.id), vary = makeVary(R);
-  const hand = style === 'aleta' ? 2 : style === 'hoz' ? 0.35 : 0.58;
-  const tex = makeTex(32, 16, (x, y) => {
-    const u = (x + 0.5) / 32, v = 1 - (y + 0.5) / 16;
-    if (u > hand) return vary(P.back_dark, 6);
-    if (v > 0.82) return vary(P.back, 6);
-    if (v < 0.12) return vary(P.back_dark.map(k => k * 1.1), 6); // borde de fuga
-    return vary(P.wing, 7);
-  });
+  let tex = wingTexCache.get(sp.id);
+  if (!tex) {
+    const R = mulberry32(3000 + sp.id), vary = makeVary(R);
+    const hand = style === 'aleta' ? 2 : style === 'hoz' ? 0.35 : 0.58;
+    tex = makeTex(128, 64, (x, y) => {
+      const u = (x + 0.5) / 128, v = 1 - (y + 0.5) / 64;
+      const quill = (x % 6 === 0 && v < 0.72) ? 0.85 : 1;
+      let c;
+      if (u > hand) c = vary(P.back_dark, 6);
+      else if (v > 0.78) c = vary(P.back, 6);
+      else if (v < 0.14) c = vary(P.back_dark.map(k => k * 1.1), 6); // borde de fuga
+      else c = vary(P.wing, 7);
+      return [c[0] * quill, c[1] * quill, c[2] * quill];
+    });
+    wingTexCache.set(sp.id, tex);
+  }
   return { geo, tex, span };
 }
 
@@ -282,10 +365,26 @@ export function buildBirdOnePiece(sp, plan, ctx) {
   // mandíbula inferior (chica, para cantar), bajo el pico
   const mBeak = mat(plain, { tint: (P.beak[0] << 16) | (P.beak[1] << 8) | P.beak[2] });
   const pouch = pl.pouch ? [2.4, 0.9] : pl.bill ? [1.6, 0.25] : [0.7, 0.4];   // bolsa del pelícano / pico plano
-  const lower = new THREE.Mesh(new THREE.ConeGeometry(br * pouch[0], bl * 0.8, 3).rotateZ(-Math.PI / 2).translate(bl * 0.4, 0, 0).scale(1, pouch[1], 1),
+  const lower = new THREE.Mesh(new THREE.ConeGeometry(br * pouch[0], bl * 0.8, 6).rotateZ(-Math.PI / 2).translate(bl * 0.4, 0, 0).scale(1, pouch[1], 1),
     pl.pouch ? mat(plain, { tint: 0xc89868 }) : mBeak);
   lower.position.set(0.88 * hs, -0.1, 0); lower.rotation.z = -0.15; head.add(lower); meshes.push(lower);
   const upper = new THREE.Group(); upper.rotation.z = 0; head.add(upper); // el pico superior es parte de la malla
+  // ojos 3D con brillo especular (rotan con head sin deformarse)
+  const eyeR = Math.max(0.065, hs * 0.2);
+  const eyeGeo = new THREE.SphereGeometry(eyeR, 8, 6);
+  const catchGeo = new THREE.SphereGeometry(eyeR * 0.34, 6, 4);
+  const mEye = mat(plain, { tint: (P.eye[0] << 16) | (P.eye[1] << 8) | P.eye[2] });
+  const mCatch = new THREE.MeshBasicMaterial({ color: 0xf4f6f8 });
+  for (const s of [-1, 1]) {
+    const eye = new THREE.Mesh(eyeGeo, mEye);
+    eye.scale.set(1, 1, 0.72);
+    eye.position.set(0.24 * hs, 0.16 * hs, s * 0.78 * hs);
+    const glint = new THREE.Mesh(catchGeo, mCatch);
+    glint.position.set(eyeR * 0.35, eyeR * 0.35, s * eyeR * 0.68);
+    eye.add(glint);
+    head.add(eye);
+    meshes.push(eye);
+  }
   // adornos de la cabeza: penacho (codorniz) y cresta (queltehue y otros)
   if (pl.topknot) {
     const k = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.45, 0.05).translate(0, 0.22, 0), mat(plain, { tint: 0x201a18 }));
@@ -295,6 +394,25 @@ export function buildBirdOnePiece(sp, plan, ctx) {
     const c = P.back_dark;
     const crest = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.05, 0.04).translate(-0.25, 0, 0), mat(plain, { tint: (c[0] << 16) | (c[1] << 8) | c[2] }));
     crest.position.set(-hs * 0.6, hs * 0.5, 0); crest.rotation.z = 0.35; head.add(crest); meshes.push(crest);
+  }
+
+  // alas plegadas 3D sobre los flancos (visibles en reposo; se ocultan al abrir las alas de vuelo)
+  let foldedGrp = null;
+  if (!pl.flippers) {
+    const fold = foldedWing(sp, pl, P);
+    const mFolded = mat(fold.tex, { twoSided: true });
+    foldedGrp = new THREE.Group();
+    foldedGrp.position.copy(C);
+    foldedGrp.rotation.z = pl.tilt;
+    for (const s of [-1, 1]) {
+      const fm = new THREE.Mesh(s > 0 ? fold.geo : fold.geo.clone().scale(1, 1, -1), mFolded);
+      fm.position.set(-0.08 * pl.body[0], 0.1 * pl.body[1], s * pl.body[2] * 0.78);
+      fm.rotation.y = -s * 0.12;
+      fm.rotation.x = s * 0.14;
+      foldedGrp.add(fm);
+      meshes.push(fm);
+    }
+    bodyPivot.add(foldedGrp);
   }
 
   // alas de vuelo: solo visibles al aletear
@@ -324,7 +442,16 @@ export function buildBirdOnePiece(sp, plan, ctx) {
   let lastKey = '';
   body.onBeforeRender = () => {
     const key = `${head.rotation.y.toFixed(3)},${head.rotation.z.toFixed(3)},${tail.rotation.z.toFixed(3)},${torso.scale.x.toFixed(3)}`;
-    for (const w of wings) w.userData.mesh.visible = pl.flippers || Math.abs(w.rotation.x) > 0.05;
+    let flying = false;
+    for (const w of wings) {
+      const open = pl.flippers || Math.abs(w.rotation.x) > 0.05;
+      w.userData.mesh.visible = open;
+      if (open) flying = true;
+    }
+    if (foldedGrp) {
+      foldedGrp.visible = !flying;
+      foldedGrp.scale.setScalar(torso.scale.x);
+    }
     if (key === lastKey) return;
     lastKey = key;
     head.updateMatrix(); tail.updateMatrix();

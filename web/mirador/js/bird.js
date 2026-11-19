@@ -170,20 +170,18 @@ export function buildBird(sp, plan = 'paseriforme') {
   const fTarsus = clamp((pr[2] ?? CHUCAO.tarsus) / CHUCAO.tarsus, 0.4, 1.6) * pl.legs;
   const fTail = clamp((pr[3] ?? CHUCAO.tail) / CHUCAO.tail, 0.4, 1.4);
   const hwi = pr[4] ?? CHUCAO.hwi;
-  const T = speciesTextures(sp);
   if (onePieceOn && ONE_PIECE.has(plan)) {
     const legLen1 = 0.85 * fTarsus, hs1 = pl.head, nl1 = pl.neckLen ?? 0;
     const headBase1 = new THREE.Vector3(0.98 - pl.tilt * 0.25 + pl.neck + nl1 * 0.35, 1.42 + pl.tilt * 0.45 + pl.neck * 0.5 + nl1 * 0.9, 0);
     const bl1 = 0.4 * fBeak * (plan === 'picaflor' ? 1.6 : 1);
     const br1 = 0.12 * clamp(fDepth * (fBeak > 1.4 ? 0.7 : 1), 0.3, 1.8);
-    const wingLen1 = 0.72 * (1 + hwi * 0.9) * (pl.wing ?? 1);
-    const wingGeo1 = sideUV(part('ala', () => new THREE.SphereGeometry(1, 5, 3).scale(1, 0.4, 0.1).translate(-0.35, 0, 0), plan).scale(wingLen1, 1, 1));
     return buildBirdOnePiece(sp, plan, {
       pl, f: { tail: fTail }, hs: hs1, headBase: headBase1, bl: bl1, br: br1, legLen: legLen1,
-      P: { ...GRAY, ...(sp.palette || {}) }, wingTex: T.wing, wingGeo: wingGeo1, wingLen: wingLen1, footGeo, hwi,
-      tarsusGeo: new THREE.CylinderGeometry(0.055 * (pl.legThick ?? 1), 0.045 * (pl.legThick ?? 1), legLen1, pl.legThick > 1.5 ? 5 : 3, 1, true).translate(0, -legLen1 / 2, 0),
+      P: { ...GRAY, ...(sp.palette || {}) }, footGeo, hwi,
+      tarsusGeo: new THREE.CylinderGeometry(0.055 * (pl.legThick ?? 1), 0.045 * (pl.legThick ?? 1), legLen1, 6, 1, true).translate(0, -legLen1 / 2, 0),
     });
   }
+  const T = speciesTextures(sp);
   const meshes = [];
   const add = (parent, geo, m) => { const mesh = new THREE.Mesh(geo, m); parent.add(mesh); meshes.push(mesh); return mesh; };
 
