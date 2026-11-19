@@ -28,10 +28,10 @@ export async function loadClip(src) {
   return p;
 }
 
-function panner(pos) {
+function panner(pos, ref = 5) { // ref: distancia (m) a la que suena a volumen pleno; la maqueta de la torre usa una mayor
   const p = ac.createPanner();
   p.panningModel = 'equalpower'; p.distanceModel = 'inverse';
-  p.refDistance = 5; p.rolloffFactor = 1.1; p.maxDistance = 80;
+  p.refDistance = ref; p.rolloffFactor = 1.1; p.maxDistance = Math.max(80, ref * 16);
   if (p.positionX) { p.positionX.value = pos.x; p.positionY.value = pos.y; p.positionZ.value = pos.z; }
   else p.setPosition(pos.x, pos.y, pos.z);
   p.connect(master);
@@ -52,20 +52,20 @@ export function setListener(pos, forward) {
 }
 
 // Reproduce un buffer en la posición dada. Devuelve la duración (s) o 0.
-export function playAt(buffer, pos, gain = 1) {
+export function playAt(buffer, pos, gain = 1, ref = 5) {
   if (!audioReady() || !buffer) return 0;
   const src = ac.createBufferSource(); src.buffer = buffer;
   const g = ac.createGain(); g.gain.value = gain;
-  src.connect(g); g.connect(panner(pos));
+  src.connect(g); g.connect(panner(pos, ref));
   src.start();
   return buffer.duration;
 }
 
 // Canto sintético de respaldo: serie de notas graves descendentes (tipo "hu-hu-hu-huuu").
-export function playSynth(pos, seed = 1) {
+export function playSynth(pos, seed = 1, ref = 5) {
   if (!audioReady()) return 0;
   const t0 = ac.currentTime + 0.03;
-  const out = ac.createGain(); out.gain.value = 0.35; out.connect(panner(pos));
+  const out = ac.createGain(); out.gain.value = 0.35; out.connect(panner(pos, ref));
   const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 1400; lp.connect(out);
   const n = 5 + (seed % 3);
   let t = t0;

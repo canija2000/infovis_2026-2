@@ -174,13 +174,24 @@ function ocean(side, W, y, R, far) {
     return new THREE.Mesh(geo, mat(tex, { tint, rx, ry }));
   };
   g.add(strip(-9, 8, 0.14, 0xe4d2a1));                          // playa arenosa
-  g.add(strip(6, 36, 0.22, 0x62a9c2, waveTex, 0.5, 0.5));       // costa somera turquesa con espuma
-  g.add(strip(32, far, 0.28, 0x3b78ae, waveTex, 0.3, 0.3));     // mar abierto hasta el horizonte
+  const shallow = strip(6, 36, 0.22, 0x62a9c2, waveTex, 0.5, 0.5); // costa somera turquesa con espuma
+  const open = strip(32, far, 0.28, 0x3b78ae, waveTex, 0.3, 0.3);  // mar abierto hasta el horizonte
+  g.add(shallow, open);
+  // oleaje: la textura corre hacia la costa (la somera más rápido) y la orilla sube y baja como una ola
+  const beachY = shallow.position.y;
+  g.userData.animate = t => {
+    shallow.material.uniforms.uOffset.value.set(-side * t * 0.05 + Math.sin(t * 0.7) * 0.04, Math.sin(t * 0.3) * 0.05);
+    open.material.uniforms.uOffset.value.set(-side * t * 0.012, t * 0.006);
+    shallow.position.y = beachY + Math.sin(t * 1.1) * 0.05;
+    shallow.position.x = side * Math.sin(t * 1.1) * 1.6; // la ola avanza y retrocede sobre la arena
+  };
   return g;
 }
 // Una cordillera en franjas: la base nace con el color del suelo y transiciona a roca y nieve.
 function ridge(side, snowAt, scale, W, y, R, far, gLin, coastal = false) {
-  const nz = 150, nx = 14, x0 = W / 2 + (coastal ? 6 : 8), depth = 360 * scale + 130, H = 165 * scale;
+  // baja (42 m por escala, antes 165): desde la torre se ve entera, con cielo detrás, en la primera mirada
+  const nz = 150, nx = 14, x0 = W / 2 + (coastal ? 6 : 14), depth = 220 * scale + 110, H = 42 * scale;
+  const uv = [];
   const pos = [], col = [], idx = [];
   const ph = [...Array(4)].map(() => R() * 6.28);
   const crest = i => 0.62 + 0.22 * Math.sin(i * 0.14 + ph[0]) + 0.12 * Math.sin(i * 0.41 + ph[1]) + 0.06 * Math.sin(i * 0.95 + ph[2]);
@@ -190,9 +201,11 @@ function ridge(side, snowAt, scale, W, y, R, far, gLin, coastal = false) {
     const prof = u < 0.35 ? Math.sin(Math.PI / 2 * u / 0.35) ** 1.25 : 1 - 0.35 * (u - 0.35) / 0.65;
     const h = H * crest(i) * prof * (0.85 + 0.3 * R()) * (j === 0 ? 0 : 1);
     pos.push(side * (x0 + u * depth), y + h, z);
+    uv.push(z / 26, h / 9); // estratos horizontales y grietas de la textura de roca
     c.copy(rock).lerp(rock2, u * 0.8);
-    if (j <= 2) c.lerp(gLin, 1 - j / 2.6); // transición suave desde el suelo exterior hacia la ladera
-    if (h / H > snowAt) c.copy(snow);
+    if ((i + j) % 3 === 0) c.multiplyScalar(0.8); // quebradas más oscuras entre caras vecinas
+    if (j <= 1) c.lerp(gLin, 1 - j / 1.6); // transición corta desde el suelo exterior hacia la ladera
+    if (h / H > snowAt - 0.08 + 0.1 * Math.sin(i * 1.7 + j * 2.3)) c.copy(snow); // línea de nieve irregular
     col.push(c.r, c.g, c.b);
   }
   for (let i = 0; i < nz; i++) for (let j = 0; j < nx; j++) {
@@ -202,14 +215,23 @@ function ridge(side, snowAt, scale, W, y, R, far, gLin, coastal = false) {
   const geo = new THREE.BufferGeometry();
   geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
   geo.setAttribute('color', new THREE.Float32BufferAttribute(col, 3));
-  geo.setAttribute('uv', new THREE.Float32BufferAttribute(new Array(pos.length / 3 * 2).fill(0.5), 2));
+  geo.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
   geo.setIndex(idx);
   const flat = geo.toNonIndexed(); flat.computeVertexNormals();
-  return new THREE.Mesh(flat, mat(texPlain(), { vcol: 1, twoSided: true }));
+  return new THREE.Mesh(flat, mat(texPlain(), { vcol: 1, twoSided: true, detail: rockTex(R), detailRep: 1, detailAmt: 0.55 }));
+}
+// Textura de roca para la cordillera: estratos horizontales, grietas en diagonal y granos de piedra.
+function rockTex(R) {
+  return makeTex(64, 64, (x, yy) => {
+    const strata = (yy % 9 < 2) ? -22 : (yy % 9 === 4 ? 10 : 0);
+    const crack = ((x + yy * 2) % 23 === 0 || (x * 2 - yy + 64) % 31 === 0) ? -34 : 0;
+    const v = 128 + strata + crack + (R() - 0.5) * 26;
+    return [v, v, v];
+  });
 }
 // Cordones al norte y al sur: nacen del suelo, suben hacia los Andes y desaparecen al llegar al mar.
 function crossRidge(zSide, cfg, W, D, y, R, far, seaSide, gLin) {
-  const nx = 90, nz = 10, z0 = D / 2 + 12, depth = 340, H = 95;
+  const nx = 90, nz = 10, z0 = D / 2 + 12, depth = 260, H = 38;
   const pos = [], col = [], idx = [];
   const ph = [R() * 6.28, R() * 6.28];
   const andesSide = cfg.east === 'andes' ? 1 : -1;
@@ -392,7 +414,9 @@ export function buildBoard({ index, reg, props, bandadas }) {
     const north = z.g.position.z < 0 || (rows === 1);
     root.add(groundLabel(SCENE_LABEL[z.key] || z.key, z.g.position.x, 0.12, z.g.position.z + (north ? -1 : 1) * (WORLD / 2 + 4.5), north));
   }
-  root.add(surround(sCfg, W, D, -0.06, reg.meta.code));
+  const around = surround(sCfg, W, D, -0.06, reg.meta.code);
+  root.add(around);
+  const anims = []; around.traverse(o => o.userData.animate && anims.push(o.userData.animate)); // el mar
 
   const center = new THREE.Vector3(0, 2, 0);
   const radius = Math.hypot(W + MARGIN, D + MARGIN) / 2;
@@ -496,7 +520,7 @@ export function buildBoard({ index, reg, props, bandadas }) {
   }
   reset();
 
-  const animate = time => { for (const z of zones) z.sc.animate?.(time); };
+  const animate = time => { for (const z of zones) z.sc.animate?.(time); for (const f of anims) f(time); };
   const dispose = () => root.traverse(o => { if (!o.userData.ink) o.geometry?.dispose(); });
   const birds = () => [...flocks.values()].reduce((a, f) => a + f.birds.length, 0);
   return { root, zones, months: region.months, center, radius, update, reset, animate, dispose, birds, flocks };
