@@ -41,17 +41,21 @@ NARIZ = (36.0, 26.0)
 N_X, N_Z, N_Y = 7, 7, 5  # dedos (impares) a lo ancho, a lo largo y a lo alto
 
 # asas (caja de agarre en cada lateral, abierta hacia el visor)
-ASA = (72.0, 78.0, 30.0) # largo (a lo largo del visor), alto, grosor hacia afuera (27 libres por dentro)
+ASA = (72.0, 78.0, 24.0) # largo (a lo largo del visor), alto, grosor hacia afuera (21 libres: motor de 5 mm y cables)
 ASA_Z0, ASA_Y0 = 8.0, 6.0  # dónde empieza el asa en el lateral, desde adelante y desde abajo
 MOTOR = (23.0, 21.0)     # módulo de vibración (largo, alto); 5 mm de grosor
 MOTOR_C = (20.0, 52.0)   # centros de los dos motores a lo largo del asa (adelante, atrás)
-PILAR = 12.0             # pilares laminados del asa (cuadrados)
+# los dos agujeros de montaje del módulo, desde su centro (a lo largo, alto); módulo con el conector hacia arriba.
+# MEDIR en el módulo real y corregir aquí: los agujeros del lateral salen de estos números.
+MOTOR_AGUJEROS = ((-8.7, 7.7), (8.7, 7.7))
+MOTOR_AGUJERO = 3.2      # diámetro del paso del tornillo del motor (M3 justo; M2,5 si el agujero del módulo es chico)
+DIENTES_ASA_W = ((12.0, 28.0), (44.0, 60.0))   # dientes del asa en sus bordes de arriba y abajo (a lo largo)
+DIENTES_ASA_H = ((14.0, 30.0), (48.0, 64.0))   # dientes del asa en sus bordes de adelante y atrás (a lo alto)
 HOLE, NUT_AF = 3.4, 5.6  # paso M3 y tuerca M3 entre caras
 
 # mochila (entre los aleros, detrás de la trasera)
-MOCH = (X - 2 * T, Y, 70.0)    # ancho, alto, fondo: el Leonardo (70 × 55) va acostado en el piso, 55 a lo hondo
-APOYO = 12.0             # apoyos de la tapa trasera, en las esquinas
-N_APOYO = 3              # capas por apoyo (la última, con tuerca)
+MOCH = (X - 2 * T, Y, 90.0)    # ancho, alto, fondo: el Leonardo (70 × 55) va acostado en el piso, 55 a lo hondo
+HOLGURA_TAPA = 0.4       # juego por lado del tapón de la tapa trasera (entra a presión)
 
 # ------------------------------------------------------------------ geometría (igual que fisico/visor_laser)
 def dedos(lo, hi, n, sobresalen):
@@ -149,20 +153,19 @@ cola = [(Z, LZ, T)]
 r0, r1 = Z - T - GAP, Z - T
 ranura = (r0, r1, [(r0, T), (r0, T + RANURA_ALTO), (r1, T + RANURA_ALTO), (r1, T)])
 my = ASA_Y0 + ASA[1] / 2                             # altura de los motores: el centro del asa
-pil_c = ASA_Z0 + ASA[0] / 2                          # los pilares van entre los dos motores
-pil_y = (ASA_Y0 + T + PILAR / 2 + 2, ASA_Y0 + ASA[1] - T - PILAR / 2 - 2)
+# ranuras del lateral donde entran los dientes del asa (en coordenadas del lateral: a lo largo, alto)
+ranuras_asa = [rect(ASA_Z0 + a, ASA_Y0 + h0, ASA_Z0 + b, ASA_Y0 + h0 + T) for a, b in DIENTES_ASA_W for h0 in (0, ASA[1] - T)] + \
+              [rect(ASA_Z0 + c0, ASA_Y0 + a, ASA_Z0 + c0 + T, ASA_Y0 + b) for a, b in DIENTES_ASA_H for c0 in (0, ASA[0] - T)]
 for nombre in ('VISOR LADO IZQ', 'VISOR LADO DER'):
     pieza(nombre, LZ, Y, panel(LZ, Y, abajo=B_Z + cola, arriba=B_Z + cola, izquierda=[], esp_abajo=ranura),
-          [ojal(ASA_Z0 + c, my, 12) for c in MOTOR_C],
-          [(pil_c, y, HOLE / 2) for y in pil_y])
+          ranuras_asa,
+          [(ASA_Z0 + c + dx, my + dy, MOTOR_AGUJERO / 2) for c in MOTOR_C for dx, dy in MOTOR_AGUJEROS])
 
 # sin careta: el lado de los ojos queda abierto (las ojeras y la ventana resultaron incómodas); los bordes
 # delanteros de tapa, base y laterales van lisos
 
-# trasera: entre los laterales; 4 pasos M3 para la mochila y un paso de cables arriba al centro
-moch_tornillos = [(X / 2 + s * (MOCH[0] / 2 - 18), y) for s in (-1, 1) for y in (22, Y - 22)]
-pieza('VISOR TRASERA', X, Y, panel(X, Y, abajo=B_X, derecha=[(0, Y, T)], arriba=B_X, izquierda=[(0, Y, T)]),
-      [], [(cx, cy, HOLE / 2) for cx, cy in moch_tornillos])
+# trasera: entre los laterales (la mochila se pega por detrás con cola)
+pieza('VISOR TRASERA', X, Y, panel(X, Y, abajo=B_X, derecha=[(0, Y, T)], arriba=B_X, izquierda=[(0, Y, T)]))
 
 # marco: ventana casi del ancho interior
 MW = X - 2 * T
@@ -172,21 +175,40 @@ pieza('VISOR MARCO', MW, Y, panel(MW, Y, abajo=hund, arriba=hund),
       [rect((MW - VENTANA[0]) / 2, T + 8, (MW + VENTANA[0]) / 2, T + 8 + VENTANA[1])])
 
 # ------------------------------------------------------------------ cajas genéricas (asas y mochila)
-def caja(pref, W, H, D, n_w, n_h, n_d, abierta_atras=True, extras=None, lados=('IZQ', 'DER')):
+def complemento(L, dientes):
+    """Intervalos hundidos (profundidad T) de un borde de largo L que deja sobresalir solo los dientes."""
+    out, x = [], 0.0
+    for a, b in sorted(dientes):
+        if a > x: out.append((x, a, T))
+        x = b
+    if x < L: out.append((x, L, T))
+    return out
+
+def caja(pref, W, H, D, n_w, n_h, n_d, abierta_atras=True, extras=None, lados=('IZQ', 'DER'), dientes=None):
     """Caja de W (ancho) × H (alto) × D (fondo) con dedos. Con abierta_atras, la cara de atrás no existe (ahí va
-    el visor o la tapa atornillada) y los bordes traseros de las demás caras quedan lisos."""
+    el visor o la tapa) y los bordes traseros de las demás caras quedan lisos. dientes = (a lo ancho, a lo alto): el
+    borde abierto lleva esos dientes, que sobresalen T y entran en ranuras de la pared donde se apoya la caja."""
     extras = extras or {}
     eq = [(0, T, T), (H - T, H, T)]
     aw, bw = dedos(0, W, n_w, 0), dedos(0, W, n_w, 1)
     ad, bd = dedos(0, D, n_d, 0), dedos(0, D, n_d, 1)
     ah, bh = eq + dedos(T, H - T, n_h, 0), eq + dedos(T, H - T, n_h, 1)
     atras = [] if abierta_atras else aw
+    e = T if dientes else 0.0                       # banda extra donde salen los dientes
     for k in ('ARRIBA', 'ABAJO'):
         h, c = extras.get(k, ([], []))
-        pieza(f'{pref} {k}', W, D, panel(W, D, abajo=aw, derecha=ad, arriba=atras, izquierda=ad), h, c)
+        if dientes:
+            pieza(f'{pref} {k}', W, D + e, panel(W, D + e, abajo=aw, derecha=ad + [(D, D + e, T)], arriba=complemento(W, dientes[0]),
+                                                   izquierda=ad + [(D, D + e, T)]), h, c)
+        else:
+            pieza(f'{pref} {k}', W, D, panel(W, D, abajo=aw, derecha=ad, arriba=atras, izquierda=ad), h, c)
     for k in lados:
         h, c = extras.get(k, ([], []))
-        pieza(f'{pref} {k}', D, H, panel(D, H, abajo=bd, arriba=bd, izquierda=ah, derecha=[] if abierta_atras else ah), h, c)
+        if dientes:
+            pieza(f'{pref} {k}', D + e, H, panel(D + e, H, abajo=bd + [(D, D + e, T)], arriba=bd + [(D, D + e, T)], izquierda=ah,
+                                                   derecha=complemento(H, dientes[1])), h, c)
+        else:
+            pieza(f'{pref} {k}', D, H, panel(D, H, abajo=bd, arriba=bd, izquierda=ah, derecha=[] if abierta_atras else ah), h, c)
     h, c = extras.get('FRENTE', ([], []))
     pieza(f'{pref} FRENTE', W, H, panel(W, H, abajo=bw, arriba=bw, izquierda=bh, derecha=bh), h, c)
     if not abierta_atras:
@@ -194,34 +216,26 @@ def caja(pref, W, H, D, n_w, n_h, n_d, abierta_atras=True, extras=None, lados=('
         pieza(f'{pref} ATRAS', W, H, panel(W, H, abajo=bw, arriba=bw, izquierda=bh, derecha=bh), h, c)
 
 # asas: ancho = largo del asa, alto = alto del asa, fondo = grosor; el «frente» es la cara donde va la palma y la
-# cara abierta apoya contra el lateral del visor. Paso de cables arriba, atrás.
+# cara abierta apoya contra el lateral del visor, donde entran sus dientes (se refuerza con cola). Paso de cables
+# arriba, atrás.
 for lado in ('IZQ', 'DER'):
-    caja(f'ASA {lado}', ASA[0], ASA[1], ASA[2], 5, 5, 3, lados=('ADELANTE', 'ATRAS'), extras={
-        'ARRIBA': ([], [(ASA[0] - 12, ASA[2] - 9, 4.0)]),
-    })
-    capas = round((ASA[2] - T) / T)
-    for p in range(2):                                  # dos pilares por asa, laminados; la capa junto al visor lleva la tuerca
-        for k in range(capas):
-            hueco = [hexagono(PILAR / 2, PILAR / 2, NUT_AF)] if k == capas - 1 else []
-            circ = [] if k == capas - 1 else [(PILAR / 2, PILAR / 2, HOLE / 2)]
-            pieza(f'PILAR ASA {p + 1}·{lado}·{k + 1}', PILAR, PILAR, rect(0, 0, PILAR, PILAR), hueco, circ)
+    caja(f'ASA {lado}', ASA[0], ASA[1], ASA[2], 5, 5, 3, lados=('ADELANTE', 'ATRAS'), dientes=(DIENTES_ASA_W, DIENTES_ASA_H),
+         extras={'ARRIBA': ([], [(ASA[0] - 12, ASA[2] - 9, 4.0)])})
 
-# mochila: frente contra la trasera del visor (4 M3), tapa trasera atornillada, pasos de USB a los dos costados y
-# de cables de motores arriba adelante
+# mochila: el frente se pega a la trasera del visor (entre los aleros); tapa trasera a presión (placa + tapón);
+# pasos de USB a los dos costados y de cables de motores arriba adelante
 MWd, MH, MD = MOCH
 caja('MOCHILA', MWd, MH, MD, 7, 5, 5, extras={
-    'FRENTE': ([], [(cx - T, cy, HOLE / 2) for cx, cy in moch_tornillos]),
     'ARRIBA': ([], [(14, 10, 5.0), (MWd - 14, 10, 5.0)]),
-    'IZQ': ([rect(10, 8, 34, 24)], []),
-    'DER': ([rect(10, 8, 34, 24)], []),
+    'IZQ': ([rect(28, 8, 62, 30)], []),
+    'DER': ([rect(28, 8, 62, 30)], []),
 })
-ap = [(T + APOYO / 2, T + APOYO / 2), (MWd - T - APOYO / 2, T + APOYO / 2), (T + APOYO / 2, MH - T - APOYO / 2), (MWd - T - APOYO / 2, MH - T - APOYO / 2)]
-pieza('MOCHILA TAPA', MWd, MH, rect(0, 0, MWd, MH), [], [(x, y, HOLE / 2) for x, y in ap])
-for a in range(4):
-    for k in range(N_APOYO):
-        hueco = [hexagono(APOYO / 2, APOYO / 2, NUT_AF)] if k == N_APOYO - 1 else []
-        circ = [] if k == N_APOYO - 1 else [(APOYO / 2, APOYO / 2, HOLE / 2)]
-        pieza(f'APOYO MOCHILA {a + 1}·{k + 1}', APOYO, APOYO, rect(0, 0, APOYO, APOYO), hueco, circ)
+pieza('MOCHILA TAPA', MWd, MH, rect(0, 0, MWd, MH), [], [(MWd / 2, MH - 16, 9.0)])            # agujero para tirar con el dedo
+# encaje de la tapa: cuatro listones de 8 mm pegados por dentro de la tapa, a T + holgura del borde; entran justo
+# en la boca de la mochila y la sujetan a presión (en vez de un tapón entero, que no cabía en las dos planchas)
+tw, th = MWd - 2 * T - 2 * HOLGURA_TAPA, MH - 2 * T - 2 * HOLGURA_TAPA
+for k, (w, h) in enumerate([(tw, 8), (tw, 8), (8, th - 16), (8, th - 16)]):
+    pieza(f'LISTON TAPA {k + 1}', w, h, rect(0, 0, w, h))
 # cuna del Leonardo (4 escuadras bajas, como el módulo R1) y probeta de encaje
 for k in range(4):
     pieza(f'ESCUADRA CUNA {k + 1}', 15, 11, [(0, 0), (15, 0), (15, 3), (3, 3), (3, 11), (0, 11)])
@@ -236,9 +250,6 @@ assert VENTANA[0] <= X - 2 * T - 8 and T + 8 + VENTANA[1] <= Y - T - 6, 'la vent
 assert ASA_Z0 + ASA[0] < r0 - 4, 'el asa tapa la ranura del teléfono'
 for c in MOTOR_C:                                     # motores dentro del asa y sin tocar los pilares
     assert T + 1 < c - MOTOR[0] / 2 and c + MOTOR[0] / 2 < ASA[0] - T - 1, 'un motor no cabe en el asa'
-    for py in pil_y:  # choque solo si se cruzan a lo largo y en altura
-        assert abs(c - ASA[0] / 2) > MOTOR[0] / 2 + PILAR / 2 or abs(py - my) > MOTOR[1] / 2 + PILAR / 2, 'un motor choca con un pilar'
-assert round((ASA[2] - T) / T) * T == ASA[2] - T, 'el grosor interior del asa debe ser múltiplo de T (pilares)'
 assert MD - T >= 55 + 1, 'el Leonardo (55 mm) no cabe a lo hondo de la mochila'
 assert MH - 2 * T >= 10 + 40, 'la mochila no deja 40 mm para cables sobre la placa'
 
@@ -255,8 +266,7 @@ for (nombre, W, H, cont, huecos, circ) in piezas:
 # ------------------------------------------------------------------ piezas para el modelo 3D (blender_ensamble.py)
 import json
 json.dump({'T': T, 'X': X, 'Y': Y, 'Z': Z, 'GAP': GAP, 'ALERO': ALERO, 'z_marco': z_marco, 'ASA': ASA, 'ASA_Z0': ASA_Z0, 'ASA_Y0': ASA_Y0,
-           'MOTOR': MOTOR, 'MOTOR_C': MOTOR_C, 'my': my, 'pil_c': pil_c, 'pil_y': pil_y, 'PILAR': PILAR, 'MOCH': MOCH, 'APOYO': APOYO,
-           'N_APOYO': N_APOYO, 'ap': ap, 'moch_tornillos': moch_tornillos,
+           'MOTOR': MOTOR, 'MOTOR_C': MOTOR_C, 'MOTOR_AGUJEROS': MOTOR_AGUJEROS, 'my': my, 'MOCH': MOCH, 'HOLGURA_TAPA': HOLGURA_TAPA,
            'piezas': [{'nombre': n, 'W': W, 'H': H, 'contorno': c, 'huecos': h, 'circulos': ci} for (n, W, H, c, h, ci) in piezas]},
           open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'piezas.json'), 'w'), ensure_ascii=False)
 
@@ -290,12 +300,17 @@ def maxrects(items, W, H):
         libres = [r for r in nuevos if not any(o != r and o[0] <= r[0] and o[1] <= r[1] and o[0] + o[2] >= r[0] + r[2] and o[1] + o[3] >= r[1] + r[3] for o in nuevos)]
     return puestas, sobran
 
-pendientes = sorted(piezas, key=lambda p: -(p[1] * p[2]))
-planchas = []
-while pendientes:
-    puestas, pendientes = maxrects(pendientes, *PLANCHA)
-    assert puestas, 'una pieza no cabe en la plancha'
-    planchas.append(puestas)
+def repartir(orden):
+    pend, out = list(orden), []
+    while pend:
+        puestas, pend = maxrects(pend, *PLANCHA)
+        assert puestas, 'una pieza no cabe en la plancha'
+        out.append(puestas)
+    return out
+# se prueban varios órdenes y se queda el que usa menos planchas (y deja la última más vacía)
+ordenes = [sorted(piezas, key=k) for k in (lambda p: -(p[1] * p[2]), lambda p: -max(p[1], p[2]), lambda p: -min(p[1], p[2]),
+                                           lambda p: -(p[1] + p[2]), lambda p: (-max(p[1], p[2]), -min(p[1], p[2])))]
+planchas = min((repartir(o) for o in ordenes), key=lambda pl: (len(pl), sum(q[1] * q[2] for q, _, _ in pl[-1])))
 assert len(planchas) <= 2, f'no cabe en dos planchas: hacen falta {len(planchas)}'
 
 # las piezas de una plancha no se solapan
@@ -311,7 +326,7 @@ for pl in planchas:
 aqui = os.path.dirname(os.path.abspath(__file__))
 f = lambda v: f'{v:.3f}'.rstrip('0').rstrip('.')
 def d_path(poly, ox, oy, H): return 'M' + ' L'.join(f'{f(px + ox)},{f(H - py + oy)}' for px, py in poly) + ' Z'
-COLOR = lambda n: '#9fc3e0' if n.startswith(('ASA', 'MOCHILA', 'PILAR', 'APOYO', 'ESCUADRA')) else '#e0b56a'
+COLOR = lambda n: '#9fc3e0' if n.startswith(('ASA', 'MOCHILA', 'ESCUADRA')) else '#e0b56a'
 
 def svg(pl, con_guia, titulo=''):
     W, H = PLANCHA

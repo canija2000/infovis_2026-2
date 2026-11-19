@@ -118,20 +118,17 @@ def lugar(n):
         if n == f'ASA {lado} ABAJO': return Vector((palma, Z0, Y0)), DV, adentro, HV, g, MAT['nuevo']
         if n == f'ASA {lado} ADELANTE': return Vector((palma, Z0, Y0)), adentro, HV, DV, g, MAT['nuevo']
         if n == f'ASA {lado} ATRAS': return Vector((palma, Z0 + L - T, Y0)), adentro, HV, DV, g, MAT['nuevo']
-        if n.startswith('PILAR ASA') and f'·{lado}·' in n:
-            p, k = int(n.split()[2].split('·')[0]) - 1, int(n.split('·')[-1]) - 1
-            x = (-AW + T + k * T) if s < 0 else (X + AW - T - (k + 1) * T)
-            return Vector((x, D['pil_c'] - D['PILAR'] / 2, D['pil_y'][p] - D['PILAR'] / 2)), DV, HV, XV, g, MAT['nuevo']
     if n == 'MOCHILA FRENTE': return Vector((T, Z, 0)), XV, HV, DV, 'Mochila', MAT['nuevo']
     if n == 'MOCHILA ARRIBA': return Vector((T, Z, MH - T)), XV, DV, HV, 'Mochila', MAT['nuevo']
     if n == 'MOCHILA ABAJO': return Vector((T, Z, 0)), XV, DV, HV, 'Mochila', MAT['nuevo']
     if n == 'MOCHILA IZQ': return Vector((T, Z, 0)), DV, HV, XV, 'Mochila', MAT['nuevo']
     if n == 'MOCHILA DER': return Vector((T + MW - T, Z, 0)), DV, HV, XV, 'Mochila', MAT['nuevo']
     if n == 'MOCHILA TAPA': return Vector((T, Z + MD, 0)), XV, HV, DV, 'Mochila · tapa', MAT['nuevo']
-    if n.startswith('APOYO MOCHILA'):
-        a, k = int(n.split()[2].split('·')[0]) - 1, int(n.split('·')[-1]) - 1
-        ax, ah = D['ap'][a]
-        return Vector((T + ax - D['APOYO'] / 2, Z + MD - (k + 1) * T, ah - D['APOYO'] / 2)), XV, HV, DV, 'Mochila', MAT['nuevo']
+    if n.startswith('LISTON TAPA'):                       # listones de encaje, por dentro de la tapa
+        k, g0 = int(n.split()[-1]) - 1, D['HOLGURA_TAPA']
+        x0, h0 = 2 * T + g0, T + g0
+        pos = [(x0, h0), (x0, MH - T - g0 - 8), (x0, h0 + 8), (T + MW - T - g0 - 8, h0 + 8)][k]
+        return Vector((pos[0], Z + MD - T, pos[1])), XV, HV, DV, 'Mochila · tapa', MAT['nuevo']
     if n.startswith('ESCUADRA CUNA'):
         k = int(n.split()[-1]) - 1
         x0, x1, y0, y1 = 2 * T + 3, 2 * T + 3 + 71, Z + T + 0.5, Z + T + 0.5 + 56   # hueco de 71 × 56 para el Leonardo
@@ -155,19 +152,13 @@ for lado, s in (('izq', -1), ('der', 1)):
         x0 = -5 if s < 0 else X
         caja_ref(f'Motor {lado} {"adelante" if i == 0 else "atrás"}', x0, Z0 + c - 11.5, my - 10.5, x0 + 5, Z0 + c + 11.5, my + 10.5, MAT['motor'])
         xin, xout = (T + 1, -7) if s < 0 else (X - T - 1, X + 7)
-        tornillo(f'M3 motor {lado} {i + 1}', (xin, Z0 + c, my), (xout, Z0 + c, my))
-    for py in D['pil_y']:
-        xin, xout = (T + 1, -12) if s < 0 else (X - T - 1, X + 12)
-        tornillo(f'M3 asa {lado}', (xin, D['pil_c'], py), (xout, D['pil_c'], py))
-for (cx, cy) in D['moch_tornillos']:
-    tornillo('M3 mochila–trasera', (cx, Z - T - 1, cy), (cx, Z + 10, cy))
-for (ax, ah) in D['ap']:
-    tornillo('M3 tapa mochila', (T + ax, Z + MD + T + 1, ah), (T + ax, Z + MD - 9, ah))
+        for dx, dy in D['MOTOR_AGUJEROS']:              # dos tornillos por motor, por sus dos agujeros
+            tornillo(f'Tornillo motor {lado} {i + 1}', (xin, Z0 + c + dx, my + dy), (xout, Z0 + c + dx, my + dy), 1.4)
 
 # cables de los motores: asa → agujero de arriba del asa → sobre la tapa (bridas) → agujeros de arriba de la mochila → protoboard
 k = 0
 for s in (-1, 1):
-    hx = -AW + 21 if s < 0 else X + AW - 21           # agujero de arriba del asa (a 21 mm de la palma, del lado del visor)
+    hx = -9 if s < 0 else X + 9                       # agujero de arriba del asa (a 9 mm del lateral)
     hz = Z0 + L - 12
     bx = 12 if s < 0 else X - 12                       # línea de bridas
     holex = T + 14 if s < 0 else T + MW - 14
