@@ -328,8 +328,13 @@ export function buildScene(key, data, props, exitAngles = [], exitR = 20, austra
       if (R() > d) continue;
       const x = cx + (R() - 0.5) * cell * 0.8, z = cz + (R() - 0.5) * cell * 0.8;
       if (Math.hypot(x, z) < 2.2 || onPath(x, z, p.tipo === 'edificio' ? PATH_W + 1.5 : PATH_W)) continue;
-      count[p.id] = (count[p.id] ?? 0) + 1;
       const k = kinds[p.id];
+      // nada encima de un edificio, y los edificios separados entre sí (antes podían quedar superpuestos)
+      if (k.building) {
+        const rr = (k.radius ?? 1.3) * propFactor(p.id, k) * (k.real ? 1 : 1.2);
+        if (obstacles.some(o => Math.hypot(o.x - x, o.z - z) < o.r + rr + 0.8)) continue;
+      } else if (obstacles.some(o => Math.hypot(o.x - x, o.z - z) < o.r + 0.3)) continue;
+      count[p.id] = (count[p.id] ?? 0) + 1;
       // piezas modeladas a tamaño real: solo una leve variación (y la altura del edificio)
       const s = k.real ? (k.realScale ? k.realScale(R) : 0.9 + R() * 0.2)
         : p.tipo === 'edificio' ? { x: 0.8 + R() * 0.4, y: 1.5 + R() * 2.5, z: 0.8 + R() * 0.4 } : 0.7 + R() * 0.6;
@@ -429,7 +434,7 @@ export function buildScene(key, data, props, exitAngles = [], exitR = 20, austra
     wpos.needsUpdate = true;
   }
 
-  return { root, heightAt, coverAt, perches, flowers, obstacles, trunks, exits, exitPts, setSeason, half, cell, n, groundMat, ground, waterSpots, seaY, animate, hMin: data.hMin };
+  return { root, heightAt, coverAt, perches, flowers, obstacles, trunks, exits, exitPts, setSeason, half, cell, n, groundMat, ground, water, waterSpots, seaY, animate, hMin: data.hMin };
 }
 
 // Letrero de sendero con texto pixelado.

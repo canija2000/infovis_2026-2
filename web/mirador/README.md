@@ -16,9 +16,35 @@ Al elegir la zona, el interruptor de arriba elige la vista:
   se va cuando deja de registrarse. Arriba, una sola barra con región, mes, especies y cuántas son residentes, de
   verano y de invierno. Estilo de ilustración, como el mundo InStep: luz en tres bandas, contorno de tinta y
   barra de cuaderno de campo. Hay un tope de 110 aves en escena (primero las visitantes). Código: `js/inmersiva.js`.
+  - El contorno de cada ave es el color de su clase (verde residente, naranja verano, azul invierno).
+  - Mirar hacia abajo acerca la torre al terreno (zoom); en el computador, flecha abajo.
+  - Cada 2,5 a 5 s un ave posada pasa volando cerca de la torre y vuelve a su lugar.
+  - Los nombres de las zonas van pintados en el tablero, en el borde de afuera de cada una.
+  - Alrededor, el paisaje sigue: la cordillera de los Andes al este (al oeste en Magallanes) y el mar o los cerros
+    costeros al otro lado. Mirar hacia arriba levanta la vista al horizonte.
+  - Las aves se agrandan para verse desde lejos, pero comprimiendo el largo: miden de ~1,9 m (picaflor) a ~3,5 m
+    (cóndor), en vez de multiplicar a todas por lo mismo.
 - **Explorar**: la vista de primera persona descrita abajo (mira, ficha, foto, letreros de viaje).
 
 `?vista=inmersiva` o `?vista=explorar` la fija desde la URL.
+
+### Vibración (Arduino)
+
+`arduino/vibraciones_aves/` (Arduino Leonardo, librería MIDIUSB): 4 motores de vibración en los pines 10, 8, 6 y 4,
+uno bajo cada zona de la maqueta, en el orden en que el Mirador las dibuja (1 arriba a la izquierda, 2 arriba a la
+derecha, 3 abajo a la izquierda, 4 abajo a la derecha). El Mirador le manda notas MIDI por USB (Web MIDI):
+
+| Nota | Qué pasa |
+| --- | --- |
+| 80 + máscara (81–95) | una bandada se posa en esa zona |
+| 96 + máscara (97–111) | una bandada despega de esa zona (el pulso se apaga de a poco) |
+| 79 | empieza un mes: un toque corto en los 4 motores |
+
+El canal es la clase y define el ritmo: 2 residente (un pulso corto), 3 verano (tres pulsos rápidos), 4 invierno
+(un pulso largo que crece y baja). La velocidad es la intensidad, según cuántos días del mes se registró la
+especie. El canal 1 queda como en la prueba (`arduino/vibraciones_prueba/`). Se conecta al tocar «Ver el año»;
+el estado aparece en los ajustes. Web MIDI funciona en Chrome de computador o de Android con cable OTG; Safari de
+iPhone no lo tiene.
 
 ### Datos de las bandadas y del servo
 
