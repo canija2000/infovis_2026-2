@@ -217,14 +217,15 @@ const segDist = (px, pz, ax, az, bx, bz) => {
 };
 
 // exitAngles: dirección (rad) de cada sendero desde el centro; exitR: distancia del letrero.
-export function buildScene(key, data, props, exitAngles = [], exitR = 20, austral = false) {
+export function buildScene(key, data, props, exitAngles = [], exitR = 20, austral = false, opts = {}) {
   const n = data.height.length ** 0.5 | 0;
   const cell = WORLD / n;
   const unitPerM = cell / data.cellM;
   const range = data.hMax - data.hMin;
-  const vex = Math.min(1.3, MAX_RELIEF / Math.max(1, range * unitPerM));
+  const boost = opts.reliefBoost ?? 1;
+  const vex = Math.min(1.3 * boost, (MAX_RELIEF * boost) / Math.max(1, range * unitPerM));
   const hScale = unitPerM * vex;
-  const H = data.height.map(h => h * hScale);
+  const H = opts.heightY ? opts.heightY : data.height.map(h => h * hScale);
   const cover = data.cover;
   const root = new THREE.Group();
   const R = mulberry32(key.length * 7919 + 17);
@@ -242,18 +243,47 @@ export function buildScene(key, data, props, exitAngles = [], exitR = 20, austra
   const paths = exitPts.map(([x, z]) => [0, 0, x, z]);
   const onPath = (x, z, w = PATH_W) => paths.some(p => segDist(x, z, ...p) < w || Math.hypot(x - p[2], z - p[3]) < w + 3);
   // ---- terreno ----
-  const K = 4;
+  const K = 4, S = n * K;
   const riv = rasterRivers(data.rivers, n, K);
-  const tex = makeTex(n * K, n * K, (x, y) => {
+  const eb = opts.edgeBlend;
+  const lerp3 = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
+  const tex = makeTex(S, S, (x, y) => {
     const rt = riv.get(`${x},${y}`);
-    if (rt) return vary(rt === 'canal' ? [70, 100, 130] : [56, 96, 150], 10);
-    const wx = (x + 0.5) / K * (WORLD / n) - WORLD / 2, wz = (y + 0.5) / K * (WORLD / n) - WORLD / 2;
-    if (onPath(wx, wz, 0.7) || Math.hypot(wx, wz) < 1.6) return vary(R() < 0.2 ? [150, 128, 92] : [172, 148, 108], 8); // sendero
-    const c = cover[(y / K | 0) * n + (x / K | 0)];
-    const pal = COVER_RGB[c] || COVER_RGB[5];
-    if (c === 4 && (x % 16 === 0 || y % 16 === 0)) return vary([72, 70, 70], 4); // calles (cada ~5 m)
-    if (c === 3 && x % 3 === 0) return vary([110, 100, 50], 6); // surcos
-    return vary(R() < 0.3 ? pal[1] : pal[0], 10);
+    let col;
+    if (rt) col = vary(rt === 'canal' ? [70, 100, 130] : [56, 96, 150], 10);
+    else {
+      const wx = (x + 0.5) / K * (WORLD / n) - WORLD / 2, wz = (y + 0.5) / K * (WORLD / n) - WORLD / 2;
+      if (!eb && (onPath(wx, wz, 0.7) || Math.hypot(wx, wz) < 1.6)) col = vary(R() < 0.2 ? [150, 128, 92] : [172, 148, 108], 8); // sendero
+      else {
+        const c = cover[(y / K | 0) * n + (x / K | 0)];
+        const pal = COVER_RGB[c] || COVER_RGB[5];
+        if (c === 4 && (x % 16 === 0 || y % 16 === 0)) col = vary([72, 70, 70], 4); // calles (cada ~5 m)
+        else if (c === 3 && x % 3 === 0) col = vary([110, 100, 50], 6); // surcos
+        else col = vary(R() < 0.3 ? pal[1] : pal[0], 10);
+      }
+    }
+    if (eb) {
+      // transición orgánica de textura en los bordes (hacia el paisaje exterior o hacia la zona vecina)
+      const ci = Math.min(n - 1, x / K | 0), ri = Math.min(n - 1, y / K | 0);
+      const wX = Math.sin(y * 0.16 + x * 0.04) * 0.025 + Math.cos(y * 0.39) * 0.012;
+      const wY = Math.sin(x * 0.16 + y * 0.04) * 0.025 + Math.cos(x * 0.39) * 0.012;
+      const band = 0.14;
+      const edges = [
+        [x / S + wX, eb.shared.L[ri], eb.nb.L],
+        [(S - 1 - x) / S - wX, eb.shared.R[ri], eb.nb.R],
+        [y / S + wY, eb.shared.T[ci], eb.nb.T],
+        [(S - 1 - y) / S - wY, eb.shared.B[ci], eb.nb.B],
+      ];
+      for (const [d, isShared, nbRgb] of edges) {
+        if (d < band) {
+          const u = Math.max(0, Math.min(1, 1 - d / band));
+          const t = u * u * (3 - 2 * u);
+          if (isShared && nbRgb) col = lerp3(col, nbRgb, t * 0.5);
+          else if (!isShared) col = lerp3(col, eb.surroundRgb, t);
+        }
+      }
+    }
+    return col;
   });
   const geo = new THREE.PlaneGeometry(WORLD, WORLD, n - 1, n - 1).rotateX(-Math.PI / 2);
   const pos = geo.attributes.position;

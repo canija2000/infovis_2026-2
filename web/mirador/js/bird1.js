@@ -296,6 +296,27 @@ export function flightWing(sp, plan, P, hwi = 20) {
   return { geo, tex, span };
 }
 
+// Espejo en Z preservando el sentido de las caras (winding) para que los contornos BackSide funcionen igual en ambos lados.
+function mirrorZ(src) {
+  const g = src.clone().scale(1, 1, -1);
+  if (g.index) {
+    const arr = g.index.array;
+    for (let i = 0; i < arr.length; i += 3) { const tmp = arr[i + 1]; arr[i + 1] = arr[i + 2]; arr[i + 2] = tmp; }
+    g.index.needsUpdate = true;
+  } else {
+    const p = g.attributes.position, u = g.attributes.uv;
+    for (let i = 0; i < p.count; i += 3) {
+      for (const a of [p, u]) if (a) for (let k = 0; k < a.itemSize; k++) {
+        const i1 = (i + 1) * a.itemSize + k, i2 = (i + 2) * a.itemSize + k, tmp = a.array[i1];
+        a.array[i1] = a.array[i2]; a.array[i2] = tmp;
+      }
+    }
+    p.needsUpdate = true; if (u) u.needsUpdate = true;
+  }
+  g.computeVertexNormals();
+  return g;
+}
+
 /**
  * Construye el ave de una pieza. `ctx` trae lo que bird.js ya calculó (plan, factores AVONET, paleta y
  * geometrías de patas/ala) para no duplicar lógica.
@@ -379,8 +400,10 @@ export function buildBirdOnePiece(sp, plan, ctx) {
     const eye = new THREE.Mesh(eyeGeo, mEye);
     eye.scale.set(1, 1, 0.72);
     eye.position.set(0.24 * hs, 0.16 * hs, s * 0.78 * hs);
+    eye.userData.noInk = true;
     const glint = new THREE.Mesh(catchGeo, mCatch);
     glint.position.set(eyeR * 0.35, eyeR * 0.35, s * eyeR * 0.68);
+    glint.userData.noInk = true;
     eye.add(glint);
     head.add(eye);
     meshes.push(eye);
@@ -405,7 +428,7 @@ export function buildBirdOnePiece(sp, plan, ctx) {
     foldedGrp.position.copy(C);
     foldedGrp.rotation.z = pl.tilt;
     for (const s of [-1, 1]) {
-      const fm = new THREE.Mesh(s > 0 ? fold.geo : fold.geo.clone().scale(1, 1, -1), mFolded);
+      const fm = new THREE.Mesh(s > 0 ? fold.geo : mirrorZ(fold.geo), mFolded);
       fm.position.set(-0.08 * pl.body[0], 0.1 * pl.body[1], s * pl.body[2] * 0.78);
       fm.rotation.y = -s * 0.12;
       fm.rotation.x = s * 0.14;
@@ -421,7 +444,7 @@ export function buildBirdOnePiece(sp, plan, ctx) {
   const wings = [];
   for (const s of [-1, 1]) {
     const w = new THREE.Group(); w.position.copy(C).add(new THREE.Vector3(0.1, 0.3, s * pl.body[2] * 0.8)); bodyPivot.add(w);
-    const m = new THREE.Mesh(s > 0 ? fw.geo : fw.geo.clone().scale(1, 1, -1), mWing); m.visible = false; w.add(m);
+    const m = new THREE.Mesh(s > 0 ? fw.geo : mirrorZ(fw.geo), mWing); m.visible = false; w.add(m);
     if (pl.flippers) w.rotation.x = s * (Math.PI - 0.3); // aletas del pingüino, colgando a los costados
     w.userData.side = s; w.userData.mesh = m; wings.push(w);
   }
