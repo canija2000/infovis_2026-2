@@ -678,11 +678,11 @@ export function buildScene(key, data, props, exitAngles = [], exitR = 20, austra
       }
     }
     if (eb) {
-      // transición orgánica de textura en los bordes (hacia el paisaje exterior o hacia la zona vecina)
+      // transición orgánica amplia en los bordes (hacia el paisaje exterior o hacia la zona vecina)
       const ci = Math.min(n - 1, x / K | 0), ri = Math.min(n - 1, y / K | 0);
-      const wX = Math.sin(y * 0.16 + x * 0.04) * 0.025 + Math.cos(y * 0.39) * 0.012;
-      const wY = Math.sin(x * 0.16 + y * 0.04) * 0.025 + Math.cos(x * 0.39) * 0.012;
-      const band = 0.14;
+      const wX = Math.sin(y * 0.12 + x * 0.03) * 0.045 + Math.cos(y * 0.31) * 0.022;
+      const wY = Math.sin(x * 0.12 + y * 0.03) * 0.045 + Math.cos(x * 0.31) * 0.022;
+      const bandIn = 0.15, bandOut = 0.24;
       const edges = [
         [x / S + wX, eb.shared.L[ri], eb.nb.L],
         [(S - 1 - x) / S - wX, eb.shared.R[ri], eb.nb.R],
@@ -690,6 +690,7 @@ export function buildScene(key, data, props, exitAngles = [], exitR = 20, austra
         [(S - 1 - y) / S - wY, eb.shared.B[ci], eb.nb.B],
       ];
       for (const [d, isShared, nbRgb] of edges) {
+        const band = isShared ? bandIn : bandOut;
         if (d < band) {
           const u = Math.max(0, Math.min(1, 1 - d / band));
           const t = u * u * (3 - 2 * u);
@@ -801,7 +802,8 @@ export function buildScene(key, data, props, exitAngles = [], exitR = 20, austra
       count[p.id] = (count[p.id] ?? 0) + 1;
       // piezas modeladas a tamaño real: solo una leve variación (y la altura del edificio)
       const s = k.real ? (k.realScale ? k.realScale(R) : 0.9 + R() * 0.2)
-        : p.tipo === 'edificio' ? { x: 0.8 + R() * 0.4, y: 1.5 + R() * 2.5, z: 0.8 + R() * 0.4 } : 0.7 + R() * 0.6;
+        : p.tipo === 'edificio' ? { x: 0.8 + R() * 0.4, y: 1.5 + R() * 2.5, z: 0.8 + R() * 0.4 }
+          : p.tipo === 'arbol' ? 0.88 + R() * 0.34 : 0.75 + R() * 0.5;
       place(p.id, x, z, s, R() * Math.PI * 2, p.tipo);
     }
   }
@@ -812,7 +814,7 @@ export function buildScene(key, data, props, exitAngles = [], exitR = 20, austra
       const [g, m, tag] = part;
       const im = new THREE.InstancedMesh(g, m, list.length);
       list.forEach((mtx, j) => im.setMatrixAt(j, mtx));
-      im.frustumCulled = false;
+      im.frustumCulled = false; im.userData.propId = iid;
       root.add(im);
       if (tag === 'crown') crowns.push({ im, id, mat: m, base: m.uniforms.uTint.value.clone(), deciduous: !!kinds[id].deciduous, autumn: kinds[id].autumn });
     }

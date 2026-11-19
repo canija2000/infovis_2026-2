@@ -17,9 +17,8 @@ export const YEAR_SECS = MONTH_SECS * 12;
 const GAP = 0; // zonas unidas en un solo terreno continuo (sin parches separados)
 const RELIEF_BOOST = 2.6; // más volumen vertical al relieve para que se lea desde la torre
 const BOARD_DENSITY = 0.4; // menos vegetación que en Explorar: desde la torre no debe tapar las aves
-// Aves exageradas (a su escala no se verían desde la torre), pero sin perder la proporción: el largo final crece
-// más lento que el real, así una gaviota sigue siendo más grande que un chincol sin volverse un gigante.
-const BIRD_LEN = 2.1, BIRD_LEN_REF = 0.3, BIRD_LEN_POW = 0.35; // m que mide un ave de 0,3 m · cuánto se comprime
+// Aves ligeramente agrandadas para leerse desde la torre central (26 m), pero siempre más chicas que los árboles.
+const BIRD_LEN = 1.0, BIRD_LEN_REF = 0.3, BIRD_LEN_POW = 0.42; // m que mide un ave de 0,3 m · cuánto se comprime
 const FLYBY_EVERY = [2.5, 5];
 // s desde el comienzo del mes en que sale cada oleada migratoria (mes de 6 s)
 const WAVE = { llega: { verano: 0.3, residente: 0.9, invierno: 1.5 }, seVa: { verano: 3.2, residente: 3.6, invierno: 4.0 } }; // s entre pasadas de un ave cerca de la torre
@@ -128,20 +127,117 @@ function groundLabel(text, x, y, z, north) {
 // Suelo continuo con el mismo grano que las zonas, abrazado de cerca por la cordillera, el mar con costa
 // orgánica o los cerros costeros, y estribaciones al norte y al sur para cerrar los 360°.
 const toLin = c => new THREE.Color(c.r ** 2.2, c.g ** 2.2, c.b ** 2.2);
+// Paletas satelitales por región: [suelo/base, matorral/campo, bosque/quebrada, claro/arena/urbano, agua/río]
+const SAT_PAL = {
+  'CL-AP': [[201, 164, 106], [174, 146, 94], [108, 126, 72], [220, 198, 152], [86, 128, 146]],
+  'CL-VS': [[167, 163, 95], [122, 134, 68], [76, 104, 52], [186, 174, 122], [72, 114, 148]],
+  'CL-RM': [[167, 163, 95], [136, 140, 74], [86, 110, 56], [148, 142, 132], [76, 114, 146]],
+  'CL-LR': [[111, 154, 78], [82, 124, 56], [52, 92, 42], [146, 168, 92], [62, 104, 142]],
+  'CL-MA': [[154, 163, 106], [172, 158, 96], [78, 108, 56], [192, 180, 132], [64, 102, 136]],
+};
+// Textura tipo satelital 512×512 alrededor de las zonas: mosaico orgánico de bosques, campos, quebradas y ríos
+// que se funde sin costuras con el color base en el borde de las 4 zonas y hacia el horizonte.
+function makeSurroundTex(cfg, seed, W, D, span) {
+  const S = 512, pal = SAT_PAL[seed] || SAT_PAL['CL-RM'];
+  const baseRgb = [(cfg.ground >> 16) & 255, (cfg.ground >> 8) & 255, cfg.ground & 255];
+  const R = mulberry32([...seed].reduce((a, c) => a * 47 + c.charCodeAt(0), 11) >>> 0);
+  const hash = (x, y) => {
+    let h = (x * 374761393 + y * 668265263 + seed.charCodeAt(3) * 1442695041) | 0;
+    h = (h ^ (h >>> 13)) * 1274126177;
+    return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
+  };
+  const vnoise = (x, y) => {
+    const ix = Math.floor(x), iy = Math.floor(y), fx = x - ix, fy = y - iy;
+    const ux = fx * fx * (3 - 2 * fx), uy = fy * fy * (3 - 2 * fy);
+    const a = hash(ix, iy), b = hash(ix + 1, iy), c = hash(ix, iy + 1), d = hash(ix + 1, iy + 1);
+    return a + (b - a) * ux + (c - a) * uy + (a - b - c + d) * ux * uy;
+  };
+  const fbm = (x, y) => vnoise(x, y) * 0.55 + vnoise(x * 2.1 + 13.7, y * 2.1 + 7.3) * 0.3 + vnoise(x * 4.3 + 5.1, y * 4.3 + 19.2) * 0.15;
+  const lerp3 = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
+  const phR = R() * 6.28, hasFields = seed === 'CL-RM' || seed === 'CL-VS' || seed === 'CL-LR';
+  const cv = document.createElement('canvas'); cv.width = cv.height = S;
+  const ctx = cv.getContext('2d'), im = ctx.createImageData(S, S);
+  const hw = W / 2, hd = D / 2, half = span / 2;
+  for (let py = 0; py < S; py++) for (let px = 0; px < S; px++) {
+    const wx = (px / (S - 1) - 0.5) * span, wz = (py / (S - 1) - 0.5) * span;
+    const n1 = fbm(wx * 0.011 + 20, wz * 0.011 + 20);
+    const n2 = fbm(wx * 0.028 - 11, wz * 0.028 + 31);
+    let col;
+    if (n1 < 0.36) col = lerp3(pal[2], pal[1], n1 / 0.36);           // bosques / quebradas
+    else if (n1 < 0.66) col = lerp3(pal[1], pal[0], (n1 - 0.36) / 0.3); // matorral / pradera
+    else col = lerp3(pal[0], pal[3], Math.min(1, (n1 - 0.66) / 0.34));  // claros / suelo seco / urbano
+    // paños agrícolas / parcelación sutil en valles centrales y sur
+    if (hasFields && n1 > 0.44 && n1 < 0.72) {
+      const gx = Math.floor((wx + wz * 0.25) / 26), gz = Math.floor((wz - wx * 0.25) / 22);
+      const fh = hash(gx + 90, gz + 40);
+      const tone = fh < 0.33 ? pal[1] : fh < 0.66 ? pal[0] : pal[3];
+      const bx = Math.abs(((wx + wz * 0.25) % 26 + 26) % 26 - 13) / 13;
+      const bz = Math.abs(((wz - wx * 0.25) % 22 + 22) % 22 - 11) / 11;
+      const border = (bx > 0.92 || bz > 0.92) ? 0.86 : 1;
+      col = lerp3(col, [tone[0] * border, tone[1] * border, tone[2] * border], 0.42);
+    }
+    // cauce de río / estero serpenteante en la llanura
+    const rivDist = Math.abs(wx * 0.35 + wz - Math.sin(wx * 0.018 + phR) * 48 - 70);
+    if (rivDist < 7.5 && Math.max(Math.abs(wx) - hw, Math.abs(wz) - hd) > 12) {
+      const rw = 1 - rivDist / 7.5;
+      col = lerp3(col, rw > 0.55 ? pal[4] : pal[2], rw * 0.85);
+    }
+    // micro-variación satelital
+    const grain = (n2 - 0.5) * 24;
+    col = [col[0] + grain, col[1] + grain * 0.95, col[2] + grain * 0.85];
+    // mezcla suave hacia baseRgb justo en el borde exterior de las 4 zonas (sin salto) y en el borde lejano
+    const dx = Math.max(0, Math.abs(wx) - hw), dz = Math.max(0, Math.abs(wz) - hd);
+    const dZone = Math.hypot(dx, dz);
+    const nearZone = Math.max(0, 1 - dZone / 28);
+    const farFade = Math.max(0, (Math.max(Math.abs(wx), Math.abs(wz)) / half - 0.72) / 0.28);
+    const blendBase = Math.max(nearZone * nearZone * 0.85, Math.min(1, farFade * farFade));
+    col = lerp3(col, baseRgb, blendBase);
+    const i = (py * S + px) * 4;
+    im.data[i] = Math.max(0, Math.min(255, col[0]));
+    im.data[i + 1] = Math.max(0, Math.min(255, col[1]));
+    im.data[i + 2] = Math.max(0, Math.min(255, col[2]));
+    im.data[i + 3] = 255;
+  }
+  ctx.putImageData(im, 0, 0);
+  const tex = new THREE.CanvasTexture(cv);
+  tex.magFilter = THREE.LinearFilter; tex.minFilter = THREE.LinearMipmapLinearFilter; tex.generateMipmaps = true;
+  return tex;
+}
+
 function surround(cfg, W, D, y, seed) {
   const g = new THREE.Group(), R = mulberry32([...seed].reduce((a, c) => a * 31 + c.charCodeAt(0), 3) >>> 0);
-  const far = 2200;
+  const far = 2200, satSpan = 740;
   // mismo grano de suelo que las zonas para que no haya corte de textura en el perímetro
   const detail = makeTex(32, 32, (x, yy) => {
     const blade = (x * 7 + yy * 3) % 11 === 0 || (x * 3 + yy * 5) % 13 === 0;
     const v = 128 + (R() - 0.5) * 34 + (blade ? -26 : 0) + ((x >> 3) + (yy >> 3)) % 2 * 6;
     return [v, v, v];
   });
-  const ground = new THREE.Mesh(new THREE.PlaneGeometry(far * 2, far * 2).rotateX(-Math.PI / 2),
-    mat(texPlain(), { tint: cfg.ground, detail, detailRep: far, detailAmt: 0.65 }));
+  const groundMat = mat(texPlain(), { tint: cfg.ground, detail, detailRep: far, detailAmt: 0.65, snowable: true });
+  const ground = new THREE.Mesh(new THREE.PlaneGeometry(far * 2, far * 2).rotateX(-Math.PI / 2), groundMat);
   ground.position.y = y; g.add(ground);
-  const gLin = toLin(new THREE.Color(cfg.ground));
+  // manto satelital de 740×740 m con suaves lomas bajas alrededor de las zonas (sin relieve dentro de W×D)
+  const satTex = makeSurroundTex(cfg, seed, W, D, satSpan);
+  const satMat = mat(satTex, { tint: 0xffffff, detail, detailRep: satSpan / 2, detailAmt: 0.55, snowable: true });
+  const satGeo = new THREE.PlaneGeometry(satSpan, satSpan, 64, 64).rotateX(-Math.PI / 2);
+  const sp = satGeo.attributes.position, hw = W / 2, hd = D / 2;
   const seaSide = cfg.east === 'mar' ? 1 : cfg.west === 'mar' ? -1 : 0;
+  const hillAt = (x, z) => {
+    const dZone = Math.hypot(Math.max(0, Math.abs(x) - hw), Math.max(0, Math.abs(z) - hd));
+    const dEdge = Math.max(0, 1 - Math.max(Math.abs(x), Math.abs(z)) / (satSpan * 0.48));
+    const seaMask = seaSide !== 0 && x * seaSide > hw ? Math.max(0, 1 - (x * seaSide - hw) / 18) : 1;
+    const hill = Math.min(1, dZone / 42) * Math.min(1, dEdge * 3) * seaMask;
+    return Math.max(0, hill * (2.6 + 2.4 * Math.sin(x * 0.025 + z * 0.018) * Math.cos(z * 0.022 - x * 0.015)));
+  };
+  for (let i = 0; i < sp.count; i++) sp.setY(i, hillAt(sp.getX(i), sp.getZ(i)));
+  satGeo.computeVertexNormals();
+  const satMesh = new THREE.Mesh(satGeo, satMat);
+  satMesh.position.y = y + 0.03; g.add(satMesh);
+  g.userData.groundMat = groundMat;
+  g.userData.groundBase = new THREE.Color(cfg.ground);
+  g.userData.satMat = satMat;
+  g.userData.hillAt = (x, z) => y + 0.03 + hillAt(x, z);
+  const gLin = toLin(new THREE.Color(cfg.ground));
   for (const [side, kind] of [[1, cfg.east], [-1, cfg.west]]) {
     if (kind === 'mar') g.add(ocean(side, W, y, R, far));
     else g.add(ridge(side, kind === 'andes' ? cfg.snow : 1.1, kind === 'andes' ? 1.2 : 0.46, W, y, R, far, gLin, kind !== 'andes'));
@@ -420,6 +516,57 @@ export function buildBoard({ index, reg, props, bandadas }) {
   }
   const around = surround(sCfg, W, D, -0.06, reg.meta.code);
   root.add(around);
+  // franja orgánica de vegetación suelta alrededor del perímetro (rompe el borde rectangular de las zonas)
+  const fringe = new THREE.Group(), Rf = mulberry32(reg.meta.code.charCodeAt(3) * 131 + 17);
+  const seaSide = sCfg.east === 'mar' ? 1 : sCfg.west === 'mar' ? -1 : 0;
+  const hw = W / 2, hd = D / 2;
+  const pool = []; // grupos completos de cada prop (tronco + copa) de las zonas no urbanas
+  for (const z of zones) {
+    if (z.key === 'ciudad') continue;
+    const byId = new Map();
+    for (const o of z.sc.root.children) {
+      if (!o.isInstancedMesh || o.userData.noInk || o.userData.ink || !o.userData.propId || o.count < 2) continue;
+      const arr = byId.get(o.userData.propId) || [];
+      arr.push(o); byId.set(o.userData.propId, arr);
+    }
+    for (const parts of byId.values()) pool.push({ parts, zx: z.g.position.x, zz: z.g.position.z });
+  }
+  const byMesh = new Map();
+  const mtx = new THREE.Matrix4(), qRot = new THREE.Quaternion(), vSc = new THREE.Vector3(), vPos = new THREE.Vector3();
+  const UP = new THREE.Vector3(0, 1, 0);
+  for (let i = 0; i < 65 && pool.length; i++) {
+    const dist = 2 + (Rf() ** 1.45) * 44;
+    const edge = (Rf() * 4) | 0;
+    let x, z;
+    if (edge === 0) { x = -hw - dist; z = (Rf() * 2 - 1) * (hd + dist * 0.7); }
+    else if (edge === 1) { x = hw + dist; z = (Rf() * 2 - 1) * (hd + dist * 0.7); }
+    else if (edge === 2) { x = (Rf() * 2 - 1) * (hw + dist * 0.7); z = -hd - dist; }
+    else { x = (Rf() * 2 - 1) * (hw + dist * 0.7); z = hd + dist; }
+    if (seaSide !== 0 && x * seaSide > hw + 1) continue; // no plantar árboles dentro del mar/playa
+    let best = pool[0], bestD = Infinity;
+    for (let k = 0; k < 6; k++) {
+      const cand = pool[(Rf() * pool.length) | 0];
+      const d2 = (cand.zx - x) ** 2 + (cand.zz - z) ** 2;
+      if (d2 < bestD) { bestD = d2; best = cand; }
+    }
+    const sc = 0.85 + Rf() * 0.4;
+    const fy = around.userData.hillAt ? around.userData.hillAt(x, z) : -0.06;
+    mtx.compose(vPos.set(x, fy, z), qRot.setFromAxisAngle(UP, Rf() * 6.28), vSc.setScalar(sc));
+    const mCopy = mtx.clone();
+    for (const part of best.parts) {
+      const list = byMesh.get(part) || [];
+      list.push(mCopy);
+      byMesh.set(part, list);
+    }
+  }
+  for (const [src, mats] of byMesh) {
+    const im = new THREE.InstancedMesh(src.geometry, src.material, mats.length);
+    mats.forEach((m0, j) => im.setMatrixAt(j, m0));
+    im.frustumCulled = false;
+    fringe.add(im);
+    inkOutline(im);
+  }
+  root.add(fringe);
   const anims = []; around.traverse(o => o.userData.animate && anims.push(o.userData.animate)); // el mar
 
   const center = new THREE.Vector3(0, 2, 0);
@@ -551,5 +698,9 @@ export function buildBoard({ index, reg, props, bandadas }) {
   const animate = time => { for (const z of zones) z.sc.animate?.(time); for (const f of anims) f(time); };
   const dispose = () => root.traverse(o => { if (!o.userData.ink) o.geometry?.dispose(); });
   const birds = () => [...flocks.values()].reduce((a, f) => a + f.birds.length, 0);
-  return { root, zones, months: region.months, center, radius, towerY, update, reset, animate, dispose, birds, flocks, skyTop: sky.material.uniforms.uTop };
+  const syncSurround = (r, g, b) => {
+    if (around.userData.groundMat) around.userData.groundMat.uniforms.uTint.value.copy(around.userData.groundBase).multiply(new THREE.Color(r, g, b));
+    if (around.userData.satMat) around.userData.satMat.uniforms.uTint.value.setRGB(r, g, b);
+  };
+  return { root, zones, months: region.months, center, radius, towerY, update, reset, animate, dispose, birds, flocks, skyTop: sky.material.uniforms.uTop, syncSurround };
 }

@@ -28,6 +28,7 @@ export class BirdAgent {
     this.state = 'idle'; this.t = 0; this.dur = 1;
     this.from = new THREE.Vector3(); this.to = new THREE.Vector3(); this.target = new THREE.Vector3();
     this.hops = 0; this.flick = 0; this.yaw = 0; this.pitch = 0; this.nextLook = 0.5;
+    this.phase = rnd(0, 6.28); // desfase propio para que la bandada no aletee en sincronía rígida
     this.perch = null; this.leaving = false; this.gone = false; this.noteAmp = 0; this.k = 0;
     // esfera invisible para el hover/clic
     this.proxy = new THREE.Mesh(new THREE.SphereGeometry(1.6, 6, 4), new THREE.MeshBasicMaterial({ visible: false }));
@@ -231,10 +232,63 @@ export class BirdAgent {
     const stride = walking ? Math.sin(performance.now() / 110) : 0;
     m.legs.forEach((l, i) => { l.rotation.z = flying ? 0.9 : walking ? stride * (i ? 0.5 : -0.5) : -0.7 * hopK; });
     m.group.rotation.z = this.traits.waddle && (walking || this.state === 'hop') ? Math.sin(performance.now() / 90) * 0.18 : 0;
-    const flap = soaring ? 0.05 * Math.sin(performance.now() / 400) : flying ? Math.sin(performance.now() / (this.plan === 'picaflor' ? 12 : 60)) : 0;
-    for (const w of m.wings) { w.rotation.x = w.userData.side * (soaring ? 1.35 + flap : flying ? 0.3 + flap * 1.1 : this.traits.flippers ? Math.PI - 0.3 + Math.sin(performance.now() / 300) * 0.08 : 0); } // pingüino: aletas colgando
+    const nowS = performance.now() / 1000;
+    // frecuencia de aleteo según tamaño (aves chicas rápido, grandes lento y pausado) + breves planeos / vuelo ondulante
+    const freq = this.plan === 'picaflor' ? 52 : Math.max(5.2, Math.min(15.5, 13.5 / ((this.sp.morphology?.scale ?? 1) ** 0.45)));
+    const ph = nowS * freq + this.phase;
+    const bounder = this.plan === 'paseriforme' || this.plan === 'cola_alta' || this.plan === 'carpintero';
+    const glideWave = Math.sin(nowS * (bounder ? 2.2 : 1.35) + this.phase);
+    const gliding = !soaring && flying && this.plan !== 'picaflor' && (this.traits.soar || bounder) && glideWave > 0.52;
+    // ciclo articulado: golpe de potencia hacia abajo (ala extendida, cuerpo sube) y recuperación (muñeca plegada, cuerpo cede)
+    const sFlap = Math.sin(ph), cFlap = Math.cos(ph);
+    const upstroke = Math.max(0, cFlap); // >0 mientras el ala sube
+    const env = this.state === 'fly' ? Math.sin(Math.PI * this.k) : 1; // se apaga al despegar/aterrizar para posarse limpio
+    let bodyBob = 0, pitchBob = 0, tailBob = 0;
+    for (const w of m.wings) {
+      const side = w.userData.side, wrist = w.userData.wrist;
+      if (soaring) {
+        w.rotation.set(side * (1.42 + 0.05 * Math.sin(nowS * 2.2 + this.phase)), 0, 0.05);
+        if (wrist) wrist.rotation.set(side * 0.08, 0, -0.06);
+      } else if (gliding) {
+        if (bounder) {
+          // vuelo ondulante (bounding flight): paseriformes repliegan brevemente las alas y caen en arco suave
+          w.rotation.set(side * 0.48, 0, -0.25);
+          if (wrist) wrist.rotation.set(side * 0.95, 0, -0.45);
+          const dip = Math.max(0, (glideWave - 0.52) / 0.48);
+          bodyBob = -0.65 * Math.sin(dip * Math.PI);
+          pitchBob = -0.16 * Math.sin(dip * Math.PI);
+        } else {
+          w.rotation.set(side * (1.28 + 0.04 * Math.sin(nowS * 3 + this.phase)), 0, 0.06);
+          if (wrist) wrist.rotation.set(side * 0.14, 0, -0.1);
+          bodyBob = -0.18 * Math.sin(nowS * 2.5 + this.phase);
+        }
+      } else if (flying) {
+        // hombro: elevación + barrido adelante en el golpe de potencia y torsión/pronación aerodinámica
+        const shoulderX = 1.22 + sFlap * 0.78;
+        const twistY = -side * cFlap * 0.26;
+        const sweepZ = -0.2 * sFlap + 0.14 * cFlap;
+        w.rotation.set(side * shoulderX, twistY, sweepZ);
+        // muñeca: se dobla claramente en la subida (upstroke) y se extiende firme al empujar abajo (downstroke)
+        if (wrist) wrist.rotation.set(side * (0.08 + 0.82 * upstroke * upstroke), 0, -0.38 * upstroke);
+        // reacción del cuerpo: sube visiblemente al empujar hacia abajo, cabecea suave y la cola compensa en contrafase
+        if (this.plan !== 'picaflor') {
+          bodyBob = -sFlap * 0.58 + (bounder ? 0.22 : 0);
+          pitchBob = -sFlap * 0.12;
+          tailBob = sFlap * 0.22;
+        } else {
+          bodyBob = Math.sin(nowS * 5 + this.phase) * 0.08;
+        }
+      } else if (this.traits.flippers) {
+        w.rotation.set(side * (Math.PI - 0.3 + Math.sin(nowS * 3.3 + this.phase) * 0.08), 0, 0);
+        if (wrist) wrist.rotation.set(0, 0, 0);
+      } else {
+        w.rotation.set(0, 0, 0);
+        if (wrist) wrist.rotation.set(0, 0, 0);
+      }
+    }
+    if (bodyBob) m.group.position.y += bodyBob * env * this.s;
     for (const l of m.legs) l.visible = !(this.swimming && !flying);
-    m.group.rotation.x = soaring ? 0.25 * (this.soar?.dir || 1) : 0;
+    m.group.rotation.x = soaring ? 0.25 * (this.soar?.dir || 1) : (flying && !gliding ? Math.sin(nowS * 1.1 + this.phase) * 0.08 : 0);
     let bodyTilt = 0, headTilt = this.pitch, open = 0, puff = 1;
     if (this.state === 'peck') {
       const tri = this.k < 0.5 ? this.k * 2 : (1 - this.k) * 2;
@@ -242,7 +296,11 @@ export class BirdAgent {
       bodyTilt = -0.4 * tri; headTilt = -0.9 * jab * tri - 0.2;
     } else if (this.state === 'sing') {
       bodyTilt = 0.12; headTilt = 0.5; open = 0.4 * this.noteAmp; puff = 1 + 0.08 * this.noteAmp;
-    } else if ((this.state === 'fly' && !walking) || soaring) bodyTilt = -0.35;
+    } else if ((this.state === 'fly' && !walking) || soaring) {
+      // inclinación natural según si sube o baja en el arco de vuelo + cabeceo rítmico del aleteo
+      const climb = this.state === 'fly' ? Math.cos(Math.PI * this.k) * 0.22 : 0;
+      bodyTilt = -0.28 + climb + pitchBob * env;
+    }
     if (this.swimming && !flying) bodyTilt = this.plan === 'pinguino' ? -1.2 : -0.12; // el pingüino nada acostado
     if (this.onTrunk && this.state !== 'fly') bodyTilt = 0.55; // carpintero vertical contra el tronco
     m.bodyPivot.rotation.z = bodyTilt + 0.1 * hopK;
@@ -251,7 +309,7 @@ export class BirdAgent {
     m.lower.rotation.z = m.beakRest[1] - open;
     m.upper.rotation.z = m.beakRest[0] + open * 0.3;
     m.torso.scale.setScalar(puff);
-    m.tail.rotation.z = m.tailRest - 0.4 * this.flick + 0.35 * hopK + (flying ? 0.5 : 0);
+    m.tail.rotation.z = m.tailRest - 0.4 * this.flick + 0.35 * hopK + (flying ? 0.48 + tailBob * env : 0);
   }
 }
 
