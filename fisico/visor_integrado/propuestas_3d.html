@@ -41,7 +41,7 @@
 // Visor actual (fisico/visor_laser): 120 × 90 × 122, MDF 3 mm, ranura lateral para el teléfono cerca de la trasera.
 // Componentes (módulo externo R1): Leonardo 70 × 55 × 10, protoboard 47 × 35 × 11, motores 23 × 21 × 5 (×4),
 // 40 mm libres sobre las placas para cables.
-const T = 3, VX = 140, VY = 90, VZ = 122; // 140: 10 mm más por lado que el visor actual, para ver el teléfono entero
+const T = 3, VX = 140, VY = 90, VZ = 170; // lado de los ojos abierto; más largo que antes (122) para alejar el teléfono // 140: 10 mm más por lado que el visor actual, para ver el teléfono entero
 const C = { visor: 0xc9a46a, modulo: 0x8fb4d6, leo: 0x2f8f7a, proto: 0xf6f3ec, motor: 0xd9667a, phone: 0x2b2f36, tornillo: 0x555555, cable: 0x7a4fb5 };
 
 const view = document.getElementById('view');
@@ -96,10 +96,8 @@ function visor(yTop = VY, color = C.visor, phone = true) {
   box(VX, T, VZ, color, 0, 0, 0, 'Visor · base', { wall: true, dir: V(0, -1, 0) });
   box(T, yTop, VZ, color, -VX / 2 + T / 2, 0, 0, 'Visor · lado izquierdo', { wall: true, dir: V(-1, 0, 0) });
   box(T, yTop, VZ, color, VX / 2 - T / 2, 0, 0, 'Visor · lado derecho', { wall: true, dir: V(1, 0, 0) });
-  box(VX, VY, T, color, 0, 0, VZ / 2 - T / 2, 'Visor · careta (ojos)', { wall: true, dir: V(0, 0, 1) });
   box(VX, VY, T, color, 0, 0, -VZ / 2 + T / 2, 'Visor · trasera', { wall: true, dir: V(0, 0, -1) });
-  box(124, 60, 3, color, 0, 28, VZ / 2 + 1.5, 'Aro del antifaz: una sola ventana para los dos ojos', { dir: V(0, 0, 1) });
-  box(104, 40, 4, 0x1b1611, 0, 38, VZ / 2 + 1, 'Ventana del antifaz', { dir: V(0, 0, 1) });
+
   if (phone) box(160, 75, 9, C.phone, 0, 7, -VZ / 2 + 12, 'Teléfono (entra por la ranura del costado)', { dir: V(0, 0, -0.3) });
 }
 function motor(x, y, z, side, name, inward = false) {
@@ -152,7 +150,7 @@ function propuestaA() {
 function propuestaB() {
   visor(VY);
   box(VX, T, VZ, C.visor, 0, VY - T, 0, 'Visor · tapa', { wall: true, dir: V(0, 1, 0) });
-  const AW = 24, AH = 78, AD = 64, az = VZ / 2 - 8 - AD / 2, ay = 6;
+  const AW = 30, AH = 78, AD = 72, az = VZ / 2 - 8 - AD / 2, ay = 6;
   for (const s of [-1, 1]) {
     const x0 = s * (VX / 2 + AW / 2);
     box(AW, AH, AD, C.modulo, x0, ay, az, `Asa ${s < 0 ? 'izquierda' : 'derecha'} (caja de agarre, se atornilla al lateral)`, { wall: true, dir: V(s * 1.6, 0, 0) });
@@ -162,7 +160,7 @@ function propuestaB() {
     for (const dy of [18, 60]) cyl(1.7, 14, C.tornillo, s * (VX / 2 + 2), ay + dy, az, 'Tornillo M3 asa–lateral', 'x', { dir: V(s * 1.6, 0, 0) });
   }
   // mochila trasera: entre los aleros de los laterales (que la sujetan 8 mm), con la tapa de 4 tornillos atrás
-  const MZ = 60, mz = -VZ / 2 - MZ / 2;
+  const MZ = 70, mz = -VZ / 2 - MZ / 2;
   box(VX - 2 * T, VY, MZ, C.modulo, 0, 0, mz, 'Mochila de electrónica (detrás del teléfono)', { wall: true, dir: V(0, 0, -1.6) });
   box(70, 10, 55, C.leo, -28, T, mz, 'Arduino Leonardo (acostado en el piso, en su cuna)', { dir: V(0, 0.4, -2.2) });
   box(47, 11, 35, C.proto, 36, T, mz, 'Protoboard (pegada al piso)', { dir: V(0, 0.4, -2.2) });

@@ -28,7 +28,7 @@ PLANCHA = (335.0, 365.0)
 SEP = 4.0                # separación entre piezas y margen al borde
 
 # visor
-X, Y, Z = 140.0, 90.0, 122.0   # ancho (antes 120: +10 por lado), alto, largo
+X, Y, Z = 140.0, 90.0, float(os.environ.get('VISOR_Z', 170))   # ancho (antes 120: +10 por lado), alto, largo ojos–teléfono (antes 122)
 GAP = 13.0               # ranura del teléfono: grosor con carcasa + 1
 RANURA_ALTO = 79.0       # ancho del teléfono con carcasa + 1
 ALERO = 8.0              # los laterales sobresalen por detrás; la mochila entra entre ellos
@@ -41,15 +41,15 @@ NARIZ = (36.0, 26.0)
 N_X, N_Z, N_Y = 7, 7, 5  # dedos (impares) a lo ancho, a lo largo y a lo alto
 
 # asas (caja de agarre en cada lateral, abierta hacia el visor)
-ASA = (64.0, 78.0, 24.0) # largo (a lo largo del visor), alto, grosor hacia afuera (21 libres por dentro)
+ASA = (72.0, 78.0, 30.0) # largo (a lo largo del visor), alto, grosor hacia afuera (27 libres por dentro)
 ASA_Z0, ASA_Y0 = 8.0, 6.0  # dónde empieza el asa en el lateral, desde adelante y desde abajo
 MOTOR = (23.0, 21.0)     # módulo de vibración (largo, alto); 5 mm de grosor
-MOTOR_C = (18.0, 46.0)   # centros de los dos motores a lo largo del asa (adelante, atrás)
+MOTOR_C = (20.0, 52.0)   # centros de los dos motores a lo largo del asa (adelante, atrás)
 PILAR = 12.0             # pilares laminados del asa (cuadrados)
 HOLE, NUT_AF = 3.4, 5.6  # paso M3 y tuerca M3 entre caras
 
 # mochila (entre los aleros, detrás de la trasera)
-MOCH = (X - 2 * T, Y, 60.0)    # ancho, alto, fondo: el Leonardo (70 × 55) va acostado en el piso, 55 a lo hondo
+MOCH = (X - 2 * T, Y, 70.0)    # ancho, alto, fondo: el Leonardo (70 × 55) va acostado en el piso, 55 a lo hondo
 APOYO = 12.0             # apoyos de la tapa trasera, en las esquinas
 N_APOYO = 3              # capas por apoyo (la última, con tuerca)
 
@@ -138,9 +138,9 @@ leng_x = [(X / 4 - 12, X / 4 + 12), (3 * X / 4 - 12, 3 * X / 4 + 12)]
 # junto a cada borde lateral, sujetos con bridas
 def bridas(xc):
     return [r for z in (40, 72, 104) for r in (rect_c(xc - 4, z, 2, 5), rect_c(xc + 4, z, 2, 5))]
-pieza('VISOR TAPA', X, Z, panel(X, Z, abajo=A_X, derecha=A_Z, arriba=A_X, izquierda=A_Z),
+pieza('VISOR TAPA', X, Z, panel(X, Z, abajo=[], derecha=A_Z, arriba=A_X, izquierda=A_Z),
       [rect(a, z_marco, b, z_marco + T) for a, b in leng_x] + bridas(12) + bridas(X - 12))
-pieza('VISOR BASE', X, Z, panel(X, Z, abajo=A_X, derecha=A_Z, arriba=A_X, izquierda=A_Z),
+pieza('VISOR BASE', X, Z, panel(X, Z, abajo=[], derecha=A_Z, arriba=A_X, izquierda=A_Z),
       [rect(a, z_marco, b, z_marco + T) for a, b in leng_x])
 
 # laterales: ranura del teléfono abierta desde abajo, atrás; ojales de los motores y pasos de los tornillos del asa
@@ -152,18 +152,12 @@ my = ASA_Y0 + ASA[1] / 2                             # altura de los motores: el
 pil_c = ASA_Z0 + ASA[0] / 2                          # los pilares van entre los dos motores
 pil_y = (ASA_Y0 + T + PILAR / 2 + 2, ASA_Y0 + ASA[1] - T - PILAR / 2 - 2)
 for nombre in ('VISOR LADO IZQ', 'VISOR LADO DER'):
-    pieza(nombre, LZ, Y, panel(LZ, Y, abajo=B_Z + cola, arriba=B_Z + cola, izquierda=A_Y, esp_abajo=ranura),
+    pieza(nombre, LZ, Y, panel(LZ, Y, abajo=B_Z + cola, arriba=B_Z + cola, izquierda=[], esp_abajo=ranura),
           [ojal(ASA_Z0 + c, my, 12) for c in MOTOR_C],
           [(pil_c, y, HOLE / 2) for y in pil_y])
 
-# careta: una sola ventana ancha (antifaz) y el hueco de la nariz
-nx0, nx1 = X / 2 - NARIZ[0] / 2, X / 2 + NARIZ[0] / 2
-nariz = (nx0, nx1, [(nx0, 0), (nx0, NARIZ[1] - 9), (nx0 + 9, NARIZ[1]), (nx1 - 9, NARIZ[1]), (nx1, NARIZ[1] - 9), (nx1, 0)])
-pieza('VISOR CARETA', X, Y, panel(X, Y, abajo=B_X, derecha=B_Y, arriba=B_X, izquierda=B_Y, esp_abajo=nariz),
-      [chaflan(X / 2, OJO_Y, *ANTIFAZ)])
-for i in range(N_AROS):
-    pieza(f'ARO ANTIFAZ {i + 1}', ANTIFAZ_ARO[0], ANTIFAZ_ARO[1], chaflan(ANTIFAZ_ARO[0] / 2, ANTIFAZ_ARO[1] / 2, *ANTIFAZ_ARO),
-          [chaflan(ANTIFAZ_ARO[0] / 2, ANTIFAZ_ARO[1] / 2, *ANTIFAZ)])
+# sin careta: el lado de los ojos queda abierto (las ojeras y la ventana resultaron incómodas); los bordes
+# delanteros de tapa, base y laterales van lisos
 
 # trasera: entre los laterales; 4 pasos M3 para la mochila y un paso de cables arriba al centro
 moch_tornillos = [(X / 2 + s * (MOCH[0] / 2 - 18), y) for s in (-1, 1) for y in (22, Y - 22)]
@@ -239,7 +233,6 @@ pieza('PROBETA', 40, 18, [(0, 0), (40, 0), (40, 18), (34.6, 18), (34.6, 8), (31.
 # ------------------------------------------------------------------ comprobaciones de diseño
 assert RANURA_ALTO <= Y - 2 * T - 5, 'ranura demasiado alta'
 assert VENTANA[0] <= X - 2 * T - 8 and T + 8 + VENTANA[1] <= Y - T - 6, 'la ventana no cabe en el marco'
-assert OJO_Y - ANTIFAZ_ARO[1] / 2 > NARIZ[1] and OJO_Y + ANTIFAZ_ARO[1] / 2 < Y, 'el aro del antifaz choca con la nariz o el borde'
 assert ASA_Z0 + ASA[0] < r0 - 4, 'el asa tapa la ranura del teléfono'
 for c in MOTOR_C:                                     # motores dentro del asa y sin tocar los pilares
     assert T + 1 < c - MOTOR[0] / 2 and c + MOTOR[0] / 2 < ASA[0] - T - 1, 'un motor no cabe en el asa'
@@ -314,7 +307,8 @@ COLOR = lambda n: '#9fc3e0' if n.startswith(('ASA', 'MOCHILA', 'PILAR', 'APOYO',
 
 def svg(pl, con_guia, titulo=''):
     W, H = PLANCHA
-    o = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{f(W)}mm" height="{f(H)}mm" viewBox="0 0 {f(W)} {f(H)}">']
+    HH = H + (10 if con_guia else 0)            # la guía lleva una franja abajo para el título, fuera de la plancha
+    o = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{f(W)}mm" height="{f(HH)}mm" viewBox="0 0 {f(W)} {f(HH)}">']
     if con_guia:
         o.append('<rect width="100%" height="100%" fill="#f3ead2"/>')
         o.append(f'<rect x="0.2" y="0.2" width="{f(W - 0.4)}" height="{f(H - 0.4)}" fill="none" stroke="#2a1c08" stroke-width="0.4" stroke-dasharray="3 2"/>')
@@ -337,7 +331,7 @@ def svg(pl, con_guia, titulo=''):
             for poly in [cont] + huecos: o.append(f'<path d="{d_path(poly, ox, oy, PH)}" fill="none" stroke="#000000" stroke-width="0.1"/>')
             for (cx, cy, r) in circ: o.append(f'<circle cx="{f(cx + ox)}" cy="{f(PH - cy + oy)}" r="{f(r)}" fill="none" stroke="#000000" stroke-width="0.1"/>')
     if con_guia and titulo:
-        o.append(f'<text x="{f(W - 4)}" y="{f(H - 4)}" font-family="Courier New, monospace" font-size="5" font-weight="bold" fill="#2a1c08" text-anchor="end">{titulo}</text>')
+        o.append(f'<text x="{f(W - 4)}" y="{f(H + 7)}" font-family="Courier New, monospace" font-size="5" font-weight="bold" fill="#2a1c08" text-anchor="end">{titulo}</text>')
     o.append('</svg>')
     return '\n'.join(o)
 
