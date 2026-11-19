@@ -385,7 +385,8 @@ export function buildBoard({ index, reg, props, bandadas }) {
   const region = bandadas.regions.find(r => r.code === reg.meta.code);
   const keys = Object.keys(reg.terrain.scenes);
   const root = new THREE.Group();
-  root.add(skyDome());
+  const sky = skyDome();
+  root.add(sky);
 
   // zonas unidas en un solo terreno continuo (2 columnas; si hay 3 zonas, la tercera centrada abajo)
   const step = WORLD + GAP, cols = 2, rows = Math.ceil(keys.length / cols);
@@ -550,5 +551,5 @@ export function buildBoard({ index, reg, props, bandadas }) {
   const animate = time => { for (const z of zones) z.sc.animate?.(time); for (const f of anims) f(time); };
   const dispose = () => root.traverse(o => { if (!o.userData.ink) o.geometry?.dispose(); });
   const birds = () => [...flocks.values()].reduce((a, f) => a + f.birds.length, 0);
-  return { root, zones, months: region.months, center, radius, towerY, update, reset, animate, dispose, birds, flocks };
+  return { root, zones, months: region.months, center, radius, towerY, update, reset, animate, dispose, birds, flocks, skyTop: sky.material.uniforms.uTop };
 }

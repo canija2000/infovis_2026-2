@@ -72,9 +72,10 @@ const FS = `
     if (uDetailAmt > 0.0) base *= mix(vec3(1.0), texture2D(uDetail, vUvw.xy / vUvw.z * uDetailRep).rgb * 2.0, uDetailAmt); // grano repetido (suelo)
     if (uSnowable > 0.5) base = mix(base, vec3(0.93, 0.95, 1.0), uSnow * smoothstep(0.55, 0.9, vUp) * step(th, 0.85));
     vec3 light = vLight;
-    if (uToon > 0.5) { // tres bandas de luz con bordes suaves: sombra, media luz, luz
+    if (uToon > 0.5) { // tres bandas de luz con bordes suaves + hemisferio cielo/sombra
       float band = 0.5 * smoothstep(0.08, 0.16, vD) + 0.5 * smoothstep(0.5, 0.58, vD);
-      light = uAmb * 1.25 + uLightCol * (0.15 + 0.85 * band);
+      vec3 hemi = mix(uAmb * vec3(0.76, 0.72, 0.84), uAmb * vec3(1.16, 1.18, 1.24), clamp(vUp * 0.5 + 0.5, 0.0, 1.0));
+      light = hemi * 1.18 + uLightCol * (0.14 + 0.86 * band);
     }
     vec3 c = base * light + uFlash;
     c = mix(c, uFogColor, vFog);

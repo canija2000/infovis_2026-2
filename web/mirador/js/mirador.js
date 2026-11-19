@@ -461,15 +461,36 @@ function updateMarks() {
 }
 
 // ------------------------------------------------------------------ estación (luz, niebla, nieve)
+// Anclas suaves para la transición continua a lo largo del año en la vista inmersiva:
+// verano (p≈0,04) → otoño (p≈0,29) → invierno (p≈0,54) → primavera (p≈0,79).
+const SEASON_KEYS = [
+  { sun: new THREE.Color(0xfff0cc), amb: new THREE.Color(0x7d7a6c), fog: new THREE.Color(0xc0c9c6), sky: new THREE.Color(0x78bce8), elev: 1.08 }, // verano
+  { sun: new THREE.Color(0xf4d8ae), amb: new THREE.Color(0x766e64), fog: new THREE.Color(0xb6aca0), sky: new THREE.Color(0x8cb8d8), elev: 0.9 },  // otoño
+  { sun: new THREE.Color(0xd8e0ec), amb: new THREE.Color(0x676f7d), fog: new THREE.Color(0x9aa6b6), sky: new THREE.Color(0x8ea9c4), elev: 0.72 }, // invierno
+  { sun: new THREE.Color(0xf6f0d8), amb: new THREE.Color(0x768270), fog: new THREE.Color(0xb0c6ba), sky: new THREE.Color(0x84c2e6), elev: 0.94 }, // primavera
+];
+let sunElev = 1.0;
+function seasonBlend(p) {
+  const s = (((p * 12 - 0.5) % 12) + 12) % 12 / 3; // 0..4 cíclico
+  const i0 = Math.floor(s) % 4, i1 = (i0 + 1) % 4, f = s - Math.floor(s), t = f * f * (3 - 2 * f);
+  const A = SEASON_KEYS[i0], B = SEASON_KEYS[i1];
+  shared.uLightCol.value.copy(A.sun).lerp(B.sun, t);
+  shared.uAmb.value.copy(A.amb).lerp(B.amb, t);
+  shared.uFogColor.value.copy(A.fog).lerp(B.fog, t);
+  S.fog = shared.uFogColor.value.getHex();
+  sunElev = A.elev + (B.elev - A.elev) * t;
+  if (S.board) {
+    S.board.skyTop?.value.copy(A.sky).lerp(B.sky, t);
+    shared.uFogNear.value = S.board.radius * 3; shared.uFogFar.value = S.board.radius * 22;
+    let snow = 0;
+    for (const z of S.board.zones) snow = Math.max(snow, z.sc.setYearProgress?.(p) || 0);
+    shared.uSnow.value = snow;
+  }
+}
 function seasonLight(m) {
   const season = SEASON_OF[m], L = LIGHT[season];
   shared.uLightCol.value.set(L.sun); shared.uAmb.value.set(L.amb);
-  if (S.board) { // la maqueta entera: niebla lejana y cada zona con su estación
-    S.fog = L.fog; shared.uFogColor.value.set(S.fog);
-    shared.uFogNear.value = S.board.radius * 3; shared.uFogFar.value = S.board.radius * 22; // la cordillera se ve, desvaída
-    for (const z of S.board.zones) shared.uSnow.value = Math.max(z.sc.setSeason(season, m) || 0, 0);
-    return season;
-  }
+  if (S.board) { seasonBlend(m / 12); return season; }
   const high = S.sceneKey === 'cordillera' || (S.sc.hMin ?? 0) > 3000;
   S.fog = high ? 0x9cb4d8 : S.sc.seaY != null ? 0xa4b8c8 : L.fog;
   shared.uFogColor.value.set(S.fog);
@@ -586,7 +607,8 @@ function updateBar(mi, p, shown = 0) {
 const _look = new THREE.Vector3(), _fwd = new THREE.Vector3(0, 0, -1);
 function frameInmersiva(dt, now) {
   const B = S.board, { month, progress: p, events, shown, migrants } = B.update(dt, camera.position, _fwd);
-  if (month !== S.month) { S.month = month; seasonLight(month); }
+  if (month !== S.month) S.month = month;
+  seasonBlend(p);
   for (const ev of events) {
     if (S.mode !== 'look') continue;
     vibrate(ev);
@@ -604,7 +626,7 @@ function frameInmersiva(dt, now) {
   camera.lookAt(B.center.x + Math.sin(h) * Math.cos(look), B.towerY + Math.sin(look), B.center.z - Math.cos(h) * Math.cos(look));
   camera.fov = CFG.fovWide * (1 - 0.4 * z); camera.far = 3000; camera.updateProjectionMatrix(); camera.updateMatrixWorld();
   camera.getWorldDirection(_fwd);
-  shared.uLightDir.value.set(0.45, 1, 0.35).normalize().transformDirection(camera.matrixWorldInverse);
+  shared.uLightDir.value.set(0.45, sunElev, 0.35).normalize().transformDirection(camera.matrixWorldInverse);
   setListener(camera.position, _fwd);
   B.animate(now / 1000);
 }

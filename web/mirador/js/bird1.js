@@ -101,6 +101,8 @@ function skeleton(pl, f, hs, headBase, bl, br, plan) {
   } else {
     const hook = pl.hookBill ? 1.6 : 1;
     R.push({ c: beakBase, w: br * 1.05 * hook, h: br * 1.15 * hook, zone: 'pico', wHead: 1 });
+    if (pl.bentBill) R.push({ c: beakBase.clone().add(new THREE.Vector3(bl * 0.52, -0.06, 0)), w: br * 0.85, h: br * 0.85, zone: 'pico', wHead: 1 });
+    else if (pl.hookBill) R.push({ c: beakBase.clone().add(new THREE.Vector3(bl * 0.38, -0.04, 0)), w: br * 0.8 * hook, h: br * 0.9 * hook, zone: 'pico', wHead: 1 });
   }
   const tip = beakBase.clone().add(new THREE.Vector3(pl.hookBill ? bl * 0.55 : bl, -0.04 - (pl.bentBill ? bl * 0.6 : 0) - (pl.hookBill ? bl * 0.45 : 0), 0));
   return { R, tip, tailPivot, C, beakBase };
@@ -408,15 +410,20 @@ export function buildBirdOnePiece(sp, plan, ctx) {
     head.add(eye);
     meshes.push(eye);
   }
-  // adornos de la cabeza: penacho (codorniz) y cresta (queltehue y otros)
+  // adornos de la cabeza: penacho curvado con gota (codorniz) y cresta ahusada (queltehue, carpintero)
   if (pl.topknot) {
-    const k = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.45, 0.05).translate(0, 0.22, 0), mat(plain, { tint: 0x201a18 }));
-    k.position.set(hs * 0.2, hs * 0.8, 0); k.rotation.z = -0.5; head.add(k); meshes.push(k);
+    const mTk = mat(plain, { tint: 0x201a18 });
+    const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.03, 0.34, 5).translate(0, 0.17, 0), mTk);
+    stem.position.set(hs * 0.18, hs * 0.78, 0); stem.rotation.z = -0.35;
+    const drop = new THREE.Mesh(new THREE.SphereGeometry(0.095, 6, 5).scale(0.85, 1.35, 0.7), mTk);
+    drop.position.set(0.06, 0.36, 0); drop.rotation.z = -0.5;
+    stem.add(drop); head.add(stem); meshes.push(stem, drop);
   }
   if (pl.crest || sp.sciName === 'Vanellus chilensis') {
     const c = P.back_dark;
-    const crest = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.05, 0.04).translate(-0.25, 0, 0), mat(plain, { tint: (c[0] << 16) | (c[1] << 8) | c[2] }));
-    crest.position.set(-hs * 0.6, hs * 0.5, 0); crest.rotation.z = 0.35; head.add(crest); meshes.push(crest);
+    const crest = new THREE.Mesh(new THREE.ConeGeometry(0.085, 0.56, 5).rotateZ(Math.PI / 2).translate(-0.28, 0, 0).scale(1, 0.75, 0.55),
+      mat(plain, { tint: (c[0] << 16) | (c[1] << 8) | c[2] }));
+    crest.position.set(-hs * 0.52, hs * 0.52, 0); crest.rotation.z = 0.28; head.add(crest); meshes.push(crest);
   }
 
   // alas plegadas 3D sobre los flancos (visibles en reposo; se ocultan al abrir las alas de vuelo)
