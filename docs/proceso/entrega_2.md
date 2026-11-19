@@ -166,8 +166,8 @@ _Prototipo de la V2 (12 de noviembre de 2026): dos tubos de cartón pegados a un
 | ----------------------------- | ------------- |
 | **Versión**                   | V3            |
 | **Fecha**                     | 2026-11-12 al _\[fecha de la R3\]_  |
-| **Commit / Tag**              | _\[commit\]_  |
-| **Evidencia visual y sonora** | Plano de corte: `fisico/visor_laser/visor_guia.png` · _\[fotos del visor de MDF armado · video con manipulación y sonido\]_ |
+| **Commit / Tag**              | `15a1025`, `fc8ed16` (14 nov) · `a536e26`, `e1fc858`, `032eb93` (16 nov) · `cfe91e6`, `0d96094`, `38f3129`, `fc4ac5e`, `b448112`, `ca018dc`, `1fe08c4` (18 nov) · PR #39 a #46 |
+| **Evidencia visual y sonora** | Plano de corte: `fisico/visor_laser/visor_guia.png` · Sitio: <https://canija2000.github.io/infovis_2026-2/mirador/?vista=inmersiva> · _\[fotos del visor de MDF armado con el teléfono y los motores · video con manipulación, sonido y vibración\]_ |
 
 > **Plan de trabajo (borrador; lo confirma el grupo).** Cada punto responde a una observación de la R2.
 >
@@ -177,7 +177,7 @@ _Prototipo de la V2 (12 de noviembre de 2026): dos tubos de cartón pegados a un
 > 4.  ~~Viajar sin sacar el teléfono~~ (hecho el 14 de noviembre).
 > 5.  **Caminar:** decidir si se corrige o se retira.
 > 6.  **Sonificación:** que algún dato se oiga en el ritmo o el tono, no solo en el timbre (ver «Riesgos»). Primer paso en la vista inmersiva.
-> 7.  **Giro del 16 de noviembre (decisión del grupo):** la vista principal pasa a ser un año de bandadas, acompañado por un servo al costado del visor. Lo anterior queda como «Explorar».
+> 7.  ~~Giro del 16 de noviembre (decisión del grupo): la vista principal pasa a ser un año de bandadas~~ (hecho). El acompañamiento físico, pensado primero como un servo, terminó siendo **vibración**: cuatro motores bajo el visor, uno por zona (18 de noviembre).
 
 ### Qué cambió
 
@@ -188,6 +188,11 @@ _Prototipo de la V2 (12 de noviembre de 2026): dos tubos de cartón pegados a un
 - **Vista inmersiva: un año de bandadas en 72 segundos (6 por mes).** La región entera, con todas sus zonas, como maqueta vista desde una torre; girar el teléfono da la vuelta alrededor. Cada especie registrada en la región ese mes de 2024 es una bandada con su propio modelo, que se posa en la zona de su hábitat: llega volando (las de verano desde el norte, las de invierno desde el sur) y se va cuando deja de registrarse. Arriba, una sola barra con región, mes y especies por clase. Estilo de ilustración (luz en bandas, contorno de tinta, barra de cuaderno de campo) (16 de noviembre, `a536e26` y `e1fc858`).
 - **Dos vistas al elegir zona:** «Inmersiva» (la nueva, por defecto) y «Explorar» (la de la V2, intacta). Caminar pasa a los ajustes, solo para Explorar.
 - **Archivo para el servo:** `web/mirador/data/bandadas-2024.csv` (y `.json`), con cuántas especies hay, llegan y se van por región y mes, y un índice de 0 a 100 por clase. Lo genera `scripts/bandadas.mjs` con la misma regla que usa la pantalla.
+- **Maqueta legible (16–18 de noviembre):** barra superior en una línea (región, año, meses, residentes, verano, invierno, total y proporción en vista); contorno de cada ave con el color de su clase; escala de las aves comprimida para que una gaviota siga siendo mayor que un chincol sin volverse gigante; mirar abajo acerca la torre al terreno; nombres de las zonas pintados en el tablero; edificios que ya no se superponen; zonas unidas en un solo terreno con relieve (`032eb93`, `cfe91e6`, `0d96094`, `b448112`).
+- **El paisaje alrededor sigue la geografía:** los Andes al este (al oeste en Magallanes), con textura de roca y nieve, y al otro lado el mar con oleaje o los cerros costeros; mirar arriba lleva la vista al horizonte (`0d96094`, `ca018dc`).
+- **Aves de una pieza más detalladas:** más resolución en cuerpo y cabeza, y textura de plumaje por especie (`38f3129`).
+- **Sonido: el coro de las aves reales.** En vez de tonos, canta cada especie posada con su grabación de Xeno-canto; el coro es más denso en los meses con más especies y cada bandada canta al posarse (`ca018dc`).
+- **Vibración por zona (Arduino Leonardo por MIDI USB):** cuatro motores, uno bajo cada zona de la maqueta. Primera versión: un pulso al posarse o despegar cada bandada y otro al cambiar de mes (`fc4ac5e`). Segunda: nivel continuo según las aves que vuelan (`1fe08c4`). Tercera, la actual: las llegadas y salidas salen en **oleadas** por clase y vibra solo la zona que cruza cada oleada, más un pulso cuando un ave pasa junto a la torre (PR #46). Sketch: `arduino/vibraciones_aves`.
 - _\[pendiente: el resto de los cambios, a medida que se hagan\]_
 
 ### Por qué cambió — el rationale
@@ -197,11 +202,14 @@ _Prototipo de la V2 (12 de noviembre de 2026): dos tubos de cartón pegados a un
 - **Restricción material:** la plancha de MDF disponible mide 335 × 365 mm, lo que fija el tamaño de la caja (120 × 90 × 122 mm) y la distancia del ojo a la pantalla (unos 12 cm).
 - **Lo que no se puede ver no se puede leer (R2, punto 2):** quien observa está fijo y no puede rodear un árbol. Al revisar las 19 zonas en los 12 meses, 127 de 1303 apariciones de aves quedaban tapadas; después del cambio, ninguna.
 - **Viajar con el mismo gesto que todo lo demás (R2, punto 4):** sacar el teléfono rompía la experiencia. Sostener la mirada ya servía para conocer y fotografiar un ave, así que el viaje no agrega un gesto nuevo.
-- **Del caso a la ola (giro del 16 de noviembre):** mirar ave por ave mostraba cuáles hay, pero no el mensaje de la Entrega 1: que el pulso migratorio vacía y llena el lugar. Ver un año entero en 36 s hace visible ese pulso, y el servo lo saca de la pantalla al objeto.
+- **Del caso a la ola (giro del 16 de noviembre):** mirar ave por ave mostraba cuáles hay, pero no el mensaje de la Entrega 1: que el pulso migratorio vacía y llena el lugar. Ver un año entero en 72 s hace visible ese pulso, y la vibración lo saca de la pantalla al objeto.
 - **Por región y no por zona:** las zonas miden ~1,4 km y casi no tienen registros propios (en el bosque de Los Ríos, casi cero en el año). La región en 2024 trae 100 a 150 especies por mes y muestra la ola: en la Metropolitana, los visitantes de verano bajan de 43 especies en enero a 6 en junio.
 - **Las aves son las especies, no puntos de color:** con figuras de un color la escena sería un gráfico sobre un fondo; con el modelo de cada especie en su hábitat, el lugar tiene sentido y se reconoce quién llega.
 - **Vista de torre:** entre la cenital (se cuenta, pero se pierde el lugar) y la del horizonte (fiel al visor, pero no se puede contar), la torre deja ver el lugar y las bandadas a la vez.
-- **Sonido con datos:** cada bandada que llega suena aguda si es de verano y grave si es de invierno; la nota sube al llegar y baja al irse, y suena una nota por ave (rango y ritmo, no solo volumen).
+- **Sonido con datos, pero de aves:** la primera versión marcaba cada bandada con tonos (agudo verano, grave invierno), pero en la prueba del grupo sonaba a «tonos sueltos» y rompía el lugar. Ahora el timbre es la especie (su canto real) y el ritmo es el dato: el coro se densifica con el número de especies presentes, y las llegadas se oyen porque cada bandada canta al posarse.
+- **La vibración tiene que significar algo:** la primera versión era tan sutil que solo se notaba el cambio de mes (los motores casi no giran bajo ~40 % de potencia); la segunda vibraba todo el tiempo y el dato se perdía entre tanta señal. La tercera vibra solo cuando hay migración y en la zona por donde pasa, así el movimiento que se siente en la mano coincide con el que se ve: la relación entre bandadas y vibración es evidente. El cambio de mes se quitó porque no aportaba información.
+- **Un motor por zona:** la vibración tiene lugar. Que salga de debajo de la zona donde pasa la bandada conecta el objeto físico con la maqueta, y no solo con el tiempo.
+- **El paisaje completo orienta:** con cordillera al este y mar al oeste, quien mira sabe dónde está el norte sin brújula, y las bandadas que entran «desde el norte» se leen como lo que son.
 - **El viaje también lleva datos:** los letreros están en el rumbo real de cada lugar y Chile se recorre mirando al norte o al sur. Como el mes no cambia al viajar, se puede comparar el mismo mes en dos lugares.
 - _\[pendiente\]_
 
@@ -209,6 +217,8 @@ _Prototipo de la V2 (12 de noviembre de 2026): dos tubos de cartón pegados a un
 
 - **Visor de dos tubos** (el de cartón de la V2) y **ranura superior** para el teléfono.
 - **Vistas cenital y de horizonte** para las bandadas (ver el rationale), y **datos por zona**: demasiado escasos.
+- **Servo al costado del visor:** se reemplazó por motores de vibración bajo cada zona, que dan lugar además de tiempo. **Vibración en el cambio de mes** y **zumbido continuo por las aves posadas**: saturaban la señal.
+- **Tonos para cada bandada:** sonaban artificiales; el coro de cantos reales lleva el mismo dato.
 - **Cambiar de región con tarjetas QR leídas por la cámara:** pedía un agujero en la trasera y permiso de cámara; los letreros lo resuelven sin tocar el visor.
 - _\[pendiente\]_
 
@@ -321,5 +331,6 @@ _\[pendiente\]_
       canto identifica la especie (timbre) y su posición (de dónde viene), pero ningún dato numérico se oye.
       Una mejora posible para V3: que la frecuencia con que canta un ave dependa de cuántos días se registró
       ese mes.
+- [ ] **V3 demasiado larga para el PDF:** «qué cambió» y «por qué» pasan de 8 y 12 líneas. Antes de exportar, resumir y dejar el detalle en los commits.
 - [ ] **Límites de líneas:** «qué cambió» máx. 8, «por qué» máx. 12, «qué se descartó» máx. 5. La V2 está
       escrita para caber, pero hay que revisarlo en el PDF.
