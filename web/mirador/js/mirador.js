@@ -129,7 +129,7 @@ function showScreen(id) { // pick | place | pause | null (explorando)
   for (const k of ['pick', 'place', 'pause']) $(k).hidden = k !== id;
   showHud(!id);
 }
-function showHud(on) { $('signs').hidden = !on; for (const sel of ['.e-top', '.e-compass', '.e-reticle', '.e-zoom', '.e-bar']) show(sel, on); if (!on) for (const sel of ['.e-card', '.e-book', '.e-sky', '.e-toast']) show(sel, false); }
+function showHud(on) { $('signs').hidden = !on; for (const sel of ['.e-top', '.e-compass', '.e-reticle', '.e-zoom', '.e-bar']) show(sel, on); if (!on) for (const sel of ['.e-card', '.e-book', '.e-sky', '.e-toast', '.e-cue']) show(sel, false); }
 
 // Selector de niveles: la región es el «mundo» (flechas; el QR la deja puesta) y sus zonas son los niveles.
 // Tocar un nivel lo marca; se entra con el botón de abajo.
@@ -464,12 +464,13 @@ function updateMarks() {
 // Anclas suaves para la transición continua a lo largo del año en la vista inmersiva:
 // verano (p≈0,04) → otoño (p≈0,29) → invierno (p≈0,54) → primavera (p≈0,79).
 const SEASON_KEYS = [
-  { sun: new THREE.Color(0xfff0cc), amb: new THREE.Color(0x7d7a6c), fog: new THREE.Color(0xc0c9c6), sky: new THREE.Color(0x78bce8), elev: 1.08 }, // verano
-  { sun: new THREE.Color(0xf4d8ae), amb: new THREE.Color(0x766e64), fog: new THREE.Color(0xb6aca0), sky: new THREE.Color(0x8cb8d8), elev: 0.9 },  // otoño
-  { sun: new THREE.Color(0xd8e0ec), amb: new THREE.Color(0x676f7d), fog: new THREE.Color(0x9aa6b6), sky: new THREE.Color(0x8ea9c4), elev: 0.72 }, // invierno
-  { sun: new THREE.Color(0xf6f0d8), amb: new THREE.Color(0x768270), fog: new THREE.Color(0xb0c6ba), sky: new THREE.Color(0x84c2e6), elev: 0.94 }, // primavera
+  { sun: new THREE.Color(0xfff0cc), amb: new THREE.Color(0x7d7a6c), fog: new THREE.Color(0xc0c9c6), sky: new THREE.Color(0x78bce8), cloud: new THREE.Color(0xfbf9f2), elev: 1.08 }, // verano
+  { sun: new THREE.Color(0xf4d8ae), amb: new THREE.Color(0x766e64), fog: new THREE.Color(0xb6aca0), sky: new THREE.Color(0x8cb8d8), cloud: new THREE.Color(0xf4ece0), elev: 0.9 },  // otoño
+  { sun: new THREE.Color(0xd8e0ec), amb: new THREE.Color(0x676f7d), fog: new THREE.Color(0x9aa6b6), sky: new THREE.Color(0x8ea9c4), cloud: new THREE.Color(0xd4dce6), elev: 0.72 }, // invierno
+  { sun: new THREE.Color(0xf6f0d8), amb: new THREE.Color(0x768270), fog: new THREE.Color(0xb0c6ba), sky: new THREE.Color(0x84c2e6), cloud: new THREE.Color(0xf6f6ef), elev: 0.94 }, // primavera
 ];
 let sunElev = 1.0;
+const _cloudCol = new THREE.Color();
 function seasonBlend(p) {
   const s = (((p * 12 - 0.5) % 12) + 12) % 12 / 3; // 0..4 cíclico
   const i0 = Math.floor(s) % 4, i1 = (i0 + 1) % 4, f = s - Math.floor(s), t = f * f * (3 - 2 * f);
@@ -481,6 +482,7 @@ function seasonBlend(p) {
   sunElev = A.elev + (B.elev - A.elev) * t;
   if (S.board) {
     S.board.skyTop?.value.copy(A.sky).lerp(B.sky, t);
+    S.board.syncClouds?.(_cloudCol.copy(A.cloud).lerp(B.cloud, t));
     shared.uFogNear.value = S.board.radius * 3; shared.uFogFar.value = S.board.radius * 22;
     let snow = 0;
     for (const z of S.board.zones) snow = Math.max(snow, z.sc.setYearProgress?.(p) || 0);
@@ -515,6 +517,7 @@ async function enterBoard() {
   world.add(board.root); world.updateMatrixWorld(true);
   Object.assign(S, { board, world, sc: board.zones[0].sc, sceneKey: 'region', zoneSpecies: [], birds: [] });
   S.month = -1; S.heading = S.startHeading = 0;
+  lastBarKey = lastCueKey = '';
   seasonLight(0); setAmbience(board.zones[0].key);
   layout();
 }
@@ -597,20 +600,57 @@ function chorus(dt) {
 }
 
 // La barra de arriba, en una línea: [región | año | E F M A M J J A S O N D | residentes | verano | invierno | total | en vista],
-// con una segunda fila chica que nombra los números.
-function updateBar(mi, p, shown = 0) {
-  const m = S.board.months[mi];
-  const pct = m.presentes ? Math.round(shown / m.presentes * 100) : 0;
-  const months = S.index.months.map((n, k) => `<i class="${k === mi ? 'on' : k < mi ? 'past' : ''}">${n[0].toUpperCase()}</i>`).join('');
-  html('.e-bar', `<b class="reg">${S.reg.meta.name}</b><span class="yr">${YEAR}</span>`
-    + `<span class="mo">${months}<u style="width:${(p * 100).toFixed(1)}%"></u></span>`
-    + `<em class="k residente">${m.residentes}</em><em class="k verano">${m.verano}</em><em class="k invierno">${m.invierno}</em><em class="tot">${m.presentes}</em><em class="prop">${pct}%</em>`
-    + `<small class="l1">residentes</small><small class="l2">verano</small><small class="l3">invierno</small><small class="l4">total</small><small class="l5">${shown}/${m.presentes} vistas</small>`);
+// con una segunda fila chica que nombra los números y un micro-delta (+N / -N) cuando cambian las visitantes.
+let barDelta = { v: 0, i: 0, t: 0 }, lastBarKey = '', lastCueKey = '';
+function updateBar(mi, p, shown = 0, dt = 0) {
+  if (barDelta.t > 0) barDelta.t = Math.max(0, barDelta.t - dt);
+  const w = `${(p * 100).toFixed(1)}%`;
+  const key = `${S.reg.meta.code}:${mi}:${shown}:${barDelta.t > 0 ? `${barDelta.v},${barDelta.i}` : '0'}`;
+  if (key !== lastBarKey) {
+    lastBarKey = key;
+    const m = S.board.months[mi];
+    const pct = m.presentes ? Math.round(shown / m.presentes * 100) : 0;
+    const months = S.index.months.map((n, k) => `<i class="${k === mi ? 'on' : k < mi ? 'past' : ''}">${n[0].toUpperCase()}</i>`).join('');
+    const dTag = n => barDelta.t > 0 && n ? `<sup class="d ${n > 0 ? 'up' : 'dn'}">${n > 0 ? '+' : ''}${n}</sup>` : '';
+    const pulse = n => barDelta.t > 0 && n ? ' pulse' : '';
+    html('.e-bar', `<b class="reg">${S.reg.meta.name}</b><span class="yr">${YEAR}</span>`
+      + `<span class="mo">${months}<u style="width:${w}"></u></span>`
+      + `<em class="k residente">${m.residentes}</em><em class="k verano${pulse(barDelta.v)}">${m.verano}${dTag(barDelta.v)}</em><em class="k invierno${pulse(barDelta.i)}">${m.invierno}${dTag(barDelta.i)}</em><em class="tot">${m.presentes}</em><em class="prop">${pct}%</em>`
+      + `<small class="l1">residentes</small><small class="l2">verano</small><small class="l3">invierno</small><small class="l4">total</small><small class="l5">${shown}/${m.presentes} vistas</small>`);
+    return;
+  }
+  all('.e-bar .mo u', u => { u.style.width = w; });
+}
+function updateCue(focus) {
+  let key = '', right = false;
+  if (focus && S.mode === 'look') {
+    const rel = wrap(bearingOf(focus.pos.x - camera.position.x, focus.pos.z - camera.position.z) - S.heading);
+    if (Math.abs(rel) >= 0.36) { right = rel > 0; key = `${right ? 'r' : 'l'}:${focus.clase}`; }
+  }
+  if (key === lastCueKey) return;
+  lastCueKey = key;
+  if (!key) { show('.e-cue', false); return; }
+  const arrow = right
+    ? '<svg viewBox="0 0 24 36" aria-hidden="true"><path d="M5 4 L19 18 L5 32 L9 18 Z" fill="currentColor" stroke="#1b1611" stroke-width="2.2" stroke-linejoin="round"/></svg>'
+    : '<svg viewBox="0 0 24 36" aria-hidden="true"><path d="M19 4 L5 18 L19 32 L15 18 Z" fill="currentColor" stroke="#1b1611" stroke-width="2.2" stroke-linejoin="round"/></svg>';
+  const tag = focus.clase === 'verano' ? 'verano' : focus.clase === 'invierno' ? 'invierno' : '';
+  const inner = tag ? `${arrow}<span>${tag}</span>` : arrow;
+  all('.e-cue', el => {
+    el.hidden = false;
+    el.className = `e-cue ${right ? 'right' : 'left'} ${focus.clase}`;
+    el.innerHTML = inner;
+  });
 }
 const _look = new THREE.Vector3(), _fwd = new THREE.Vector3(0, 0, -1);
 function frameInmersiva(dt, now) {
-  const B = S.board, { month, progress: p, events, shown, migrants } = B.update(dt, camera.position, _fwd);
-  if (month !== S.month) S.month = month;
+  const B = S.board, { month, progress: p, events, shown, migrants, focus } = B.update(dt, camera.position, _fwd);
+  if (month !== S.month) {
+    if (S.month >= 0) {
+      const prev = B.months[S.month], cur = B.months[month];
+      barDelta = { v: cur.verano - prev.verano, i: cur.invierno - prev.invierno, t: 3.6 };
+    } else barDelta = { v: 0, i: 0, t: 0 };
+    S.month = month;
+  }
   seasonBlend(p);
   for (const ev of events) {
     if (S.mode !== 'look') continue;
@@ -619,7 +659,8 @@ function frameInmersiva(dt, now) {
   }
   chorus(dt);
   sendLevels(dt, migrants);
-  updateBar(month, p, shown);
+  updateBar(month, p, shown, dt);
+  updateCue(focus);
   // La torre está en el centro de las cuatro zonas, a TOWER_H m sobre el suelo: se gira en el lugar y las zonas
   // quedan alrededor. Mirar al frente baja la vista un poco (se ve la maqueta y el horizonte); mirar hacia abajo
   // acerca el terreno (zoom); mirar arriba, la cordillera o el mar.

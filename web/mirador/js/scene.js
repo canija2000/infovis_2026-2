@@ -30,6 +30,7 @@ const propShadowTex = (() => {
   return new THREE.CanvasTexture(cv);
 })();
 const propShadowGeo = new THREE.PlaneGeometry(1, 1).rotateX(-Math.PI / 2);
+propShadowGeo.userData.shared = true;
 const propShadowMat = new THREE.MeshBasicMaterial({ map: propShadowTex, transparent: true, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -2 });
 const UP_VEC = new THREE.Vector3(0, 1, 0);
 

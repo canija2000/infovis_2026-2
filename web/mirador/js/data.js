@@ -134,6 +134,15 @@ export async function loadWorld() {
   const index = await loadJSON(DATA_BASE + 'index.json');
   index.byId = new Map(index.species.map(s => [s.id, s]));
   index.bySci = new Map(index.species.map(s => [s.sciName, s]));
+  // precarga las paletas curadas de las 5 regiones modeladas para que las 87 especies tengan su color real en todas
+  const modeled = index.regions.filter(r => r.terrainFile);
+  const regs = await Promise.allSettled(modeled.map(r => loadJSON(DATA_BASE + r.file)));
+  for (const res of regs) if (res.status === 'fulfilled') {
+    for (const [sid, f] of Object.entries(res.value.featured || {})) {
+      const sp = index.byId.get(+sid);
+      if (sp && f.palette && !sp.palette) sp.palette = f.palette;
+    }
+  }
   return index;
 }
 

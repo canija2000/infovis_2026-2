@@ -19,11 +19,11 @@ const RELIEF_BOOST = 2.6; // más volumen vertical al relieve para que se lea de
 const BOARD_DENSITY = 0.4; // menos vegetación que en Explorar: desde la torre no debe tapar las aves
 // Aves ligeramente agrandadas para leerse desde la torre central (26 m), pero siempre más chicas que los árboles.
 const BIRD_LEN = 1.0, BIRD_LEN_REF = 0.3, BIRD_LEN_POW = 0.42; // m que mide un ave de 0,3 m · cuánto se comprime
-const FLYBY_EVERY = [2.5, 5];
+const FLYBY_EVERY = [4.5, 8.0];
 // s desde el comienzo del mes en que sale cada oleada migratoria (mes de 6 s)
-const WAVE = { llega: { verano: 0.3, residente: 0.9, invierno: 1.5 }, seVa: { verano: 3.2, residente: 3.6, invierno: 4.0 } }; // s entre pasadas de un ave cerca de la torre
-const PER_SPECIES = { residente: 1, verano: 2, invierno: 2 }; // aves por especie si se registró todos los días
-const MAX_BIRDS = 110; // tope de aves en escena (rendimiento en el teléfono)
+const WAVE = { llega: { verano: 0.2, residente: 0.9, invierno: 1.2 }, seVa: { verano: 2.8, residente: 3.3, invierno: 3.6 } };
+const PER_SPECIES = { residente: 1, verano: 3, invierno: 3 }; // bandadas migratorias más densas y legibles
+const MAX_BIRDS = 155; // tope de aves en escena (rendimiento en el teléfono)
 const INK = new THREE.Color(0x1b1611);
 const MARGIN = 16; // m de tablero alrededor de las zonas: ahí van los nombres pintados
 // Qué hay alrededor de la maqueta en cada región (x+ = este, x− = oeste): la cordillera de los Andes y el mar
@@ -94,6 +94,47 @@ function skyDome() {
   return s;
 }
 
+// Nubes estilizadas altas sobre la cordillera y el horizonte: derivan muy lento y acompañan el tono de la estación.
+function buildClouds(seed) {
+  const grp = new THREE.Group(), R = mulberry32(seed.charCodeAt(3) * 977 + 29);
+  const cMat = new THREE.MeshBasicMaterial({ color: 0xf7f5ee, transparent: true, opacity: 0.86, depthWrite: false });
+  const puffGeo = new THREE.IcosahedronGeometry(1, 1);
+  const items = [];
+  for (let i = 0; i < 11; i++) {
+    const cg = new THREE.Group();
+    const ang = (i / 11) * Math.PI * 2 + (R() - 0.5) * 0.35;
+    const dist = 210 + R() * 210;
+    const y = 78 + R() * 44;
+    const sc = 12 + R() * 14;
+    const puffs = [
+      [0, 0, 0, 1.5, 0.52, 0.95], [1.15, -0.1, 0.18, 1.05, 0.42, 0.78],
+      [-1.1, -0.14, -0.15, 1.0, 0.4, 0.75], [0.35, 0.32, -0.1, 0.95, 0.45, 0.72],
+    ];
+    for (const [px, py, pz, sx, sy, sz] of puffs) {
+      const m = new THREE.Mesh(puffGeo, cMat);
+      m.position.set(px * sc, py * sc, pz * sc);
+      m.scale.set(sx * sc, sy * sc, sz * sc);
+      m.renderOrder = -5;
+      m.userData.noInk = true;
+      cg.add(m);
+    }
+    cg.position.set(Math.cos(ang) * dist, y, Math.sin(ang) * dist);
+    cg.rotation.y = ang + Math.PI / 2;
+    grp.add(cg);
+    items.push({ g: cg, ang, dist, speed: 0.004 + R() * 0.004 });
+  }
+  grp.userData.animate = t => {
+    for (const it of items) {
+      const a = it.ang + t * it.speed;
+      it.g.position.x = Math.cos(a) * it.dist;
+      it.g.position.z = Math.sin(a) * it.dist;
+      it.g.rotation.y = -a;
+    }
+  };
+  grp.userData.mat = cMat;
+  return grp;
+}
+
 // Sombra de contacto: un disco oscuro y suave bajo cada ave (más barato que sombras reales en el teléfono).
 const blobTex = (() => {
   const c = document.createElement('canvas'); c.width = c.height = 64;
@@ -103,6 +144,7 @@ const blobTex = (() => {
   return new THREE.CanvasTexture(c);
 })();
 const blobGeo = new THREE.PlaneGeometry(1, 1).rotateX(-Math.PI / 2);
+blobGeo.userData.shared = true;
 const blobMat = new THREE.MeshBasicMaterial({ map: blobTex, transparent: true, depthWrite: false });
 
 // ---------------------------------------------------------------------------- nombres en el suelo
@@ -366,18 +408,65 @@ function crossRidge(zSide, cfg, W, D, y, R, far, seaSide, gLin) {
 
 // ---------------------------------------------------------------------------- aves
 class FlockBird extends BirdAgent {
-  // llega desde el borde norte (−z) o sur (+z) de su zona, alto, y se posa en un lugar de su hábitat
-  arriveFrom(side) {
+  // llega en bandada cohesionada (formación en V) desde un punto común al norte (−z) o sur (+z)
+  arriveFrom(side, form, zonePos) {
     const dest = this.choosePlace(), h = this.scene.half;
-    this.pos.set((Math.random() - 0.5) * h * 1.6, dest.y + 16 + Math.random() * 8, side * h * 2.2);
+    if (form && zonePos) {
+      // formación en V densa (en 2 niveles cuando la bandada supera 10 aves)
+      const tier = Math.floor(form.rank / 10), r = form.rank % 10;
+      const wing = (r % 2 ? 1 : -1) * Math.ceil(r / 2);
+      const sx = form.x + wing * 1.9 + (tier ? (tier % 2 ? 1.4 : -1.4) : 0) - zonePos.x;
+      const sz = form.z + side * (Math.abs(wing) * 1.55 + tier * 3.4) - zonePos.z;
+      const sy = Math.max(dest.y + 18, 22) + (form.rank % 3) * 0.9 + tier * 1.4;
+      this.pos.set(sx, sy, sz);
+    } else {
+      this.pos.set((Math.random() - 0.5) * h * 1.4, dest.y + 18 + Math.random() * 6, side * h * 2.2);
+    }
     this.leaving = false; this.gone = false; this.migrating = true; // migrando hasta que se posa
-    this.fly(dest, 3.6 + Math.random() * 0.8);
+    this.fly(dest, 4.0 + Math.random() * 0.45);
   }
-  leaveTo(side) {
+  leaveTo(side, form, zonePos) {
     if (this.leaving) return;
     this.leaving = true; this.perch = null; this.swimming = false; this.migrating = true;
     const h = this.scene.half;
-    this.fly(new THREE.Vector3(this.pos.x + (Math.random() - 0.5) * 20, this.pos.y + 18, side * h * 2.4), 3.8 + Math.random() * 0.6);
+    if (form && zonePos) {
+      const tier = Math.floor(form.rank / 10), r = form.rank % 10;
+      const wing = (r % 2 ? 1 : -1) * Math.ceil(r / 2);
+      const tx = form.x + wing * 2.1 - zonePos.x;
+      const tz = form.z + side * tier * 3.0 - zonePos.z;
+      this.fly(new THREE.Vector3(tx, Math.max(this.pos.y + 20, 26) + (form.rank % 3) * 1.0 + tier * 1.4, tz), 4.0 + Math.random() * 0.45);
+    } else {
+      this.fly(new THREE.Vector3(this.pos.x + (Math.random() - 0.5) * 20, this.pos.y + 18, side * h * 2.4), 3.8 + Math.random() * 0.6);
+    }
+  }
+  // residentes posadas mucho más tranquilas para dejar el cielo limpio a las bandadas migratorias
+  chooseNext() {
+    const r = Math.random();
+    if (this.traits.soar && r < 0.04) { this.startSoar(); return; }
+    if (this.swimming) {
+      this.perch.x += (Math.random() - 0.5) * 0.6; this.perch.z += (Math.random() - 0.5) * 0.6;
+      this.heading += (Math.random() - 0.5) * 1.2; this.setState('idle', 2.5 + Math.random() * 3.5);
+      return;
+    }
+    if (this.perch && this.plan !== 'picaflor') {
+      if (r < 0.03) this.fly(this.choosePlace(), 1.6 + Math.random());
+      else this.setState('idle', 2.2 + Math.random() * 3.5);
+      return;
+    }
+    if (this.plan === 'picaflor') {
+      if (r < 0.35) this.fly(this.choosePlace(), 0.7 + Math.random() * 0.4);
+      else this.setState('hover', 1.8 + Math.random() * 2.2);
+      return;
+    }
+    if (r < 0.02) { this.fly(this.choosePlace(), 1.6 + Math.random()); return; }
+    if (r < 0.35) {
+      const a = Math.random() * 6.28, rr = 0.4 + Math.random() * 1.6;
+      this.target.set(this.pos.x + Math.cos(a) * rr, 0, this.pos.z + Math.sin(a) * rr);
+      if (Math.hypot(this.target.x, this.target.z) > this.scene.half * 0.8) this.target.set(this.pos.x * 0.8, 0, this.pos.z * 0.8);
+      this.hops = Math.min(4, Math.ceil(this.target.distanceTo(new THREE.Vector3(this.pos.x, 0, this.pos.z)) / 0.5));
+      this.startHop();
+    } else if (r < 0.65) this.setState('peck', 0.9);
+    else this.setState('idle', 2.2 + Math.random() * 3.5);
   }
   // pasar volando cerca de la torre (p, en coordenadas de su zona) y volver a posarse
   flyby(p) {
@@ -482,7 +571,8 @@ export function buildBoard({ index, reg, props, bandadas }) {
   const keys = Object.keys(reg.terrain.scenes);
   const root = new THREE.Group();
   const sky = skyDome();
-  root.add(sky);
+  const clouds = buildClouds(reg.meta.code);
+  root.add(sky, clouds);
 
   // zonas unidas en un solo terreno continuo (2 columnas; si hay 3 zonas, la tercera centrada abajo)
   const step = WORLD + GAP, cols = 2, rows = Math.ceil(keys.length / cols);
@@ -614,49 +704,81 @@ export function buildBoard({ index, reg, props, bandadas }) {
     month = mi;
     const now = new Set(region.months[mi].especies.map(e => e.id));
     const events = [];
+    // agrupar llegadas y partidas por clase en formaciones cohesionadas (un punto común por oleada)
+    const arriveRank = { verano: 0, invierno: 0, residente: 0 };
+    const leaveRank = { verano: 0, invierno: 0, residente: 0 };
+    const entryX = { verano: (Math.random() - 0.5) * W * 0.45, invierno: (Math.random() - 0.5) * W * 0.45, residente: 0 };
+    const exitX = { verano: (Math.random() - 0.5) * W * 0.45, invierno: (Math.random() - 0.5) * W * 0.45, residente: 0 };
     for (const f of flocks.values()) {
       const here = now.has(f.sp.id), active = f.birds.filter(b => !b.leaving);
       if (here && !active.length) {
-        // Oleadas: todas las que llegan de la misma clase salen juntas desde su borde (verano desde el norte al
-        // comienzo del mes, invierno desde el sur un poco después), así se ve la migración como un movimiento.
-        const delay = instant ? 0 : WAVE.llega[f.clase] + Math.random() * 0.35;
+        const delay = instant ? 0 : WAVE.llega[f.clase];
         for (let i = 0; i < f.n; i++) {
           const b = spawn(f); f.birds.push(b);
           if (instant) { const p = b.choosePlace(); b.pos.copy(p); b.setState('idle', Math.random() * 2); b.pose(p.y); }
-          else { b.pos.set(0, -999, 0); b.setState('wait', 99); b.pose(-999); b.wake = delay + i * 0.12; }
+          else {
+            const rank = arriveRank[f.clase]++;
+            b.pos.set(0, -999, 0); b.setState('wait', 99); b.pose(-999);
+            b.wake = delay + rank * 0.05;
+            b.formIn = { x: entryX[f.clase], z: f.side * (D / 2 + 52), rank };
+          }
         }
         if (!instant) events.push({ type: 'llega', f, delay });
       } else if (!here && active.length) {
-        const delay = WAVE.seVa[f.clase] + Math.random() * 0.35;
-        for (const b of active) b.leaveAt = delay + Math.random() * 0.25;
+        const delay = WAVE.seVa[f.clase];
+        for (const b of active) {
+          const rank = leaveRank[f.clase]++;
+          b.leaveAt = delay + rank * 0.05;
+          b.formOut = { x: exitX[f.clase], z: f.side * (D / 2 + 64), rank };
+        }
         events.push({ type: 'se va', f, delay });
       }
     }
     return events;
   }
 
+  const _fPos = new THREE.Vector3();
   function update(dt, cam, fwd) {
     t = (t + dt) % YEAR_SECS;
     const mi = Math.floor(t / MONTH_SECS);
     const events = mi !== month ? setMonth(mi, false) : [];
     flybyEvents = [];
     for (const f of flocks.values()) for (const b of f.birds) {
-      if (b.wake != null && (b.wake -= dt) <= 0) { b.wake = null; b.arriveFrom(f.side); }
-      if (b.leaveAt != null && (b.leaveAt -= dt) <= 0) { b.leaveAt = null; b.leaveTo(f.side); }
+      if (b.wake != null && (b.wake -= dt) <= 0) { b.wake = null; b.arriveFrom(f.side, b.formIn, f.zone.g.position); }
+      if (b.leaveAt != null && (b.leaveAt -= dt) <= 0) { b.leaveAt = null; b.leaveTo(f.side, b.formOut, f.zone.g.position); }
     }
-    // de vez en cuando un ave posada sale volando, pasa cerca de la torre y vuelve
-    if (cam && (nextFly -= dt) <= 0) {
+    // centroide de la bandada migratoria protagonista (para la pista periférica de hacia dónde mirar)
+    const groups = new Map();
+    let totalMig = 0;
+    for (const f of flocks.values()) for (const b of f.birds) {
+      if (!b.migrating || b.state !== 'fly') continue;
+      totalMig++;
+      const type = b.leaving ? 'se va' : 'llega';
+      const gk = `${f.clase}:${type}`;
+      let gr = groups.get(gk);
+      if (!gr) { gr = { clase: f.clase, type, count: 0, sx: 0, sy: 0, sz: 0 }; groups.set(gk, gr); }
+      b.m.group.getWorldPosition(_fPos);
+      gr.sx += _fPos.x; gr.sy += _fPos.y; gr.sz += _fPos.z; gr.count++;
+    }
+    let focus = null;
+    for (const gr of groups.values()) {
+      const score = gr.count * (gr.clase === 'residente' ? 0.5 : 1);
+      if (gr.count >= 2 && (!focus || score > focus.score)) {
+        focus = { clase: gr.clase, type: gr.type, count: gr.count, score, pos: new THREE.Vector3(gr.sx / gr.count, gr.sy / gr.count, gr.sz / gr.count) };
+      }
+    }
+    // solo lanzar pasadas aleatorias cuando no hay una migración protagonista en el cielo
+    if (cam && totalMig === 0 && (nextFly -= dt) <= 0) {
       nextFly = FLYBY_EVERY[0] + Math.random() * (FLYBY_EVERY[1] - FLYBY_EVERY[0]);
       const pool = [...flocks.values()].flatMap(f => f.birds).filter(b => !b.leaving && b.state !== 'wait' && b.state !== 'fly' && !b.traits.noFly);
       const b = pool[(Math.random() * pool.length) | 0];
       if (b) {
         const z = b.scene === undefined ? null : zones.find(z => z.sc === b.scene);
-        // delante de la vista, a 12–22 m de la torre y algo corrida a un lado: pasa frente a quien mira
         _c.copy(cam).addScaledVector(fwd || _c.set(0, 0, -1), 12 + Math.random() * 10);
         _c.x += (Math.random() - 0.5) * 10; _c.y -= 2 + Math.random() * 3;
         b.flyby(_c.sub(z.g.position).clone());
         const fl = [...flocks.values()].find(f => f.birds.includes(b));
-        if (fl) flybyEvents.push({ type: 'cerca', f: fl, delay: 2 }); // pasa junto a la torre ~2 s después
+        if (fl) flybyEvents.push({ type: 'cerca', f: fl, delay: 2 });
       }
     }
     acc += dt; // aves a 15 Hz, como en el Aviario
@@ -672,7 +794,7 @@ export function buildBoard({ index, reg, props, bandadas }) {
       f.birds = f.birds.filter(b => !b.gone);
     }
     const shown = region.months[mi].especies.reduce((acc, e) => acc + (flocks.has(e.id) ? 1 : 0), 0);
-    return { month: mi, progress: t / YEAR_SECS, events: events.concat(flybyEvents), shown, migrants: migrants() };
+    return { month: mi, progress: t / YEAR_SECS, events: events.concat(flybyEvents), shown, migrants: migrants(), focus };
   }
 
   // Cuántas aves migrando (llegando o yéndose) vuelan sobre cada zona ahora: la vibración sigue a la bandada
@@ -695,12 +817,13 @@ export function buildBoard({ index, reg, props, bandadas }) {
   }
   reset();
 
-  const animate = time => { for (const z of zones) z.sc.animate?.(time); for (const f of anims) f(time); };
-  const dispose = () => root.traverse(o => { if (!o.userData.ink) o.geometry?.dispose(); });
+  const animate = time => { for (const z of zones) z.sc.animate?.(time); for (const f of anims) f(time); clouds.userData.animate?.(time); };
+  const dispose = () => root.traverse(o => { if (!o.userData.ink && !o.geometry?.userData?.shared) o.geometry?.dispose(); });
   const birds = () => [...flocks.values()].reduce((a, f) => a + f.birds.length, 0);
   const syncSurround = (r, g, b) => {
     if (around.userData.groundMat) around.userData.groundMat.uniforms.uTint.value.copy(around.userData.groundBase).multiply(new THREE.Color(r, g, b));
     if (around.userData.satMat) around.userData.satMat.uniforms.uTint.value.setRGB(r, g, b);
   };
-  return { root, zones, months: region.months, center, radius, towerY, update, reset, animate, dispose, birds, flocks, skyTop: sky.material.uniforms.uTop, syncSurround };
+  const syncClouds = col => { if (clouds.userData.mat) clouds.userData.mat.color.copy(col); };
+  return { root, zones, months: region.months, center, radius, towerY, update, reset, animate, dispose, birds, flocks, skyTop: sky.material.uniforms.uTop, syncSurround, syncClouds };
 }

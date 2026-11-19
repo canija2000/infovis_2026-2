@@ -14,6 +14,7 @@ const plain = texPlain();
 const bodyTexCache = new Map();
 const wingTexCache = new Map();
 const foldedTexCache = new Map();
+const tailTexCache = new Map();
 
 // Perfil del cuerpo a lo largo de su eje (s = −1.25 cola … 0.82 pecho alto): [s, fracción del radio, alza].
 // "alza" sube el centro del anillo (popa levantada del pato). Siluetas tomadas de las referencias
@@ -41,13 +42,16 @@ const FLAT_BELLY = { pato: 0.55, cisne: 0.6 };   // vientre plano de las aves qu
 const S_NECK = new Set(['flamenco', 'cisne', 'garza']);
 
 /** Anillo de SIDES vértices perpendicular a `axis` (en el plano x-y), alto h y ancho w. k=0 = vientre. */
-function ring(center, axis, w, h, fb = 1) {
+function ring(center, axis, w, h, fb = 1, keel = 0) {
   const z = new THREE.Vector3(0, 0, 1);
   const up = new THREE.Vector3().crossVectors(z, axis).normalize();
   const pts = [];
   for (let k = 0; k <= SIDES; k++) { // el último repite el primero (costura de la textura)
-    const a = TAU * k / SIDES, c = -Math.cos(a);
-    pts.push(center.clone().addScaledVector(up, c * h * (c < 0 ? fb : 1)).addScaledVector(z, Math.sin(a) * w));
+    const a = TAU * k / SIDES, c = -Math.cos(a), s = Math.sin(a);
+    // ligera forma de pecho/quilla en el torso (costados llenos, lomo suave) en vez de elipse simétrica
+    const wy = c < 0 ? h * fb * (1 + keel * 0.14) : h * (1 - keel * 0.06);
+    const wz = w * (1 + keel * 0.08 * (1 - Math.abs(c)));
+    pts.push(center.clone().addScaledVector(up, c * wy).addScaledVector(z, s * wz));
   }
   return pts;
 }
@@ -61,18 +65,16 @@ function skeleton(pl, f, hs, headBase, bl, br, plan) {
   const C = new THREE.Vector3(0.05, 0.72, 0);
   const d = new THREE.Vector3(Math.cos(t), Math.sin(t), 0);
   const R = [];
-  // cola (plana, se abre hacia la punta): pivote donde estaba el grupo de la cola
+  // rabadilla (base de la cola): las plumas rectrices se arman como un abanico plano real en `tail`
   const tailPivot = new THREE.Vector3(...(pl.tailPos || [-1.0 * B[0] / 1.15, 0.9]), 0);
   const tr = pl.tail, tdir = new THREE.Vector3(-Math.cos(tr), -Math.sin(tr), 0);
-  const L = 1.05 * f.tail;
   const tw = plan === 'picaflor' ? 0.6 : plan === 'gaviota' || plan === 'pinguino' ? 0.75 : 1;
-  R.push({ c: tailPivot.clone().addScaledVector(tdir, L), w: 0.34 * tw, h: 0.025, zone: 'cola', wTail: 1, end: true });
-  R.push({ c: tailPivot.clone().addScaledVector(tdir, L * 0.5), w: 0.27 * tw, h: 0.04, zone: 'cola', wTail: 1 });
-  R.push({ c: tailPivot.clone().addScaledVector(tdir, 0.05), w: 0.2, h: 0.08, zone: 'cola', wTail: 0.7 });
-  // cuerpo
+  R.push({ c: tailPivot.clone().addScaledVector(tdir, 0.14), w: 0.22 * tw, h: 0.11, zone: 'cola', wTail: 0.45 });
+  // cuerpo (pecho más lleno adelante con quilla sutil)
   const fb = FLAT_BELLY[plan] || 1;
   for (const [s, k, lift = 0] of PROFILES[plan] || P0) {
-    R.push({ c: C.clone().addScaledVector(d, s * B[0]).add(new THREE.Vector3(0, lift * B[1], 0)), w: k * B[2], h: k * B[1], fb, zone: 'cuerpo' });
+    const keel = s > -0.2 && s < 0.7 ? 1 : 0;
+    R.push({ c: C.clone().addScaledVector(d, s * B[0]).add(new THREE.Vector3(0, lift * B[1], 0)), w: k * B[2], h: k * B[1], fb, keel, zone: 'cuerpo' });
   }
   // cuello (mezcla) y cabeza: la cabeza mira al frente (+x)
   const neckFrom = C.clone().addScaledVector(d, 0.85 * B[0]);
@@ -99,12 +101,14 @@ function skeleton(pl, f, hs, headBase, bl, br, plan) {
     R.push({ c: beakBase, w: br * 1.7, h: br * 0.75, zone: 'pico', wHead: 1 });
     R.push({ c: beakBase.clone().add(new THREE.Vector3(bl * 0.8, -0.03, 0)), w: br * 1.6, h: br * 0.35, zone: 'pico', wHead: 1 });
   } else {
+    // culmen con anillo intermedio curvado en todas las especies (quita el aspecto de cono recto)
     const hook = pl.hookBill ? 1.6 : 1;
     R.push({ c: beakBase, w: br * 1.05 * hook, h: br * 1.15 * hook, zone: 'pico', wHead: 1 });
-    if (pl.bentBill) R.push({ c: beakBase.clone().add(new THREE.Vector3(bl * 0.52, -0.06, 0)), w: br * 0.85, h: br * 0.85, zone: 'pico', wHead: 1 });
-    else if (pl.hookBill) R.push({ c: beakBase.clone().add(new THREE.Vector3(bl * 0.38, -0.04, 0)), w: br * 0.8 * hook, h: br * 0.9 * hook, zone: 'pico', wHead: 1 });
+    if (pl.bentBill) R.push({ c: beakBase.clone().add(new THREE.Vector3(bl * 0.52, -0.06, 0)), w: br * 0.82, h: br * 0.82, zone: 'pico', wHead: 1 });
+    else if (pl.hookBill) R.push({ c: beakBase.clone().add(new THREE.Vector3(bl * 0.38, -0.03, 0)), w: br * 0.78 * hook, h: br * 0.88 * hook, zone: 'pico', wHead: 1 });
+    else R.push({ c: beakBase.clone().add(new THREE.Vector3(bl * 0.5, 0.015 * br, 0)), w: br * 0.56, h: br * 0.58, zone: 'pico', wHead: 1 });
   }
-  const tip = beakBase.clone().add(new THREE.Vector3(pl.hookBill ? bl * 0.55 : bl, -0.04 - (pl.bentBill ? bl * 0.6 : 0) - (pl.hookBill ? bl * 0.45 : 0), 0));
+  const tip = beakBase.clone().add(new THREE.Vector3(pl.hookBill ? bl * 0.55 : bl, -0.06 - (pl.bentBill ? bl * 0.6 : 0) - (pl.hookBill ? bl * 0.45 : 0), 0));
   return { R, tip, tailPivot, C, beakBase };
 }
 
@@ -113,8 +117,8 @@ function paintSpecies(sp, P, layout) {
   if (bodyTexCache.has(sp.id)) return bodyTexCache.get(sp.id);
   const R = mulberry32(2000 + sp.id);
   const vary = makeVary(R);
-  const pat = sp.palette?.pattern || {};
-  const aw = sp.palette?.accentWhere, acc = P.accent;
+  const pat = P.pattern || sp.palette?.pattern || {};
+  const aw = P.accentWhere || sp.palette?.accentWhere, acc = P.accent;
   const W = 256, H = 128;
   const { uTailEnd, uBodyEnd, uNeckEnd, uEye, uBeak, uHeadFront } = layout;
   const mul = (c, k) => [c[0] * k, c[1] * k, c[2] * k];
@@ -214,7 +218,7 @@ function foldedWing(sp, pl, P) {
   let tex = foldedTexCache.get(sp.id);
   if (!tex) {
     const R = mulberry32(4000 + sp.id), vary = makeVary(R);
-    const pat = sp.palette?.pattern || {}, aw = sp.palette?.accentWhere, acc = P.accent;
+    const pat = P.pattern || sp.palette?.pattern || {}, aw = P.accentWhere || sp.palette?.accentWhere, acc = P.accent;
     const wc = aw === 'ala y cola' && acc ? acc : P.wing;
     tex = makeTex(128, 64, (x, y) => {
       const u = (x + 0.5) / 128, v = (y + 0.5) / 64;
@@ -323,6 +327,73 @@ export function flightWing(sp, plan, P, hwi = 20) {
   return { innerGeo, outerGeo, wristY, tex, span };
 }
 
+// ---------- abanico de cola real (plumas rectrices en vez de punta cónica) ----------
+const TAIL_STYLE = {
+  gaviota: 'horquilla', picaflor: 'horquilla',
+  rapaz: 'abanico', paloma: 'abanico', loro: 'abanico', pelicano: 'abanico',
+  carpintero: 'cuna', cormoran: 'cuna',
+  pato: 'corta', cisne: 'corta', flamenco: 'corta', garza: 'corta', pinguino: 'corta', nandu: 'corta', codorniz: 'corta', playero: 'corta',
+};
+function buildTailFan(sp, plan, fTail, P) {
+  const style = TAIL_STYLE[plan] || 'recta';
+  const L = (style === 'corta' ? 0.62 : 1.08) * fTail;
+  const wRoot = style === 'corta' ? 0.2 : 0.16;
+  const wTip = (style === 'abanico' ? 0.62 : style === 'horquilla' ? 0.44 : style === 'corta' ? 0.3 : 0.42)
+    * (plan === 'picaflor' ? 0.75 : 1);
+  const F = 6; // pares de rectrices a lo ancho del abanico
+  const pos = [], uv = [], idx = [];
+  const rows = 3; // base → medio → punta
+  for (let j = 0; j <= rows; j++) {
+    const u = j / rows;
+    for (let i = 0; i <= F; i++) {
+      const s = (i / F) * 2 - 1; // -1..1 de un lado al otro
+      const a = Math.abs(s);
+      // forma del borde trasero según especie (horquilla, abanico redondeado, cuña o recta con muesca suave)
+      let lenF = 1;
+      if (style === 'horquilla') lenF = 0.78 + 0.34 * a * a;
+      else if (style === 'abanico') lenF = 1.04 - 0.24 * a * a;
+      else if (style === 'cuna') lenF = 1.12 - 0.38 * a;
+      else if (style === 'corta') lenF = 1.0 - 0.3 * a * a;
+      else lenF = 0.96 + 0.08 * a - 0.1 * a * a;
+      // leve festoneado en la punta para sugerir plumas rectrices individuales
+      const notch = (j === rows && i > 0 && i < F) ? ((i % 2 === 0 ? -0.045 : 0.02)) : 0;
+      const x = -(0.04 + (L * lenF + notch) * u);
+      const z = s * (wRoot + (wTip - wRoot) * (u ** 0.85));
+      const y = -0.03 * a * a * u; // leve arqueo transversal del abanico
+      pos.push(x, y, z);
+      uv.push(u, i / F);
+    }
+  }
+  const N = F + 1;
+  for (let j = 0; j < rows; j++) for (let i = 0; i < F; i++) {
+    const a = j * N + i, b = a + 1, c = (j + 1) * N + i, d = c + 1;
+    idx.push(a, c, b, b, c, d);
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  geo.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+  geo.setIndex(idx);
+  geo.computeVertexNormals();
+
+  let tex = tailTexCache.get(sp.id);
+  if (!tex) {
+    const R = mulberry32(5000 + sp.id), vary = makeVary(R);
+    const pat = P.pattern || sp.palette?.pattern || {}, aw = P.accentWhere || sp.palette?.accentWhere, acc = P.accent;
+    const tc = aw === 'ala y cola' && acc ? acc : P.tail;
+    tex = makeTex(64, 64, (x, y) => {
+      const u = (x + 0.5) / 64, v = (y + 0.5) / 64;
+      const featherEdge = ((y % 9) === 0) ? 0.82 : 1; // separación de rectrices
+      const band = (u > 0.78 && u < 0.92) ? 0.76 : (u >= 0.92 ? 1.12 : 1); // banda subterminal + borde claro
+      let c = (pat.tail === 'barred' && x % 8 < 2) ? vary(P.back_dark, 6) : vary(tc, 7);
+      if (Math.abs(v - 0.5) > 0.42 && u > 0.4) c = vary(P.throat, 6); // rectrices externas claras
+      const k = featherEdge * band;
+      return [c[0] * k, c[1] * k, c[2] * k];
+    });
+    tailTexCache.set(sp.id, tex);
+  }
+  return { geo, tex };
+}
+
 // Espejo en Z preservando el sentido de las caras (winding) para que los contornos BackSide funcionen igual en ambos lados.
 function mirrorZ(src) {
   const g = src.clone().scale(1, 1, -1);
@@ -356,7 +427,7 @@ export function buildBirdOnePiece(sp, plan, ctx) {
   const rings = R.map((r, i) => {
     const prev = R[Math.max(0, i - 1)].c, next = i < R.length - 1 ? R[i + 1].c : tip;
     const axis = next.clone().sub(prev).normalize();
-    return { ...r, pts: ring(r.c, axis, r.w, r.h, r.fb) };
+    return { ...r, pts: ring(r.c, axis, r.w, r.h, r.fb, r.keel || 0) };
   });
   const lens = [0];
   for (let i = 1; i < rings.length; i++) lens.push(lens[i - 1] + rings[i].c.distanceTo(rings[i - 1].c));
@@ -409,6 +480,11 @@ export function buildBirdOnePiece(sp, plan, ctx) {
   const body = new THREE.Mesh(geo, mat(tex));
   bodyPivot.add(body);
   const meshes = [body];
+  // abanico de cola montado sobre el pivote `tail` (se anima con flick/vuelo y se abre al volar)
+  const tf = buildTailFan(sp, plan, f.tail, P);
+  const tailFan = new THREE.Mesh(tf.geo, mat(tf.tex, { twoSided: true }));
+  tail.add(tailFan);
+  meshes.push(tailFan);
 
   // mandíbula inferior (chica, para cantar), bajo el pico
   const mBeak = mat(plain, { tint: (P.beak[0] << 16) | (P.beak[1] << 8) | P.beak[2] });
@@ -482,13 +558,23 @@ export function buildBirdOnePiece(sp, plan, ctx) {
     if (pl.flippers) w.rotation.x = s * (Math.PI - 0.3); // aletas del pingüino, colgando a los costados
     w.userData.side = s; w.userData.mesh = mIn; w.userData.meshOut = mOut; w.userData.wrist = wrist; wings.push(w);
   }
-  // patas (como en el ave por piezas)
+  // patas con muslo emplumado y ligera articulación del tarso (menos «palito recto»)
   const mLeg = mat(plain, { tint: (P.legs[0] << 16) | (P.legs[1] << 8) | P.legs[2], twoSided: true });
+  const mThigh = mat(plain, { tint: (P.flank[0] << 16) | (P.flank[1] << 8) | P.flank[2] });
+  const thighLen = Math.min(0.42, legLen * 0.34);
+  const thighGeo = new THREE.SphereGeometry(0.14 * (pl.legThick > 1.5 ? 1.35 : 1), 7, 5).scale(1.05, thighLen / 0.24, 0.9);
   const legs = [];
   for (const s of [-1, 1]) {
     const leg = new THREE.Group(); leg.position.set(0.06, legLen, s * 0.27); bird.add(leg);
-    leg.add(new THREE.Mesh(tarsusGeo, mLeg));
-    const foot = new THREE.Mesh(footGeo, mLeg); foot.position.y = -legLen + 0.02; leg.add(foot);
+    const thigh = new THREE.Mesh(thighGeo, mThigh);
+    thigh.position.set(-0.04, -thighLen * 0.35, 0);
+    thigh.rotation.z = -0.22;
+    thigh.userData.noInk = true;
+    leg.add(thigh);
+    const tarsus = new THREE.Mesh(tarsusGeo, mLeg);
+    tarsus.rotation.z = 0.08; // leve ángulo anatómico hacia adelante al apoyar el pie
+    leg.add(tarsus);
+    const foot = new THREE.Mesh(footGeo, mLeg); foot.position.set(Math.sin(0.08) * legLen, -legLen + 0.02, 0); leg.add(foot);
     legs.push(leg);
   }
 
@@ -510,6 +596,8 @@ export function buildBirdOnePiece(sp, plan, ctx) {
       foldedGrp.visible = !flying;
       foldedGrp.scale.setScalar(torso.scale.x);
     }
+    // al volar, el abanico de la cola se abre ligeramente para maniobrar
+    tailFan.scale.z = flying ? 1.32 : 1.0;
     if (key === lastKey) return;
     lastKey = key;
     head.updateMatrix(); tail.updateMatrix();
