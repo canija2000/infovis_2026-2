@@ -544,13 +544,26 @@ function midiNote(channel, note, velocity, delaySecs = 0) {
   }, delaySecs * 1000);
 }
 const MIDI_CH = { residente: 2, verano: 3, invierno: 4 };
+// Nivel continuo de cada zona (control change 20–23): sube con las aves posadas y, sobre todo, con las que vuelan
+// ahí. Se manda ~8 veces por segundo; si deja de llegar, el Arduino apaga los motores solo.
+// Lo que vibra (menos es más: antes vibraba todo y se perdía el dato):
+// 1. las migraciones: mientras una oleada vuela sobre el tablero, vibra el motor de cada zona que cruza, más
+//    fuerte mientras más aves pasan. Así la vibración viaja con la bandada desde su borde hasta donde se posa.
+// 2. un pulso corto cuando un ave pasa volando junto a la torre.
+// Ya no vibran las aves posadas ni el cambio de mes.
+const ZONE_LEVEL = { base: 46, porAve: 11 }; // nivel 0–127 de una zona con aves migrando encima
+let levelT = 0;
+function sendLevels(dt, migrants) {
+  if (!midi.out || (levelT -= dt) > 0) return;
+  levelT = 0.12;
+  const lv = [0, 1, 2, 3].map(i => S.mode === 'look' && migrants?.[i] ? Math.min(127, ZONE_LEVEL.base + ZONE_LEVEL.porAve * migrants[i]) : 0);
+  try { lv.forEach((v, i) => midi.out.send([0xB0 | 1, 20 + i, v])); } catch { /* se desconectó */ }
+}
 function vibrate(ev) {
+  if (ev.type !== 'cerca') return;
   const i = S.board.zones.indexOf(ev.f.zone);
   if (i < 0 || i > 3) return;
-  const vel = Math.round(32 + 80 * Math.min(1, ev.f.peak));
-  // al llegar vibra cuando la bandada se posa (~4 s de vuelo); al irse, cuando despega
-  if (ev.type === 'llega') midiNote(MIDI_CH[ev.f.clase], 80 + (1 << i), vel, ev.delay + 4);
-  else midiNote(MIDI_CH[ev.f.clase], 96 + (1 << i), vel, ev.delay + 0.3);
+  midiNote(MIDI_CH[ev.f.clase], 80 + (1 << i), 110, ev.delay); // un ave pasa junto a la torre
 }
 
 // ------------------------------------------------------------------ coro de la maqueta
@@ -591,10 +604,10 @@ function updateBar(mi, p, shown = 0) {
     + `<em class="k residente">${m.residentes}</em><em class="k verano">${m.verano}</em><em class="k invierno">${m.invierno}</em><em class="tot">${m.presentes}</em><em class="prop">${pct}%</em>`
     + `<small class="l1">residentes</small><small class="l2">verano</small><small class="l3">invierno</small><small class="l4">total</small><small class="l5">${shown}/${m.presentes} vistas</small>`);
 }
-const _look = new THREE.Vector3();
+const _look = new THREE.Vector3(), _fwd = new THREE.Vector3(0, 0, -1);
 function frameInmersiva(dt, now) {
-  const B = S.board, { month, progress: p, events, shown } = B.update(dt, camera.position);
-  if (month !== S.month) { S.month = month; if (S.mode === 'look') midiNote(2, 79, 48); }
+  const B = S.board, { month, progress: p, events, shown, migrants } = B.update(dt, camera.position, _fwd);
+  if (month !== S.month) S.month = month;
   seasonBlend(p);
   for (const ev of events) {
     if (S.mode !== 'look') continue;
@@ -602,18 +615,19 @@ function frameInmersiva(dt, now) {
     if (ev.type === 'llega') setTimeout(() => singBird(ev.f.birds[0], true), (ev.delay + 4.2) * 1000); // canta al posarse
   }
   chorus(dt);
+  sendLevels(dt, migrants);
   updateBar(month, p, shown);
-  // Mirar hacia abajo acerca la torre al terreno (zoom), hacia donde se mira.
+  // La torre está en el centro de las cuatro zonas, a TOWER_H m sobre el suelo: se gira en el lugar y las zonas
+  // quedan alrededor. Mirar al frente baja la vista un poco (se ve la maqueta y el horizonte); mirar hacia abajo
+  // acerca el terreno (zoom); mirar arriba, la cordillera o el mar.
+  const h = S.heading, look = clamp(S.pitch - 0.3, -1.45, 0.45);
   const zk = clamp((-S.pitch - 0.35) / 0.75, 0, 1), z = zk * zk * (3 - 2 * zk);
-  const h = S.heading, d = B.radius * (1.1 - 0.6 * z), up = B.radius * (0.9 - 0.5 * z), ahead = B.radius * 0.2 * z;
-  const c = _look.set(B.center.x + Math.sin(h) * ahead, B.center.y, B.center.z - Math.cos(h) * ahead);
-  camera.position.set(c.x - Math.sin(h) * d, c.y + up, c.z + Math.cos(h) * d);
-  // Mirar hacia arriba levanta la vista hacia el horizonte: la cordillera o el mar alrededor.
-  // de frente la vista baja un poco menos que hacia el centro: así entra el horizonte (cordillera o mar) arriba
-  const uk = clamp((S.pitch + 0.05) / 0.5, 0, 1), e0 = Math.atan2(-up, d) * (0.68 + 0.32 * z), e = e0 + (0.14 - e0) * uk * uk * (3 - 2 * uk);
-  camera.lookAt(camera.position.x + Math.sin(h) * Math.cos(e), camera.position.y + Math.sin(e), camera.position.z - Math.cos(h) * Math.cos(e)); camera.fov = CFG.fovWide; camera.far = 3000; camera.updateProjectionMatrix(); camera.updateMatrixWorld();
+  camera.position.set(B.center.x, B.towerY, B.center.z);
+  camera.lookAt(B.center.x + Math.sin(h) * Math.cos(look), B.towerY + Math.sin(look), B.center.z - Math.cos(h) * Math.cos(look));
+  camera.fov = CFG.fovWide * (1 - 0.4 * z); camera.far = 3000; camera.updateProjectionMatrix(); camera.updateMatrixWorld();
+  camera.getWorldDirection(_fwd);
   shared.uLightDir.value.set(0.45, sunElev, 0.35).normalize().transformDirection(camera.matrixWorldInverse);
-  setListener(camera.position, camera.getWorldDirection(new THREE.Vector3()));
+  setListener(camera.position, _fwd);
   B.animate(now / 1000);
 }
 
