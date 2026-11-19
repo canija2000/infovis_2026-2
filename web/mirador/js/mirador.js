@@ -535,22 +535,23 @@ function flockSound(ev) {
   const f0 = ev.f.clase === 'verano' ? 880 : 330, n = Math.min(4, ev.f.n + 1), up = ev.type === 'llega';
   for (let i = 0; i < n; i++) setTimeout(() => blip(f0 * (up ? 1 + i * 0.12 : 1.4 - i * 0.12), 0.05), (ev.delay + 0.3 + i * 0.09) * 1000);
 }
-// La barra de arriba, en una línea: [región | año | E F M A M J J A S O N D | residentes | verano | invierno | total],
+// La barra de arriba, en una línea: [región | año | E F M A M J J A S O N D | residentes | verano | invierno | total | en vista],
 // con una segunda fila chica que nombra los números.
-function updateBar(mi, p) {
+function updateBar(mi, p, shown = 0) {
   const m = S.board.months[mi];
+  const pct = m.presentes ? Math.round(shown / m.presentes * 100) : 0;
   const months = S.index.months.map((n, k) => `<i class="${k === mi ? 'on' : k < mi ? 'past' : ''}">${n[0].toUpperCase()}</i>`).join('');
   html('.e-bar', `<b class="reg">${S.reg.meta.name}</b><span class="yr">${YEAR}</span>`
     + `<span class="mo">${months}<u style="width:${(p * 100).toFixed(1)}%"></u></span>`
-    + `<em class="k residente">${m.residentes}</em><em class="k verano">${m.verano}</em><em class="k invierno">${m.invierno}</em><em class="tot">${m.presentes}</em>`
-    + `<small class="l1">residentes</small><small class="l2">verano</small><small class="l3">invierno</small><small class="l4">total</small>`);
+    + `<em class="k residente">${m.residentes}</em><em class="k verano">${m.verano}</em><em class="k invierno">${m.invierno}</em><em class="tot">${m.presentes}</em><em class="prop">${pct}%</em>`
+    + `<small class="l1">residentes</small><small class="l2">verano</small><small class="l3">invierno</small><small class="l4">total</small><small class="l5">${shown}/${m.presentes} vistas</small>`);
 }
 const _look = new THREE.Vector3();
 function frameInmersiva(dt, now) {
-  const B = S.board, { month, progress: p, events } = B.update(dt, camera.position);
+  const B = S.board, { month, progress: p, events, shown } = B.update(dt, camera.position);
   if (month !== S.month) { S.month = month; seasonLight(month); if (S.mode === 'look') { blip(month === 0 ? 990 : 520, 0.05); midiNote(2, 79, 48); } }
   for (const ev of events) { flockSound(ev); if (S.mode === 'look') vibrate(ev); }
-  updateBar(month, p);
+  updateBar(month, p, shown);
   // Mirar hacia abajo acerca la torre al terreno (zoom), hacia donde se mira.
   const zk = clamp((-S.pitch - 0.35) / 0.75, 0, 1), z = zk * zk * (3 - 2 * zk);
   const h = S.heading, d = B.radius * (1.1 - 0.6 * z), up = B.radius * (0.9 - 0.5 * z), ahead = B.radius * 0.2 * z;
