@@ -17,7 +17,8 @@ Al elegir la zona, el interruptor de arriba elige la vista:
   verano y de invierno. Estilo de ilustración, como el mundo InStep: luz en tres bandas, contorno de tinta y
   barra de cuaderno de campo. Hay un tope de 110 aves en escena (primero las visitantes). Código: `js/inmersiva.js`.
   - El contorno de cada ave es el color de su clase (verde residente, naranja verano, azul invierno).
-  - Mirar hacia abajo acerca la torre al terreno (zoom); en el computador, flecha abajo.
+  - La torre está en el centro de las zonas, a 26 m del suelo, y se gira en el lugar. Mirar hacia abajo acerca
+    el terreno (zoom); en el computador, flecha abajo.
   - Cada 2,5 a 5 s un ave posada pasa volando cerca de la torre y vuelve a su lugar.
   - Los nombres de las zonas van pintados en el tablero, en el borde de afuera de cada una.
   - Alrededor, el paisaje sigue: la cordillera de los Andes al este (al oeste en Magallanes) y el mar o los cerros
