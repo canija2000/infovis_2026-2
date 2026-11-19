@@ -22,18 +22,20 @@ Modelo 3D de las dos propuestas que se compararon: `propuestas_3d.html`. Se elig
   marco de 124 mm: se ve el teléfono entero.
 - **48 mm más largo** (170 en vez de 122): el teléfono queda a unos 15 cm del borde por donde se mira, antes ~11. Se
   enfoca más cómodo.
-- **Los motores se atornillan a los laterales** del visor, cada uno con un M3 por un ojal de 12 mm (se ajusta la
-  posición al agujero real del módulo de vibración).
+- **Los motores se atornillan a los laterales** del visor por sus dos agujeros; las asas encajan con dientes.
 
 ## Medidas
 
-- Visor: 140 × 90 × 170 mm (los laterales sobresalen 8 mm atrás). Largo ajustable con `VISOR_Z` (cabe hasta 180). Teléfono por la ranura lateral: hasta 78 mm de
-  ancho y 12 mm de grosor con carcasa, como antes.
-- Asas: 72 × 78 × 30 mm, adelante en cada lateral (empiezan a 8 mm del borde de los ojos, lejos de la ranura).
-- Mochila: 134 × 90 × 70 mm, entre los aleros, detrás de la trasera. Por dentro: 134 × 84 × 67, con el Leonardo
-  (70 × 55) acostado y la protoboard (47 × 35) al lado, y más de 40 mm libres sobre las placas para cables.
-- Total: 200 × 90 × 240 mm. Dos planchas de 335 × 365 mm (84 % y 78 % ocupadas), 75 piezas, 13,4 m de corte, unos
-  400 g de MDF.
+- Visor: 140 × 90 × 170 mm (los laterales sobresalen 8 mm atrás). Largo ajustable con `VISOR_Z` (cabe hasta 180).
+- Asas: 72 × 78 × 24 mm, adelante en cada lateral. Encajan con **dientes** (dos por borde) en **ranuras** del lateral
+  y se refuerzan con cola fría. Sin tornillos.
+- Motores: dos por asa, cada uno atornillado al lateral por sus **dos agujeros** (`MOTOR_AGUJEROS`, Ø 3,2 mm). Las
+  posiciones son una estimación: **medir el módulo real** y corregir el parámetro antes de cortar.
+- Mochila: 134 × 90 × 90 mm, entre los aleros, **pegada** a la trasera del visor. Por dentro: 128 × 84 × 87, con el
+  Leonardo (70 × 55) y la protoboard (47 × 35) en el piso, espacio para enchufar el USB y pasos de 34 × 22 mm a los
+  dos costados. Tapa trasera **a presión**: cuatro listones pegados por dentro de la tapa entran en la boca de la
+  mochila; un agujero de 18 mm sirve para tirarla con el dedo.
+- Total: 188 × 90 × 268 mm. Dos planchas de 335 × 365 mm, 31 piezas, 12 m de corte, unos 400 g de MDF.
 
 ## Zonas y motores
 
@@ -49,44 +51,53 @@ Cada asa lleva dos motores, adelante y atrás. Con los cuatro se repite el orden
 ## Antes de cortar
 
 1. Medir el espesor real del MDF y ponerlo en `T` (las uniones y pilares dependen de eso). Regenerar.
-2. Cortar primero la **PROBETA** (plancha 1): cinco ranuras de 2,8 a 3,2 mm, un hexágono para la tuerca M3 y un
+2. Cortar primero la **PROBETA**: cinco ranuras de 2,8 a 3,2 mm, un hexágono para la tuerca M3 y un
    paso de 3,4 mm. La ranura de 3,0 debe aceptar el MDF sin forzar; la tuerca debe entrar en el hexágono.
-3. Comprobar el agujero de montaje del módulo de vibración contra el ojal del lateral, y el ancho y grosor del
+3. Medir los dos agujeros del módulo de vibración (separación y distancia al borde) y ponerlos en `MOTOR_AGUJEROS`, y el ancho y grosor del
    teléfono contra la ranura.
 4. En RDWorks, comprobar que la VISOR TAPA mida 140 × 170 mm al importar (escala correcta).
 
 ## Piezas chicas (sin nombre en la guía)
 
-- **Pilares de las asas** (36 cuadrados de 12 × 12): 9 capas por pilar, dos pilares por asa. La capa que toca el
-  visor lleva el hexágono de la tuerca.
-- **Apoyos de la mochila** (12 cuadrados de 12 × 12): 3 capas por apoyo, uno en cada esquina trasera interior. La
-  capa del fondo (la más lejana a la tapa) lleva la tuerca.
-- **Escuadras de la cuna** (4): topes del Leonardo en el piso de la mochila, en los dos extremos de su largo
-  y del lado de la tapa.
+- **Listones de la tapa** (4): se pegan por dentro de la tapa de la mochila, a 3,4 mm del borde, formando un marco.
+- **Escuadras de la cuna** (4): topes del Leonardo en el piso de la mochila.
 
-## Tornillería
+## Tornillería y otros
 
-- 4 M3 × 10 + tuercas: motores contra los laterales (desde dentro del visor).
-- 4 M3 × 16 + tuercas: asas (desde dentro del visor, a los pilares).
-- 4 M3 × 12 + tuercas: mochila contra la trasera del visor (tuercas por dentro de la mochila).
-- 4 M3 × 12 + tuercas: tapa trasera de la mochila (a los apoyos).
+- 8 tornillos M3 (o M2,5, según el agujero del módulo) × 10 mm con tuerca: dos por motor, desde dentro del visor.
+- Cola fría para todo lo demás: visor, asas (dientes en las ranuras), mochila y su unión con la trasera.
 - Bridas finas para los cables sobre la tapa del visor (seis pares de pasos, tres por lado).
 
 ## Armado
 
 1. **Visor:** base, laterales, trasera y tapa con cola (adelante queda abierto); el marco entra con sus lengüetas en
-   las ranuras de tapa y base y ayuda a escuadrar la caja. Sujetar con elásticos mientras seca.
-2. **Motores:** atornillarlos por fuera de cada lateral, en los ojales, con el tornillo desde dentro del visor.
-3. **Asas:** armar cada caja (frente, arriba, abajo, adelante, atrás) con cola; queda abierta del lado del visor.
-   Laminar los pilares con su tuerca y pegarlos por dentro del frente del asa, alineados con los agujeros del
-   lateral (usar los tornillos como guía). Pasar los cables del motor por el agujero de arriba del asa y
-   atornillar el asa desde dentro del visor.
-4. **Mochila:** armar la caja (frente, arriba, abajo, costados) con cola, abierta atrás. Pegar los apoyos con
-   tuerca en las esquinas traseras interiores. Pegar la protoboard y las escuadras de la cuna en el piso.
-   Atornillar el frente de la mochila a la trasera del visor (entra entre los aleros).
-5. **Cables:** los de los motores, por encima de la tapa del visor junto a cada borde, con bridas, hasta los
-   agujeros de arriba de la mochila. El USB del teléfono entra por el paso del costado de la mochila del lado
-   donde sobresale el teléfono.
-6. Cerrar la mochila con su tapa y 4 tornillos.
+   las ranuras de tapa y base y ayuda a escuadrar. Sujetar con elásticos mientras seca.
+2. **Motores:** atornillarlos por fuera de cada lateral con sus dos tornillos, desde dentro del visor, con el
+   conector hacia arriba.
+3. **Asas:** armar cada caja (frente, arriba, abajo, adelante, atrás) con cola; queda abierta hacia el visor y con
+   los dientes hacia afuera. Pasar los cables de los motores por el agujero de arriba del asa, poner cola en los
+   dientes y encajarlos en las ranuras del lateral.
+4. **Mochila:** armar la caja (frente, arriba, abajo, costados) con cola, abierta atrás. Pegar la protoboard y las
+   escuadras de la cuna en el piso. Pegar el frente de la mochila a la trasera del visor, entre los aleros.
+5. **Tapa:** pegar los cuatro listones por dentro de la tapa, formando un marco que entre justo en la boca.
+6. **Cables:** los de los motores, por encima de la tapa del visor junto a cada borde, con bridas, hasta los
+   agujeros de arriba de la mochila. El USB del teléfono entra por el paso del costado del lado donde sobresale.
 
 El sketch de los motores es `arduino/vibraciones_aves/`.
+
+## Ensamble 3D con las piezas reales
+
+`blender_ensamble.py` lee `piezas.json` (lo escribe `generar.py`: los mismos contornos que van a la cortadora),
+extruye cada pieza a 3 mm y la pone en su lugar. Teléfono, placas, motores, tornillos y cables van como referencia.
+
+```bash
+/Applications/Blender.app/Contents/MacOS/Blender --background --python blender_ensamble.py
+```
+
+Deja `ensamble.blend` (para abrir en Blender), `ensamble.glb` y `ensamble.html`, un visor en el navegador con
+«Separar» y casillas para ocultar tapas, asas y cables, más las vistas fijas:
+
+![Armado](render_armado_frente.jpg)
+![Despiece](render_despiece.jpg)
+![Mochila abierta](render_mochila_abierta.jpg)
+![Asa quitada: motores y tornillos en el lateral](render_asa_por_dentro.jpg)
