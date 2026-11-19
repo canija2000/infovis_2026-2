@@ -160,7 +160,7 @@ $('zone-list').addEventListener('click', e => {
   S.zoneSel = b.dataset.z; store('mirador.zona.' + S.reg.meta.code, S.zoneSel); blip(700, 0.03);
   renderPick();
 });
-$('b-go').onclick = () => { if (S.reg && S.zoneSel) pickZone(S.view === 'inmersiva' ? null : S.zoneSel); };
+$('b-go').onclick = () => { if (!S.reg || !S.zoneSel) return; if (S.view === 'inmersiva') connectMidi(); pickZone(S.view === 'inmersiva' ? null : S.zoneSel); };
 function stepRegion(d) {
   const n = CFG.regions.length, i = Math.max(0, CFG.regions.indexOf(S.reg?.meta.code));
   const code = CFG.regions[(i + d + n) % n];
@@ -490,6 +490,44 @@ async function enterBoard() {
   seasonLight(0); setAmbience(board.zones[0].key);
   layout();
 }
+// ------------------------------------------------------------------ vibración (Arduino por MIDI USB)
+// arduino/vibraciones_aves: un motor bajo cada zona de la maqueta. Cuando una bandada se posa o despega, el
+// Mirador manda una nota: 80 + máscara del motor (llega) o 96 + máscara (se va); el canal dice la clase (2
+// residente, 3 verano, 4 invierno) y la velocidad, cuántos días del mes se registró. La nota 79 marca cada mes.
+// Web MIDI funciona en Chrome (computador, o Android con cable OTG); en Safari de iPhone no hay.
+const midi = { out: null, asked: false };
+async function connectMidi() {
+  if (midi.asked || !navigator.requestMIDIAccess) return;
+  midi.asked = true;
+  try {
+    const access = await navigator.requestMIDIAccess();
+    const pick = () => {
+      const outs = [...access.outputs.values()];
+      midi.out = outs.find(o => /leonardo|arduino|micro/i.test(o.name)) || outs[0] || null;
+      $('midi-status').textContent = midi.out ? `Vibración: conectada a ${midi.out.name}` : 'Vibración: sin Arduino conectado';
+    };
+    pick(); access.onstatechange = pick;
+  } catch { $('midi-status').textContent = 'Vibración: este navegador no permite MIDI'; }
+}
+function midiNote(channel, note, velocity, delaySecs = 0) {
+  if (!midi.out) return;
+  setTimeout(() => {
+    try {
+      midi.out.send([0x90 | (channel - 1), note, velocity]);
+      midi.out.send([0x80 | (channel - 1), note, 0], performance.now() + 120);
+    } catch { /* se desconectó */ }
+  }, delaySecs * 1000);
+}
+const MIDI_CH = { residente: 2, verano: 3, invierno: 4 };
+function vibrate(ev) {
+  const i = S.board.zones.indexOf(ev.f.zone);
+  if (i < 0 || i > 3) return;
+  const vel = Math.round(32 + 80 * Math.min(1, ev.f.peak));
+  // al llegar vibra cuando la bandada se posa (~4 s de vuelo); al irse, cuando despega
+  if (ev.type === 'llega') midiNote(MIDI_CH[ev.f.clase], 80 + (1 << i), vel, ev.delay + 4);
+  else midiNote(MIDI_CH[ev.f.clase], 96 + (1 << i), vel, ev.delay + 0.3);
+}
+
 // Sonido de cada bandada: las de verano agudas, las de invierno graves; al llegar la nota sube y al irse baja,
 // y suena una nota por ave de la bandada (más grande, más larga).
 function flockSound(ev) {
@@ -510,8 +548,8 @@ function updateBar(mi, p) {
 const _look = new THREE.Vector3();
 function frameInmersiva(dt, now) {
   const B = S.board, { month, progress: p, events } = B.update(dt, camera.position);
-  if (month !== S.month) { S.month = month; seasonLight(month); if (S.mode === 'look') blip(month === 0 ? 990 : 520, 0.05); }
-  for (const ev of events) flockSound(ev);
+  if (month !== S.month) { S.month = month; seasonLight(month); if (S.mode === 'look') { blip(month === 0 ? 990 : 520, 0.05); midiNote(2, 79, 48); } }
+  for (const ev of events) { flockSound(ev); if (S.mode === 'look') vibrate(ev); }
   updateBar(month, p);
   // Mirar hacia abajo acerca la torre al terreno (zoom), hacia donde se mira.
   const zk = clamp((-S.pitch - 0.35) / 0.75, 0, 1), z = zk * zk * (3 - 2 * zk);
@@ -966,4 +1004,4 @@ Promise.all([loadWorld(), loadKit()]).then(async ([index]) => {
   installHint();
 }).catch(err => { $('pick-status').textContent = 'No se pudieron cargar los datos: ' + err.message; });
 
-window.M = S; window.dbg = { enterBoard, travel, setMonth, enterRegion, enterZone, pause, go, steps, setLock, takePhoto, gyro, camera, CFG, visibleFromEye }; // para depurar desde la consola
+window.M = S; window.dbg = { midi, enterBoard, travel, setMonth, enterRegion, enterZone, pause, go, steps, setLock, takePhoto, gyro, camera, CFG, visibleFromEye }; // para depurar desde la consola

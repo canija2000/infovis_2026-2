@@ -259,7 +259,7 @@ export function buildBoard({ index, reg, props, bandadas }) {
     if (total + n > MAX_BIRDS) continue;
     total += n;
     const zone = byKey[zoneFor(sp, keys, reg.region.featured || {}, waterOf)];
-    flocks.set(id, { sp, clase, zone, n, birds: [], side: clase === 'invierno' ? 1 : clase === 'verano' ? -1 : (id % 2 ? 1 : -1) });
+    flocks.set(id, { sp, clase, zone, n, peak, birds: [], side: clase === 'invierno' ? 1 : clase === 'verano' ? -1 : (id % 2 ? 1 : -1) });
   }
 
   function spawn(f) {
