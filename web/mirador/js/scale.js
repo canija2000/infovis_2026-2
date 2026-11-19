@@ -25,8 +25,8 @@ export function birdScale(sp, plan) {
 // Altura objetivo (m) de cada prop de scene.js. El factor de escala se calcula contra su altura actual
 // (el valor `perch` del catálogo, o `natural` si no tiene percha). Edificios: ancho objetivo en `width`.
 export const PROP_SIZE = {
-  platano_oriental: 11, palma_chilena: 9, pimiento: 6.5, quillay: 8, litre: 4.5, peumo: 8, maiten: 7,
-  sauce_chileno: 8, espino: 3.5, boldo: 2.4, zarzamora: 1.3, quisco: 2.2, eucalipto: 15, lenga: 11, nirre: 4,
+  platano_oriental: 11.5, palma_chilena: 9.5, pimiento: 7.8, quillay: 9.2, litre: 6.2, peumo: 9.0, maiten: 8.0,
+  sauce_chileno: 8.5, espino: 5.0, boldo: 2.9, zarzamora: 1.5, quisco: 2.5, eucalipto: 15, lenga: 11, nirre: 4.5,
   calafate: 1.5, mata_negra: 0.9, hierba_blanca: 0.8, chagual: 2.8,
   roca: 1.0, roca_cerro: 1.6, bolones: 0.6, roca_andina: 1.4, roca_costa: 1.6, llareta: 0.5,
   coiron: { natural: 0.8, h: 0.7 }, totora: 2.0, flores_altura: 0.35,

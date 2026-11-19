@@ -484,6 +484,9 @@ function seasonBlend(p) {
     shared.uFogNear.value = S.board.radius * 3; shared.uFogFar.value = S.board.radius * 22;
     let snow = 0;
     for (const z of S.board.zones) snow = Math.max(snow, z.sc.setYearProgress?.(p) || 0);
+    // sincronizar el tinte estacional del suelo exterior con el de las zonas para evitar costuras
+    const gt = S.board.zones[0]?.sc.groundMat?.uniforms.uTint.value;
+    if (gt) S.board.syncSurround?.(gt.r, gt.g, gt.b);
     shared.uSnow.value = snow;
   }
 }
