@@ -119,7 +119,7 @@ function groundLabel(text, x, y, z, north) {
   g.fillStyle = 'rgba(27,22,17,0.52)'; g.fillText(text.toUpperCase(), 256, 48);
   const tex = new THREE.CanvasTexture(c); tex.anisotropy = 4;
   const m = new THREE.Mesh(new THREE.PlaneGeometry(WORLD * 0.34, WORLD * 0.064), new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false }));
-  m.rotation.x = -Math.PI / 2; if (north) m.rotation.z = Math.PI;
+  m.rotation.x = -Math.PI / 2; if (!north) m.rotation.z = Math.PI; // se lee derecho mirando desde la torre, al centro
   m.position.set(x, y, z); m.renderOrder = 2;
   return m;
 }
@@ -192,7 +192,7 @@ function ocean(side, W, y, R, far) {
 // Una cordillera en franjas: la base nace con el color del suelo y transiciona a roca y nieve.
 function ridge(side, snowAt, scale, W, y, R, far, gLin, coastal = false) {
   // baja (42 m por escala, antes 165): desde la torre se ve entera, con cielo detrás, en la primera mirada
-  const nz = 150, nx = 14, x0 = W / 2 + (coastal ? 6 : 14), depth = 220 * scale + 110, H = 42 * scale;
+  const nz = 150, nx = 14, x0 = W / 2 + (coastal ? 30 : 95), depth = 220 * scale + 110, H = 42 * scale;
   const uv = [];
   const pos = [], col = [], idx = [];
   const ph = [...Array(4)].map(() => R() * 6.28);
@@ -233,7 +233,7 @@ function rockTex(R) {
 }
 // Cordones al norte y al sur: nacen del suelo, suben hacia los Andes y desaparecen al llegar al mar.
 function crossRidge(zSide, cfg, W, D, y, R, far, seaSide, gLin) {
-  const nx = 90, nz = 10, z0 = D / 2 + 12, depth = 260, H = 38;
+  const nx = 90, nz = 10, z0 = D / 2 + 60, depth = 260, H = 38;
   const pos = [], col = [], idx = [];
   const ph = [R() * 6.28, R() * 6.28];
   const andesSide = cfg.east === 'andes' ? 1 : -1;
@@ -422,6 +422,9 @@ export function buildBoard({ index, reg, props, bandadas }) {
   const anims = []; around.traverse(o => o.userData.animate && anims.push(o.userData.animate)); // el mar
 
   const center = new THREE.Vector3(0, 2, 0);
+  // altura de la torre: TOWER_H m sobre el punto más alto del cruce de las zonas (el centro de la maqueta)
+  const TOWER_H = 26;
+  const towerY = TOWER_H + Math.max(...zones.map(z => z.sc.heightAt(-Math.sign(z.g.position.x) * 4, -Math.sign(z.g.position.z) * 4) + z.g.position.y));
   const radius = Math.hypot(W + MARGIN, D + MARGIN) / 2;
 
   // especies: zona, aves por bandada y de qué lado llegan
@@ -484,7 +487,7 @@ export function buildBoard({ index, reg, props, bandadas }) {
     return events;
   }
 
-  function update(dt, cam) {
+  function update(dt, cam, fwd) {
     t = (t + dt) % YEAR_SECS;
     const mi = Math.floor(t / MONTH_SECS);
     const events = mi !== month ? setMonth(mi, false) : [];
@@ -500,8 +503,9 @@ export function buildBoard({ index, reg, props, bandadas }) {
       const b = pool[(Math.random() * pool.length) | 0];
       if (b) {
         const z = b.scene === undefined ? null : zones.find(z => z.sc === b.scene);
-        _c.copy(cam).lerp(center, 0.08 + Math.random() * 0.08); // a unos 15–25 m de la torre, delante de la vista
-        _c.x += (Math.random() - 0.5) * radius * 0.25; _c.y -= radius * 0.05;
+        // delante de la vista, a 12–22 m de la torre y algo corrida a un lado: pasa frente a quien mira
+        _c.copy(cam).addScaledVector(fwd || _c.set(0, 0, -1), 12 + Math.random() * 10);
+        _c.x += (Math.random() - 0.5) * 10; _c.y -= 2 + Math.random() * 3;
         b.flyby(_c.sub(z.g.position).clone());
         const fl = [...flocks.values()].find(f => f.birds.includes(b));
         if (fl) flybyEvents.push({ type: 'cerca', f: fl, delay: 2 }); // pasa junto a la torre ~2 s después
@@ -546,5 +550,5 @@ export function buildBoard({ index, reg, props, bandadas }) {
   const animate = time => { for (const z of zones) z.sc.animate?.(time); for (const f of anims) f(time); };
   const dispose = () => root.traverse(o => { if (!o.userData.ink) o.geometry?.dispose(); });
   const birds = () => [...flocks.values()].reduce((a, f) => a + f.birds.length, 0);
-  return { root, zones, months: region.months, center, radius, update, reset, animate, dispose, birds, flocks };
+  return { root, zones, months: region.months, center, radius, towerY, update, reset, animate, dispose, birds, flocks };
 }

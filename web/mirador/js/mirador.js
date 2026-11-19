@@ -583,9 +583,9 @@ function updateBar(mi, p, shown = 0) {
     + `<em class="k residente">${m.residentes}</em><em class="k verano">${m.verano}</em><em class="k invierno">${m.invierno}</em><em class="tot">${m.presentes}</em><em class="prop">${pct}%</em>`
     + `<small class="l1">residentes</small><small class="l2">verano</small><small class="l3">invierno</small><small class="l4">total</small><small class="l5">${shown}/${m.presentes} vistas</small>`);
 }
-const _look = new THREE.Vector3();
+const _look = new THREE.Vector3(), _fwd = new THREE.Vector3(0, 0, -1);
 function frameInmersiva(dt, now) {
-  const B = S.board, { month, progress: p, events, shown, migrants } = B.update(dt, camera.position);
+  const B = S.board, { month, progress: p, events, shown, migrants } = B.update(dt, camera.position, _fwd);
   if (month !== S.month) { S.month = month; seasonLight(month); }
   for (const ev of events) {
     if (S.mode !== 'look') continue;
@@ -595,17 +595,17 @@ function frameInmersiva(dt, now) {
   chorus(dt);
   sendLevels(dt, migrants);
   updateBar(month, p, shown);
-  // Mirar hacia abajo acerca la torre al terreno (zoom), hacia donde se mira.
+  // La torre está en el centro de las cuatro zonas, a TOWER_H m sobre el suelo: se gira en el lugar y las zonas
+  // quedan alrededor. Mirar al frente baja la vista un poco (se ve la maqueta y el horizonte); mirar hacia abajo
+  // acerca el terreno (zoom); mirar arriba, la cordillera o el mar.
+  const h = S.heading, look = clamp(S.pitch - 0.3, -1.45, 0.45);
   const zk = clamp((-S.pitch - 0.35) / 0.75, 0, 1), z = zk * zk * (3 - 2 * zk);
-  const h = S.heading, d = B.radius * (1.1 - 0.6 * z), up = B.radius * (0.9 - 0.5 * z), ahead = B.radius * 0.2 * z;
-  const c = _look.set(B.center.x + Math.sin(h) * ahead, B.center.y, B.center.z - Math.cos(h) * ahead);
-  camera.position.set(c.x - Math.sin(h) * d, c.y + up, c.z + Math.cos(h) * d);
-  // Mirar hacia arriba levanta la vista hacia el horizonte: la cordillera o el mar alrededor.
-  // de frente la vista baja un poco menos que hacia el centro: así entra el horizonte (cordillera o mar) arriba
-  const uk = clamp((S.pitch + 0.05) / 0.5, 0, 1), e0 = Math.atan2(-up, d) * (0.68 + 0.32 * z), e = e0 + (0.14 - e0) * uk * uk * (3 - 2 * uk);
-  camera.lookAt(camera.position.x + Math.sin(h) * Math.cos(e), camera.position.y + Math.sin(e), camera.position.z - Math.cos(h) * Math.cos(e)); camera.fov = CFG.fovWide; camera.far = 3000; camera.updateProjectionMatrix(); camera.updateMatrixWorld();
+  camera.position.set(B.center.x, B.towerY, B.center.z);
+  camera.lookAt(B.center.x + Math.sin(h) * Math.cos(look), B.towerY + Math.sin(look), B.center.z - Math.cos(h) * Math.cos(look));
+  camera.fov = CFG.fovWide * (1 - 0.4 * z); camera.far = 3000; camera.updateProjectionMatrix(); camera.updateMatrixWorld();
+  camera.getWorldDirection(_fwd);
   shared.uLightDir.value.set(0.45, 1, 0.35).normalize().transformDirection(camera.matrixWorldInverse);
-  setListener(camera.position, camera.getWorldDirection(new THREE.Vector3()));
+  setListener(camera.position, _fwd);
   B.animate(now / 1000);
 }
 
