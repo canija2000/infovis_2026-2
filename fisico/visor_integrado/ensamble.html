@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Visor integrado · ensamble</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #f3e8cf; color: #1b1611; font: 14px/1.45 system-ui, sans-serif; overflow: hidden; }
+  header { position: absolute; top: 0; left: 0; right: 0; padding: 10px 14px; display: flex; flex-wrap: wrap; gap: 14px; align-items: center; z-index: 2; }
+  header h1 { font-size: 16px; margin: 0; }
+  label { display: inline-flex; align-items: center; gap: 6px; }
+  #tip { position: absolute; pointer-events: none; background: #f3e8cf; border: 2px solid #1b1611; border-radius: 6px; padding: 2px 8px; display: none; z-index: 3; }
+  #nota { position: absolute; left: 14px; bottom: 10px; right: 14px; font-size: 12px; z-index: 2; }
+  canvas { display: block; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Visor integrado · ensamble con las piezas del plano</h1>
+  <label>Separar <input type="range" id="sep" min="0" max="1" step="0.01" value="0"></label>
+  <label><input type="checkbox" id="cables" checked> Cables</label>
+  <label><input type="checkbox" id="tapas" checked> Tapas (visor y mochila)</label>
+  <label><input type="checkbox" id="asas" checked> Asas</label>
+</header>
+<div id="tip"></div>
+<p id="nota">Cada pieza de MDF es la del DXF, extruida a 3 mm y puesta en su lugar (blender_ensamble.py). Teléfono, placas, motores, tornillos y cables son referencia. Arrastrar para girar · rueda para acercar · pasar el cursor para ver el nombre.</p>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<script>
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(2, devicePixelRatio)); renderer.outputEncoding = THREE.sRGBEncoding;
+document.body.appendChild(renderer.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xf3e8cf);
+const camera = new THREE.PerspectiveCamera(35, 1, 1, 5000);
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+scene.add(new THREE.HemisphereLight(0xffffff, 0x9a8a70, 1.0));
+const sun = new THREE.DirectionalLight(0xffffff, 0.7); sun.position.set(-300, 500, 400); scene.add(sun);
+scene.add(new THREE.GridHelper(800, 40, 0xc9b48a, 0xe0d2b0));
+
+// grupo de cada pieza por su nombre → hacia dónde se separa (glTF: y arriba; −z = hacia el teléfono)
+function grupo(n) {
+  if (/^VISOR TAPA/.test(n)) return ['tapa', [0, 70, 0]];
+  if (/^ASA IZQ|^PILAR ASA \d·IZQ/.test(n)) return ['asa', [-90, 0, 0]];
+  if (/^ASA DER|^PILAR ASA \d·DER/.test(n)) return ['asa', [90, 0, 0]];
+  if (/^MOCHILA TAPA/.test(n)) return ['tapa', [0, 0, -200]];
+  if (/^MOCHILA|^APOYO|^ESCUADRA|Leonardo|Protoboard/.test(n)) return ['mochila', [0, 0, -120]];
+  if (/^Cable|^USB/.test(n)) return ['cable', [0, 0, 0]];
+  return ['fijo', [0, 0, 0]];
+}
+const piezas = [];
+new THREE.GLTFLoader().load('ensamble.glb', g => {
+  const root = g.scene; scene.add(root);
+  root.traverse(o => {
+    if (!o.isMesh) return;
+    const nombre = (o.parent && o.parent !== root && !o.name.match(/^[A-Z]/) ? o.parent.name : o.name).replace(/_/g, ' ');
+    const [tipo, dir] = grupo(nombre);
+    o.userData = { nombre, tipo, dir: new THREE.Vector3(...dir), base: o.position.clone() };
+    o.material.side = THREE.DoubleSide;
+    const e = new THREE.LineSegments(new THREE.EdgesGeometry(o.geometry, 40), new THREE.LineBasicMaterial({ color: 0x1b1611, transparent: true, opacity: 0.55 }));
+    o.add(e); piezas.push(o);
+  });
+  const box = new THREE.Box3().setFromObject(root), c = box.getCenter(new THREE.Vector3()), s = box.getSize(new THREE.Vector3()).length();
+  controls.target.copy(c); camera.position.copy(c).add(new THREE.Vector3(-0.75, 0.6, 0.85).multiplyScalar(s)); controls.update();
+  aplicar();
+});
+function aplicar() {
+  const k = +sep.value;
+  for (const o of piezas) {
+    o.position.copy(o.userData.base).addScaledVector(o.userData.dir, k);
+    o.visible = !(o.userData.tipo === 'cable' && !cables.checked) && !(o.userData.tipo === 'tapa' && !tapas.checked) && !(o.userData.tipo === 'asa' && !asas.checked);
+  }
+}
+for (const id of ['sep', 'cables', 'tapas', 'asas']) document.getElementById(id).addEventListener('input', aplicar);
+const ray = new THREE.Raycaster(), m = new THREE.Vector2(), tip = document.getElementById('tip');
+renderer.domElement.addEventListener('pointermove', e => {
+  m.set(e.clientX / innerWidth * 2 - 1, -e.clientY / innerHeight * 2 + 1); ray.setFromCamera(m, camera);
+  const h = ray.intersectObjects(piezas.filter(o => o.visible), false)[0];
+  if (h) { tip.style.display = 'block'; tip.textContent = h.object.userData.nombre; tip.style.left = e.clientX + 12 + 'px'; tip.style.top = e.clientY + 12 + 'px'; }
+  else tip.style.display = 'none';
+});
+function resize() { renderer.setSize(innerWidth, innerHeight); camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); }
+addEventListener('resize', resize); resize();
+(function loop() { requestAnimationFrame(loop); renderer.render(scene, camera); })();
+</script>
+</body>
+</html>

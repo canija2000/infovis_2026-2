@@ -90,3 +90,20 @@ Cada asa lleva dos motores, adelante y atrás. Con los cuatro se repite el orden
 6. Cerrar la mochila con su tapa y 4 tornillos.
 
 El sketch de los motores es `arduino/vibraciones_aves/`.
+
+## Ensamble 3D con las piezas reales
+
+`blender_ensamble.py` lee `piezas.json` (lo escribe `generar.py`: los mismos contornos que van a la cortadora),
+extruye cada pieza a 3 mm y la pone en su lugar. Teléfono, placas, motores, tornillos y cables van como referencia.
+
+```bash
+/Applications/Blender.app/Contents/MacOS/Blender --background --python blender_ensamble.py
+```
+
+Deja `ensamble.blend` (para abrir en Blender), `ensamble.glb` y `ensamble.html`, un visor en el navegador con
+«Separar» y casillas para ocultar tapas, asas y cables, más las vistas fijas:
+
+![Armado](render_armado_frente.jpg)
+![Despiece](render_despiece.jpg)
+![Mochila abierta](render_mochila_abierta.jpg)
+![Asa quitada: motores y tornillos en el lateral](render_asa_por_dentro.jpg)

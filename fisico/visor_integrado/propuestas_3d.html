@@ -50,9 +50,9 @@ renderer.setPixelRatio(Math.min(2, devicePixelRatio));
 view.appendChild(renderer.domElement);
 const scene = new THREE.Scene(); scene.background = new THREE.Color(0xf3e8cf);
 const camera = new THREE.PerspectiveCamera(35, 1, 1, 3000);
-camera.position.set(330, 260, 360);
+camera.position.set(430, 380, 470);
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
-controls.target.set(0, 70, 0); controls.update();
+controls.target.set(0, 45, -25); controls.update();
 scene.add(new THREE.HemisphereLight(0xffffff, 0x8a7a60, 0.9));
 const sun = new THREE.DirectionalLight(0xffffff, 0.6); sun.position.set(200, 400, 250); scene.add(sun);
 const grid = new THREE.GridHelper(600, 30, 0xb8a27a, 0xd8c69e); scene.add(grid);
@@ -90,6 +90,12 @@ function octa(r, depth, color, x, y, z, name, axis = 'z', opts = {}) {
   explodable.push(m); model.add(m); return m;
 }
 const V = (x, y, z) => new THREE.Vector3(x, y, z);
+// Cable: un tubo que pasa por los puntos dados (mm). No se separa con «Separar».
+function cable(pts, color, name, r = 1.6) {
+  const curve = new THREE.CatmullRomCurve3(pts.map(p => V(...p)), false, 'catmullrom', 0.15);
+  const m = new THREE.Mesh(new THREE.TubeGeometry(curve, 160, r, 8, false), new THREE.MeshLambertMaterial({ color }));
+  m.userData.name = name; m.userData.cable = true; model.add(m); return m;
+}
 
 // El visor de base (igual en las dos propuestas), con la careta octogonal y la ranura del teléfono
 function visor(yTop = VY, color = C.visor, phone = true) {
@@ -160,11 +166,34 @@ function propuestaB() {
     for (const dy of [18, 60]) cyl(1.7, 14, C.tornillo, s * (VX / 2 + 2), ay + dy, az, 'Tornillo M3 asa–lateral', 'x', { dir: V(s * 1.6, 0, 0) });
   }
   // mochila trasera: entre los aleros de los laterales (que la sujetan 8 mm), con la tapa de 4 tornillos atrás
-  const MZ = 70, mz = -VZ / 2 - MZ / 2;
+  const MZ = 70, mz = -VZ / 2 - MZ / 2, MOCH_W = VX - 2 * T;
   box(VX - 2 * T, VY, MZ, C.modulo, 0, 0, mz, 'Mochila de electrónica (detrás del teléfono)', { wall: true, dir: V(0, 0, -1.6) });
   box(70, 10, 55, C.leo, -28, T, mz, 'Arduino Leonardo (acostado en el piso, en su cuna)', { dir: V(0, 0.4, -2.2) });
   box(47, 11, 35, C.proto, 36, T, mz, 'Protoboard (pegada al piso)', { dir: V(0, 0.4, -2.2) });
   for (const s of [-1, 1]) for (const z of [10, -22]) box(4, 2, 6, 0x1b1611, s * (VX / 2 - 12), VY, z, 'Brida: los cables de los motores van por encima, junto al borde', { dir: V(0, 0.6, 0) });
+  // ---- cableado (lo que el plano resuelve con un agujero arriba de cada asa, bridas sobre la tapa y dos agujeros
+  // arriba de la mochila). Cada motor lleva 3 cables (señal, +5 V, tierra) hasta la protoboard.
+  const top = VY + 2, mx = -MOCH_W / 2, mzF = -VZ / 2;          // mzF: cara delantera de la mochila
+  const colores = [0xe0533d, 0xe59a2f, 0x3f7fd0, 0x2f9a5e];
+  let k = 0;
+  for (const s of [-1, 1]) {
+    const hx = s * (VX / 2 + AW - 21), hz = az - AD / 2 + 12;       // agujero de arriba del asa
+    const bx = s * (VX / 2 - 12);                                   // línea de bridas sobre la tapa
+    const holeX = s * (MOCH_W / 2 - 14), holeZ = mzF - 10;          // agujero de arriba de la mochila
+    for (const dz of [16, -16]) {
+      const mxm = s * (VX / 2 + 9), mzz = az + dz, c = colores[k++];
+      cable([[mxm, 52, mzz], [mxm - s * 4, 70, (mzz + hz) / 2], [hx, 80, hz], [hx, top + 4, hz], [(hx + bx) / 2, top + 3, hz - 4],
+        [bx + s * dz * 0.08, top + 2, hz - 20], [bx + s * dz * 0.08, top + 2, mzF + 20], [holeX, top + 3, holeZ + 6], [holeX, VY - 6, holeZ],
+        [holeX * 0.6, 40, mz + 5], [36 + s * 6, T + 12, mz + dz * 0.4]], c, `Cable del motor ${k}: asa → arriba del visor (bridas) → mochila → protoboard`);
+    }
+    for (const z of [hz - 12, (hz + mzF) / 2, mzF + 14]) box(5, 2.5, 3, 0x1b1611, bx, VY, z, 'Brida sobre la tapa', {});
+  }
+  // USB: del extremo del teléfono que sobresale (aquí a la derecha) al paso del costado de la mochila, y al Leonardo
+  cable([[86, 40, -VZ / 2 + 16], [96, 30, -VZ / 2 + 6], [92, 18, mzF - 12], [MOCH_W / 2 + 6, 16, mzF - 22], [MOCH_W / 2 - 10, 14, mzF - 22],
+    [8, T + 6, mz - 5]], 0x222222, 'Cable USB: teléfono → paso del costado de la mochila → Leonardo', 2.2);
+  // protoboard → Leonardo (pines 10, 8, 6, 4, 5 V y tierra)
+  for (let i = 0; i < 4; i++) cable([[30 + i * 3, T + 12, mz + 8], [14 + i * 2, 30, mz + 4], [-6 + i * 3, T + 11, mz - 6]], colores[i], 'Puente protoboard → pin del Leonardo', 0.9);
+
   return {
     title: 'B · Asas y mochila (elegida)',
     size: `${VX + 2 * AW} × ${VY} × ${VZ + MZ} mm (ancho con asas × alto × largo)`,
@@ -175,6 +204,7 @@ function propuestaB() {
         <li><b>Una mochila detrás del teléfono,</b> entre los aleros de los laterales, con el Leonardo acostado en su cuna y la protoboard en el piso. El USB del teléfono entra por un costado y el peso queda en el eje.</li><li><b>Cables de los motores:</b> salen por arriba de cada asa y van por encima del visor, sujetos con bridas, hasta la mochila.</li>
         <li><b>Asas y mochila se atornillan al visor</b> con M3 por agujeros nuevos en los laterales y en la trasera.</li>
       </ul>
+      <p><b>Cableado</b> (los tubos de color): cada motor tiene 3 cables. Salen por arriba del asa, cruzan el borde del visor, corren sobre la tapa sujetos con bridas y bajan a la mochila por sus agujeros de arriba. Desde cada motor hasta la protoboard son <b>entre 26 y 32 cm por cable</b> (12 cables en total), y la parte sobre la tapa queda <b>a la vista</b>. El USB del teléfono baja por el costado hasta la mochila.</p>
       <p><b>A favor:</b> la vibración llega directo a las palmas, porque las asas son lo único que se toca. Es más cómodo de sostener y se puede desarmar.</p>
       <p><b>En contra:</b> más piezas y un objeto más largo. Las asas no pueden pasar de la mitad del lateral, para no tapar la ranura.</p>`,
   };

@@ -252,6 +252,14 @@ for (nombre, W, H, cont, huecos, circ) in piezas:
         (ax, ay), (bx, by) = cont[i], cont[(i + 1) % len(cont)]
         assert math.hypot(bx - ax, by - ay) > 1e-3, f'{nombre}: tramo de largo cero'
 
+# ------------------------------------------------------------------ piezas para el modelo 3D (blender_ensamble.py)
+import json
+json.dump({'T': T, 'X': X, 'Y': Y, 'Z': Z, 'GAP': GAP, 'ALERO': ALERO, 'z_marco': z_marco, 'ASA': ASA, 'ASA_Z0': ASA_Z0, 'ASA_Y0': ASA_Y0,
+           'MOTOR': MOTOR, 'MOTOR_C': MOTOR_C, 'my': my, 'pil_c': pil_c, 'pil_y': pil_y, 'PILAR': PILAR, 'MOCH': MOCH, 'APOYO': APOYO,
+           'N_APOYO': N_APOYO, 'ap': ap, 'moch_tornillos': moch_tornillos,
+           'piezas': [{'nombre': n, 'W': W, 'H': H, 'contorno': c, 'huecos': h, 'circulos': ci} for (n, W, H, c, h, ci) in piezas]},
+          open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'piezas.json'), 'w'), ensure_ascii=False)
+
 # ------------------------------------------------------------------ reparto en planchas (estantes)
 def girar(p):
     nombre, W, H, cont, huecos, circ = p
