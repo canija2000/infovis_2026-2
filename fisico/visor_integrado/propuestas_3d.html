@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Visor integrado · propuestas</title>
+<style>
+  :root { --ink: #1b1611; --paper: #f3e8cf; --paper2: #e4d2aa; --mdf: #c9a46a; --mdf2: #8fb4d6; }
+  html, body { margin: 0; height: 100%; background: var(--paper); color: var(--ink); font: 14px/1.45 system-ui, sans-serif; }
+  header { padding: 12px 16px 6px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  header h1 { font-size: 17px; margin: 0 12px 0 0; }
+  button { font: inherit; padding: 6px 12px; border: 2px solid var(--ink); background: var(--paper); border-radius: 8px; cursor: pointer; box-shadow: 2px 2px 0 var(--ink); }
+  button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+  label { display: inline-flex; align-items: center; gap: 6px; }
+  #view { position: absolute; top: 96px; left: 0; right: 340px; bottom: 0; }
+  aside { position: absolute; top: 96px; right: 0; width: 340px; bottom: 0; overflow: auto; padding: 0 16px 16px; box-sizing: border-box; border-left: 2px solid var(--ink); background: var(--paper2); }
+  aside h2 { font-size: 16px; margin: 14px 0 4px; }
+  aside p, aside li { margin: 4px 0; }
+  aside ul { padding-left: 18px; }
+  .legend span { display: inline-block; width: 12px; height: 12px; border: 1px solid var(--ink); margin-right: 6px; vertical-align: -1px; }
+  #tip { position: absolute; pointer-events: none; background: var(--paper); border: 2px solid var(--ink); border-radius: 6px; padding: 2px 8px; display: none; }
+  @media (max-width: 760px) { #view { right: 0; bottom: 45%; } aside { top: 55%; width: 100%; border-left: 0; border-top: 2px solid var(--ink); } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Visor integrado · dos propuestas</h1>
+  <button id="bA" aria-pressed="true">A · Torre con almohadillas</button>
+  <button id="bB" aria-pressed="false">B · Asas y mochila</button>
+  <label><input type="checkbox" id="xray"> Paredes transparentes</label>
+  <label>Separar <input type="range" id="explode" min="0" max="1" step="0.01" value="0"></label>
+</header>
+<div id="view"></div>
+<div id="tip"></div>
+<aside id="info"></aside>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+// Medidas en mm. x = ancho (derecha +), y = alto, z = largo (careta/ojos en +z, teléfono hacia −z).
+// Visor actual (fisico/visor_laser): 120 × 90 × 122, MDF 3 mm, ranura lateral para el teléfono cerca de la trasera.
+// Componentes (módulo externo R1): Leonardo 70 × 55 × 10, protoboard 47 × 35 × 11, motores 23 × 21 × 5 (×4),
+// 40 mm libres sobre las placas para cables.
+const T = 3, VX = 140, VY = 90, VZ = 122; // 140: 10 mm más por lado que el visor actual, para ver el teléfono entero
+const C = { visor: 0xc9a46a, modulo: 0x8fb4d6, leo: 0x2f8f7a, proto: 0xf6f3ec, motor: 0xd9667a, phone: 0x2b2f36, tornillo: 0x555555, cable: 0x7a4fb5 };
+
+const view = document.getElementById('view');
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(2, devicePixelRatio));
+view.appendChild(renderer.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xf3e8cf);
+const camera = new THREE.PerspectiveCamera(35, 1, 1, 3000);
+camera.position.set(330, 260, 360);
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 70, 0); controls.update();
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8a7a60, 0.9));
+const sun = new THREE.DirectionalLight(0xffffff, 0.6); sun.position.set(200, 400, 250); scene.add(sun);
+const grid = new THREE.GridHelper(600, 30, 0xb8a27a, 0xd8c69e); scene.add(grid);
+
+let model = new THREE.Group(); scene.add(model);
+const walls = [], explodable = [];
+
+function box(w, h, d, color, x, y, z, name, opts = {}) {
+  const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), new THREE.MeshLambertMaterial({ color, transparent: true }));
+  m.position.set(x, y + h / 2, z); m.userData.name = name; m.userData.base = m.position.clone();
+  m.userData.dir = opts.dir || new THREE.Vector3(); m.userData.wall = !!opts.wall;
+  const e = new THREE.LineSegments(new THREE.EdgesGeometry(m.geometry), new THREE.LineBasicMaterial({ color: 0x1b1611 }));
+  m.add(e);
+  if (opts.wall) walls.push(m);
+  explodable.push(m); model.add(m);
+  return m;
+}
+function cyl(r, h, color, x, y, z, name, axis = 'y', opts = {}) {
+  const g = new THREE.CylinderGeometry(r, r, h, 20);
+  if (axis === 'x') g.rotateZ(Math.PI / 2); if (axis === 'z') g.rotateX(Math.PI / 2);
+  const m = new THREE.Mesh(g, new THREE.MeshLambertMaterial({ color }));
+  m.position.set(x, y, z); m.userData.name = name; m.userData.base = m.position.clone(); m.userData.dir = opts.dir || new THREE.Vector3();
+  explodable.push(m); model.add(m); return m;
+}
+// Octágono extruido (ojeras, almohadillas), en el plano perpendicular a `axis`
+function octa(r, depth, color, x, y, z, name, axis = 'z', opts = {}) {
+  const s = new THREE.Shape();
+  for (let i = 0; i < 8; i++) { const a = Math.PI / 8 + i * Math.PI / 4, px = Math.cos(a) * r, py = Math.sin(a) * r; i ? s.lineTo(px, py) : s.moveTo(px, py); }
+  const g = new THREE.ExtrudeGeometry(s, { depth, bevelEnabled: false }); g.translate(0, 0, -depth / 2);
+  if (axis === 'x') g.rotateY(Math.PI / 2);
+  const m = new THREE.Mesh(g, new THREE.MeshLambertMaterial({ color, transparent: true }));
+  m.position.set(x, y, z); m.userData.name = name; m.userData.base = m.position.clone(); m.userData.dir = opts.dir || new THREE.Vector3();
+  m.add(new THREE.LineSegments(new THREE.EdgesGeometry(g), new THREE.LineBasicMaterial({ color: 0x1b1611 })));
+  if (opts.wall) { m.userData.wall = true; walls.push(m); }
+  explodable.push(m); model.add(m); return m;
+}
+const V = (x, y, z) => new THREE.Vector3(x, y, z);
+
+// El visor de base (igual en las dos propuestas), con la careta octogonal y la ranura del teléfono
+function visor(yTop = VY, color = C.visor, phone = true) {
+  box(VX, T, VZ, color, 0, 0, 0, 'Visor · base', { wall: true, dir: V(0, -1, 0) });
+  box(T, yTop, VZ, color, -VX / 2 + T / 2, 0, 0, 'Visor · lado izquierdo', { wall: true, dir: V(-1, 0, 0) });
+  box(T, yTop, VZ, color, VX / 2 - T / 2, 0, 0, 'Visor · lado derecho', { wall: true, dir: V(1, 0, 0) });
+  box(VX, VY, T, color, 0, 0, VZ / 2 - T / 2, 'Visor · careta (ojos)', { wall: true, dir: V(0, 0, 1) });
+  box(VX, VY, T, color, 0, 0, -VZ / 2 + T / 2, 'Visor · trasera', { wall: true, dir: V(0, 0, -1) });
+  box(124, 60, 3, color, 0, 28, VZ / 2 + 1.5, 'Aro del antifaz: una sola ventana para los dos ojos', { dir: V(0, 0, 1) });
+  box(104, 40, 4, 0x1b1611, 0, 38, VZ / 2 + 1, 'Ventana del antifaz', { dir: V(0, 0, 1) });
+  if (phone) box(160, 75, 9, C.phone, 0, 7, -VZ / 2 + 12, 'Teléfono (entra por la ranura del costado)', { dir: V(0, 0, -0.3) });
+}
+function motor(x, y, z, side, name, inward = false) {
+  const m = box(5, 21, 23, C.motor, x, y - 10.5, z, name, { dir: V(side, 0, 0) });
+  cyl(1.7, 18, C.tornillo, x - side * 4, y + 6, z, 'Tornillo M3 del motor', 'x', { dir: V(side, 0, 0) });
+  return m;
+}
+
+// ---------------------------------------------------------------------- propuesta A
+// Una sola torre: el visor y la caja de electrónica comparten la placa del medio (la tapa del visor ES la base del
+// módulo) y los dos laterales son una sola pieza alta. Los motores se atornillan por fuera de los laterales, en las
+// zonas de agarre, bajo almohadillas octogonales que repiten las ojeras: las manos apoyan directo sobre ellos.
+function propuestaA() {
+  const H2 = 62, yTop = VY + H2;
+  visor(yTop);
+  box(VX, T, VZ, C.modulo, 0, VY - T, 0, 'Placa compartida: tapa del visor y base del módulo (con pasos de cable)', { wall: true, dir: V(0, 0.3, 0) });
+  box(VX, H2, T, C.modulo, 0, VY, VZ / 2 - T / 2, 'Módulo · frente', { wall: true, dir: V(0, 0, 1) });
+  box(VX, H2, T, C.modulo, 0, VY, -VZ / 2 + T / 2, 'Módulo · trasera', { wall: true, dir: V(0, 0, -1) });
+  box(VX, T, VZ, C.modulo, 0, yTop, 0, 'Tapa del módulo · 4 tornillos M3', { wall: true, dir: V(0, 1.4, 0) });
+  for (const [x, z] of [[-49, -49], [49, -49], [-49, 49], [49, 49]]) cyl(1.7, 20, C.tornillo, x, yTop - 6, z, 'Tornillo M3 de la tapa', 'y', { dir: V(0, 1.4, 0) });
+  box(80, T, 108, 0xe4d2aa, 0, VY, 0, 'Bandeja extraíble', { dir: V(0, 0.7, 0) });
+  box(70, 10, 55, C.leo, 0, VY + T, -22, 'Arduino Leonardo (USB hacia el lado del teléfono)', { dir: V(0, 0.8, 0) });
+  box(47, 11, 35, C.proto, 0, VY + T, 32, 'Protoboard', { dir: V(0, 0.8, 0) });
+  // motores: dos por lado, adelante (zonas 1 y 2) y atrás (zonas 3 y 4), en la altura de agarre
+  const zs = [32, -18], y = 50;
+  [[-1, zs[0], 'Motor 1 · zona 1 (adelante izquierda)'], [1, zs[0], 'Motor 2 · zona 2 (adelante derecha)'],
+   [-1, zs[1], 'Motor 3 · zona 3 (atrás izquierda)'], [1, zs[1], 'Motor 4 · zona 4 (atrás derecha)']].forEach(([s, z, n]) => {
+    motor(s * (VX / 2 + 2.5), y, z, s, n);
+    octa(19, 9, C.visor, s * (VX / 2 + 9), y, z, 'Almohadilla octogonal (tapa el motor, se atornilla)', 'x', { dir: V(s * 1.5, 0, 0) });
+  });
+  return {
+    title: 'A · Torre con almohadillas',
+    size: `${VX} × ${yTop + T} × ${VZ} mm (ancho × alto × largo)`,
+    text: `<p>Visor y módulo pensados como <b>una sola caja de dos pisos</b>. La tapa del visor es la base del módulo, y los laterales son una sola pieza alta: es más firme y ahorra una placa.</p>
+      <ul>
+        <li><b>Motores:</b> dos por lado, atornillados por fuera de los laterales, adelante y atrás. Cada uno queda bajo una almohadilla octogonal, como las ojeras, donde se apoya la mano.</li>
+        <li><b>Zonas:</b> adelante a la izquierda la zona 1 y a la derecha la 2; atrás, la 3 y la 4. La vibración cae bajo la mano que corresponde.</li>
+        <li><b>Cables:</b> suben por dentro del lateral hasta el piso de arriba, por dos pasos en la placa compartida.</li>
+        <li><b>Arriba:</b> la misma bandeja, la cuna del Leonardo y la tapa de 4 tornillos del módulo R1.</li>
+      </ul>
+      <p><b>A favor:</b> compacta y un solo objeto. Se corta en una o dos planchas de 335 × 365.</p>
+      <p><b>En contra:</b> pesa más arriba, porque el centro de gravedad queda alto. El cable USB del teléfono sube por fuera hasta el piso de arriba.</p>`,
+  };
+}
+
+// ---------------------------------------------------------------------- propuesta B
+// El visor queda bajo y se le suman dos asas laterales, adelante (lejos de la ranura del teléfono), donde se toma
+// con las manos; cada asa guarda dos motores atornillados a su cara interior. La electrónica va en una «mochila»
+// detrás del teléfono, en el eje: el peso queda cerca de la cara y el USB del teléfono llega corto.
+function propuestaB() {
+  visor(VY);
+  box(VX, T, VZ, C.visor, 0, VY - T, 0, 'Visor · tapa', { wall: true, dir: V(0, 1, 0) });
+  const AW = 24, AH = 78, AD = 64, az = VZ / 2 - 8 - AD / 2, ay = 6;
+  for (const s of [-1, 1]) {
+    const x0 = s * (VX / 2 + AW / 2);
+    box(AW, AH, AD, C.modulo, x0, ay, az, `Asa ${s < 0 ? 'izquierda' : 'derecha'} (caja de agarre, se atornilla al lateral)`, { wall: true, dir: V(s * 1.6, 0, 0) });
+    for (const [dz, k] of [[16, s < 0 ? 1 : 2], [-16, s < 0 ? 3 : 4]]) {
+      motor(x0 + s * (AW / 2 - 5.5), ay + AH / 2 + 10, az + dz, s, `Motor ${k} · zona ${k} (${dz > 0 ? 'adelante' : 'atrás'} ${s < 0 ? 'izquierda' : 'derecha'})`);
+    }
+    for (const dy of [18, 60]) cyl(1.7, 14, C.tornillo, s * (VX / 2 + 2), ay + dy, az, 'Tornillo M3 asa–lateral', 'x', { dir: V(s * 1.6, 0, 0) });
+  }
+  // mochila trasera: entre los aleros de los laterales (que la sujetan 8 mm), con la tapa de 4 tornillos atrás
+  const MZ = 60, mz = -VZ / 2 - MZ / 2;
+  box(VX - 2 * T, VY, MZ, C.modulo, 0, 0, mz, 'Mochila de electrónica (detrás del teléfono)', { wall: true, dir: V(0, 0, -1.6) });
+  box(70, 10, 55, C.leo, -28, T, mz, 'Arduino Leonardo (acostado en el piso, en su cuna)', { dir: V(0, 0.4, -2.2) });
+  box(47, 11, 35, C.proto, 36, T, mz, 'Protoboard (pegada al piso)', { dir: V(0, 0.4, -2.2) });
+  for (const s of [-1, 1]) for (const z of [10, -22]) box(4, 2, 6, 0x1b1611, s * (VX / 2 - 12), VY, z, 'Brida: los cables de los motores van por encima, junto al borde', { dir: V(0, 0.6, 0) });
+  return {
+    title: 'B · Asas y mochila (elegida)',
+    size: `${VX + 2 * AW} × ${VY} × ${VZ + MZ} mm (ancho con asas × alto × largo)`,
+    text: `<p>El visor queda bajo, como ahora, y se le suman piezas diseñadas para él.</p>
+      <ul>
+        <li><b>Dos asas laterales,</b> adelante, donde se toma con las manos y lejos de la ranura del teléfono. Cada asa guarda dos motores, adelante y atrás, atornillados a su cara exterior.</li>
+        <li><b>Zonas:</b> la misma correspondencia de 1 a 4 entre adelante y atrás, izquierda y derecha.</li>
+        <li><b>Una mochila detrás del teléfono,</b> entre los aleros de los laterales, con el Leonardo acostado en su cuna y la protoboard en el piso. El USB del teléfono entra por un costado y el peso queda en el eje.</li><li><b>Cables de los motores:</b> salen por arriba de cada asa y van por encima del visor, sujetos con bridas, hasta la mochila.</li>
+        <li><b>Asas y mochila se atornillan al visor</b> con M3 por agujeros nuevos en los laterales y en la trasera.</li>
+      </ul>
+      <p><b>A favor:</b> la vibración llega directo a las palmas, porque las asas son lo único que se toca. Es más cómodo de sostener y se puede desarmar.</p>
+      <p><b>En contra:</b> más piezas y un objeto más largo. Las asas no pueden pasar de la mitad del lateral, para no tapar la ranura.</p>`,
+  };
+}
+
+let current = 'A';
+function build() {
+  scene.remove(model); model = new THREE.Group(); scene.add(model);
+  walls.length = 0; explodable.length = 0;
+  const info = current === 'A' ? propuestaA() : propuestaB();
+  document.getElementById('info').innerHTML = `<h2>${info.title}</h2><p><b>Medida total:</b> ${info.size}</p>${info.text}
+    <h2>Colores</h2><p class="legend">
+      <span style="background:#c9a46a"></span>MDF del visor<br><span style="background:#8fb4d6"></span>MDF nuevo (módulo, asas)<br>
+      <span style="background:#2f8f7a"></span>Leonardo · <span style="background:#f6f3ec"></span>protoboard<br>
+      <span style="background:#d9667a"></span>motor de vibración 23 × 21 × 5 · <span style="background:#555"></span>tornillo M3<br>
+      <span style="background:#2b2f36"></span>teléfono</p>
+    <p style="font-size:12px">Arrastrar para girar · rueda para acercar · pasar el cursor sobre una pieza para ver su nombre. Es un esquema: los encajes y agujeros reales salen en el plano de corte de la propuesta elegida.</p>`;
+  for (const b of ['A', 'B']) document.getElementById('b' + b).setAttribute('aria-pressed', b === current);
+  applyView();
+}
+function applyView() {
+  const k = +document.getElementById('explode').value, xr = document.getElementById('xray').checked;
+  for (const m of explodable) m.position.copy(m.userData.base).addScaledVector(m.userData.dir, k * 60);
+  for (const m of walls) { m.material.opacity = xr ? 0.22 : 1; m.material.depthWrite = !xr; }
+}
+document.getElementById('bA').onclick = () => { current = 'A'; build(); };
+document.getElementById('bB').onclick = () => { current = 'B'; build(); };
+document.getElementById('explode').oninput = applyView;
+document.getElementById('xray').onchange = applyView;
+
+const ray = new THREE.Raycaster(), mouse = new THREE.Vector2(), tip = document.getElementById('tip');
+renderer.domElement.addEventListener('pointermove', e => {
+  const r = renderer.domElement.getBoundingClientRect();
+  mouse.set((e.clientX - r.left) / r.width * 2 - 1, -(e.clientY - r.top) / r.height * 2 + 1);
+  ray.setFromCamera(mouse, camera);
+  const hit = ray.intersectObjects(model.children, false).find(h => h.object.userData.name && h.object.material.opacity > 0.5) || ray.intersectObjects(model.children, false)[0];
+  if (hit && hit.object.userData.name) { tip.style.display = 'block'; tip.textContent = hit.object.userData.name; tip.style.left = e.clientX + 12 + 'px'; tip.style.top = e.clientY + 12 + 'px'; }
+  else tip.style.display = 'none';
+});
+function resize() { const w = view.clientWidth, h = view.clientHeight; renderer.setSize(w, h); camera.aspect = w / h; camera.updateProjectionMatrix(); }
+addEventListener('resize', resize); resize();
+build();
+(function loop() { requestAnimationFrame(loop); renderer.render(scene, camera); })();
+</script>
+</body>
+</html>
