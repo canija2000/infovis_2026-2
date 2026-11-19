@@ -523,10 +523,28 @@ function midiNote(channel, note, velocity, delaySecs = 0) {
   }, delaySecs * 1000);
 }
 const MIDI_CH = { residente: 2, verano: 3, invierno: 4 };
+// Nivel continuo de cada zona (control change 20–23): sube con las aves posadas y, sobre todo, con las que vuelan
+// ahí. Se manda ~8 veces por segundo; si deja de llegar, el Arduino apaga los motores solo.
+const ZONE_LEVEL = { base: 8, posada: 0.8, volando: 7 }; // nivel 0–127: un zumbido suave por las posadas, fuerte por las que vuelan
+let levelT = 0;
+function sendLevels(dt) {
+  if (!midi.out || (levelT -= dt) > 0) return;
+  levelT = 0.12;
+  const lv = [0, 0, 0, 0], any = [0, 0, 0, 0];
+  if (S.mode === 'look') for (const f of S.board.flocks.values()) {
+    const i = S.board.zones.indexOf(f.zone);
+    if (i < 0 || i > 3) continue;
+    for (const b of f.birds) {
+      if (b.state === 'wait') continue;
+      lv[i] += b.state === 'fly' || b.state === 'soar' ? ZONE_LEVEL.volando : ZONE_LEVEL.posada; any[i] = 1;
+    }
+  }
+  try { lv.forEach((v, i) => midi.out.send([0xB0 | 1, 20 + i, any[i] ? Math.min(127, Math.round(ZONE_LEVEL.base + v)) : 0])); } catch { /* se desconectó */ }
+}
 function vibrate(ev) {
   const i = S.board.zones.indexOf(ev.f.zone);
   if (i < 0 || i > 3) return;
-  const vel = Math.round(32 + 80 * Math.min(1, ev.f.peak));
+  const vel = Math.round(70 + 57 * Math.min(1, ev.f.peak)); // fuerte: estos pulsos marcan el evento
   // al llegar vibra cuando la bandada se posa (~4 s de vuelo); al irse, cuando despega
   if (ev.type === 'llega') midiNote(MIDI_CH[ev.f.clase], 80 + (1 << i), vel, ev.delay + 4);
   else midiNote(MIDI_CH[ev.f.clase], 96 + (1 << i), vel, ev.delay + 0.3);
@@ -573,13 +591,14 @@ function updateBar(mi, p, shown = 0) {
 const _look = new THREE.Vector3();
 function frameInmersiva(dt, now) {
   const B = S.board, { month, progress: p, events, shown } = B.update(dt, camera.position);
-  if (month !== S.month) { S.month = month; seasonLight(month); if (S.mode === 'look') midiNote(2, 79, 48); }
+  if (month !== S.month) { S.month = month; seasonLight(month); if (S.mode === 'look') midiNote(2, 79, 127); }
   for (const ev of events) {
     if (S.mode !== 'look') continue;
     vibrate(ev);
     if (ev.type === 'llega') setTimeout(() => singBird(ev.f.birds[0], true), (ev.delay + 4.2) * 1000); // canta al posarse
   }
   chorus(dt);
+  sendLevels(dt);
   updateBar(month, p, shown);
   // Mirar hacia abajo acerca la torre al terreno (zoom), hacia donde se mira.
   const zk = clamp((-S.pitch - 0.35) / 0.75, 0, 1), z = zk * zk * (3 - 2 * zk);

@@ -32,19 +32,22 @@ Al elegir la zona, el interruptor de arriba elige la vista:
 
 `arduino/vibraciones_aves/` (Arduino Leonardo, librería MIDIUSB): 4 motores de vibración en los pines 10, 8, 6 y 4,
 uno bajo cada zona de la maqueta, en el orden en que el Mirador las dibuja (1 arriba a la izquierda, 2 arriba a la
-derecha, 3 abajo a la izquierda, 4 abajo a la derecha). El Mirador le manda notas MIDI por USB (Web MIDI):
+derecha, 3 abajo a la izquierda, 4 abajo a la derecha). El Mirador le manda MIDI por USB (Web MIDI):
 
-| Nota | Qué pasa |
+| Mensaje | Qué pasa |
 | --- | --- |
-| 80 + máscara (81–95) | una bandada se posa en esa zona |
-| 96 + máscara (97–111) | una bandada despega de esa zona (el pulso se apaga de a poco) |
-| 79 | empieza un mes: un toque corto en los 4 motores |
+| control change 20–23 (motor 1–4), valor 0–127 | nivel continuo de la zona, ~8 veces por segundo: un zumbido suave por las aves posadas y más fuerte por cada ave que vuela ahí |
+| nota 80 + máscara (81–95) | una bandada se posa en esa zona: pulso fuerte encima del nivel |
+| nota 96 + máscara (97–111) | una bandada despega: el pulso se apaga de a poco |
+| nota 79 | empieza un mes: tres golpes fuertes en los 4 motores |
 
-El canal es la clase y define el ritmo: 2 residente (un pulso corto), 3 verano (tres pulsos rápidos), 4 invierno
-(un pulso largo que crece y baja). La velocidad es la intensidad, según cuántos días del mes se registró la
-especie. El canal 1 queda como en la prueba (`arduino/vibraciones_prueba/`). Se conecta al tocar «Ver el año»;
-el estado aparece en los ajustes. Web MIDI funciona en Chrome de computador o de Android con cable OTG; Safari de
-iPhone no lo tiene.
+El canal de las notas es la clase y define el ritmo: 2 residente (un pulso), 3 verano (tres pulsos rápidos), 4
+invierno (pulso largo que crece y baja). Los motores no giran bajo ~40 % de potencia, así que todo nivel mayor que
+0 parte en 45 %, y cada arranque lleva un golpe a plena potencia. Si dejan de llegar niveles (se cerró la página),
+el Arduino apaga los motores a los 1,5 s. Cuánto aporta cada ave está en `ZONE_LEVEL` (`js/mirador.js`). El canal
+1 queda como en la prueba (`arduino/vibraciones_prueba/`). Se conecta al tocar «Ver el año»; el estado aparece en
+los ajustes. Hace falta un navegador con Web MIDI: Chrome de computador o de Android con cable OTG, o un navegador
+MIDI en el teléfono (Safari de iPhone no tiene).
 
 ### Datos de las bandadas y del servo
 
