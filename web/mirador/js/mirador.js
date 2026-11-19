@@ -16,7 +16,7 @@ import { loadWorld, loadRegion, loadJSON, DATA_BASE, CLASS_LABEL, featuredIn, pr
 import { buildScene } from './scene.js';
 import { loadKit } from './kit.js';
 import { BirdAgent } from './aviary.js';
-import { unlockAudio, loadClip, playAt, playSynth, setListener, setAmbience, duckAmbience, blip } from './audio.js';
+import { audioReady, unlockAudio, loadClip, playAt, playSynth, setListener, setAmbience, duckAmbience, blip } from './audio.js';
 import { buildBoard, YEAR_SECS, MONTH_SECS } from './inmersiva.js';
 import { progress, markSeen, rememberRegion, scorePhoto, starText, savePhoto } from './photo.js';
 
@@ -232,7 +232,11 @@ function go() { // entrar al mundo; el rumbo actual del teléfono pasa a ser el 
   S.heading = S.startHeading; S.pitch = gyro.have ? gyro.p : -0.2;
   if (gyro.have) gyro.off = S.heading - gyro.h;
   blip(990, 0.08);
-  if (S.board) { S.board.reset(); S.month = -1; return; } // sin aviso: la barra de arriba dice todo
+  if (S.board) { // sin aviso: la barra de arriba dice todo
+    S.board.reset(); S.month = -1; chorusT = 1;
+    for (const f of S.board.flocks.values()) if (f.sp.clip) loadClip(f.sp.clip.grain); // cantos listos antes de que suenen
+    return;
+  }
   toast(`<b>${S.reg.terrain.scenes[S.sceneKey].name}</b><br>` + (S.walk
     ? 'Camina en el lugar para avanzar hacia donde miras. Mantén un ave en la mira para conocerla y fotografiarla.'
     : 'Gira para buscar aves. Mantén una en la mira para conocerla y fotografiarla.') + '<br>Mira un letrero para viajar a otro lugar.', 7);
@@ -528,13 +532,33 @@ function vibrate(ev) {
   else midiNote(MIDI_CH[ev.f.clase], 96 + (1 << i), vel, ev.delay + 0.3);
 }
 
-// Sonido de cada bandada: las de verano agudas, las de invierno graves; al llegar la nota sube y al irse baja,
-// y suena una nota por ave de la bandada (más grande, más larga).
-function flockSound(ev) {
-  if (S.mode !== 'look' || ev.f.clase === 'residente') return;
-  const f0 = ev.f.clase === 'verano' ? 880 : 330, n = Math.min(4, ev.f.n + 1), up = ev.type === 'llega';
-  for (let i = 0; i < n; i++) setTimeout(() => blip(f0 * (up ? 1 + i * 0.12 : 1.4 - i * 0.12), 0.05), (ev.delay + 0.3 + i * 0.09) * 1000);
+// ------------------------------------------------------------------ coro de la maqueta
+// Cantan las aves posadas, cada una con su canto real (Xeno-canto; si no hay, uno sintético). El coro es más
+// denso cuando hay más especies presentes ese mes, y cada bandada canta al posarse: se oye llegar el verano.
+let chorusT = 1.5, singing = 0;
+const _sp = new THREE.Vector3();
+async function singBird(b, full = false) {
+  if (!b || b.leaving || b.state === 'wait' || singing >= 3) return;
+  singing++;
+  const pos = b.m.group.getWorldPosition(_sp).clone(), ref = S.board.radius * 0.6, clip = b.sp.clip;
+  let dur = 0;
+  if (clip) {
+    const buf = await loadClip(full ? clip.src : (Math.random() < 0.75 ? clip.grain : clip.src));
+    if (buf && S.board) { dur = Math.min(full ? 10 : 6, buf.duration); b.sing(dur); playAt(buf, pos, 1, ref); }
+  }
+  if (!dur && S.board) { dur = playSynth(pos, b.sp.id, ref) || 1.5; b.sing(dur); }
+  setTimeout(() => singing--, Math.max(1, dur) * 1000);
 }
+function chorus(dt) {
+  if (S.mode !== 'look' || !audioReady() || (chorusT -= dt) > 0) return;
+  const m = S.board.months[Math.max(0, S.month)], density = clamp(m.presentes / 110, 0.35, 1.5);
+  chorusT = (1.4 + Math.random() * 2.4) / density;
+  const pool = [...S.board.flocks.values()].flatMap(f => f.birds.filter(b => !b.leaving && (b.state === 'idle' || b.state === 'peck' || b.state === 'hover')).map(b => [b, f.peak]));
+  let r = Math.random() * pool.reduce((a, [, w]) => a + w, 0);
+  const pick = pool.find(([, w]) => (r -= w) <= 0);
+  if (pick) singBird(pick[0]);
+}
+
 // La barra de arriba, en una línea: [región | año | E F M A M J J A S O N D | residentes | verano | invierno | total | en vista],
 // con una segunda fila chica que nombra los números.
 function updateBar(mi, p, shown = 0) {
@@ -549,8 +573,13 @@ function updateBar(mi, p, shown = 0) {
 const _look = new THREE.Vector3();
 function frameInmersiva(dt, now) {
   const B = S.board, { month, progress: p, events, shown } = B.update(dt, camera.position);
-  if (month !== S.month) { S.month = month; seasonLight(month); if (S.mode === 'look') { blip(month === 0 ? 990 : 520, 0.05); midiNote(2, 79, 48); } }
-  for (const ev of events) { flockSound(ev); if (S.mode === 'look') vibrate(ev); }
+  if (month !== S.month) { S.month = month; seasonLight(month); if (S.mode === 'look') midiNote(2, 79, 48); }
+  for (const ev of events) {
+    if (S.mode !== 'look') continue;
+    vibrate(ev);
+    if (ev.type === 'llega') setTimeout(() => singBird(ev.f.birds[0], true), (ev.delay + 4.2) * 1000); // canta al posarse
+  }
+  chorus(dt);
   updateBar(month, p, shown);
   // Mirar hacia abajo acerca la torre al terreno (zoom), hacia donde se mira.
   const zk = clamp((-S.pitch - 0.35) / 0.75, 0, 1), z = zk * zk * (3 - 2 * zk);
@@ -558,7 +587,8 @@ function frameInmersiva(dt, now) {
   const c = _look.set(B.center.x + Math.sin(h) * ahead, B.center.y, B.center.z - Math.cos(h) * ahead);
   camera.position.set(c.x - Math.sin(h) * d, c.y + up, c.z + Math.cos(h) * d);
   // Mirar hacia arriba levanta la vista hacia el horizonte: la cordillera o el mar alrededor.
-  const uk = clamp((S.pitch + 0.05) / 0.5, 0, 1), e0 = Math.atan2(-up, d), e = e0 + (0.14 - e0) * uk * uk * (3 - 2 * uk);
+  // de frente la vista baja un poco menos que hacia el centro: así entra el horizonte (cordillera o mar) arriba
+  const uk = clamp((S.pitch + 0.05) / 0.5, 0, 1), e0 = Math.atan2(-up, d) * (0.68 + 0.32 * z), e = e0 + (0.14 - e0) * uk * uk * (3 - 2 * uk);
   camera.lookAt(camera.position.x + Math.sin(h) * Math.cos(e), camera.position.y + Math.sin(e), camera.position.z - Math.cos(h) * Math.cos(e)); camera.fov = CFG.fovWide; camera.far = 3000; camera.updateProjectionMatrix(); camera.updateMatrixWorld();
   shared.uLightDir.value.set(0.45, 1, 0.35).normalize().transformDirection(camera.matrixWorldInverse);
   setListener(camera.position, camera.getWorldDirection(new THREE.Vector3()));
