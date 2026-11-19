@@ -36,10 +36,13 @@ derecha, 3 abajo a la izquierda, 4 abajo a la derecha). El Mirador le manda MIDI
 
 | Mensaje | Qué pasa |
 | --- | --- |
-| control change 20–23 (motor 1–4), valor 0–127 | nivel continuo de la zona, ~8 veces por segundo: un zumbido suave por las aves posadas y más fuerte por cada ave que vuela ahí |
-| nota 80 + máscara (81–95) | una bandada se posa en esa zona: pulso fuerte encima del nivel |
-| nota 96 + máscara (97–111) | una bandada despega: el pulso se apaga de a poco |
-| nota 79 | empieza un mes: tres golpes fuertes en los 4 motores |
+| control change 20–23 (motor 1–4), valor 0–127 | mientras una oleada migratoria vuela sobre una zona, su motor vibra (más fuerte con más aves): la vibración viaja con la bandada desde el borde por donde entra hasta donde se posa, o al revés cuando se va |
+| nota 80 + máscara (81–95) | un ave pasa volando junto a la torre: un pulso corto en el motor de su zona |
+
+Las aves posadas y el cambio de mes ya no vibran: con todo vibrando se perdía el dato. Las llegadas y salidas salen en
+oleadas por clase (verano desde el norte al comienzo del mes, invierno desde el sur un poco después; las salidas a
+mitad de mes), para que se note la migración como un movimiento. El sketch sigue aceptando las notas 96–111 y 79
+(bandada que despega, cambio de mes), aunque el Mirador ya no las manda.
 
 El canal de las notas es la clase y define el ritmo: 2 residente (un pulso), 3 verano (tres pulsos rápidos), 4
 invierno (pulso largo que crece y baja). Los motores no giran bajo ~40 % de potencia, así que todo nivel mayor que

@@ -20,7 +20,9 @@ const BOARD_DENSITY = 0.4; // menos vegetación que en Explorar: desde la torre 
 // Aves exageradas (a su escala no se verían desde la torre), pero sin perder la proporción: el largo final crece
 // más lento que el real, así una gaviota sigue siendo más grande que un chincol sin volverse un gigante.
 const BIRD_LEN = 2.1, BIRD_LEN_REF = 0.3, BIRD_LEN_POW = 0.35; // m que mide un ave de 0,3 m · cuánto se comprime
-const FLYBY_EVERY = [2.5, 5]; // s entre pasadas de un ave cerca de la torre
+const FLYBY_EVERY = [2.5, 5];
+// s desde el comienzo del mes en que sale cada oleada migratoria (mes de 6 s)
+const WAVE = { llega: { verano: 0.3, residente: 0.9, invierno: 1.5 }, seVa: { verano: 3.2, residente: 3.6, invierno: 4.0 } }; // s entre pasadas de un ave cerca de la torre
 const PER_SPECIES = { residente: 1, verano: 2, invierno: 2 }; // aves por especie si se registró todos los días
 const MAX_BIRDS = 110; // tope de aves en escena (rendimiento en el teléfono)
 const INK = new THREE.Color(0x1b1611);
@@ -272,14 +274,14 @@ class FlockBird extends BirdAgent {
   arriveFrom(side) {
     const dest = this.choosePlace(), h = this.scene.half;
     this.pos.set((Math.random() - 0.5) * h * 1.6, dest.y + 16 + Math.random() * 8, side * h * 2.2);
-    this.leaving = false; this.gone = false;
-    this.fly(dest, 3.2 + Math.random() * 1.6);
+    this.leaving = false; this.gone = false; this.migrating = true; // migrando hasta que se posa
+    this.fly(dest, 3.6 + Math.random() * 0.8);
   }
   leaveTo(side) {
     if (this.leaving) return;
-    this.leaving = true; this.perch = null; this.swimming = false;
+    this.leaving = true; this.perch = null; this.swimming = false; this.migrating = true;
     const h = this.scene.half;
-    this.fly(new THREE.Vector3(this.pos.x + (Math.random() - 0.5) * 20, this.pos.y + 18, side * h * 2.4), 3.5 + Math.random());
+    this.fly(new THREE.Vector3(this.pos.x + (Math.random() - 0.5) * 20, this.pos.y + 18, side * h * 2.4), 3.8 + Math.random() * 0.6);
   }
   // pasar volando cerca de la torre (p, en coordenadas de su zona) y volver a posarse
   flyby(p) {
@@ -288,6 +290,7 @@ class FlockBird extends BirdAgent {
     this.fly(p, 2.4 + Math.random() * 0.8);
   }
   setState(s, dur) {
+    if (s !== 'fly' && !this.leaving) this.migrating = false; // ya se posó
     if (s === 'idle' && this.afterFly === 'back' && !this.leaving) { this.afterFly = null; return this.fly(this.choosePlace(), 2.6 + Math.random()); }
     return super.setState(s, dur);
   }
@@ -454,6 +457,7 @@ export function buildBoard({ index, reg, props, bandadas }) {
   }
 
   let month = -1, t = 0, acc = 0, nextFly = 3;
+  let flybyEvents = [];
   const _c = new THREE.Vector3();
   function setMonth(mi, instant) {
     month = mi;
@@ -462,16 +466,18 @@ export function buildBoard({ index, reg, props, bandadas }) {
     for (const f of flocks.values()) {
       const here = now.has(f.sp.id), active = f.birds.filter(b => !b.leaving);
       if (here && !active.length) {
-        const delay = instant ? 0 : (f.sp.id % 11) / 11 * MONTH_SECS * 0.5; // no llegan todas juntas
+        // Oleadas: todas las que llegan de la misma clase salen juntas desde su borde (verano desde el norte al
+        // comienzo del mes, invierno desde el sur un poco después), así se ve la migración como un movimiento.
+        const delay = instant ? 0 : WAVE.llega[f.clase] + Math.random() * 0.35;
         for (let i = 0; i < f.n; i++) {
           const b = spawn(f); f.birds.push(b);
           if (instant) { const p = b.choosePlace(); b.pos.copy(p); b.setState('idle', Math.random() * 2); b.pose(p.y); }
-          else { b.pos.set(0, -999, 0); b.setState('wait', 99); b.pose(-999); b.wake = delay + i * 0.25; }
+          else { b.pos.set(0, -999, 0); b.setState('wait', 99); b.pose(-999); b.wake = delay + i * 0.12; }
         }
         if (!instant) events.push({ type: 'llega', f, delay });
       } else if (!here && active.length) {
-        const delay = (f.sp.id % 7) / 7 * MONTH_SECS * 0.4;
-        for (const b of active) b.leaveAt = delay + Math.random() * 0.6;
+        const delay = WAVE.seVa[f.clase] + Math.random() * 0.35;
+        for (const b of active) b.leaveAt = delay + Math.random() * 0.25;
         events.push({ type: 'se va', f, delay });
       }
     }
@@ -482,6 +488,7 @@ export function buildBoard({ index, reg, props, bandadas }) {
     t = (t + dt) % YEAR_SECS;
     const mi = Math.floor(t / MONTH_SECS);
     const events = mi !== month ? setMonth(mi, false) : [];
+    flybyEvents = [];
     for (const f of flocks.values()) for (const b of f.birds) {
       if (b.wake != null && (b.wake -= dt) <= 0) { b.wake = null; b.arriveFrom(f.side); }
       if (b.leaveAt != null && (b.leaveAt -= dt) <= 0) { b.leaveAt = null; b.leaveTo(f.side); }
@@ -496,6 +503,8 @@ export function buildBoard({ index, reg, props, bandadas }) {
         _c.copy(cam).lerp(center, 0.08 + Math.random() * 0.08); // a unos 15–25 m de la torre, delante de la vista
         _c.x += (Math.random() - 0.5) * radius * 0.25; _c.y -= radius * 0.05;
         b.flyby(_c.sub(z.g.position).clone());
+        const fl = [...flocks.values()].find(f => f.birds.includes(b));
+        if (fl) flybyEvents.push({ type: 'cerca', f: fl, delay: 2 }); // pasa junto a la torre ~2 s después
       }
     }
     acc += dt; // aves a 15 Hz, como en el Aviario
@@ -511,7 +520,21 @@ export function buildBoard({ index, reg, props, bandadas }) {
       f.birds = f.birds.filter(b => !b.gone);
     }
     const shown = region.months[mi].especies.reduce((acc, e) => acc + (flocks.has(e.id) ? 1 : 0), 0);
-    return { month: mi, progress: t / YEAR_SECS, events, shown };
+    return { month: mi, progress: t / YEAR_SECS, events: events.concat(flybyEvents), shown, migrants: migrants() };
+  }
+
+  // Cuántas aves migrando (llegando o yéndose) vuelan sobre cada zona ahora: la vibración sigue a la bandada
+  // por el tablero, de la zona de entrada a la de destino.
+  const _w = new THREE.Vector3();
+  function migrants() {
+    const n = zones.map(() => 0), h = WORLD / 2;
+    for (const f of flocks.values()) for (const b of f.birds) {
+      if (!b.migrating || b.state !== 'fly') continue;
+      b.m.group.getWorldPosition(_w);
+      const i = zones.findIndex(z => Math.abs(_w.x - z.g.position.x) <= h && Math.abs(_w.z - z.g.position.z) <= h);
+      if (i >= 0) n[i]++;
+    }
+    return n;
   }
 
   function reset() { // el año empieza con las de enero ya posadas
