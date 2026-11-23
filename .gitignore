@@ -46,3 +46,6 @@ node_modules/
 test-results/
 _site/
 .pages-build-*/
+
+# configuración local de vistas previas (rutas de cada computador)
+.claude/launch.json
