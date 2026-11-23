@@ -2,7 +2,7 @@
 
 **Proyecto de Visualización de Información · IIC2026 (2026-2)**
 
-> **Borrador (14 de noviembre de 2026, con la R2 del 12 de noviembre incorporada).** Sigue la estructura de `entrega_1.md` y el orden de la
+> **Borrador (23 de noviembre de 2026, con la R3 del 19 de noviembre y la V4 incorporadas).** Sigue la estructura de `entrega_1.md` y el orden de la
 > [pauta](https://infovis.alessiobellino.com/e2). Lo que está entre _\[corchetes\]_ falta: son datos que solo
 > tiene el grupo (revisiones, fotos, videos) o trabajo que aún no ocurre. La lista de pendientes está al
 > final. Borrar esta nota antes de exportar el PDF.
@@ -12,7 +12,7 @@
 ## 1. Portada
 
 - **Título del proyecto:** Mirador · binoculares para escuchar y coleccionar las aves de Chile
-- **Grupo:** _\[Número de grupo\]_
+- **Grupo:** 17
 - **Integrantes:**
   - Joaquín Andrés Bächler Díaz (`@canija2000`)
   - Matías Valentín Morales Apablaza
@@ -30,23 +30,22 @@
 
 En la Entrega 1 el mensaje era que Chile tiene dos avifaunas, las **sedentarias** y las **nómadas**, y que el
 pulso migratorio transforma a la vez la composición y el paisaje sonoro del país. Ese mensaje se leía en una
-pantalla, desde afuera. La fisicalización lo convierte en una experiencia en primera persona: quien visita
-toma unos **binoculares de madera**, elige una región con un código QR y una de sus zonas, y queda de pie en
-ese lugar. Gira el cuerpo para buscar aves; cuando una queda en la mira, **canta** y dice quién es: residente,
-visitante de verano o visitante de invierno. El año avanza mes a mes y las aves llegan y se van: lo que en la
-portada era una curva, aquí es un lugar que se vacía o se llena alrededor de uno. El gesto físico (levantar
-los binoculares, girar, sostener la mirada) es el mismo de quien sale a observar aves, y de ese gesto vienen
-los datos.
+pantalla, desde afuera. La fisicalización lo convierte en una experiencia en primera persona: quien visita mira
+por un **visor de madera** con el teléfono adentro y queda de pie en una torre, al centro de una región hecha
+maqueta. En 72 segundos pasa el año 2024: las bandadas de verano llegan desde el norte y las de invierno desde el
+sur, se posan en la zona de su hábitat, cantan con su voz real y se van. Al girar el visor se recorre la región, y
+en las manos vibra la zona por donde pasa cada migración. Lo que en la portada de la Entrega 1 era una curva,
+aquí es un lugar que se llena y se vacía alrededor de uno, y que se oye y se siente.
 
 ### Procesamiento de los datos
 
-Se usan los mismos registros de la Entrega 1 (GBIF, 91–98 % de eBird), pero de **un solo año, 2024**, para
-que cada mes sea un hecho y no un promedio. De cada región se toman las 30 especies con más días con registro
-por mes (`years['2024'][m].cast`), y de ellas las destacadas de cada zona (4 a 9 por zona, 5 regiones, 19
-zonas). La clase de cada especie (residente, estival, invernal) es la calculada en la Entrega 1 con el año
-típico 2017–2024 corregido por esfuerzo. Cada ave tiene un lugar fijo en la zona todo el año; si ese mes no
-se registra, su lugar queda vacío. El terreno de cada zona viene de AWS Terrain Tiles, ESA WorldCover y
-OpenStreetMap; los cantos, de Xeno-canto.
+Se usan los registros de la Entrega 1 (GBIF, 91–98 % de eBird), pero solo de **2024**, para que cada mes sea un
+hecho y no un promedio. Por región y mes se toman las especies registradas al menos 3 días de ese mes; su clase
+(residente, visitante de verano o de invierno) es la del año típico 2017–2024 de la Entrega 1. Las que aparecen o
+desaparecen respecto del mes anterior son las bandadas que llegan o se van, y su tamaño crece con la fracción de
+días con registro. `scripts/bandadas.mjs` deja todo en `bandadas-2024.json` y `.csv`, que leen la pantalla y la
+vibración. Cada especie se posa en la zona de su hábitat (AVONET). El terreno viene de AWS Terrain Tiles, ESA
+WorldCover y OpenStreetMap; los cantos, de Xeno-canto.
 
 ---
 
@@ -57,17 +56,24 @@ OpenStreetMap; los cantos, de Xeno-canto.
 | **Versión**                   | V1 · «Los que llegan y los que se quedan»                                                                                            |
 | **Fecha**                     | 2026-10-29 al 2026-11-02 (estado presentado en la R1 del 5 de noviembre)                                                             |
 | **Commit / Tag**              | `dbc424e` (prueba de servos), `301a6ac` (sketch perilla → servos, maqueta, mapa STL), `5e71daa` (pestaña «Propuesta física») · PR #33 |
-| **Evidencia visual y sonora** | Video de la maqueta simulada (30 s, con sonido): `web/video/propuesta-maqueta-v1.mp4`, publicado en [Propuesta física](https://canija2000.github.io/infovis_2026-2/propuesta.html) · Fotos del estado físico: _\[fotos del Leonardo con los dos servos y la perilla\]_ |
+| **Evidencia visual y sonora** | Video de la maqueta simulada (30 s, con sonido): `web/video/propuesta-maqueta-v1.mp4`, publicado en [Propuesta física](https://canija2000.github.io/infovis_2026-2/propuesta.html) · Un cuadro del video y las conexiones (abajo): la V1 no se construyó, se presentó simulada |
+
+| ![Maqueta simulada de la V1](fotos/v1_maqueta_simulada.jpg) | ![Conexiones del Leonardo con los servos y la perilla](maqueta/conexiones/conexiones_perspectiva.png) |
+| :---: | :---: |
+| Cuadro del video de la maqueta simulada: los brazos de verano e invierno sobre el mapa y el coro en el teléfono | Las conexiones del Leonardo con los dos servos y la perilla |
+
+_Maqueta de la V1, simulada en Blender con los datos del año típico, tal como se presentó en la R1 (5 de noviembre
+de 2026)._
 
 ### Qué cambió (decisiones iniciales)
 
-1.  Un **Chile de cartón** con dos brazos: una bandada de visitantes de verano a un lado y una de invierno al otro.
-2.  Una **perilla** recorre el año; cada brazo entra al mapa según cuántas especies de su clase hay ese mes.
-3.  Los dos servos usan **la misma escala** (0 a 106 especies), para que verano e invierno sean comparables.
+1.  Un **Chile de cartón** con dos brazos: verano a un lado e invierno al otro.
+2.  Una **perilla** recorre el año; cada brazo entra según las especies de su clase ese mes.
+3.  Los dos servos usan **la misma escala** (0 a 106 especies), para comparar verano e invierno.
 4.  Los **residentes no se mueven**: son aves verdes fijas sobre el mapa.
-5.  Sonido: el coro de cantos reales de la Entrega 1, con residentes al centro, verano a la izquierda e invierno a la derecha.
-6.  Electrónica: Arduino Leonardo con Protobject por WebUSB (`web/fisico/`), y un sketch que mueve los brazos directo con la perilla (`arduino/perilla_servos`).
-7.  La V1 se presentó **simulada en Blender**, con los datos reales del año típico.
+5.  **Sonido:** el coro de la Entrega 1, con residentes al centro y verano e invierno a los lados.
+6.  **Electrónica:** un Leonardo con Protobject por WebUSB y un sketch que mueve los brazos.
+7.  Se presentó **simulada en Blender**, con los datos reales del año típico.
 
 ### Por qué cambió — el rationale
 
@@ -75,25 +81,23 @@ OpenStreetMap; los cantos, de Xeno-canto.
 - **Misma escala para comparar:** el pulso de invierno (11 a 26 especies) es mucho menor que el de verano (hasta 106); con escalas distintas ese contraste, que es parte del mensaje, se perdía.
 - **Los residentes quietos como codificación:** lo que no cambia no se mueve; el piso estable se ve por contraste con los brazos.
 - **Simular primero:** la pauta admite V1 simulada; Blender permitió probar proporciones, sonido y recorrido de los brazos antes de cortar cartón.
-- _\[Completar con lo que el grupo discutió al elegir esta idea.\]_
 
 ### Qué se descartó
 
 - **Un servo para los residentes:** no aporta, porque casi no varían en el año.
-- _\[Otras alternativas que el grupo consideró para la V1.\]_
 
 ---
 
 ## 4. R1 — Revisión con el equipo docente
 
-- **Fecha:** jueves 5 de noviembre de 2026
-- **Síntesis de lo discutido y decisiones tomadas:**
-  - Se presentó la V1: la maqueta de «Los que llegan y los que se quedan», con la perilla y los dos servos,
-    simulada en Blender.
-  - _\[Qué observó el equipo docente sobre la maqueta: completar con las notas de la revisión.\]_
-  - **Qué adoptamos:** dejar la versión de los servos y desarrollar la de los binoculares, en la que el
-    visitante observa las aves de una zona en primera persona. Toda la V2 es esa iteración.
-  - **Qué descartamos y por qué:** _\[sugerencias de la revisión que no tomamos, con su argumento.\]_
+- **Fecha:** jueves 5 de noviembre de 2026 · **Se presentó:** la V1, la maqueta «Los que llegan y los que se
+  quedan» (dos servos y una perilla), simulada en Blender.
+- **Síntesis:** el equipo docente observó que la maqueta no aportaba nada a lo que ya mostraba la página de la
+  Entrega 1. En efecto, los brazos sobre el mapa contaban lo mismo que la curva de especies por mes de la portada.
+- **Adoptado:** cambiar de idea por una que solo tenga sentido en lo físico: unos binoculares para observar, en
+  primera persona, las aves de un lugar (la V2).
+- **Descartado:** nada; la observación se tomó entera. Corregir la maqueta no bastaba: seguiría contando lo mismo
+  que la página.
 
 ---
 
@@ -117,159 +121,205 @@ _Prototipo de la V2 (12 de noviembre de 2026): dos tubos de cartón pegados a un
 
 ### Qué cambió
 
-1.  **De mirar un mapa a estar en un lugar:** en vez de un Chile de cartón visto desde arriba, unos binoculares con el teléfono adentro y una zona real en primera persona.
-2.  **Datos de un solo año (2024)** y cinco regiones con sus zonas ya modeladas; un **QR por región** abre su selector.
-3.  **Aves fijas en un círculo:** no se camina; se gira, y una mira elige el ave más cercana al centro, que canta.
-4.  **Solo el teléfono:** el giroscopio da la mirada; sostenerla abre la ficha y toma la foto; mirar al cielo cambia de mes y mirar al suelo abre la libreta.
-5.  **Interfaz de videojuego:** inicio como selector de niveles (región = mundo, zonas = niveles con un sello por ave) y diálogo del ave con pestaña «nombre | clase» y frases sacadas de los datos.
-6.  **Segundo modo, Caminar:** caminar en el lugar avanza hacia donde se mira (el acelerómetro cuenta pasos).
-7.  **Visor de cartón:** dos tubos, uno por ojo, pegados a un bolsillo de cartón corrugado donde entra el teléfono; la pantalla muestra dos círculos, uno frente a cada tubo.
+1.  **De un mapa a un lugar:** binoculares con el teléfono adentro y una zona real alrededor.
+2.  **Un solo año (2024)**, cinco regiones con sus zonas y un **QR por región** que abre su selector.
+3.  **Aves fijas en un círculo:** se gira y la mira elige el ave más cercana al centro, que canta.
+4.  **Solo el teléfono:** la mirada sostenida abre la ficha y saca la foto; arriba pasa de mes.
+5.  **Interfaz de videojuego:** selector de niveles y diálogo del ave con frases de los datos.
+6.  **Modo Caminar:** caminar en el lugar avanza hacia donde se mira (cuenta los pasos).
+7.  **Visor de cartón** de dos tubos, uno por ojo, con un círculo por ojo en la pantalla.
 
 ### Por qué cambió — el rationale
 
-- **El gesto es el dato:** observar aves es levantar binoculares, girar y esperar; la interacción física reproduce la práctica que generó los registros de eBird, en vez de una perilla abstracta.
-- **Del agregado al caso:** la maqueta mostraba cuántas especies hay; el Mirador muestra cuáles, dónde y cuándo, y deja oír cada una. Responde a la misma tensión que la R1 de la Entrega 1 (exploración frente a mensaje).
-- **Un solo año para ser concreto:** «en enero de 2024 me vieron 18 de 31 días» es verificable; el promedio de ocho años no.
-- **Aves fijas para sostener la comparación entre meses:** como cada especie tiene siempre el mismo lugar, su ausencia se nota (_eyes beat memory_).
-- **Sin Arduino por robustez:** el primer diseño usaba un Leonardo como teclado con botones y rueda; se quitó porque sumaba cable, alimentación y puntos de falla sin dar información que el teléfono no tuviera.
-- **Sostener la mirada en vez de apretar:** sin botones, el tiempo de permanencia sobre un ave es la única confirmación disponible; un anillo muestra el avance para que no sorprenda.
-- **Diseño, no paleta:** la primera propuesta de interfaz solo cambiaba colores; se rehízo con lógica de juego: la zona es la decisión principal, el modo es un interruptor y el progreso (aves por fotografiar) es el gancho.
-- **Cartón antes que madera:** un prototipo de material reutilizado y costo cero permitió probar el tamaño, el peso y la visión por dos tubos con otras personas antes de cortar el MDF.
-- **Dos tubos y dos círculos por parecido:** se buscó que el objeto se reconociera de inmediato como unos binoculares; la R2 mostró que ese parecido no alcanza si cuesta enfocar (ver R2).
+- **El gesto es el dato:** observar aves es levantar los binoculares, girar y esperar; el gesto reproduce la
+  práctica que generó los registros de eBird.
+- **Del agregado al caso (R1):** la maqueta repetía lo que ya mostraba la página; el Mirador muestra cuáles
+  especies, dónde y cuándo, y deja oír cada una.
+- **Un solo año para ser concreto:** «en enero de 2024 me vieron 18 de 31 días» es verificable; un promedio de
+  ocho años no.
+- **Aves fijas para comparar meses:** cada especie tiene su lugar, y su ausencia se nota.
+- **Sin Arduino por robustez:** botones y rueda sumaban cables y fallas sin dar nada que el teléfono no tuviera.
+- **Sostener la mirada en vez de apretar:** sin botones, la permanencia confirma la acción.
+- **Cartón primero:** probar tamaño, peso y visión con otras personas, a costo cero, antes de cortar madera.
 
 ### Qué se descartó
 
-- **Maqueta de servos y perilla (V1):** comunicaba el agregado nacional, pero no dejaba escuchar ni reconocer especies.
-- **Una versión de mapa completo con años 2017–2024:** más datos de los que la experiencia podía mostrar; se redujo a un año y a zonas existentes.
-- **Botones y rueda con Arduino:** el teléfono ya entrega la misma información con sus sensores.
+- **Maqueta de servos y perilla (V1):** mostraba el total nacional, pero no dejaba oír ni reconocer especies.
+- **Mapa completo con los años 2017–2024:** más datos de los que la experiencia podía mostrar.
+- **Botones y rueda con Arduino:** el teléfono ya entrega lo mismo con sus sensores.
 - **Tres variantes de color** de la misma pantalla, presentadas como propuestas.
 
 ---
 
 ## 6. R2 — Revisión entre pares
 
-- **Fecha:** jueves 12 de noviembre de 2026
-- **Quién revisó:** _\[grupo que nos evaluó\]_, según la pauta de revisión entre pares.
-- **Qué se presentó:** el visor de cartón de dos tubos con el Mirador en el teléfono (V2).
-- **Síntesis de lo discutido y decisiones tomadas:**
-  1.  **Los dos círculos incomodan.** Con un círculo por ojo, en la pantalla y en el aparato, cuesta enfocar y la imagen no se funde en una sola: no se siente como mirar por unos binoculares. **Adoptado:** una sola imagen vista con los dos ojos, en un visor de caja única (el de MDF).
-  2.  **Hay aves que no se ven.** Varias quedan detrás de árboles u otros objetos, y desde un punto fijo no hay cómo rodearlos. **Adoptado:** redistribuir las aves para que todas se vean desde el punto de observación.
-  3.  **Caminar no funciona bien.** El avance no responde de forma confiable a los pasos. _\[Por decidir: corregirlo o retirarlo; ver el plan de la V3.\]_
-  4.  **Cambiar de región es engorroso.** Con el teléfono dentro del visor, hay que sacarlo para elegir otra región. **Adoptado:** que el cambio de zona y de región se haga sin sacar el teléfono.
-  5.  **Qué descartamos y por qué:** _\[sugerencias del otro grupo que no tomamos, con su argumento.\]_
+- **Fecha:** jueves 12 de noviembre de 2026 · **Revisó:** el grupo 27 · **Se presentó:** el visor de
+  cartón (V2).
+- **Les gustaron los binoculares, pero con dos agujeros no se veía bien** (incomoda y cuesta enfocar).
+  **Adoptado:** una sola imagen, en un visor de una caja: de ahí sale el visor de la V3.
+- **Hay aves que no se ven** (detrás de árboles u objetos). **Adoptado:** ubicar cada ave donde se vea.
+- **Caminar no responde bien a los pasos.** **Adoptado:** deja de ser el modo principal (queda en Explorar).
+- **Cambiar de región es engorroso** con el teléfono adentro. **Adoptado:** viajar sin sacarlo.
+- **Descartado y por qué:** _\[sugerencias del otro grupo que no se tomaron, con su argumento\]_
 
 ---
 
-## 7. V3 — Segunda iteración de diseño (después del 12 de noviembre)
+## 7. V3 — Segunda iteración: un año de bandadas (12 al 19 de noviembre)
 
 | Campo                         | Detalle       |
 | ----------------------------- | ------------- |
-| **Versión**                   | V3            |
-| **Fecha**                     | 2026-11-12 al _\[fecha de la R3\]_  |
-| **Commit / Tag**              | `15a1025`, `fc8ed16` (14 nov) · `a536e26`, `e1fc858`, `032eb93` (16 nov) · `cfe91e6`, `0d96094`, `38f3129`, `fc4ac5e`, `b448112`, `ca018dc`, `1fe08c4` (18 nov) · PR #39 a #46 |
-| **Evidencia visual y sonora** | Plano de corte: `fisico/visor_laser/visor_guia.png` · Sitio: <https://canija2000.github.io/infovis_2026-2/mirador/?vista=inmersiva> · _\[fotos del visor de MDF armado con el teléfono y los motores · video con manipulación, sonido y vibración\]_ |
+| **Versión**                   | V3 · Un año de bandadas, con sonido y vibración |
+| **Fecha**                     | 2026-11-12 al 2026-11-19 (estado presentado en la R3) |
+| **Commit / Tag**              | `15a1025`, `fc8ed16` (14 nov) · `a536e26`, `e1fc858` (16 nov) · `46ed6be`, `ca018dc`, `fc4ac5e`, `2fcf43c`, `430c5b2`, `803d79b` (18–19 nov) · PR #39 a #49 |
+| **Evidencia visual y sonora** | Fotos del prototipo presentado en la R3 (abajo) · Sitio: <https://canija2000.github.io/infovis_2026-2/mirador/> · Plano del visor: `fisico/visor_laser/` · Video con manipulación, sonido y vibración: _\[enlace\]_ |
 
-> **Plan de trabajo (borrador; lo confirma el grupo).** Cada punto responde a una observación de la R2.
->
-> 1.  **Visor de MDF de caja única**, ya armado: fotografiarlo y probar la distancia de enfoque con el teléfono adentro.
-> 2.  ~~Una sola imagen en la pantalla por defecto~~ (hecho el 14 de noviembre).
-> 3.  ~~Aves siempre a la vista~~ (hecho el 14 de noviembre).
-> 4.  ~~Viajar sin sacar el teléfono~~ (hecho el 14 de noviembre).
-> 5.  **Caminar:** decidir si se corrige o se retira.
-> 6.  **Sonificación:** que algún dato se oiga en el ritmo o el tono, no solo en el timbre (ver «Riesgos»). Primer paso en la vista inmersiva.
-> 7.  ~~Giro del 16 de noviembre (decisión del grupo): la vista principal pasa a ser un año de bandadas~~ (hecho). El acompañamiento físico, pensado primero como un servo, terminó siendo **vibración**: cuatro motores bajo el visor, uno por zona (18 de noviembre).
+| ![Visor de MDF con la caja del circuito encima](fotos/v3_r3_visor_y_circuito.jpg) | ![El Leonardo y la protoboard en la caja provisoria](fotos/v3_r3_leonardo_protoboard.jpg) | ![Módulo de vibración](fotos/v3_r3_motor_vibracion.jpg) |
+| :---: | :---: | :---: |
+| El visor de MDF, abierto del lado de los ojos, con la caja del circuito encima y los cables de los motores por los costados | El Leonardo y la protoboard dentro de la caja provisoria | Uno de los cuatro módulos de vibración |
+
+_Prototipo presentado en la R3 (19 de noviembre de 2026)._
 
 ### Qué cambió
 
-- **Del cartón al MDF cortado en láser:** una caja con careta de dos ventanas octogonales y un solo espacio interior; el teléfono entra por una ranura lateral. Plano: `fisico/visor_laser/` (`f89910c`, dibujado el 11 de noviembre; cortado y armado _\[fecha\]_).
-- **Una sola imagen:** el Mirador ya no dibuja un círculo por ojo; muestra una imagen única que se mira con los dos ojos (14 de noviembre, `15a1025`).
-- **Aves siempre a la vista:** cada ave se ubica en un punto que se ve desde el centro; antes solo se comprobaba el relieve, ahora también árboles, arbustos y edificios (14 de noviembre, `15a1025`).
-- **Letreros de viaje:** sobre el horizonte hay un letrero hacia cada zona vecina, en su rumbo real y con su distancia, y hacia la región del norte y la del sur. Sostener la mirada en uno lleva allá sin sacar el teléfono; se llega en el mismo mes y mirando hacia el mismo lado (14 de noviembre, `fc8ed16`).
-- **Vista inmersiva: un año de bandadas en 72 segundos (6 por mes).** La región entera, con todas sus zonas, como maqueta vista desde una torre; girar el teléfono da la vuelta alrededor. Cada especie registrada en la región ese mes de 2024 es una bandada con su propio modelo, que se posa en la zona de su hábitat: llega volando (las de verano desde el norte, las de invierno desde el sur) y se va cuando deja de registrarse. Arriba, una sola barra con región, mes y especies por clase. Estilo de ilustración (luz en bandas, contorno de tinta, barra de cuaderno de campo) (16 de noviembre, `a536e26` y `e1fc858`).
-- **Dos vistas al elegir zona:** «Inmersiva» (la nueva, por defecto) y «Explorar» (la de la V2, intacta). Caminar pasa a los ajustes, solo para Explorar.
-- **Archivo para el servo:** `web/mirador/data/bandadas-2024.csv` (y `.json`), con cuántas especies hay, llegan y se van por región y mes, y un índice de 0 a 100 por clase. Lo genera `scripts/bandadas.mjs` con la misma regla que usa la pantalla.
-- **Maqueta legible (16–18 de noviembre):** barra superior en una línea (región, año, meses, residentes, verano, invierno, total y proporción en vista); contorno de cada ave con el color de su clase; escala de las aves comprimida para que una gaviota siga siendo mayor que un chincol sin volverse gigante; mirar abajo acerca la torre al terreno; nombres de las zonas pintados en el tablero; edificios que ya no se superponen; zonas unidas en un solo terreno con relieve (`032eb93`, `cfe91e6`, `0d96094`, `b448112`).
-- **La torre al centro:** quien mira está de pie en el cruce de las cuatro zonas, a 26 m del suelo, y gira en el lugar: las zonas lo rodean, las aves que pasan cerca cruzan frente a la vista y la inmersión es mayor que mirando la maqueta desde afuera (18 de noviembre, `46ed6be`).
-- **El paisaje alrededor sigue la geografía:** los Andes al este (al oeste en Magallanes), con textura de roca y nieve, y al otro lado el mar con oleaje o los cerros costeros; mirar arriba lleva la vista al horizonte (`0d96094`, `ca018dc`).
-- **Aves de una pieza más detalladas:** más resolución en cuerpo y cabeza, y textura de plumaje por especie (`38f3129`).
-- **Sonido: el coro de las aves reales.** En vez de tonos, canta cada especie posada con su grabación de Xeno-canto; el coro es más denso en los meses con más especies y cada bandada canta al posarse (`ca018dc`).
-- **Vibración por zona (Arduino Leonardo por MIDI USB):** cuatro motores, uno bajo cada zona de la maqueta. Primera versión: un pulso al posarse o despegar cada bandada y otro al cambiar de mes (`fc4ac5e`). Segunda: nivel continuo según las aves que vuelan (`1fe08c4`). Tercera, la actual: las llegadas y salidas salen en **oleadas** por clase y vibra solo la zona que cruza cada oleada, más un pulso cuando un ave pasa junto a la torre (PR #46). Sketch: `arduino/vibraciones_aves`.
-- _\[pendiente: el resto de los cambios, a medida que se hagan\]_
+1.  **Visor de MDF** de una caja; el teléfono entra por el costado y no lleva careta (`f89910c`).
+2.  **Vista inmersiva:** el año 2024 en 72 s; cada especie es una bandada (`a536e26`).
+3.  **Toda la región** como maqueta, vista desde una torre al centro (`46ed6be`).
+4.  **Aves a la vista:** ningún árbol ni edificio las tapa (`15a1025`).
+5.  **Sonido:** el coro de cantos reales, más denso cuantas más especies hay (`ca018dc`).
+6.  **Vibración:** un motor por zona; vibra la zona que cruza cada oleada (`2fcf43c`).
+7.  **Explorar** (la V2) queda como segunda vista, con letreros para viajar (`fc8ed16`).
 
 ### Por qué cambió — el rationale
 
-- **Una caja y no dos tubos (R2, punto 1):** sin lentes, dos imágenes separadas obligan a mirar en paralelo y enfocar de cerca a la vez; una sola imagen vista con los dos ojos se comporta como cualquier objeto cercano.
-- **Ranura lateral:** con la ranura arriba el visor dependía del largo de cada teléfono; por el costado solo importan el ancho y el grosor, que varían mucho menos.
-- **Restricción material:** la plancha de MDF disponible mide 335 × 365 mm, lo que fija el tamaño de la caja (120 × 90 × 122 mm) y la distancia del ojo a la pantalla (unos 12 cm).
-- **Lo que no se puede ver no se puede leer (R2, punto 2):** quien observa está fijo y no puede rodear un árbol. Al revisar las 19 zonas en los 12 meses, 127 de 1303 apariciones de aves quedaban tapadas; después del cambio, ninguna.
-- **Viajar con el mismo gesto que todo lo demás (R2, punto 4):** sacar el teléfono rompía la experiencia. Sostener la mirada ya servía para conocer y fotografiar un ave, así que el viaje no agrega un gesto nuevo.
-- **Del caso a la ola (giro del 16 de noviembre):** mirar ave por ave mostraba cuáles hay, pero no el mensaje de la Entrega 1: que el pulso migratorio vacía y llena el lugar. Ver un año entero en 72 s hace visible ese pulso, y la vibración lo saca de la pantalla al objeto.
-- **Por región y no por zona:** las zonas miden ~1,4 km y casi no tienen registros propios (en el bosque de Los Ríos, casi cero en el año). La región en 2024 trae 100 a 150 especies por mes y muestra la ola: en la Metropolitana, los visitantes de verano bajan de 43 especies en enero a 6 en junio.
-- **Las aves son las especies, no puntos de color:** con figuras de un color la escena sería un gráfico sobre un fondo; con el modelo de cada especie en su hábitat, el lugar tiene sentido y se reconoce quién llega.
-- **Vista de torre:** entre la cenital (se cuenta, pero se pierde el lugar) y la del horizonte (fiel al visor, pero no se puede contar), la torre deja ver el lugar y las bandadas a la vez.
-- **Sonido con datos, pero de aves:** la primera versión marcaba cada bandada con tonos (agudo verano, grave invierno), pero en la prueba del grupo sonaba a «tonos sueltos» y rompía el lugar. Ahora el timbre es la especie (su canto real) y el ritmo es el dato: el coro se densifica con el número de especies presentes, y las llegadas se oyen porque cada bandada canta al posarse.
-- **La vibración tiene que significar algo:** la primera versión era tan sutil que solo se notaba el cambio de mes (los motores casi no giran bajo ~40 % de potencia); la segunda vibraba todo el tiempo y el dato se perdía entre tanta señal. La tercera vibra solo cuando hay migración y en la zona por donde pasa, así el movimiento que se siente en la mano coincide con el que se ve: la relación entre bandadas y vibración es evidente. El cambio de mes se quitó porque no aportaba información.
-- **Un motor por zona:** la vibración tiene lugar. Que salga de debajo de la zona donde pasa la bandada conecta el objeto físico con la maqueta, y no solo con el tiempo.
-- **El paisaje completo orienta:** con cordillera al este y mar al oeste, quien mira sabe dónde está el norte sin brújula, y las bandadas que entran «desde el norte» se leen como lo que son.
-- **El viaje también lleva datos:** los letreros están en el rumbo real de cada lugar y Chile se recorre mirando al norte o al sur. Como el mes no cambia al viajar, se puede comparar el mismo mes en dos lugares.
-- _\[pendiente\]_
+- **Una sola imagen (R2, punto 1):** sin lentes, una imagen por ojo obliga a mirar en paralelo y enfocar de cerca;
+  una imagen única se mira como cualquier objeto cercano.
+- **Lo que no se ve no se lee (R2, punto 2):** desde un punto fijo no se rodea un árbol; de 1303 apariciones de
+  aves, 127 quedaban tapadas, y después ninguna.
+- **Del caso a la ola:** mirar ave por ave no mostraba el mensaje de la Entrega 1, que el pulso migratorio vacía y
+  llena el lugar; un año en 72 s sí.
+- **Por región y no por zona:** las zonas (~1,4 km) casi no tienen registros; la región trae 100 a 150 especies por
+  mes (en la Metropolitana, las de verano bajan de 43 en enero a 6 en junio).
+- **Sonido con dato:** los tonos por bandada sonaban artificiales; el timbre es la especie y el ritmo, cuántas hay.
+- **Vibración con lugar:** la primera casi no se sentía y la segunda vibraba siempre; vibrar donde pasa una
+  migración une lo que se siente con lo que se ve.
 
 ### Qué se descartó
 
-- **Visor de dos tubos** (el de cartón de la V2) y **ranura superior** para el teléfono.
-- **Vistas cenital y de horizonte** para las bandadas (ver el rationale), y **datos por zona**: demasiado escasos.
-- **Servo al costado del visor:** se reemplazó por motores de vibración bajo cada zona, que dan lugar además de tiempo. **Vibración en el cambio de mes** y **zumbido continuo por las aves posadas**: saturaban la señal.
-- **Tonos para cada bandada:** sonaban artificiales; el coro de cantos reales lleva el mismo dato.
-- **Cambiar de región con tarjetas QR leídas por la cámara:** pedía un agujero en la trasera y permiso de cámara; los letreros lo resuelven sin tocar el visor.
-- _\[pendiente\]_
+- El **visor de dos tubos**, la **careta de dos ventanas** (incómoda) y la ranura superior; las **vistas cenital y
+  de horizonte**; los **datos por zona**.
+- El **servo** al costado del visor (un motor por zona da lugar además de tiempo), vibrar en cada **cambio de mes**
+  y el **zumbido continuo**, que saturaban la señal.
+- Los **tonos** por bandada y **Caminar** como modo principal.
 
 ---
 
 ## 8. R3 — Revisión con el equipo docente
 
-- **Fecha:** _\[por confirmar; si sigue el ritmo semanal, jueves 19 de noviembre de 2026\]_
-- **Síntesis de lo discutido y decisiones tomadas:** _\[pendiente\]_
+- **Fecha:** jueves 19 de noviembre de 2026 · **Se presentó:** la V3 funcionando: visor de MDF, vista inmersiva
+  con el coro y los cuatro motores, con el circuito en una caja provisoria sobre el visor.
+- **Síntesis:** se evaluó muy bien. Falta una indicación: quien se encuentre el objeto sobre una mesa, sin nadie
+  que se lo explique, no sabría qué es ni qué hacer con él.
+- **Adoptado:** una indicación en el propio objeto (ver V4). Además, por decisión del grupo, ordenar la
+  infraestructura (la caja provisoria y los cables sueltos) y hacer más legible la vibración.
+- **Descartado y por qué:** _\[sugerencias de la revisión que no se tomaron; si no hubo, decirlo\]_
 
 ---
 
-## 9. V4 — La experiencia final
+## 9. V4 — La experiencia final (19 al 26 de noviembre)
 
 | Campo                         | Detalle       |
 | ----------------------------- | ------------- |
-| **Versión**                   | V4            |
-| **Fecha**                     | _\[después de la R3\]_ al 2026-11-26 (entrega) |
-| **Commit / Tag**              | _\[commit\]_  |
-| **Evidencia visual y sonora** | _\[fotos · video demostrativo\]_ |
+| **Versión**                   | V4 · Visor integrado, con asas que vibran y mochila |
+| **Fecha**                     | 2026-11-19 (después de la R3) al 2026-11-26 (entrega) |
+| **Commit / Tag**              | `319a5b3` (bandadas legibles, PR #51) · `1d56049`, `f6b91b1`, `a995416` (visor integrado, PR #50 y #52) · `b9d8ca1` (ensamble 3D) · _\[tag de la entrega\]_ |
+| **Evidencia visual y sonora** | Fotos del visor integrado armado (abajo) · Plano y modelo: `fisico/visor_integrado/` (guías de corte, `ensamble.html`, renders) · Video demostrativo: _\[enlace público\]_ |
 
-### Qué cambió (máx. 8 líneas)
+_\[Fotos del visor integrado armado, después del corte: de frente, de lado con las asas, y la mochila abierta con
+el Leonardo. Guardarlas como `fotos/v4_*.jpg` y ponerlas aquí, en una tabla como la de la V3.\]_
 
-_\[pendiente\]_
+| ![Ensamble 3D del visor integrado](../../fisico/visor_integrado/render_armado_frente.jpg) | ![Despiece del visor integrado](../../fisico/visor_integrado/render_despiece.jpg) |
+| :---: | :---: |
+| Ensamble 3D con las piezas exactas del plano de corte | Despiece: visor, tapa, asas con los motores y mochila |
 
-### Por qué cambió — el rationale (máx. 12 líneas)
+_Modelo hecho antes de cortar (Blender), con las mismas piezas que van a la cortadora._
 
-_\[pendiente\]_
+### Qué cambió
 
-### Qué se descartó (máx. 5 líneas)
+1.  **Visor y electrónica juntos:** sin careta, 2 cm más ancho y 5 cm más largo (`1d56049`).
+2.  **Asas** que encajan con dientes en los laterales y cubren los motores atornillados (`a995416`).
+3.  **Mochila** detrás del teléfono, con el Leonardo, la protoboard y el USB (`a995416`).
+4.  **Modelo 3D** con las piezas exactas, antes de cortar: 31 piezas, dos planchas (`b9d8ca1`).
+5.  **Bandadas legibles:** cada oleada vuela unida en V; las residentes, más quietas (`319a5b3`).
+6.  **Pistas:** una flecha en el borde señala la bandada que pasa; la barra marca +N/−N (`319a5b3`).
+7.  **Indicación en el objeto:** _\[qué se hizo; p. ej. instrucciones grabadas en el visor\]_.
 
-_\[pendiente\]_
+### Por qué cambió — el rationale
+
+- **El objeto tiene que explicarse solo (R3):** en la revisión funcionaba porque alguien lo explicaba; sobre una
+  mesa, nadie sabría qué es ni qué hacer con él.
+- **Del prototipo al objeto:** en la R3 el circuito iba en una caja de cartón encima, con los cables colgando y los
+  motores sueltos; se veía improvisado y la vibración llegaba débil. Bajo las asas, vibran donde va la palma.
+- **Ver y enfocar:** con 140 mm de ancho se ve el teléfono entero, y a unos 15 cm del ojo (antes 11) se enfoca
+  más cómodo sin lentes.
+- **Modelar antes de cortar:** el MDF alcanza para dos planchas; armar las piezas en 3D mostró el recorrido de los
+  cables y que las 48 piezas para tornillos sobraban: bastan dientes y cola.
+- **Una vibración tiene que poder atribuirse:** si no se ve qué la causa, es ruido. Las aves que vuelan juntas se
+  leen como una sola bandada (destino común), la flecha dice hacia dónde mirar y, con las residentes quietas, la
+  migración resalta sobre el fondo (figura y fondo).
+
+### Qué se descartó
+
+- La **propuesta A**, una torre de dos pisos con la electrónica arriba: cables cortos, pero el peso queda arriba y
+  el USB sube por fuera.
+- La **caja del circuito sobre la tapa** (prototipo de la R3), que alejaba los motores de las manos.
+- Los **pilares y apoyos laminados** para tornillos (48 piezas) y un **tapón entero** para la mochila.
 
 ### Balance: qué mejoró desde V1 y qué decidimos no cambiar
 
-_\[pendiente\]_
+**Qué mejoró.** De dos brazos de servo que contaban el total nacional pasamos a un lugar en primera persona: una
+región con sus especies, su forma y su canto, donde el pulso migratorio de 2024 se ve, se oye y se siente. La
+perilla abstracta se volvió el gesto de quien observa aves (levantar el visor y girar). La vibración, que en la
+V3 apenas se percibía o saturaba, ahora marca dónde y cuándo pasa una migración. Y el objeto pasó del cartón y
+una caja provisoria a un visor de MDF diseñado como un conjunto.
+
+**Qué no cambiamos, y por qué.**
+- **El mensaje de la Entrega 1** (dos avifaunas y el pulso migratorio) y su **código de color** (verde residente,
+  naranja verano, azul invierno): es el hilo entre las dos entregas.
+- **Datos y sonidos reales y verificables** (GBIF/eBird de 2024 y Xeno-canto): ninguna especie, cantidad ni canto
+  es inventado.
+- **El teléfono como única entrada**, sin botones: el Arduino solo produce la vibración.
+- **La vista Explorar** (V2) no se borró: queda como segunda vista para conocer cada especie de cerca.
 
 ---
 
 ## 10. El feedback al otro grupo (dado en la R2)
 
-- **Proyecto evaluado (máx. 5 líneas):** _\[pendiente\]_
-- **Feedback que dimos (máx. 12 líneas):** _\[pendiente\]_
-- **Lo que nos llevamos para nuestro proyecto (máx. 5 líneas):** _\[pendiente\]_
+**Proyecto evaluado.** Evaluamos al grupo 27 el 12 de noviembre, el mismo que nos revisó. Su fisicalización sigue
+el tema de su Entrega 1, la transición hacia las energías renovables: dos molinos, uno por país y uno junto al
+otro, que unos servos mueven según el uso de energía renovable de cada país. Los países se eligen escaneando un
+código QR por país. El prototipo funcionaba, con los molinos todavía de cartón.
+
+**Feedback que dimos.** En general estaba bastante bueno: con un molino por país, uno junto al otro, la comparación
+se percibe de un vistazo, y les recomendamos mantenerla. Les señalamos dos cosas. Primero, escanear un QR por país
+resultaba confuso o innecesario: elegir el país no agrega nada al mensaje y suma un paso que la página web resuelve
+directamente. Lo físico debería aportar lo que la pantalla no logra, y aquí eso lo hacen los molinos, no la
+selección. Segundo, mejorar los molinos, que aún eran cartones: son la pieza que lleva el dato, así que es donde
+más rinde subir la fidelidad del prototipo, para que se reconozcan como molinos y su movimiento se lea bien.
+
+**Lo que nos llevamos.** Nuestra V2 tenía un problema parecido: cada región se abría con su QR y cambiarla obligaba
+a sacar el teléfono del visor, justo lo que el grupo 27 nos señaló en la misma revisión. Desde la V3 se viaja de
+región sin sacarlo. Lo de los molinos, a su vez, nos confirmó pasar el visor del cartón al MDF.
 
 ---
 
 ## 11. Evaluación con usuarios — La hoja del observador
 
-### Ronda 1 (idealmente entre V3 y V4, es decir, después del 12 de noviembre)
+### Ronda 1 (idealmente entre V3 y V4, es decir, después del 19 de noviembre)
+
+> _Cómo hacerla (borrar al completar):_ dejar el visor sobre una mesa, con el teléfono puesto y la vista
+> inmersiva corriendo, y decirle a una persona que nunca lo vio solo «piensa en voz alta mientras lo usas». No
+> explicar nada. Anotar cada ~30 s, o cuando cambie lo que hace, lo que dice (cita literal) y lo que hace. Es justo
+> la pregunta de la R3: ¿sabe qué es y qué hacer? Conviene hacerla una vez antes de la indicación y otra después.
 
 - **Quién fue el pensador y cuándo (máx. 2 líneas):** _\[persona externa al grupo, que no haya visto el prototipo\]_
 
@@ -301,37 +351,37 @@ _\[pendiente\]_
 
 **Decisiones del grupo**
 
-- [x] Reparto de versiones: V1 es lo anterior a la R1 (5 de noviembre), V2 lo hecho entre la R1 y la R2
-      (12 de noviembre), V3 lo que salga de la R2 y V4 lo que salga de la R3.
-- [ ] Confirmar la fecha de la R3.
+- [ ] **Indicación para quien encuentra el objeto** (R3): decidir qué es (grabado en el visor, tarjeta junto a él,
+      pantalla de inicio) y completar la V4.
 - [ ] Decidir si hay que **reenviar el formulario** de cambio de idea: la pauta lo exige cuando cambia «la idea
       de fondo», y pasar de la maqueta a los binoculares puede contar como eso. Consultarlo con el profesor.
+- [x] Fechas de las revisiones: R1 el 5, R2 el 12 y R3 el 19 de noviembre.
 
 **Evidencia que falta**
 
-- [ ] **Fotos del estado físico de cada versión**, tomadas en días distintos. De la V1: el Leonardo con los
-      servos. De la V3: el visor de MDF armado, con y sin teléfono.
-- [x] Fotos de la V2: visor de cartón del 12 de noviembre (`docs/proceso/fotos/`).
-- [ ] Video corto de la V2 con manipulación y sonido, y el video demostrativo final.
-- [ ] Capturas del Mirador (inicio y visor) en `docs/proceso/capturas/`.
-- [x] Commit del plano del visor (`fisico/visor_laser/`): `f89910c`, PR #37.
+- [ ] **Fotos de la V4**: el visor integrado armado (de frente, con las asas, con la mochila abierta).
+- [x] Evidencia de la V1: el modelo 3D de la maqueta simulada (no hubo maqueta física).
+- [x] Fotos de la V2 (visor de cartón, 12 de noviembre) y de la V3 (prototipo de la R3, 19 de noviembre).
+- [ ] **Video demostrativo** final en una plataforma pública (con manipulación, sonido y vibración); se graba el
+      24 o el 25 de noviembre. Videos cortos de la V2 y la V3, si los hay.
+- [ ] Capturas del Mirador (inicio y vista inmersiva) en `docs/proceso/capturas/`, si se quieren sumar.
+- [ ] **Tag** de la entrega en GitHub (p. ej. `entrega-2`) y ponerlo en la V4.
 
 **Contenido que solo tiene el grupo**
 
-- [ ] Contenido de R1 (qué observó el equipo docente el 5 de noviembre) y de R3 (máx. 10 líneas cada
-      una; cada sugerencia, adoptada o descartada con argumentos).
-- [x] Contenido de la R2 (12 de noviembre). Falta el nombre del grupo que revisó, qué se descartó y la
-      decisión sobre el modo Caminar.
-- [ ] Feedback al otro grupo.
-- [ ] Ronda de evaluación con una persona externa.
-- [ ] Número de grupo.
+- [x] **R1**: la maqueta no aportaba nada a lo que ya mostraba la página.
+- [x] **Número de grupo:** somos el 17; en la R2 nos revisó el 27 y lo revisamos a él.
+- [ ] **R2**: si hubo sugerencias que no se tomaron.
+- [ ] **R3**: si hubo sugerencias que no se tomaron.
+- [x] **Feedback al otro grupo** (sección 10): el QR por país y los molinos de cartón del grupo 27.
+- [ ] **Evaluación con usuarios** (sección 11): una sesión de pensar en voz alta con alguien externo. Sirve para
+      responder justo la pregunta de la R3: dejar el visor sobre una mesa, sin explicar nada, y anotar qué hace.
 
-**Riesgos frente a la rúbrica**
+**Antes de exportar el PDF**
 
-- [ ] **Sonificación:** la pauta pide parámetros efectivos (tono, ritmo, timbre), «no solo volumen». Hoy el
-      canto identifica la especie (timbre) y su posición (de dónde viene), pero ningún dato numérico se oye.
-      Una mejora posible para V3: que la frecuencia con que canta un ave dependa de cuántos días se registró
-      ese mes.
-- [ ] **V3 demasiado larga para el PDF:** «qué cambió» y «por qué» pasan de 8 y 12 líneas. Antes de exportar, resumir y dejar el detalle en los commits.
-- [ ] **Límites de líneas:** «qué cambió» máx. 8, «por qué» máx. 12, «qué se descartó» máx. 5. La V2 está
-      escrita para caber, pero hay que revisarlo en el PDF.
+- [ ] Revisar en el PDF los límites de líneas: «qué cambió» 8, «por qué» 12, «qué se descartó» 5, cada revisión
+      10, propósito 10 y procesamiento de los datos 8. Todo está escrito para caber (estimado a unos 95 caracteres
+      por línea), pero depende del formato del PDF.
+- [ ] Borrar la nota de borrador del principio y esta lista.
+- [x] **Sonificación** con parámetros efectivos: el timbre identifica la especie (su canto real) y el ritmo del coro
+      depende de cuántas especies hay ese mes; además, cada bandada canta al posarse.
