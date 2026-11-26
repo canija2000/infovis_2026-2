@@ -15,6 +15,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
   pages: write
   id-token: write
 
@@ -23,11 +24,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -40,5 +38,34 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      # Artifact registration can lag behind the successful upload. Wait for
+      # the run's artifact to become readable before deploy-pages lists it.
+      - name: Comprobar disponibilidad del sitio generado
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+        shell: bash
+        run: |
+          for attempt in {1..12}; do
+            count=$(gh api "repos/$GH_REPO/actions/runs/$RUN_ID/artifacts?per_page=100" \
+              --jq '[.artifacts[] | select(.name == "github-pages" and .expired == false)] | length')
+            if [ "$count" = "1" ]; then
+              echo "El archivo del sitio está disponible para publicar."
+              exit 0
+            fi
+            echo "Esperando el archivo del sitio (intento $attempt/12)…"
+            sleep 5
+          done
+          echo "::error::GitHub no hizo disponible el archivo github-pages a tiempo."
+          exit 1
       - id: deployment
         uses: actions/deploy-pages@v4
