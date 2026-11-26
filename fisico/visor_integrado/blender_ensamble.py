@@ -1,19 +1,20 @@
-"""Ensamble 3D real del visor integrado en Blender, con las mismas piezas del plano de corte.
+"""Ensamble construido del visor integrado, contrastado con IMG_6241 y IMG_6246–6255.
 
 Uso (desde esta carpeta, después de python3 generar.py):
     /Applications/Blender.app/Contents/MacOS/Blender --background --python blender_ensamble.py
 
 Lee piezas.json (los contornos, huecos y círculos exactos que van a la cortadora), extruye cada pieza al espesor T
 y la ubica en su lugar del ensamble. Agrega como referencia (sin cortar) el teléfono, el Leonardo, la protoboard,
-los motores, los tornillos y los cables. Guarda:
+los motores, los tornillos y los cables. La disposición final se documenta en
+RECONSTRUCCION_FOTOS.md; los planos de corte se conservan como fueron diseñados. Guarda:
     ensamble.blend          la escena, para abrirla en Blender
     ensamble.glb            el modelo para el visor web (ensamble.html)
     render_*.jpg            vistas armado, despiece, mochila abierta y asa por dentro
 
 Coordenadas en mm: X = ancho (0 a X), Y = largo desde el lado de los ojos (0) hacia el teléfono, Z = alto.
 """
-import bpy, bmesh, json, math, os
-from mathutils import Vector, Matrix
+import bpy, json, math, os, shutil
+from mathutils import Vector, Matrix, Quaternion
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 D = json.load(open(os.path.join(AQUI, 'piezas.json')))
@@ -24,22 +25,30 @@ XV, DV, HV = Vector((1, 0, 0)), Vector((0, 1, 0)), Vector((0, 0, 1))
 
 # ------------------------------------------------------------------ escena limpia
 bpy.ops.wm.read_factory_settings(use_empty=True)
+bpy.context.preferences.filepaths.save_version = 0
 sc = bpy.context.scene
 sc.unit_settings.system = 'NONE'
 
 def material(nombre, rgb, rough=0.8):
-    m = bpy.data.materials.new(nombre); m.diffuse_color = (*rgb, 1)
+    m = bpy.data.materials.new(nombre)
+    srgb = lambda v: 12.92 * v if v <= 0.0031308 else 1.055 * v ** (1 / 2.4) - 0.055
+    m.diffuse_color = (*[srgb(v) for v in rgb], 1)
     m.use_nodes = True
-    b = m.node_tree.nodes.get('Principled BSDF'); b.inputs['Base Color'].default_value = (*rgb, 1); b.inputs['Roughness'].default_value = rough
+    b = next(n for n in m.node_tree.nodes if n.type == 'BSDF_PRINCIPLED')
+    b.inputs['Base Color'].default_value = (*rgb, 1); b.inputs['Roughness'].default_value = rough
     return m
 MAT = {
-    'visor': material('MDF visor', (0.80, 0.62, 0.38)),
-    'nuevo': material('MDF asas y mochila', (0.55, 0.72, 0.86)),
-    'leo': material('Leonardo', (0.10, 0.45, 0.42)), 'proto': material('Protoboard', (0.93, 0.92, 0.88)),
-    'motor': material('Motor', (0.85, 0.35, 0.45)), 'fono': material('Teléfono', (0.08, 0.09, 0.11), 0.4),
+    'visor': material('MDF natural', (0.55, 0.39, 0.20)),
+    'canto': material('Canto quemado por corte láser', (0.055, 0.026, 0.012)),
+    'leo': material('Leonardo azul', (0.015, 0.10, 0.17)), 'proto': material('Protoboard', (0.87, 0.86, 0.81)),
+    'motor': material('PCB negro de los módulos de vibración', (0.018, 0.024, 0.028)), 'fono': material('Teléfono de referencia', (0.018, 0.02, 0.025), 0.4),
     'metal': material('Tornillo', (0.45, 0.45, 0.47), 0.3), 'usb': material('USB', (0.12, 0.12, 0.12)),
-    'cable': [material(f'Cable {i}', c) for i, c in enumerate([(0.85, 0.25, 0.2), (0.9, 0.6, 0.15), (0.2, 0.45, 0.85), (0.2, 0.6, 0.35)])],
+    'negro': material('Conectores y chips', (0.012, 0.015, 0.019)),
+    'cinta': material('Cinta de papel', (0.80, 0.76, 0.61)),
+    'hueco': material('Contactos oscuros', (0.12, 0.13, 0.13)),
+    'cable': [material(f'Cable {i}', c) for i, c in enumerate([(0.55, 0.018, 0.025), (0.8, 0.45, 0.015), (0.025, 0.13, 0.55), (0.015, 0.34, 0.12), (0.22, 0.04, 0.42), (0.65, 0.66, 0.62), (0.008, 0.008, 0.009), (0.75, 0.19, 0.025)])],
 }
+MAT['nuevo'] = MAT['visor']
 grupos = {}
 def coleccion(nombre):
     if nombre not in grupos:
@@ -67,7 +76,12 @@ def solido(p, O, U, V, N, grupo, mat):
     for o in bpy.context.selected_objects: o.select_set(False)
     ob.select_set(True)
     bpy.ops.object.convert(target='MESH')
-    return bpy.context.view_layer.objects.active
+    result = bpy.context.view_layer.objects.active
+    result.data.materials.append(MAT['canto'])
+    for face in result.data.polygons:
+        # The curve's local Z is the extrusion axis: only cut edges are dark.
+        if abs(face.normal.z) < 0.5: face.material_index = 1
+    return result
 
 def caja_ref(nombre, x0, y0, z0, x1, y1, z1, mat, grupo='Referencia (no se corta)'):
     bpy.ops.mesh.primitive_cube_add(size=1)
@@ -78,9 +92,9 @@ def caja_ref(nombre, x0, y0, z0, x1, y1, z1, mat, grupo='Referencia (no se corta
     coleccion(grupo).objects.link(ob); ob.data.materials.append(mat)
     return ob
 
-def tornillo(nombre, a, b, r=1.5):
+def tornillo(nombre, a, b, r=1.5, vertices=12):
     va, vb = Vector(a), Vector(b)
-    bpy.ops.mesh.primitive_cylinder_add(radius=r, depth=(vb - va).length, vertices=12)
+    bpy.ops.mesh.primitive_cylinder_add(radius=r, depth=(vb - va).length, vertices=vertices)
     ob = bpy.context.active_object; ob.name = nombre
     ob.location = (va + vb) / 2; ob.rotation_mode = 'QUATERNION'; ob.rotation_quaternion = (vb - va).to_track_quat('Z', 'Y')
     for c in ob.users_collection: c.objects.unlink(ob)
@@ -136,44 +150,149 @@ def lugar(n):
         return Vector((esq[0], esq[1], T)), esq[2], esq[3], HV, 'Mochila', MAT['nuevo']
     return None
 
+# In the built unit the side/handle assemblies are inverted. A proper 180°
+# rotation about the longitudinal axis also exchanges left/right. This keeps
+# normals, cutouts, fingers and motor screw holes aligned, without reflection.
+INVERTIR_LATERALES = Matrix.Translation((X / 2, 0, Y / 2)) @ Matrix.Rotation(math.pi, 4, 'Y') @ Matrix.Translation((-X / 2, 0, -Y / 2))
+def intercambiar_lado(n):
+    if 'IZQ' in n: return n.replace('IZQ', 'DER')
+    return n.replace('DER', 'IZQ')
+
 for p in D['piezas']:
-    l = lugar(p['nombre'])
-    if l: solido(p, *l)
+    n = p['nombre']
+    if n.startswith('ESCUADRA CUNA'): continue  # Leonardo no longer lies on this cradle.
+    l = lugar(n)
+    if not l: continue
+    invertir = n.startswith('ASA ') or n.startswith('VISOR LADO ')
+    original = n
+    if invertir:
+        p = {**p, 'nombre': intercambiar_lado(n)}
+        if n.startswith('ASA '):
+            # Name ARRIBA/ABAJO by the panel's final position, not the cutting label.
+            if n.endswith('ARRIBA'): p['nombre'] = p['nombre'].replace('ARRIBA', 'ABAJO')
+            elif n.endswith('ABAJO'): p['nombre'] = p['nombre'].replace('ABAJO', 'ARRIBA')
+        l = (*l[:4], l[4].replace('izq', 'TEMP').replace('der', 'izq').replace('TEMP', 'der'), l[5])
+    ob = solido(p, *l)
+    ob['pieza_plano'] = original
+    if invertir: ob.matrix_world = INVERTIR_LATERALES @ ob.matrix_world
 
 # ------------------------------------------------------------------ referencia: teléfono, placas, motores, tornillos, cables
 r0 = Z - T - D['GAP']
-caja_ref('Teléfono (entra por la ranura del costado)', X / 2 - 80, r0 + 1, T, X / 2 + 80, r0 + 10, T + 75, MAT['fono'])
-lx0, ly0 = 2 * T + 3.5, Z + T + 1
-caja_ref('Arduino Leonardo', lx0, ly0, T, lx0 + 70, ly0 + 55, T + 12, MAT['leo'], 'Mochila')
-caja_ref('Protoboard', MW - 47 - 4, Z + T + 10, T, MW - 4, Z + T + 45, T + 10, MAT['proto'], 'Mochila')
-my = D['my']
-for lado, s in (('izq', -1), ('der', 1)):
-    for i, c in enumerate(D['MOTOR_C']):
-        x0 = -5 if s < 0 else X
-        caja_ref(f'Motor {lado} {"adelante" if i == 0 else "atrás"}', x0, Z0 + c - 11.5, my - 10.5, x0 + 5, Z0 + c + 11.5, my + 10.5, MAT['motor'])
-        xin, xout = (T + 1, -7) if s < 0 else (X - T - 1, X + 7)
-        for dx, dy in D['MOTOR_AGUJEROS']:              # dos tornillos por motor, por sus dos agujeros
-            tornillo(f'Tornillo motor {lado} {i + 1}', (xin, Z0 + c + dx, my + dy), (xout, Z0 + c + dx, my + dy), 1.4)
+phone = caja_ref('Teléfono (referencia opcional)', X / 2 - 80, r0 + 1, T, X / 2 + 80, r0 + 10, T + 75, MAT['fono'], 'Teléfono de referencia')
+phone['referenceOnly'] = True
+phone.hide_render = True  # The supplied photos show the unit without a phone.
 
-# cables de los motores: asa → agujero de arriba del asa → sobre la tapa (bridas) → agujeros de arriba de la mochila → protoboard
-k = 0
-for s in (-1, 1):
-    hx = -9 if s < 0 else X + 9                       # agujero de arriba del asa (a 9 mm del lateral)
-    hz = Z0 + L - 12
-    bx = 12 if s < 0 else X - 12                       # línea de bridas
-    holex = T + 14 if s < 0 else T + MW - 14
+# Real boards: Leonardo against the inner front wall, breadboard on the floor
+# near the rear opening (IMG_6255), rather than two boards side by side.
+lx0, ly0, lz0 = X - 18 - 70, Z + T + 1, 23
+arduino_parts = []
+def leo_box(suffix, a, b, mat):
+    ob = caja_ref('Arduino Leonardo ' + suffix, *a, *b, mat, 'Mochila')
+    arduino_parts.append(ob)
+    return ob
+leo_box('placa vertical', (lx0, ly0, lz0), (lx0 + 70, ly0 + 2, lz0 + 55), MAT['leo'])
+for z in (lz0 + 3, lz0 + 48):
+    leo_box('cabecera', (lx0 + 9, ly0 + 2, z), (lx0 + 62, ly0 + 9, z + 4), MAT['negro'])
+    for x in range(12):
+        leo_box(f'contacto {z} {x}', (lx0 + 10 + x * 4, ly0 + 9, z + 1), (lx0 + 11.5 + x * 4, ly0 + 9.3, z + 2.5), MAT['hueco'])
+leo_box('chip', (lx0 + 27, ly0 + 2, lz0 + 20), (lx0 + 39, ly0 + 4, lz0 + 32), MAT['negro'])
+leo_box('puerto USB', (lx0 - 2, ly0 + 2, lz0 + 23), (lx0 + 11, ly0 + 9, lz0 + 34), MAT['metal'])
+pivot = Vector((lx0 + 35, ly0, lz0 + 27.5))
+# Straight, with a half-turn in the board's own plane: the USB port faces
+# the same side wall as the cable opening. No tape across the board.
+arduino_orientation = Matrix.Translation(pivot) @ Matrix.Rotation(math.pi, 4, 'Y') @ Matrix.Translation(-pivot)
+for ob in arduino_parts: ob.matrix_world = arduino_orientation @ ob.matrix_world
+
+# The web turns the CAD assembly over. Its physical floor is therefore the
+# original high-Z panel: build the breadboard and its headers facing inward
+# from that floor, rather than checking the unrotated CAD's lower panel.
+def proto_z(z): return Y - z
+def proto_box(nombre, x0, y0, z0, x1, y1, z1, mat):
+    return caja_ref(nombre, x0, y0, proto_z(z1), x1, y1, proto_z(z0), mat, 'Mochila')
+px, py = X / 2 - 47 / 2, Z + MD - 40
+proto_box('Protoboard base', px, py, T, px + 47, py + 35, T + 10, MAT['proto'])
+contacts = []
+for row in range(10):
+    for col in range(12):
+        x, y = px + 4 + col * 3.5, py + 3 + row * 3
+        contacts.append(proto_box(f'Protoboard contacto {row} {col}', x, y, T + 10, x + 1.3, y + 1.3, T + 10.15, MAT['hueco']))
+# These contacts are one semantic part; joining avoids 120 web draw calls.
+bpy.ops.object.select_all(action='DESELECT')
+for ob in contacts: ob.select_set(True)
+bpy.context.view_layer.objects.active = contacts[0]
+bpy.ops.object.join(); contacts[0].name = 'Protoboard matriz de contactos'
+for i in range(8):
+    x = px + 7 + i * 4.5
+    proto_box(f'Protoboard conector {i + 1}', x, py + 13, T + 10, x + 2.5, py + 16, T + 23, MAT['negro'])
+    terminal = arduino_orientation @ Vector((lx0 + 15 + i * 5, ly0 + 10, 70 if i % 2 else 30))
+    cable(f'Cable motor interior {i + 1}', [(x + 1, py + 14, proto_z(T + 23)), (x + 1, py + 5, proto_z(50 + (i % 3) * 7)), (terminal.x, Z + 30, terminal.z), terminal], MAT['cable'][i], 0.6)
+
+# Detailed vibration modules, including coin motor, PCB, three-pin header and
+# two mounting screws. Their connectors point toward the lower cable exit.
+my = Y - D['my']
+for lado, s in (('izq', -1), ('der', 1)):
+    wall = 0 if s < 0 else X
     for i, c in enumerate(D['MOTOR_C']):
-        x0 = -2.5 if s < 0 else X + 2.5
-        pts = [(x0 + s * 3, Z0 + c, my + 10), (hx, Z0 + c + 4, Y0 + AH - 10), (hx, hz, Y0 + AH + 2), (hx, hz, Y + 5),
-               (bx + s * 3 * i, hz - 6, Y + 3), (bx + s * 3 * i, Z - 25, Y + 3), (holex, Z + 6, Y + 4), (holex, Z + 10, MH - 8),
-               (MW - 30 + 6 * i, Z + 30, 30), (MW - 30 + 6 * i, Z + T + 20, T + 11)]
-        cable(f'Cable motor {k + 1}', pts, MAT['cable'][k]); k += 1
-cable('USB teléfono → Leonardo', [(X + 80, r0 + 5, 40), (X + 70, Z + 2, 30), (X + 4, Z + 22, 16), (X - 2 * T - 6, Z + 22, 16), (lx0 + 66, ly0 + 30, T + 8)], MAT['usb'], 2.2)
+        name = f'Motor {lado} {"adelante" if i == 0 else "atrás"}'
+        yc = Z0 + c
+        def motor_box(suffix, depth0, depth1, y0, y1, z0, z1, mat):
+            a, b = sorted((wall + s * depth0, wall + s * depth1))
+            return caja_ref(name + ' ' + suffix, a, y0, z0, b, y1, z1, mat, 'Motores')
+        motor_box('PCB', 0.5, 2.1, yc - 11.5, yc + 11.5, my - 10.5, my + 10.5, MAT['motor'])
+        tornillo(name + ' motor circular metálico', (wall + s * 2.1, yc + 2, my + 3.8), (wall + s * 5.8, yc + 2, my + 3.8), 6.2, vertices=48)
+        bpy.context.active_object.name = name + ' motor circular metálico'
+        tornillo(name + ' disco negro', (wall + s * 5.8, yc + 2, my + 3.8), (wall + s * 6, yc + 2, my + 3.8), 5.5, vertices=48)
+        bpy.context.active_object.data.materials.clear(); bpy.context.active_object.data.materials.append(MAT['negro'])
+        for q in range(3):
+            yy = yc - 4 + q * 4
+            motor_box(f'conector {q + 1}', 1.5, 5.2, yy - 1.3, yy + 1.3, my - 15, my - 9, MAT['negro'])
+        for dx, dy in D['MOTOR_AGUJEROS']:
+            zc = Y - (D['my'] + dy)
+            tornillo('Tornillo ' + name + ' vástago', (wall - s * (T + 1), yc + dx, zc), (wall + s * 3, yc + dx, zc), 1.4)
+            tornillo('Tornillo ' + name + ' cabeza', (wall + s * 2.3, yc + dx, zc), (wall + s * 4.2, yc + dx, zc), 2.6)
+            tornillo('Tornillo ' + name + ' tuerca interior', (wall - s * (T + 2), yc + dx, zc), (wall - s * T, yc + dx, zc), 2.8, vertices=6)
+        # Three visible conductors per module; the final ends are illustrative,
+        # not a replacement for the wiring diagram.
+        for wire in range(3):
+            hx = -9 if s < 0 else X + 9
+            exit_y = Z0 + L - 12
+            holex = T + 14 if s < 0 else T + MW - 14
+            spread = (i * 3 + wire - 2.5) * 1.1
+            pts = [(wall + s * 3, yc - 4 + wire * 4, my - 15),
+                   (hx + spread * 0.3, yc, 19), (hx + spread * 0.3, exit_y, 10),
+                   (hx + spread * 0.3, exit_y, Y - Y0 - AH + 1),
+                   (wall + s * (28 + spread), exit_y + 20, 22),
+                   (wall + s * (25 + spread), 110, 38),
+                   (wall + s * (8 + spread), 143, 57),
+                   (holex + spread * 0.35, Z + 6, Y + 8),
+                   (holex + spread * 0.3, Z + 10, Y),
+                   (holex + spread * 0.3, Z + 10, Y - 10),
+                   (px + 8 + (i * 3 + wire) * 5, py + 14, proto_z(T + 24))]
+            cable(f'Cable motor {lado} {i + 1} hilo {wire + 1}', pts, MAT['cable'][(i * 3 + wire + (0 if s < 0 else 3)) % 8], 0.65)
+            # Black inline jumper sleeves on the outside of the case.
+            a = Vector(pts[5]); b = a + Vector((-s * 4, 11, 7))
+            sleeve = tornillo(f'Cable motor {lado} conector {i + 1} {wire + 1}', a, b, 1.45)
+            sleeve.data.materials.clear(); sleeve.data.materials.append(MAT['negro'])
+            for col in list(sleeve.users_collection): col.objects.unlink(sleeve)
+            coleccion('Cables').objects.link(sleeve)
+
+# USB lead is unplugged in the reference photos, hanging out of a side slot.
+usb_port = arduino_orientation @ Vector((lx0 - 2, ly0 + 5.5, lz0 + 28.5))
+cable('USB cable del Leonardo', [usb_port, (X - 8, Z + 16, 38), (X - 3, Z + 40, 19), (X + 7, Z + 45, 19), (X + 20, Z + 52, 45), (X + 26, Z + 55, 81)], MAT['negro'], 1.8)
+caja_ref('USB conector libre', X + 21, Z + 50, 80, X + 29, Z + 60, 90, MAT['negro'])
+caja_ref('USB terminal metálico', X + 22, Z + 51, 90, X + 28, Z + 59, 93, MAT['metal'])
+
+# The two paper-tape strips wrap from the rear lid onto the top and bottom.
+for i, x in enumerate((T + 12, T + MW - 33)):
+    caja_ref(f'MOCHILA TAPA cinta {i + 1}', x, Z + MD + T + 0.1, 0, x + 21, Z + MD + T + 0.3, MH, MAT['cinta'], 'Mochila · tapa')
+    for z in (-0.2, MH + 0.1):
+        caja_ref(f'MOCHILA TAPA cinta pliegue {i + 1} {z}', x, Z + MD - 13, z, x + 21, Z + MD + T + 0.2, z + 0.15, MAT['cinta'], 'Mochila · tapa')
 
 # ------------------------------------------------------------------ guardar, exportar y renderizar
 bpy.ops.wm.save_as_mainfile(filepath=os.path.join(AQUI, 'ensamble.blend'))
 for o in bpy.context.scene.objects: o.select_set(True)
-bpy.ops.export_scene.gltf(filepath=os.path.join(AQUI, 'ensamble.glb'), export_format='GLB', use_selection=False, export_apply=True, export_yup=True)
+bpy.ops.export_scene.gltf(filepath=os.path.join(AQUI, 'ensamble.glb'), export_format='GLB', use_selection=False, export_apply=True, export_yup=True, export_extras=True)
+phone.hide_set(True)
 
 sc.render.engine = 'BLENDER_WORKBENCH'
 sh = sc.display.shading
@@ -189,9 +308,15 @@ sh.background_type = 'VIEWPORT'; sh.background_color = (0.95, 0.91, 0.81)
 cam = bpy.data.cameras.new('cam'); cam.lens = 50; cam.clip_end = 5000
 camo = bpy.data.objects.new('cam', cam); sc.collection.objects.link(camo); sc.camera = camo
 centro = Vector((X / 2, (Z + MD) / 2, Y / 2))
-def mirar(pos, objetivo=centro):
+def mirar(pos, objetivo=centro, invertido=False):
+    if invertido:
+        # Match the web's 180° longitudinal display rotation without changing
+        # the source meshes or their fabrication coordinates.
+        cambio = Matrix.Translation((X / 2, 0, Y / 2)) @ Matrix.Rotation(math.pi, 4, 'Y') @ Matrix.Translation((-X / 2, 0, -Y / 2))
+        pos, objetivo = cambio @ Vector(pos), cambio @ Vector(objetivo)
     camo.location = Vector(pos); camo.rotation_mode = 'QUATERNION'
     camo.rotation_quaternion = (Vector(objetivo) - Vector(pos)).to_track_quat('-Z', 'Y')
+    if invertido: camo.rotation_quaternion = camo.rotation_quaternion @ Quaternion((0, 0, 1), math.pi)
 def render(nombre):  # JPG para que pesen poco en el repo
     sc.render.image_settings.file_format = 'JPEG'; sc.render.image_settings.quality = 85
     sc.render.filepath = os.path.join(AQUI, f'render_{nombre}.jpg'); bpy.ops.render.render(write_still=True)
@@ -206,14 +331,19 @@ def separar(f):
             if 'b' not in o: o['b'] = list(o.location)
             o.location = Vector(o['b']) + d * f
 
-mirar((-300, -330, 290)); render('armado_frente')
+mirar((-300, -330, 290), invertido=True); render('armado_frente')
 mirar((420, 560, 260)); render('armado_atras')
 grupos['Cables'].hide_render = True
 separar(1); mirar((-480, -420, 420), Vector((X / 2, (Z + MD) / 2 + 40, Y / 2))); render('despiece')
 separar(0); grupos['Cables'].hide_render = False
-grupos['Mochila · tapa'].hide_render = True; mirar((260, 520, 300), Vector((X / 2, Z + MD / 2, Y / 3))); render('mochila_abierta')
+grupos['Mochila · tapa'].hide_render = True; mirar((X / 2, 520, 135), Vector((X / 2, Z + MD / 2, Y / 2)), invertido=True); render('mochila_abierta')
 grupos['Mochila · tapa'].hide_render = False
 grupos['Asa izq'].hide_render = True; mirar((-260, 20, 120), Vector((0, Z0 + L / 2, Y / 2))); render('asa_por_dentro')
 grupos['Asa izq'].hide_render = False
+mirar((-300, -330, 290), invertido=True)
 bpy.ops.wm.save_as_mainfile(filepath=os.path.join(AQUI, 'ensamble.blend'))
-print('listo: ensamble.blend, ensamble.glb y render_*.png')
+publico = os.path.abspath(os.path.join(AQUI, '../../web/models/visor-bandadas'))
+os.makedirs(publico, exist_ok=True)
+shutil.copyfile(os.path.join(AQUI, 'ensamble.glb'), os.path.join(publico, 'ensamble.glb'))
+shutil.copyfile(os.path.join(AQUI, 'render_armado_frente.jpg'), os.path.join(publico, 'ensamble.jpg'))
+print('listo: ensamble.blend, ensamble.glb, render_*.jpg y copias web actualizadas')

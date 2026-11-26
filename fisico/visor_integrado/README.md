@@ -87,8 +87,17 @@ El sketch de los motores es `arduino/vibraciones_aves/`.
 
 ## Ensamble 3D con las piezas reales
 
+El ensamble publicado se ajustó al prototipo construido que muestran las fotos
+IMG_6241 y IMG_6246–IMG_6255: asas y laterales invertidos, tendido por los
+costados, Leonardo vertical y protoboard en el piso cerca de la apertura trasera.
+Toda la carcasa se representa como MDF natural; el teléfono es una referencia
+opcional que comienza oculta. La descripción de diseño y los planos de corte
+anteriores se conservan. Ver [reconstrucción desde fotos](RECONSTRUCCION_FOTOS.md)
+para la orientación, los límites de precisión y la regeneración.
+
 `blender_ensamble.py` lee `piezas.json` (lo escribe `generar.py`: los mismos contornos que van a la cortadora),
-extruye cada pieza a 3 mm y la pone en su lugar. Teléfono, placas, motores, tornillos y cables van como referencia.
+extruye cada pieza a 3 mm y la pone en el lugar del ensamble construido. Placas,
+motores, tornillos y cables se reconstruyen como geometría de referencia.
 
 ```bash
 /Applications/Blender.app/Contents/MacOS/Blender --background --python blender_ensamble.py

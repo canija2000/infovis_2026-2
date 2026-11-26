@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Video Prototipo Físico · Visor de Bandadas</title>
+    <meta
+      name="description"
+      content="Conoce el Visor de Bandadas en video y explora su ensamble 3D, sus motores de vibración y su electrónica."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/site.css?v=refactor-1" />
+    <link rel="stylesheet" href="css/versions.css" />
+    <link rel="stylesheet" href="css/video-prototipo.css" />
+  </head>
+  <body>
+    <nav class="project-versions" aria-label="Versiones del proyecto">
+      <p class="version-current">Versión 4 <span>· final</span></p>
+      <div class="version-links">
+        <span class="version-links-label">Versiones:</span>
+        <a href="/infovis_2026-2/v1/">Versión 1</a>
+        <a href="/infovis_2026-2/v2/">Versión 2</a>
+        <a href="/infovis_2026-2/v3/">Versión 3</a>
+        <a href="/infovis_2026-2/" aria-current="true"
+          >Versión 4 <span>· final</span></a
+        >
+      </div>
+    </nav>
+    <nav class="site-nav" aria-label="Secciones">
+      <a class="brand" href="index.html">Atlas sonoro · Aves de Chile</a>
+      <ul>
+        <li><a class="site-tab" href="index.html">Visualización</a></li>
+        <li><a class="site-tab" href="explorar.html">Explorar</a></li>
+        <li>
+          <a class="site-tab" href="metricas.html#ejemplo" data-metric="ejemplo"
+            >Ficha de métricas</a
+          >
+        </li>
+        <li><a class="site-tab" href="propuesta.html">Propuesta física</a></li>
+        <li>
+          <a
+            class="site-tab"
+            href="video-prototipo-fisico.html"
+            aria-current="page"
+            >Video Prototipo Físico</a
+          >
+        </li>
+        <li>
+          <a class="site-tab" href="https://canija2000.github.io/3d_aviario/"
+            >Aviario 3D ↗</a
+          >
+        </li>
+      </ul>
+    </nav>
+
+    <main class="prototype">
+      <header class="prototype-header">
+        <p class="eyebrow">Video Prototipo Físico</p>
+        <h1>Visor de Bandadas</h1>
+        <p>
+          Mirar, escuchar y sentir las bandadas. Un visor que conecta la
+          experiencia del Mirador con cuatro motores de vibración en sus asas.
+        </p>
+      </header>
+
+      <figure class="prototype-film">
+        <video
+          controls
+          preload="metadata"
+          playsinline
+          poster="video/Visor-de-Bandadas-v1.0.jpg"
+          aria-label="Video del prototipo Visor de Bandadas"
+          aria-describedby="film-caption"
+        >
+          <source src="video/Visor-de-Bandadas-v1.0.mp4" type="video/mp4" />
+          Tu navegador no puede reproducir el video.
+          <a href="video/Visor-de-Bandadas-v1.0.mp4">Descargar el video</a>.
+        </video>
+        <figcaption id="film-caption">
+          <span>El prototipo en acción · v1.0 · 1 min 53 s</span>
+          <span class="film-links">
+            <a
+              href="https://youtu.be/1lQ4klvdpVs?si=q-dV8vC8ypTGBd2U"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Ver en YouTube</a
+            >
+            <a href="video/Visor-de-Bandadas-v1.0.mp4" download
+              >Descargar video</a
+            >
+          </span>
+        </figcaption>
+      </figure>
+
+      <section class="prototype-model" aria-labelledby="model-heading">
+        <header class="model-header">
+          <div>
+            <p class="eyebrow">Explora el prototipo</p>
+            <h2 id="model-heading">Del visor a sus componentes</h2>
+            <p>
+              Gira el ensamble completo y pasa el mouse por la electrónica para
+              conocer su función. Abre la carcasa para ver el interior.
+            </p>
+          </div>
+          <a href="models/visor-bandadas/ensamble.glb" download
+            >Descargar modelo 3D</a
+          >
+        </header>
+        <div class="model-layout">
+          <div class="model-workspace">
+            <div
+              class="model-toolbar"
+              role="group"
+              aria-label="Controles del modelo 3D"
+            >
+              <button
+                type="button"
+                id="rotate-model"
+                aria-pressed="true"
+                disabled
+              >
+                Girar
+              </button>
+              <button
+                type="button"
+                id="pan-model"
+                aria-pressed="false"
+                disabled
+              >
+                Mover
+              </button>
+              <button
+                type="button"
+                id="zoom-in"
+                aria-label="Acercar modelo"
+                disabled
+              >
+                +
+              </button>
+              <button
+                type="button"
+                id="zoom-out"
+                aria-label="Alejar modelo"
+                disabled
+              >
+                −
+              </button>
+              <button type="button" id="reset-model" disabled>
+                Restablecer vista
+              </button>
+              <label
+                ><input type="checkbox" id="open-model" disabled /> Abrir
+                carcasa</label
+              >
+              <label
+                ><input type="checkbox" id="show-phone" disabled /> Teléfono
+                (referencia)</label
+              >
+            </div>
+            <div id="model-viewport" class="model-viewport" aria-busy="true">
+              <img
+                id="model-fallback"
+                src="models/visor-bandadas/ensamble.jpg"
+                alt="Ensamble completo del visor, con asas laterales, cables y mochila para la electrónica."
+              />
+              <div
+                id="model-tooltip"
+                class="model-tooltip"
+                role="tooltip"
+                hidden
+              ></div>
+            </div>
+            <p id="model-status" class="model-status" role="status">
+              Cargando modelo 3D…
+            </p>
+            <p id="model-help" class="model-help">
+              Arrastra para girar · botón derecho o modo Mover para desplazar ·
+              rueda para acercar.<br />En pantalla táctil: un dedo gira, dos
+              dedos desplazan y acercan. Con teclado: flechas para girar o
+              mover, +/− para zoom, Inicio para restablecer.
+            </p>
+            <noscript
+              ><p>
+                Activa JavaScript para interactuar con el modelo. También puedes
+                descargarlo o consultar sus componentes a continuación.
+              </p></noscript
+            >
+          </div>
+          <aside class="component-panel" aria-labelledby="components-heading">
+            <h3 id="components-heading">Electrónica del visor</h3>
+            <p class="component-hint">
+              Pasa el mouse por una pieza o selecciona un componente. Al
+              seleccionarlo se abre la carcasa.
+            </p>
+            <div
+              id="component-list"
+              class="component-list"
+              role="group"
+              aria-label="Seleccionar componente"
+            ></div>
+            <div
+              id="component-detail"
+              class="component-detail"
+              aria-live="polite"
+              aria-atomic="true"
+            >
+              <p class="eyebrow">Ensamble completo</p>
+              <h3>Cuatro zonas, cuatro motores</h3>
+              <p>
+                Cada asa contiene dos motores. El Arduino Leonardo recibe las
+                señales del Mirador y controla la vibración de cada zona.
+              </p>
+            </div>
+          </aside>
+        </div>
+        <p class="model-note">
+          Modelo del
+          <a
+            href="https://github.com/canija2000/infovis_2026-2/tree/main/fisico/visor_integrado"
+            >visor integrado</a
+          >, ajustado al ensamble de las fotografías: asas invertidas, cableado
+          lateral y Arduino vertical en la mochila. Las piezas parten del plano
+          de corte; los detalles electrónicos y el recorrido de los cables son
+          aproximados. El teléfono se puede activar como referencia; no estaba
+          colocado en las fotos.
+        </p>
+        <details class="component-reference">
+          <summary>Consultar componentes sin usar el visor 3D</summary>
+          <dl>
+            <dt>Teléfono</dt>
+            <dd>
+              Muestra el Mirador en la ranura del visor y se conecta al Leonardo
+              por USB.
+            </dd>
+            <dt>Arduino Leonardo</dt>
+            <dd>
+              Recibe los mensajes MIDI del Mirador y controla cuatro motores en
+              los pines 10, 8, 6 y 4.
+            </dd>
+            <dt>Protoboard</dt>
+            <dd>
+              Base de conexiones en el piso de la mochila, cerca de la apertura
+              trasera. El Arduino está montado verticalmente en la pared
+              interior.
+            </dd>
+            <dt>Motores de vibración</dt>
+            <dd>
+              Izquierdo delantero: zona superior izquierda (pin 10). Derecho
+              delantero: superior derecha (pin 8). Izquierdo trasero: inferior
+              izquierda (pin 6). Derecho trasero: inferior derecha (pin 4).
+            </dd>
+            <dt>Cables y USB</dt>
+            <dd>
+              Los cables enlazan los motores con el circuito; el USB conecta el
+              teléfono con el Leonardo.
+            </dd>
+          </dl>
+        </details>
+      </section>
+    </main>
+    <script type="module" src="js/pages/video-prototipo.js"></script>
+  </body>
+</html>

@@ -1,8 +1,15 @@
 # web/ — Atlas sonoro de aves de Chile
 
-Sitio estático con dos páginas: `index.html` (Visualización) y `explorar.html`
-(Explorar). La guía completa, con mapas generales y por característica, está
+Sitio estático cuyas visualizaciones principales son `index.html` (Visualización)
+y `explorar.html` (Explorar). La guía completa, con mapas generales y por característica, está
 en [docs/ARQUITECTURA.md](../docs/ARQUITECTURA.md).
+
+`video-prototipo-fisico.html` presenta el **Visor de Bandadas**, con el video
+`video/Visor-de-Bandadas-v1.0.mp4` como contenido principal y un visor 3D del
+ensamble completo. Permite girar, desplazar, acercar, abrir la carcasa y consultar
+los componentes por hover, toque o botones. Three.js y el modelo se sirven
+localmente desde `vendor/three/` y `models/visor-bandadas/`; el visor se carga
+cuando se aproxima a la pantalla. No requiere compilación ni servicios externos.
 
 ```text
 js/pages/       coordina las páginas

@@ -16,14 +16,15 @@
 </head>
 <body>
 <header>
-  <h1>Visor integrado · ensamble con las piezas del plano</h1>
+  <h1>Visor de Bandadas · ensamble construido</h1>
   <label>Separar <input type="range" id="sep" min="0" max="1" step="0.01" value="0"></label>
   <label><input type="checkbox" id="cables" checked> Cables</label>
   <label><input type="checkbox" id="tapas" checked> Tapas (visor y mochila)</label>
   <label><input type="checkbox" id="asas" checked> Asas</label>
+  <label><input type="checkbox" id="telefono"> Teléfono (referencia)</label>
 </header>
 <div id="tip"></div>
-<p id="nota">Cada pieza de MDF es la del DXF, extruida a 3 mm y puesta en su lugar (blender_ensamble.py). Teléfono, placas, motores, tornillos y cables son referencia. Arrastrar para girar · rueda para acercar · pasar el cursor para ver el nombre.</p>
+<p id="nota">Ensamble ajustado a las fotos: asas invertidas, cables laterales y Arduino vertical. MDF del plano a 3 mm; detalles electrónicos aproximados. Teléfono opcional. Arrastrar para girar · botón derecho para mover · rueda para acercar · pasar el cursor para ver el nombre.</p>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
@@ -40,6 +41,7 @@ scene.add(new THREE.GridHelper(800, 40, 0xc9b48a, 0xe0d2b0));
 
 // grupo de cada pieza por su nombre → hacia dónde se separa (glTF: y arriba; −z = hacia el teléfono)
 function grupo(n) {
+  if (/^Teléfono/.test(n)) return ['telefono', [0, 0, 0]];
   if (/^VISOR TAPA/.test(n)) return ['tapa', [0, 70, 0]];
   if (/^ASA IZQ|^PILAR ASA \d·IZQ/.test(n)) return ['asa', [-90, 0, 0]];
   if (/^ASA DER|^PILAR ASA \d·DER/.test(n)) return ['asa', [90, 0, 0]];
@@ -51,11 +53,15 @@ function grupo(n) {
 const piezas = [];
 new THREE.GLTFLoader().load('ensamble.glb', g => {
   const root = g.scene; scene.add(root);
+  root.updateMatrixWorld(true);
   root.traverse(o => {
     if (!o.isMesh) return;
     const nombre = (o.parent && o.parent !== root && !o.name.match(/^[A-Z]/) ? o.parent.name : o.name).replace(/_/g, ' ');
     const [tipo, dir] = grupo(nombre);
-    o.userData = { nombre, tipo, dir: new THREE.Vector3(...dir), base: o.position.clone() };
+    // Multi-material panels have a transformed parent: convert the explosion
+    // displacement to that parent's coordinates before moving the primitives.
+    const localDir = o.parent.worldToLocal(new THREE.Vector3(...dir)).sub(o.parent.worldToLocal(new THREE.Vector3()));
+    o.userData = { nombre, tipo, dir: localDir, base: o.position.clone() };
     o.material.side = THREE.DoubleSide;
     const e = new THREE.LineSegments(new THREE.EdgesGeometry(o.geometry, 40), new THREE.LineBasicMaterial({ color: 0x1b1611, transparent: true, opacity: 0.55 }));
     o.add(e); piezas.push(o);
@@ -68,10 +74,10 @@ function aplicar() {
   const k = +sep.value;
   for (const o of piezas) {
     o.position.copy(o.userData.base).addScaledVector(o.userData.dir, k);
-    o.visible = !(o.userData.tipo === 'cable' && !cables.checked) && !(o.userData.tipo === 'tapa' && !tapas.checked) && !(o.userData.tipo === 'asa' && !asas.checked);
+    o.visible = !(o.userData.tipo === 'cable' && !cables.checked) && !(o.userData.tipo === 'tapa' && !tapas.checked) && !(o.userData.tipo === 'asa' && !asas.checked) && !(o.userData.tipo === 'telefono' && !telefono.checked);
   }
 }
-for (const id of ['sep', 'cables', 'tapas', 'asas']) document.getElementById(id).addEventListener('input', aplicar);
+for (const id of ['sep', 'cables', 'tapas', 'asas', 'telefono']) document.getElementById(id).addEventListener('input', aplicar);
 const ray = new THREE.Raycaster(), m = new THREE.Vector2(), tip = document.getElementById('tip');
 renderer.domElement.addEventListener('pointermove', e => {
   m.set(e.clientX / innerWidth * 2 - 1, -e.clientY / innerHeight * 2 + 1); ray.setFromCamera(m, camera);
