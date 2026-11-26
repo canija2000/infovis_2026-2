@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chile que tiembla · simulación</title>
+  <link rel="stylesheet" href="../css/site.css?v=refactor-1">
+  <style>
+    :root {
+      --panel-bg: rgba(20, 22, 25, 0.88);
+      --lvl0: #6f7a74;
+      --lvl1: #b9c46a;
+      --lvl2: #e9a23b;
+      --lvl3: #e0582a;
+    }
+    body {
+      margin: 0;
+      background: var(--bg, #131416);
+      color: var(--ink, #f4f3ef);
+      font-family: var(--font, 'IBM Plex Sans', sans-serif);
+    }
+    .sim-wrap { max-width: 1200px; margin: 0 auto; padding: 18px 16px 36px; }
+    .sim-header { margin-bottom: 14px; max-width: 820px; }
+    .sim-header h1 { font-size: 1.45rem; margin: 0 0 6px; color: var(--title, #fff); }
+    .sim-header p { margin: 0 0 6px; color: var(--ink-2, #b8b6ae); font-size: 0.95rem; line-height: 1.5; }
+    .sim-grid { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 16px; align-items: start; }
+    @media (max-width: 920px) { .sim-grid { grid-template-columns: minmax(0, 1fr); } }
+    .viewport-card {
+      position: relative; border: 1px solid var(--rule, #2c2f36); border-radius: 10px;
+      overflow: hidden; background: #181a1f; height: 620px;
+    }
+    @media (max-width: 920px) { .viewport-card { height: 440px; } }
+    #canvas3d { width: 100%; height: 100%; display: block; cursor: grab; touch-action: none; }
+    #canvas3d:active { cursor: grabbing; }
+    .hud-top, .hud-bottom {
+      position: absolute; left: 12px; right: 12px; display: flex; flex-wrap: wrap; gap: 8px; pointer-events: none;
+    }
+    .hud-top { top: 12px; justify-content: space-between; }
+    .hud-bottom { bottom: 12px; }
+    .badge, .hud-btn {
+      pointer-events: auto; background: var(--panel-bg); color: #f4f3ef; border: 1px solid #3a3f4b;
+      border-radius: 6px; padding: 6px 10px; font-size: 0.8rem;
+    }
+    .badge { font-family: var(--mono, 'IBM Plex Mono', monospace); }
+    .hud-btn { cursor: pointer; font: inherit; font-size: 0.82rem; }
+    .hud-btn[aria-pressed="true"] { background: #e07f24; color: #111; border-color: #e07f24; font-weight: 600; }
+    .side-panel {
+      background: var(--surface, #1b1d22); border: 1px solid var(--rule, #2c2f36); border-radius: 10px;
+      padding: 16px; display: flex; flex-direction: column; gap: 16px;
+    }
+    .ctrl-group h2 {
+      font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em;
+      color: var(--ink-3, #94928b); margin: 0 0 8px;
+    }
+    .months-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; }
+    .months-grid button {
+      font: inherit; font-size: 0.78rem; padding: 6px 2px; border-radius: 5px;
+      border: 1px solid var(--rule, #32363f); background: transparent; color: var(--ink, #f4f3ef); cursor: pointer;
+    }
+    .months-grid button[aria-pressed="true"] { background: var(--ink, #f4f3ef); color: var(--bg, #111); font-weight: 600; }
+    .reading { border-radius: 8px; padding: 12px; background: rgba(127, 127, 127, 0.08); }
+    .reading .place { font-size: 1.15rem; font-weight: 600; margin: 0 0 4px; }
+    .reading .share { font-size: 0.92rem; line-height: 1.45; color: var(--ink-2, #c7c5bd); margin: 0 0 10px; }
+    .level { display: flex; align-items: center; gap: 10px; font-weight: 600; }
+    .dots { display: flex; gap: 4px; }
+    .dots span { width: 14px; height: 14px; border-radius: 50%; background: rgba(127, 127, 127, 0.25); }
+    .warn { margin: 8px 0 0; font-size: 0.8rem; color: #e9a23b; }
+    .profile { display: grid; grid-template-columns: 92px 1fr 34px; gap: 2px 8px; align-items: center; font-size: 0.74rem; }
+    .profile button {
+      grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; align-items: center;
+      font: inherit; background: none; border: 0; padding: 1px 0; color: var(--ink-2, #c7c5bd); cursor: pointer; text-align: left;
+    }
+    .profile button[aria-pressed="true"] { color: var(--ink, #fff); font-weight: 600; }
+    .profile .track { height: 9px; border-radius: 3px; background: rgba(127, 127, 127, 0.15); overflow: hidden; }
+    .profile .fill { display: block; height: 100%; transition: width 0.3s ease, background 0.3s ease; }
+    .profile .num { text-align: right; font-family: var(--mono, monospace); }
+    .caption { font-size: 0.78rem; color: var(--ink-3, #94928b); margin: 6px 0 0; line-height: 1.4; }
+    table.hw { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+    table.hw td { padding: 4px 0; border-top: 1px solid var(--rule, #2c2f36); vertical-align: top; }
+    table.hw td:first-child { color: var(--ink-3, #94928b); width: 42%; padding-right: 8px; }
+    code.cmd { display: block; margin-top: 8px; font-size: 0.74rem; color: var(--ink-2, #c7c5bd); word-break: break-all; }
+  </style>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <nav class="site-nav" aria-label="Secciones">
+    <a class="brand" href="../index.html">Atlas sonoro · Aves de Chile</a>
+    <ul>
+      <li><a class="site-tab" href="../index.html">Visualización</a></li>
+      <li><a class="site-tab" href="../explorar.html">Explorar</a></li>
+      <li><a class="site-tab" href="../propuesta.html">Propuesta física</a></li>
+      <li><a class="site-tab" href="index.html">Prueba Arduino</a></li>
+      <li><a class="site-tab" href="simulacion3d.html" aria-current="page">Simulación Three.js</a></li>
+    </ul>
+  </nav>
+
+  <main class="sim-wrap">
+    <header class="sim-header">
+      <h1>Chile que tiembla</h1>
+      <p><strong>Los residentes son quietud; los que migran son movimiento.</strong> Tocas una región del mapa con el
+        puntero, eliges el mes con la perilla y el mapa <em>vibra en tu mano</em> cuando a esa región llegan especies
+        que no son de ahí. Pasa el puntero de Arica a Magallanes en enero: el norte casi no se mueve y el centro-sur
+        tiembla. Repítelo en julio y todo Chile se calma.</p>
+      <p>Arrastra para girar la vista. <strong>Rayos X</strong> muestra lo que va escondido bajo el tablero.</p>
+    </header>
+
+    <div class="sim-grid">
+      <div class="viewport-card">
+        <canvas id="canvas3d" aria-label="Maqueta 3D: mapa de Chile sobre una placa vibrante"></canvas>
+        <div class="hud-top">
+          <div class="badge" id="hud-selection">–</div>
+          <div class="badge" id="hud-pins">–</div>
+        </div>
+        <div class="hud-bottom">
+          <button class="hud-btn" id="btn-sweep" aria-pressed="false">▶ Puntero de norte a sur</button>
+          <button class="hud-btn" id="btn-play" aria-pressed="false">▶ Recorrer el año</button>
+          <button class="hud-btn" id="btn-xray" aria-pressed="false">Rayos X</button>
+          <button class="hud-btn" id="btn-sound" aria-pressed="false">🔊 Sonido</button>
+        </div>
+      </div>
+
+      <aside class="side-panel">
+        <div class="reading" aria-live="polite">
+          <p class="place" id="r-place">–</p>
+          <p class="share" id="r-share">–</p>
+          <div class="level"><div class="dots" id="r-dots"><span></span><span></span><span></span><span></span></div><span id="r-level">–</span></div>
+          <p class="warn" id="r-warn" hidden>Pocos registros este mes en esta región: el dato es frágil.</p>
+        </div>
+
+        <div class="ctrl-group">
+          <h2>Perilla · mes (A0)</h2>
+          <div class="months-grid" id="months-ui"></div>
+        </div>
+
+        <div class="ctrl-group">
+          <h2>Puntero · región (A1), de norte a sur</h2>
+          <div class="profile" id="profile-ui"></div>
+          <p class="caption">Cada barra es lo que sientes al tocar esa región este mes: cuántos puntos más de especies
+            de paso tiene que en su mes más tranquilo. Se compara cada región consigo misma, como en la matriz de la
+            web, para que una región poco muestreada no tiemble más solo por eso. Cuatro niveles, porque la mano
+            distingue pocas intensidades.</p>
+        </div>
+
+        <div class="ctrl-group">
+          <h2>Qué hace cada pieza</h2>
+          <table class="hw">
+            <tr><td>Perilla (potenciómetro)</td><td>elige el mes → A0</td></tr>
+            <tr><td>Puntero + 16 contactos de cobre</td><td>cada región conecta una resistencia distinta → A1</td></tr>
+            <tr><td>Servo continuo con peso descentrado</td><td>bajo la placa del mapa: gira más rápido → vibra más fuerte (pin 5)</td></tr>
+            <tr><td>Placa sobre 4 apoyos de goma</td><td>solo el mapa vibra, el tablero queda quieto</td></tr>
+            <tr><td>Parlante</td><td>el coro de esa región y ese mes</td></tr>
+          </table>
+          <code class="cmd" id="r-cmd">–</code>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+    const MONTHS = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre",
+      "octubre", "noviembre", "diciembre"];
+    const AUSTRAL = [6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5];
+    const NAMES = {
+      "CL-AP": "Arica y Parinacota", "CL-TA": "Tarapacá", "CL-AN": "Antofagasta", "CL-AT": "Atacama",
+      "CL-CO": "Coquimbo", "CL-VS": "Valparaíso", "CL-RM": "Metropolitana", "CL-LI": "O'Higgins",
+      "CL-ML": "Maule", "CL-NB": "Ñuble", "CL-BI": "Biobío", "CL-AR": "La Araucanía", "CL-LR": "Los Ríos",
+      "CL-LL": "Los Lagos", "CL-AI": "Aysén", "CL-MA": "Magallanes"
+    };
+    // Vibración = visitantes_prop del mes menos el de su mes más tranquilo (0 a 0,38). Cortes en 5, 11 y 19
+    // puntos: julio queda casi quieto en todo Chile y en enero solo el centro-sur llega a «fuerte».
+    const CUTS = [0.05, 0.11, 0.19];
+    const LEVELS = [
+      { name: "casi quieto", color: "#6f7a74", amp: 0.0, spin: 0, servo: 0 },
+      { name: "vibración leve", color: "#b9c46a", amp: 0.022, spin: 9, servo: 450 },
+      { name: "vibración media", color: "#e9a23b", amp: 0.05, spin: 17, servo: 850 },
+      { name: "vibración fuerte", color: "#e0582a", amp: 0.09, spin: 28, servo: 1300 }
+    ];
+    const LOW_EFFORT = 400; // días-especie: el mismo umbral que marca * en la web
+    const level = (p) => CUTS.filter((c) => p >= c).length;
+
+    const [geo, rm, ov] = await Promise.all([
+      fetch("../data/regions.min.geojson").then((r) => r.json()),
+      fetch("../data/region_month.json").then((r) => r.json()),
+      fetch("../data/overview.json").then((r) => r.json())
+    ]);
+    const SCOPES = rm.scopes; // [riqueza, residente, estival, invernal, visitantes_prop, esfuerzo]
+    const CALM = {}; // mes más tranquilo de cada región: { prop, month }
+    for (let id = 1; id <= 16; id++) {
+      const props = SCOPES[String(id)].map((m) => m[4]);
+      const p = Math.min(...props);
+      CALM[id] = { prop: p, month: props.indexOf(p) };
+    }
+    const lift = (id, m) => SCOPES[String(id)][m][4] - CALM[id].prop;
+
+    let month = 0;    // enero
+    let region = 16;  // Magallanes
+    let xray = false;
+
+    // ---------------------------------------------------------------- escena
+    const canvas = document.getElementById("canvas3d");
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x16181d);
+    const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 500);
+    camera.position.set(-20, 34, 36);
+    const controls = new OrbitControls(camera, canvas);
+    controls.target.set(0, 0, 1);
+    controls.enableDamping = true;
+    controls.maxPolarAngle = Math.PI * 0.62;
+
+    scene.add(new THREE.HemisphereLight(0xfff6ea, 0x2a2c33, 0.9));
+    const key = new THREE.DirectionalLight(0xfff1dc, 1.6);
+    key.position.set(-18, 36, 20);
+    key.castShadow = true;
+    key.shadow.mapSize.set(2048, 2048);
+    Object.assign(key.shadow.camera, { left: -26, right: 26, top: 26, bottom: -26 });
+    scene.add(key);
+
+    const mat = (color, extra = {}) => new THREE.MeshStandardMaterial({ color, roughness: 0.8, ...extra });
+    const boardMat = mat(0xb5895a, { transparent: true });
+    const wallMat = mat(0x8c673e, { transparent: true });
+    const plateMat = mat(0xd9c7a4, { transparent: true });
+    const copperMat = mat(0xd9822b, { metalness: 0.85, roughness: 0.3 });
+    const servoMat = mat(0x2f5da8, { roughness: 0.45 });
+
+    // tablero (plinto) de 40 × 34 cm, levantado 6 cm para esconder la electrónica
+    const W = 40, D = 34, H = 6;
+    const plinth = new THREE.Group();
+    scene.add(plinth);
+    const top = new THREE.Mesh(new THREE.BoxGeometry(W, 0.6, D), boardMat);
+    top.receiveShadow = true;
+    plinth.add(top);
+    for (const [w, d, x, z] of [[W, 0.6, 0, -D / 2 + 0.3], [W, 0.6, 0, D / 2 - 0.3], [0.6, D, -W / 2 + 0.3, 0], [0.6, D, W / 2 - 0.3, 0]]) {
+      const wall = new THREE.Mesh(new THREE.BoxGeometry(w, H, d), wallMat);
+      wall.position.set(x, -H / 2 - 0.3, z);
+      plinth.add(wall);
+    }
+
+    // ---------------------------------------------------------------- mapa sobre la placa vibrante
+    const K = 0.72, LAT_MID = -36.75; // cm por grado; Chile mide ~28 cm
+    const proj = ([lon, lat]) => new THREE.Vector2((lon + 71) * K * 0.82, (lat - LAT_MID) * K);
+
+    const plate = new THREE.Group(); // todo lo que vibra
+    plate.position.y = 1.3;
+    scene.add(plate);
+    const plateMesh = new THREE.Mesh(new THREE.BoxGeometry(11, 0.4, 30), plateMat);
+    plateMesh.castShadow = plateMesh.receiveShadow = true;
+    plate.add(plateMesh);
+    for (const [x, z] of [[-4.6, -13.6], [4.6, -13.6], [-4.6, 13.6], [4.6, 13.6]]) {
+      const foot = new THREE.Mesh(new THREE.CylinderGeometry(0.6, 0.6, 1.0, 16), mat(0x222222, { roughness: 1 }));
+      foot.position.set(x, 0.8, z);
+      scene.add(foot); // los apoyos de goma no vibran con la placa
+    }
+
+    const regions = []; // { id, code, mesh, pad, center }
+    for (const f of geo.features) {
+      const shapes = [];
+      let best = null, bestArea = 0;
+      for (const poly of f.geometry.coordinates) {
+        const ring = poly[0];
+        const lonAvg = ring.reduce((s, c) => s + c[0], 0) / ring.length;
+        if (lonAvg < -76.5) continue; // sin islas oceánicas: Chile continental
+        const pts = ring.map(proj);
+        const area = Math.abs(THREE.ShapeUtils.area(pts));
+        if (area < 0.03) continue;
+        shapes.push(new THREE.Shape(pts));
+        if (area > bestArea) { bestArea = area; best = pts; }
+      }
+      const g = new THREE.ExtrudeGeometry(shapes, { depth: 0.45, bevelEnabled: false });
+      g.rotateX(-Math.PI / 2);
+      const m = new THREE.Mesh(g, mat(0xeee3cf, { roughness: 0.7 }));
+      m.position.y = 0.2;
+      m.castShadow = true;
+      const id = f.properties.id;
+      m.userData.region = id;
+      plate.add(m);
+      // contacto de cobre en el centro de la región más grande del polígono
+      const c = best.reduce((s, p) => s.add(p), new THREE.Vector2()).divideScalar(best.length);
+      const pad = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.28, 0.1, 20), copperMat);
+      pad.position.set(c.x, 0.7, -c.y);
+      pad.userData.region = id;
+      plate.add(pad);
+      regions.push({ id, code: f.properties.code, mesh: m, pad, center: new THREE.Vector3(c.x, 0.7, -c.y) });
+    }
+    regions.sort((a, b) => a.id - b.id);
+    const regionById = (id) => regions.find((r) => r.id === id);
+
+    // ---------------------------------------------------------------- bajo la placa: servo con peso descentrado
+    const shaker = new THREE.Group();
+    shaker.position.set(0, -1.6, 2);
+    scene.add(shaker);
+    const servoBody = new THREE.Mesh(new THREE.BoxGeometry(2.3, 2.2, 1.2), servoMat);
+    shaker.add(servoBody);
+    const rotor = new THREE.Group();
+    rotor.position.y = 1.35;
+    shaker.add(rotor);
+    rotor.add(new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 0.5, 12), mat(0xdddddd, { metalness: 0.8 })));
+    const weight = new THREE.Mesh(new THREE.CylinderGeometry(0.75, 0.75, 0.45, 20), mat(0x9a9ea6, { metalness: 0.9, roughness: 0.3 }));
+    weight.position.x = 0.9; // descentrado: al girar sacude todo lo que está encima
+    rotor.add(weight);
+    const holder = new THREE.Mesh(new THREE.BoxGeometry(0.6, 1.4, 0.6), mat(0x8c673e));
+    holder.position.set(0, 1.35 + 1.2, 0); // une el servo con la placa a través del tablero
+    shaker.add(holder);
+
+    const arduino = new THREE.Mesh(new THREE.BoxGeometry(6.9, 0.25, 5.3), mat(0x1f7a9c, { roughness: 0.5 }));
+    arduino.position.set(12, -4.6, 8);
+    scene.add(arduino);
+    const underParts = [shaker, arduino];
+
+    // ---------------------------------------------------------------- perilla y puntero
+    const knob = new THREE.Group();
+    knob.position.set(14, 0.3, 11);
+    scene.add(knob);
+    const knobDisk = new THREE.Mesh(new THREE.CylinderGeometry(3.2, 3.2, 0.3, 40), mat(0xf4f1ea));
+    knobDisk.position.y = 0.15;
+    knob.add(knobDisk);
+    const knobCap = new THREE.Mesh(new THREE.CylinderGeometry(0.9, 1.0, 1.4, 24), mat(0x8c673e));
+    knobCap.position.y = 1;
+    knob.add(knobCap);
+    const knobArrow = new THREE.Mesh(new THREE.ConeGeometry(0.45, 0.9, 3), mat(0x16181d));
+    knobArrow.rotation.x = Math.PI / 2; // apunta al mes elegido, al fondo de la perilla
+    knobArrow.position.set(14, 0.5, 11 - 4.0);
+    scene.add(knobArrow);
+    // rótulos de mes alrededor de la perilla (fijos al disco)
+    function label(text, size = 64) {
+      const c = document.createElement("canvas");
+      c.width = 256; c.height = 96;
+      const x = c.getContext("2d");
+      x.fillStyle = "#2a2724"; x.font = `600 ${size}px 'IBM Plex Sans', sans-serif`;
+      x.textAlign = "center"; x.textBaseline = "middle"; x.fillText(text, 128, 48);
+      const t = new THREE.CanvasTexture(c);
+      t.anisotropy = 4;
+      return new THREE.Mesh(new THREE.PlaneGeometry(1.6, 0.6), new THREE.MeshBasicMaterial({ map: t, transparent: true }));
+    }
+    AUSTRAL.forEach((m, k) => {
+      const l = label(MONTHS[m].slice(0, 3));
+      const a = (k / 12) * Math.PI * 2;
+      l.position.set(Math.sin(a) * 2.3, 0.32, -Math.cos(a) * 2.3);
+      l.rotation.set(-Math.PI / 2, 0, -a);
+      knob.add(l);
+    });
+
+    const stylus = new THREE.Group();
+    const body = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.22, 7, 16), mat(0x22252a, { roughness: 0.35 }));
+    body.position.y = 4.2;
+    const tip = new THREE.Mesh(new THREE.ConeGeometry(0.22, 0.7, 16), copperMat);
+    tip.rotation.x = Math.PI;
+    tip.position.y = 0.35;
+    stylus.add(body, tip);
+    stylus.rotation.set(0.25, 0, -0.35);
+    scene.add(stylus);
+    const stylusPos = new THREE.Vector3();
+
+    // ondas que salen del punto tocado
+    const ripples = [];
+    const rippleGeo = new THREE.RingGeometry(0.85, 1, 48);
+    let rippleClock = 0;
+
+    // ---------------------------------------------------------------- interfaz
+    const monthsUi = document.getElementById("months-ui");
+    AUSTRAL.forEach((m) => {
+      const b = document.createElement("button");
+      b.dataset.m = m;
+      b.textContent = MONTHS[m].slice(0, 3);
+      b.onclick = () => { month = m; update(); };
+      monthsUi.appendChild(b);
+    });
+    const profileUi = document.getElementById("profile-ui");
+    for (const r of regions) {
+      const b = document.createElement("button");
+      b.dataset.r = r.id;
+      b.innerHTML = `<span>${NAMES[r.code]}</span><span class="track"><span class="fill"></span></span><span class="num"></span>`;
+      b.onclick = () => { region = r.id; update(); };
+      profileUi.appendChild(b);
+    }
+
+    let level_ = 0;
+    function update() {
+      const [, res, summer, winter, prop, effort] = SCOPES[String(region)][month];
+      const r = regionById(region);
+      const up = lift(region, month);
+      level_ = level(up);
+      const L = LEVELS[level_];
+
+      for (const reg of regions) {
+        reg.mesh.material.color.set(reg.id === region ? 0xfff4dc : 0xeee3cf);
+        reg.mesh.material.emissive.set(reg.id === region ? 0x3a2a10 : 0x000000);
+      }
+      stylusPos.copy(r.center);
+
+      document.getElementById("r-place").textContent = `${NAMES[r.code]} · ${MONTHS[month]}`;
+      document.getElementById("r-share").textContent =
+        `${Math.round(prop * 100)} % de sus especies está de paso (${summer} de verano, ${winter} de invierno, ` +
+        `${res} residentes): ${Math.round(up * 100)} puntos más que en ${MONTHS[CALM[region].month]}, su mes más tranquilo.`;
+      document.getElementById("r-level").textContent = L.name;
+      document.getElementById("r-level").style.color = L.color;
+      document.querySelectorAll("#r-dots span").forEach((d, i) => { d.style.background = i <= level_ ? L.color : ""; });
+      document.getElementById("r-warn").hidden = effort >= LOW_EFFORT;
+
+      const a0 = Math.round((AUSTRAL.indexOf(month) + 0.5) / 12 * 1023);
+      const a1 = Math.round((region - 0.5) / 16 * 1023);
+      document.getElementById("hud-selection").textContent = `${NAMES[r.code]} · ${MONTHS[month]}`;
+      document.getElementById("hud-pins").textContent = `A0 ${a0} · A1 ${a1} · pin 5: ${L.servo}`;
+      document.getElementById("r-cmd").textContent =
+        `Protobject.Arduino.contServoWrite({ pin: 5, value: ${L.servo} })  // nivel ${level_}`;
+
+      document.querySelectorAll("#months-ui button").forEach((b) => b.setAttribute("aria-pressed", String(Number(b.dataset.m) === month)));
+      document.querySelectorAll("#profile-ui button").forEach((b) => {
+        const id = Number(b.dataset.r);
+        const u = lift(id, month);
+        b.setAttribute("aria-pressed", String(id === region));
+        b.querySelector(".fill").style.width = `${Math.max(2, (u / 0.38) * 100)}%`;
+        b.querySelector(".fill").style.background = LEVELS[level(u)].color;
+        b.querySelector(".num").textContent = `+${Math.round(u * 100)}`;
+      });
+      sound.update(summer, winter, level_);
+    }
+
+    // clic sobre el mapa = tocar con el puntero
+    const raycaster = new THREE.Raycaster();
+    const pointer = new THREE.Vector2();
+    let downAt = null;
+    canvas.addEventListener("pointerdown", (e) => { downAt = [e.clientX, e.clientY]; });
+    canvas.addEventListener("pointerup", (e) => {
+      if (!downAt || Math.hypot(e.clientX - downAt[0], e.clientY - downAt[1]) > 5) return; // fue un arrastre
+      const rect = canvas.getBoundingClientRect();
+      pointer.set(((e.clientX - rect.left) / rect.width) * 2 - 1, -((e.clientY - rect.top) / rect.height) * 2 + 1);
+      raycaster.setFromCamera(pointer, camera);
+      const hit = raycaster.intersectObjects(regions.flatMap((r) => [r.mesh, r.pad]))[0];
+      if (hit) { region = hit.object.userData.region; update(); }
+    });
+
+    function toggle(btn, on, labels) {
+      btn.setAttribute("aria-pressed", String(on));
+      if (labels) btn.textContent = on ? labels[1] : labels[0];
+    }
+    let sweepTimer = null, playTimer = null;
+    const btnSweep = document.getElementById("btn-sweep");
+    const btnPlay = document.getElementById("btn-play");
+    btnSweep.onclick = () => {
+      if (sweepTimer) { clearInterval(sweepTimer); sweepTimer = null; toggle(btnSweep, false, ["▶ Puntero de norte a sur", ""]); return; }
+      if (playTimer) btnPlay.click();
+      region = 1; update();
+      toggle(btnSweep, true, ["", "❚❚ Detener puntero"]);
+      sweepTimer = setInterval(() => {
+        if (region === 16) { btnSweep.click(); return; }
+        region += 1; update();
+      }, 900);
+    };
+    btnPlay.onclick = () => {
+      if (playTimer) { clearInterval(playTimer); playTimer = null; toggle(btnPlay, false, ["▶ Recorrer el año", ""]); return; }
+      if (sweepTimer) btnSweep.click();
+      toggle(btnPlay, true, ["", "❚❚ Pausar año"]);
+      playTimer = setInterval(() => { month = AUSTRAL[(AUSTRAL.indexOf(month) + 1) % 12]; update(); }, 1500);
+    };
+    document.getElementById("btn-xray").onclick = (e) => {
+      xray = !xray;
+      toggle(e.currentTarget, xray);
+      boardMat.opacity = xray ? 0.22 : 1;
+      wallMat.opacity = xray ? 0.15 : 1;
+      plateMat.opacity = xray ? 0.45 : 1;
+      boardMat.depthWrite = wallMat.depthWrite = !xray;
+    };
+
+    // ---------------------------------------------------------------- sonido: coro de la región + zumbido del servo
+    const sound = (() => {
+      let ctx = null, on = false, hum = null, timer = null, buffers = null, state = { summer: 0, winter: 0, level: 0 };
+      const pick = (cls, n) => ov.species.map((s, i) => [s, i]).filter(([s]) => s[1] === cls && ov.sound[String(s[0])])
+        .slice(0, n).map(([s]) => "../" + ov.sound[String(s[0])]);
+      async function load() {
+        const get = (u) => fetch(u).then((r) => r.arrayBuffer()).then((a) => ctx.decodeAudioData(a)).catch(() => null);
+        const lists = [pick(0, 3), pick(1, 8), pick(2, 4)];
+        buffers = await Promise.all(lists.map((l) => Promise.all(l.map(get)).then((b) => b.filter(Boolean))));
+      }
+      function grain(buf, gain, pan) {
+        if (!buf) return;
+        const src = ctx.createBufferSource(), g = ctx.createGain(), p = ctx.createStereoPanner();
+        src.buffer = buf; g.gain.value = gain; p.pan.value = pan;
+        src.connect(g).connect(p).connect(ctx.destination);
+        src.start();
+      }
+      function tick() {
+        if (!buffers) return;
+        const [res, sum, win] = buffers;
+        if (Math.random() < 0.18) grain(res[Math.floor(Math.random() * res.length)], 0.22, 0);
+        if (Math.random() < state.summer / 110) grain(sum[Math.floor(Math.random() * sum.length)], 0.3, -0.5);
+        if (Math.random() < state.winter / 60) grain(win[Math.floor(Math.random() * win.length)], 0.3, 0.5);
+        hum.gain.setTargetAtTime([0, 0.025, 0.05, 0.08][state.level], ctx.currentTime, 0.1);
+      }
+      async function start() {
+        ctx = ctx || new AudioContext();
+        await ctx.resume();
+        if (!hum) {
+          // zumbido grave: lo que suena de verdad cuando el servo sacude la placa
+          const osc = ctx.createOscillator(), lp = ctx.createBiquadFilter();
+          osc.type = "sawtooth"; osc.frequency.value = 70; lp.type = "lowpass"; lp.frequency.value = 260;
+          hum = ctx.createGain(); hum.gain.value = 0;
+          osc.connect(lp).connect(hum).connect(ctx.destination); osc.start();
+        }
+        if (!buffers) await load();
+        timer = setInterval(tick, 160);
+      }
+      return {
+        async toggle() {
+          on = !on;
+          if (on) await start(); else { clearInterval(timer); hum && hum.gain.setTargetAtTime(0, ctx.currentTime, 0.05); }
+          return on;
+        },
+        update(summer, winter, level) { state = { summer, winter, level }; }
+      };
+    })();
+    document.getElementById("btn-sound").onclick = async (e) => {
+      const btn = e.currentTarget;
+      toggle(btn, await sound.toggle());
+    };
+
+    // ---------------------------------------------------------------- render
+    function resize() {
+      const w = canvas.parentElement.clientWidth, h = canvas.parentElement.clientHeight;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+    window.addEventListener("resize", resize);
+    resize();
+    update();
+
+    const clock = new THREE.Clock();
+    const stylusNow = stylusPos.clone();
+    let knobAngle = 0;
+    renderer.setAnimationLoop(() => {
+      const dt = Math.min(clock.getDelta(), 0.05);
+      const L = LEVELS[level_];
+
+      // la placa tiembla; el tablero no
+      plate.position.x = (Math.random() - 0.5) * 2 * L.amp;
+      plate.position.z = (Math.random() - 0.5) * 2 * L.amp;
+      plate.position.y = 1.3 + (Math.random() - 0.5) * L.amp;
+      rotor.rotation.y += L.spin * dt;
+
+      // el puntero viaja hasta la región y tiembla con la placa
+      stylusNow.lerp(stylusPos, Math.min(1, dt * 7));
+      stylus.position.copy(stylusNow).add(plate.position);
+      stylus.position.y += 0.05; // la punta apoyada en el contacto de cobre
+
+      const target = (AUSTRAL.indexOf(month) / 12) * Math.PI * 2;
+      knobAngle += (target - knobAngle) * Math.min(1, dt * 9);
+      knob.rotation.y = knobAngle;
+
+      // ondas: más seguidas y más grandes cuanto más fuerte vibra
+      rippleClock += dt;
+      if (level_ > 0 && rippleClock > 0.9 / level_) {
+        rippleClock = 0;
+        const ring = new THREE.Mesh(rippleGeo, new THREE.MeshBasicMaterial({ color: L.color, transparent: true, opacity: 0.8, side: THREE.DoubleSide }));
+        ring.rotation.x = -Math.PI / 2;
+        ring.position.copy(regionById(region).center).add(new THREE.Vector3(0, 0.05, 0));
+        ring.userData.age = 0;
+        plate.add(ring);
+        ripples.push(ring);
+      }
+      for (let i = ripples.length - 1; i >= 0; i--) {
+        const r = ripples[i];
+        r.userData.age += dt;
+        const k = r.userData.age / 1.4;
+        r.scale.setScalar(0.4 + k * (1.5 + level_ * 1.2));
+        r.material.opacity = 0.8 * (1 - k);
+        if (k >= 1) { plate.remove(r); r.material.dispose(); ripples.splice(i, 1); }
+      }
+
+      controls.update();
+      renderer.render(scene, camera);
+    });
+  </script>
+</body>
+</html>

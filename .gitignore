@@ -49,3 +49,11 @@ _site/
 
 # configuración local de vistas previas (rutas de cada computador)
 .claude/launch.json
+*.aux
+*.log
+*.out
+
+
+# compilación de LaTeX y originales de WhatsApp
+*.synctex.gz
+docs/proceso/fotos/WhatsApp*

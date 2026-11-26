@@ -1,0 +1,305 @@
+% !TeX program = xelatex
+
+% Entrega 2. Generado desde entrega_2.md y luego editable a mano.
+% Compilar desde docs/proceso con:  xelatex entrega_2.tex  (dos veces)
+% El enlace del video va en \VideoFinal, abajo.
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=22mm]{geometry}
+\usepackage{fontspec}
+\setsansfont{texgyreheros-regular.otf}[BoldFont=texgyreheros-bold.otf,ItalicFont=texgyreheros-italic.otf,BoldItalicFont=texgyreheros-bolditalic.otf]
+\setmonofont{lmmono10-regular.otf}[Scale=MatchLowercase]
+\usepackage[spanish,es-noshorthands]{babel}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx,xcolor,booktabs,tabularx,longtable,array}
+\usepackage{enumitem,titlesec,caption,needspace}
+\usepackage[unicode,hidelinks]{hyperref}
+\usepackage{xurl}
+\renewcommand{\familydefault}{\sfdefault}
+\definecolor{acento}{HTML}{24634F}
+\definecolor{pendiente}{HTML}{8A4B08}
+\hypersetup{pdftitle={Entrega 2 - Mirador},pdfauthor={Joaquín Andrés Bächler Díaz; Matías Valentín Morales Apablaza; Franco Andrés Moya Aravena}}
+\titleformat{\section}{\Large\bfseries\color{acento}}{}{0pt}{}
+\titleformat{\subsection}{\normalsize\bfseries}{}{0pt}{}
+\titlespacing*{\section}{0pt}{0pt}{11pt}
+\titlespacing*{\subsection}{0pt}{10pt}{4pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlist[itemize]{leftmargin=*,nosep,topsep=3pt}
+\setlist[enumerate]{leftmargin=*,nosep,topsep=3pt}
+\emergencystretch=2em
+\raggedbottom
+
+% DATOS POR COMPLETAR
+\newcommand{\NumeroGrupo}{17}
+\newcommand{\VideoFinal}{https://youtu.be/1lQ4klvdpVs}
+\newcommand{\pend}[1]{\textcolor{pendiente}{\textbf{[Pendiente:} #1\textbf{]}}}
+\newcommand{\seccion}[1]{\clearpage\section*{#1}}
+
+\begin{document}
+
+\begin{titlepage}
+{\small PONTIFICIA UNIVERSIDAD CATÓLICA DE CHILE\par
+IIC2026 · Visualización de Información · 2026-2\par}
+\vspace{24mm}
+{\Large Entrega 2 · El proceso de diseño\par}
+\vspace{5mm}
+{\Huge\bfseries\color{acento} Mirador\par}
+\vspace{6mm}
+{\Large Binoculares para escuchar y coleccionar las aves de Chile\par}
+\vspace{22mm}
+\textbf{Grupo:} \NumeroGrupo\par
+\textbf{Integrantes}\par
+Joaquín Andrés Bächler Díaz\par
+Matías Valentín Morales Apablaza\par
+Franco Andrés Moya Aravena\par
+\vspace{10mm}
+\textbf{Parte digital (GitHub Pages)}\par
+\url{https://canija2000.github.io/infovis_2026-2/mirador/}\par
+\textbf{Repositorio}\par
+\url{https://github.com/canija2000/infovis_2026-2}\par
+\textbf{Video demostrativo (interacción física y sonora completa)}\par
+\ifx\VideoFinal\empty\pend{enlace público al video}\else\url{\VideoFinal}\fi\par
+\vfill
+\end{titlepage}
+
+\needspace{8\baselineskip}\section*{2. Contexto general}
+\subsection*{Propósito de la fisicalización}
+En la Entrega 1 el mensaje era que Chile tiene dos avifaunas, las \textbf{sedentarias} y las \textbf{nómadas}, y que el pulso migratorio transforma a la vez la composición y el paisaje sonoro del país. Ese mensaje se leía en una pantalla, desde afuera. La fisicalización lo convierte en una experiencia en primera persona: quien visita mira por un \textbf{visor de madera} con el teléfono adentro y queda de pie en una torre, al centro de una región hecha maqueta. En 72 segundos pasa el año 2024: las bandadas de verano llegan desde el norte y las de invierno desde el sur, se posan en la zona de su hábitat, cantan con su voz real y se van. Al girar el visor se recorre la región, y en las manos vibra la zona por donde pasa cada migración. Lo que en la portada de la Entrega 1 era una curva, aquí es un lugar que se llena y se vacía alrededor de uno, y que se oye y se siente.
+
+\subsection*{Procesamiento de los datos}
+Se usan los registros de la Entrega 1 (GBIF, 91--98 \% de eBird), pero solo de \textbf{2024}, para que cada mes sea un hecho y no un promedio. Por región y mes se toman las especies registradas al menos 3 días de ese mes; su clase (residente, visitante de verano o de invierno) es la del año típico 2017--2024 de la Entrega 1. Las que aparecen o desaparecen respecto del mes anterior son las bandadas que llegan o se van, y su tamaño crece con la fracción de días con registro. \path{scripts/bandadas.mjs} deja todo en \texttt{bandadas-2024.json} y \texttt{.csv}, que leen la pantalla y la vibración. Cada especie se posa en la zona de su hábitat (AVONET). El terreno viene de AWS Terrain Tiles, ESA WorldCover y OpenStreetMap; los cantos, de Xeno-canto.
+
+\seccion{3. V1 --- La idea completa, simulada (antes del 5 de noviembre)}
+\textbf{Versión:} V1 · «Los que llegan y los que se quedan»\par
+\textbf{Fecha:} 2026-10-29 al 2026-11-02 (estado presentado en la R1 del 5 de noviembre)\par
+\textbf{Commit / Tag:} \texttt{dbc424e} (prueba de servos), \texttt{301a6ac} (sketch perilla $\rightarrow$ servos, maqueta, mapa STL), \texttt{5e71daa} (pestaña «Propuesta física») · PR \#33\par
+\textbf{Evidencia visual y sonora:} Video de la maqueta simulada (30 s, con sonido): \path{web/video/propuesta-maqueta-v1.mp4}, publicado en \href{https://canija2000.github.io/infovis_2026-2/propuesta.html}{Propuesta física} · Un cuadro del video y las conexiones (abajo). No se sacaron fotos a la V1, lo que se adjuntan son maquetas 3D.
+\par\medskip\noindent\begin{minipage}{\linewidth}\centering
+\begin{minipage}[t]{0.47\linewidth}\centering\includegraphics[width=\linewidth,height=55mm,keepaspectratio]{fotos/v1_maqueta_simulada.jpg}\par{\small Cuadro del video de la maqueta simulada: los brazos de verano e invierno sobre el mapa y el coro en el teléfono}\end{minipage}\hfill
+\begin{minipage}[t]{0.47\linewidth}\centering\includegraphics[width=\linewidth,height=55mm,keepaspectratio]{maqueta/conexiones/conexiones_perspectiva.png}\par{\small Las conexiones del Leonardo con los dos servos y la perilla}\end{minipage}
+\end{minipage}\par\medskip
+
+\subsection*{Qué cambió (decisiones iniciales)}
+\begin{enumerate}
+\item Un \textbf{Chile de cartón} con dos brazos: verano a un lado e invierno al otro.
+\item Una \textbf{perilla} recorre el año; cada brazo entra según las especies de su clase ese mes.
+\item Los dos servos usan \textbf{la misma escala} (0 a 106 especies), para comparar verano e invierno.
+\item Los \textbf{residentes no se mueven}: son aves verdes fijas sobre el mapa.
+\item \textbf{Sonido:} el coro de la Entrega 1, con residentes al centro y verano e invierno a los lados.
+\item \textbf{Electrónica:} un Leonardo con Protobject por WebUSB y un sketch que mueve los brazos.
+\item Se presentó \textbf{simulada en Blender}, con los datos reales del año típico.
+\end{enumerate}
+\subsection*{Por qué cambió --- el rationale}
+\begin{itemize}
+\item \textbf{Continuidad con el mensaje de la Entrega 1:} la maqueta fisicaliza el mismo gráfico de la portada («especies presentes en Chile, mes a mes»), ahora como movimiento.
+\item \textbf{Misma escala para comparar:} el pulso de invierno (11 a 26 especies) es mucho menor que el de verano (hasta 106); con escalas distintas ese contraste, que es parte del mensaje, se perdía.
+\item \textbf{Los residentes quietos como codificación:} lo que no cambia no se mueve; el piso estable se ve por contraste con los brazos.
+\item \textbf{Simular primero:} la pauta admite V1 simulada; Blender permitió probar proporciones, sonido y recorrido de los brazos antes de cortar cartón.
+\end{itemize}
+\subsection*{Qué se descartó}
+\begin{itemize}
+\item \textbf{Un servo para los residentes:} no aporta, porque casi no varían en el año.
+\end{itemize}
+\needspace{8\baselineskip}\section*{4. R1 --- Revisión con el equipo docente}
+\begin{itemize}
+\item \textbf{Fecha:} jueves 5 de noviembre de 2026 · \textbf{Se presentó:} la V1, la maqueta «Los que llegan y los que se quedan» (dos servos y una perilla), simulada en Blender.
+\item \textbf{Síntesis:} el equipo docente observó que la maqueta no aportaba nada a lo que ya mostraba la página de la Entrega 1. En efecto, los brazos sobre el mapa contaban lo mismo que la curva de especies por mes de la portada.
+\item \textbf{Adoptado:} cambiar de idea por una que solo tenga sentido en lo físico: unos binoculares para observar, en primera persona, las aves de un lugar (la V2).
+\item \textbf{Descartado:} nada; la observación se tomó entera. Corregir la maqueta no bastaba: seguiría contando lo mismo que la página.
+\end{itemize}
+\seccion{5. V2 --- Giro: de la maqueta a los binoculares (5 al 12 de noviembre)}
+Esta versión es un \textbf{cambio de rumbo}, no un ajuste: después de la R1 se abandona la maqueta de servos y se construye el Mirador. Se documenta completa, con sus pasos internos, porque la pauta pide registrar los desvíos.
+
+\textbf{Versión:} V2 · Mirador con binoculares\par
+\textbf{Fecha:} 2026-11-05 al 2026-11-12 (después de la R1; los commits son del 10 y 11 de noviembre; estado presentado en la R2)\par
+\textbf{Commit / Tag:} \texttt{e579a5d} (Mirador, PR \#34), \texttt{9f8fd02} (pantalla completa, PR \#35), \texttt{258a3b1} (selector de niveles, diálogo y modo Caminar, PR \#36), \texttt{ec79fd8} (foto más rápida y sin aviso, PR \#37)\par
+\textbf{Evidencia visual y sonora:} Sitio: \url{https://canija2000.github.io/infovis_2026-2/mirador/} · Fotos del visor de cartón presentado en la R2 (abajo)\par
+\par\medskip\noindent\begin{minipage}{\linewidth}\centering
+\begin{minipage}[t]{0.47\linewidth}\centering\includegraphics[width=\linewidth,height=55mm,keepaspectratio]{fotos/v2_carton_frente.jpg}\par{\small Lado por donde se mira: un tubo por ojo}\end{minipage}\hfill
+\begin{minipage}[t]{0.47\linewidth}\centering\includegraphics[width=\linewidth,height=55mm,keepaspectratio]{fotos/v2_carton_lado.jpg}\par{\small De lado: los tubos y el bolsillo donde entra el teléfono}\end{minipage}
+\end{minipage}\par\medskip
+\emph{Prototipo de la V2 (12 de noviembre de 2026): dos tubos de cartón pegados a un bolsillo de cartón corrugado.}
+
+\subsection*{Qué cambió}
+\begin{enumerate}
+\item \textbf{De un mapa a un lugar:} binoculares con el teléfono adentro y una zona real alrededor.
+\item \textbf{Un solo año (2024)}, cinco regiones con sus zonas y un \textbf{QR por región} que abre su selector.
+\item \textbf{Aves fijas en un círculo:} se gira y la mira elige el ave más cercana al centro, que canta.
+\item \textbf{Solo el teléfono:} la mirada sostenida abre la ficha y saca la foto; arriba pasa de mes.
+\item \textbf{Interfaz de videojuego:} selector de niveles y diálogo del ave con frases de los datos.
+\item \textbf{Modo Caminar:} caminar en el lugar avanza hacia donde se mira (cuenta los pasos).
+\item \textbf{Visor de cartón} de dos tubos, uno por ojo, con un círculo por ojo en la pantalla.
+\end{enumerate}
+\subsection*{Por qué cambió --- el rationale}
+\begin{itemize}
+\item \textbf{El gesto es el dato:} observar aves es levantar los binoculares, girar y esperar; el gesto reproduce la práctica que generó los registros de eBird.
+\item \textbf{Del agregado al caso (R1):} la maqueta repetía lo que ya mostraba la página; el Mirador muestra cuáles especies, dónde y cuándo, y deja oír cada una.
+\item \textbf{Un solo año para ser concreto:} «en enero de 2024 me vieron 18 de 31 días» es verificable; un promedio de ocho años no.
+\item \textbf{Aves fijas para comparar meses:} cada especie tiene su lugar, y su ausencia se nota.
+\item \textbf{Sin Arduino por robustez:} botones y rueda sumaban cables y fallas sin dar nada que el teléfono no tuviera.
+\item \textbf{Sostener la mirada en vez de apretar:} sin botones, la permanencia confirma la acción.
+\item \textbf{Cartón primero:} probar tamaño, peso y visión con otras personas, a costo cero, antes de cortar madera.
+\end{itemize}
+\subsection*{Qué se descartó}
+\begin{itemize}
+\item \textbf{Maqueta de servos y perilla (V1):} mostraba el total nacional, pero no dejaba oír ni reconocer especies.
+\item \textbf{Mapa completo con los años 2017--2024:} más datos de los que la experiencia podía mostrar.
+\item \textbf{Botones y rueda con Arduino:} el teléfono ya entrega lo mismo con sus sensores.
+\item \textbf{Tres variantes de color} de la misma pantalla, presentadas como propuestas.
+\end{itemize}
+\needspace{8\baselineskip}\section*{6. R2 --- Revisión entre pares}
+\begin{itemize}
+\item \textbf{Fecha:} jueves 12 de noviembre de 2026 · \textbf{Revisó:} el grupo 27 · \textbf{Se presentó:} el visor de cartón (V2).
+\item \textbf{Les gustaron los binoculares, pero con dos agujeros no se veía bien} (incomoda y cuesta enfocar). \textbf{Adoptado:} una sola imagen, en un visor de una caja: de ahí sale el visor de la V3.
+\item \textbf{Hay aves que no se ven} (detrás de árboles u objetos). \textbf{Adoptado:} ubicar cada ave donde se vea.
+\item \textbf{Caminar no responde bien a los pasos.} \textbf{Adoptado:} deja de ser el modo principal (queda en Explorar).
+\item \textbf{Cambiar de región es engorroso} con el teléfono adentro. \textbf{Adoptado:} viajar sin sacarlo.
+\item \textbf{Descartado:} los dos tubos como binoculares, porque dificultan ver el espacio.
+\end{itemize}
+\seccion{7. V3 --- Segunda iteración: un año de bandadas (12 al 19 de noviembre)}
+\textbf{Versión:} V3 · Un año de bandadas, con sonido y vibración\par
+\textbf{Fecha:} 2026-11-12 al 2026-11-19 (estado presentado en la R3)\par
+\textbf{Commit / Tag:} \texttt{15a1025}, \texttt{fc8ed16} (14 nov) · \texttt{a536e26}, \texttt{e1fc858} (16 nov) · \texttt{46ed6be}, \texttt{ca018dc}, \texttt{fc4ac5e}, \texttt{2fcf43c}, \texttt{430c5b2}, \texttt{803d79b} (18--19 nov) · PR \#39 a \#49\par
+\textbf{Evidencia visual y sonora:} Fotos del prototipo presentado en la R3 (abajo) · Sitio: \url{https://canija2000.github.io/infovis_2026-2/mirador/} · Plano del visor: \path{fisico/visor_laser/}\par
+\par\medskip\noindent\begin{minipage}{\linewidth}\centering
+\begin{minipage}[t]{0.31\linewidth}\centering\includegraphics[width=\linewidth,height=55mm,keepaspectratio]{fotos/v3_r3_visor_y_circuito.jpg}\par{\small El visor de MDF, abierto del lado de los ojos, con la caja del circuito encima y los cables de los motores por los costados}\end{minipage}\hfill
+\begin{minipage}[t]{0.31\linewidth}\centering\includegraphics[width=\linewidth,height=55mm,keepaspectratio]{fotos/v3_r3_leonardo_protoboard.jpg}\par{\small El Leonardo y la protoboard dentro de la caja provisoria}\end{minipage}\hfill
+\begin{minipage}[t]{0.31\linewidth}\centering\includegraphics[width=\linewidth,height=55mm,keepaspectratio]{fotos/v3_r3_motor_vibracion.jpg}\par{\small Uno de los cuatro módulos de vibración}\end{minipage}
+\end{minipage}\par\medskip
+\emph{Prototipo presentado en la R3 (19 de noviembre de 2026).}
+
+\subsection*{Qué cambió}
+\begin{enumerate}
+\item \textbf{Visor de MDF} de una caja; el teléfono entra por el costado y no lleva careta (\texttt{f89910c}).
+\item \textbf{Vista inmersiva:} el año 2024 en 72 s; cada especie es una bandada (\texttt{a536e26}).
+\item \textbf{Toda la región} como maqueta, vista desde una torre al centro (\texttt{46ed6be}).
+\item \textbf{Aves a la vista:} ningún árbol ni edificio las tapa (\texttt{15a1025}).
+\item \textbf{Sonido:} el coro de cantos reales, más denso cuantas más especies hay (\texttt{ca018dc}).
+\item \textbf{Vibración:} un motor por zona; vibra la zona que cruza cada oleada (\texttt{2fcf43c}).
+\item \textbf{Explorar} (la V2) queda como segunda vista, con letreros para viajar (\texttt{fc8ed16}).
+\end{enumerate}
+\subsection*{Por qué cambió --- el rationale}
+\begin{itemize}
+\item \textbf{Una sola imagen (R2, punto 1):} sin lentes, una imagen por ojo obliga a mirar en paralelo y enfocar de cerca; una imagen única se mira como cualquier objeto cercano.
+\item \textbf{Lo que no se ve no se lee (R2, punto 2):} desde un punto fijo no se rodea un árbol; de 1303 apariciones de aves, 127 quedaban tapadas, y después ninguna.
+\item \textbf{Del caso a la ola:} mirar ave por ave no mostraba el mensaje de la Entrega 1, que el pulso migratorio vacía y llena el lugar; un año en 72 s sí.
+\item \textbf{Por región y no por zona:} las zonas (\textbackslash\{\}\textasciitilde{}1,4 km) casi no tienen registros; la región trae 100 a 150 especies por mes (en la Metropolitana, las de verano bajan de 43 en enero a 6 en junio).
+\item \textbf{Sonido con dato:} los tonos por bandada sonaban artificiales; el timbre es la especie y el ritmo, cuántas hay.
+\item \textbf{Vibración con lugar:} la primera casi no se sentía y la segunda vibraba siempre; vibrar donde pasa una migración une lo que se siente con lo que se ve.
+\end{itemize}
+\subsection*{Qué se descartó}
+\begin{itemize}
+\item El \textbf{visor de dos tubos}, la \textbf{careta de dos ventanas} (incómoda) y la ranura superior; las \textbf{vistas cenital y de horizonte}; los \textbf{datos por zona}.
+\item El \textbf{servo} al costado del visor (un motor por zona da lugar además de tiempo), vibrar en cada \textbf{cambio de mes} y el \textbf{zumbido continuo}, que saturaban la señal.
+\item Los \textbf{tonos} por bandada y \textbf{Caminar} como modo principal.
+\end{itemize}
+\needspace{8\baselineskip}\section*{8. R3 --- Revisión con el equipo docente}
+\begin{itemize}
+\item \textbf{Fecha:} jueves 19 de noviembre de 2026 · \textbf{Se presentó:} la V3 funcionando: visor de MDF, vista inmersiva con el coro y los cuatro motores, con el circuito en una caja provisoria sobre el visor.
+\item \textbf{Síntesis:} se evaluó muy bien. Falta una indicación: quien se encuentre el objeto sobre una mesa, sin nadie que se lo explique, no sabría qué es ni qué hacer con él.
+\item \textbf{Adoptado:} una indicación en el propio objeto (ver V4). Además, por decisión del grupo, ordenar la infraestructura (la caja provisoria y los cables sueltos) y hacer más legible la vibración.
+\item \textbf{Descartado:} nada; se siguió mejorando lo que ya se tenía.
+\end{itemize}
+\seccion{9. V4 --- La experiencia final (19 al 26 de noviembre)}
+\textbf{Versión:} V4 · Visor integrado, con asas que vibran y mochila\par
+\textbf{Fecha:} 2026-11-19 (después de la R3) al 2026-11-26 (entrega)\par
+\textbf{Commit / Tag:} \texttt{319a5b3} (bandadas legibles, PR \#51) · \texttt{1d56049}, \texttt{f6b91b1}, \texttt{a995416} (visor integrado, PR \#50 y \#52) · \texttt{b9d8ca1} (ensamble 3D) · \texttt{8832419} (video y modelo 3D en la web)\par
+\textbf{Evidencia visual y sonora:} Fotos del visor integrado armado (abajo) · Plano y modelo: \path{fisico/visor_integrado/} (guías de corte, \texttt{ensamble.html}, renders) · Video demostrativo: \url{https://youtu.be/1lQ4klvdpVs} · Pestaña «Video prototipo físico» del sitio, con el video y el modelo 3D del visor construido: \url{https://canija2000.github.io/infovis_2026-2/video-prototipo-fisico.html}\par
+\par\medskip\noindent\begin{minipage}{\linewidth}\centering
+\begin{minipage}[t]{0.31\linewidth}\centering\includegraphics[width=\linewidth,height=55mm,keepaspectratio]{fotos/v4_lado.jpg}\par{\small De lado: las asas en los laterales, con los cables de los motores}\end{minipage}\hfill
+\begin{minipage}[t]{0.31\linewidth}\centering\includegraphics[width=\linewidth,height=55mm,keepaspectratio]{fotos/v4_tres_cuartos.jpg}\par{\small Desde arriba: el visor, la tapa y la mochila detrás}\end{minipage}\hfill
+\begin{minipage}[t]{0.31\linewidth}\centering\includegraphics[width=\linewidth,height=55mm,keepaspectratio]{fotos/v4_interior.jpg}\par{\small El interior, abierto del lado de los ojos}\end{minipage}
+\end{minipage}\par\medskip
+\par\medskip\noindent\begin{minipage}{\linewidth}\centering
+\begin{minipage}[t]{0.47\linewidth}\centering\includegraphics[width=\linewidth,height=55mm,keepaspectratio]{fotos/v4_mochila.jpg}\par{\small La mochila abierta: el Leonardo y la protoboard}\end{minipage}\hfill
+\begin{minipage}[t]{0.47\linewidth}\centering\includegraphics[width=\linewidth,height=55mm,keepaspectratio]{fotos/v4_motores_asa.jpg}\par{\small Dos motores atornillados al lateral, bajo el asa}\end{minipage}
+\end{minipage}\par\medskip
+\emph{Visor integrado cortado en MDF y armado (26 de noviembre de 2026).}
+
+\par\medskip\noindent\begin{minipage}{\linewidth}\centering
+\begin{minipage}[t]{0.47\linewidth}\centering\includegraphics[width=\linewidth,height=55mm,keepaspectratio]{../../fisico/visor_integrado/render_armado_frente.jpg}\par{\small Ensamble 3D con las piezas exactas del plano de corte}\end{minipage}\hfill
+\begin{minipage}[t]{0.47\linewidth}\centering\includegraphics[width=\linewidth,height=55mm,keepaspectratio]{../../fisico/visor_integrado/render_despiece.jpg}\par{\small Despiece: visor, tapa, asas con los motores y mochila}\end{minipage}
+\end{minipage}\par\medskip
+\emph{Modelo hecho antes de cortar (Blender), con las mismas piezas que van a la cortadora.}
+
+\subsection*{Qué cambió}
+\begin{enumerate}
+\item \textbf{Visor y electrónica juntos:} sin careta, 2 cm más ancho y 5 cm más largo (\texttt{1d56049}).
+\item \textbf{Asas} que encajan con dientes en los laterales y cubren los motores atornillados (\texttt{a995416}).
+\item \textbf{Mochila} detrás del teléfono, con el Leonardo, la protoboard y el USB (\texttt{a995416}).
+\item \textbf{Modelo 3D} con las piezas exactas, antes de cortar: 31 piezas, dos planchas (\texttt{b9d8ca1}).
+\item \textbf{Bandadas legibles:} cada oleada vuela unida en V; las residentes, más quietas (\texttt{319a5b3}).
+\item \textbf{Pistas:} una flecha en el borde señala la bandada que pasa; la barra marca +N/−N (\texttt{319a5b3}).
+\item \textbf{Pestaña del prototipo} en el sitio: el video y el visor en 3D, pieza por pieza, para girarlo (\texttt{8832419}).
+\item \textbf{Indicación en el objeto:} un mensaje en la superficie donde están los binoculares dice que son de uso exploratorio.
+\end{enumerate}
+\subsection*{Por qué cambió --- el rationale}
+\begin{itemize}
+\item \textbf{El objeto tiene que explicarse solo (R3):} en la revisión funcionaba porque alguien lo explicaba; sobre una mesa, nadie sabría qué es ni qué hacer con él.
+\item \textbf{Del prototipo al objeto:} en la R3 el circuito iba en una caja de cartón encima, con los cables colgando y los motores sueltos; se veía improvisado y la vibración llegaba débil. Bajo las asas, vibran donde va la palma.
+\item \textbf{Ver y enfocar:} con 140 mm de ancho se ve el teléfono entero, y a unos 15 cm del ojo (antes 11) se enfoca más cómodo sin lentes.
+\item \textbf{Modelar antes de cortar:} el MDF alcanza para dos planchas; armar las piezas en 3D mostró el recorrido de los cables y que las 48 piezas para tornillos sobraban: bastan dientes y cola.
+\item \textbf{Una vibración tiene que poder atribuirse:} si no se ve qué la causa, es ruido. Las aves que vuelan juntas se leen como una sola bandada (destino común), la flecha dice hacia dónde mirar y, con las residentes quietas, la migración resalta sobre el fondo (figura y fondo).
+\end{itemize}
+\subsection*{Qué se descartó}
+\begin{itemize}
+\item La \textbf{propuesta A}, una torre de dos pisos con la electrónica arriba: cables cortos, pero el peso queda arriba y el USB sube por fuera.
+\item La \textbf{caja del circuito sobre la tapa} (prototipo de la R3), que alejaba los motores de las manos.
+\item Los \textbf{pilares y apoyos laminados} para tornillos (48 piezas) y un \textbf{tapón entero} para la mochila.
+\end{itemize}
+\subsection*{Balance: qué mejoró desde V1 y qué decidimos no cambiar}
+\textbf{Qué mejoró.} De dos brazos de servo que contaban el total nacional pasamos a un lugar en primera persona: una región con sus especies, su forma y su canto, donde el pulso migratorio de 2024 se ve, se oye y se siente. La perilla abstracta se volvió el gesto de quien observa aves (levantar el visor y girar). La vibración, que en la V3 apenas se percibía o saturaba, ahora marca dónde y cuándo pasa una migración. Y el objeto pasó del cartón y una caja provisoria a un visor de MDF diseñado como un conjunto.
+
+\textbf{Qué no cambiamos, y por qué.}
+
+\begin{itemize}
+\item \textbf{El mensaje de la Entrega 1} (dos avifaunas y el pulso migratorio) y su \textbf{código de color} (verde residente, naranja verano, azul invierno): es el hilo entre las dos entregas.
+\item \textbf{Datos y sonidos reales y verificables} (GBIF/eBird de 2024 y Xeno-canto): ninguna especie, cantidad ni canto es inventado.
+\item \textbf{El teléfono como única entrada}, sin botones: el Arduino solo produce la vibración.
+\item \textbf{La vista Explorar} (V2) no se borró: queda como segunda vista para conocer cada especie de cerca.
+\end{itemize}
+\needspace{8\baselineskip}\section*{10. El feedback al otro grupo (dado en la R2)}
+\textbf{Proyecto evaluado.} Evaluamos al grupo 27 el 12 de noviembre, el mismo que nos revisó. Su fisicalización sigue el tema de su Entrega 1, la transición hacia las energías renovables: dos molinos, uno por país y uno junto al otro, que unos servos mueven según el uso de energía renovable de cada país. Los países se eligen escaneando un código QR por país. El prototipo funcionaba, con los molinos todavía de cartón.
+
+\textbf{Feedback que dimos.} En general estaba bastante bueno: con un molino por país, uno junto al otro, la comparación se percibe de un vistazo, y les recomendamos mantenerla. Les señalamos dos cosas. Primero, escanear un QR por país resultaba confuso o innecesario: elegir el país no agrega nada al mensaje y suma un paso que la página web resuelve directamente. Lo físico debería aportar lo que la pantalla no logra, y aquí eso lo hacen los molinos, no la selección. Segundo, mejorar los molinos, que aún eran cartones: son la pieza que lleva el dato, así que es donde más rinde subir la fidelidad del prototipo, para que se reconozcan como molinos y su movimiento se lea bien.
+
+\textbf{Lo que nos llevamos.} Nuestra V2 tenía un problema parecido: cada región se abría con su QR y cambiarla obligaba a sacar el teléfono del visor, justo lo que el grupo 27 nos señaló en la misma revisión. Desde la V3 se viaja de región sin sacarlo. Lo de los molinos, a su vez, nos confirmó pasar el visor del cartón al MDF.
+
+\needspace{8\baselineskip}\section*{11. Evaluación con usuarios --- La hoja del observador}
+\subsection*{Ronda 1 · con la V4 (26 de noviembre de 2026)}
+\begin{itemize}
+\item \textbf{Quién fue el pensador y cuándo:} Lucas, 32 años, profesor de arte, externo al grupo y sin haber visto el prototipo; 22 de noviembre de 2026, con el visor dejado sobre una mesa. Observó Joaquín Bächler.
+\end{itemize}
+\subsection*{Bitácora de observación (\texttt{orden · cita literal · acción})}
+{\small\begin{longtable}{@{}p{6mm}p{86mm}p{62mm}@{}}\toprule
+\textbf{\textbackslash\{\}\#} & \textbf{Cita literal} & \textbf{Acción}\\\midrule
+1 & «¿Qué tengo que hacer?» & Mira el visor sobre la mesa sin tocarlo.\\
+2 & «¿Puedo tomarlo?» & Pide permiso antes de levantarlo.\\
+3 & «Oo, a ver, ¿qué hay?» & Lo levanta y mira por dentro.\\
+4 & «¿Cómo miro para los lados? Aaah, oye, qué bacán.» & No sabe cómo recorrer la región; descubre que basta girar.\\
+5 & «Oh, y vibra. Ay, ta bueno.» & Siente los motores en las manos cuando pasa una bandada.\\
+6 & «Qué entrete. ¿Y cómo cambio de región?» & Busca cómo ir a otra región y no lo encuentra.\\
+7 & «¿Lo dejo ahí nomás?» & No sabe cómo terminar; deja el visor sobre la mesa.\\
+8 & «Sí, está bueno, solo que no es intuitivo al principio, pero una vez ahí ya se va cachando.» & Comentario final.\\
+9 & «Lo de las vibraciones está bueno, te inmerse más en la experiencia.» & Comentario final.\\
+\bottomrule\end{longtable}}
+\subsection*{Qué dijo del sonido}
+No lo mencionó: todos sus comentarios fueron sobre mirar y la vibración. No sabemos si el coro le dijo algo sobre las aves o si quedó como fondo; en la próxima ronda hay que preguntarlo directamente.
+
+\subsection*{Heurísticas del curso (Zuk-Carpendale) que fallaron en la sesión}
+\begin{itemize}
+\item \textbf{Interacción física no descubrible:} no sabía qué hacer, si podía tomarlo, cómo mirar a los lados, cómo cambiar de región ni cómo terminar (citas 1, 2, 4, 6 y 7).
+\item \textbf{Falta de contexto (qué datos, qué pregunta):} nada en la sesión muestra que entendiera que veía las aves de 2024 llegando y yéndose; disfrutó la experiencia, pero no la nombró.
+\end{itemize}
+\subsection*{Las tres preguntas de cierre}
+\begin{enumerate}
+\item \textbf{¿Dónde se atascó?} Antes de empezar (qué es y si se puede tomar) y en los bordes de la experiencia: cómo cambiar de región y cómo terminar. Una vez adentro, girar y la vibración se entendieron solos.
+\item \textbf{¿Qué hipótesis nuestra resultó errónea?} Que el visor se explicaba solo: suponíamos que, al verlo, se tomaría y se miraría. Es lo mismo que señaló la R3.
+\item \textbf{¿Qué cambio concreto sale de esto?} La indicación en el objeto: un mensaje en la superficie donde están los binoculares que dice que son de uso exploratorio. Queda pendiente decir cómo cambiar de región y cuándo termina el año.
+\end{enumerate}
+\subsection*{Efecto en el proceso}
+La sesión confirmó la observación de la R3 con una persona real: la experiencia funciona una vez adentro («ya se va cachando») y la vibración es lo que más valoró, pero la entrada no se descubre sola. Por eso la V4 suma la indicación junto al visor.
+
+
+\end{document}
